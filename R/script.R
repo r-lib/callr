@@ -2,7 +2,7 @@
 make_vanilla_script <- function(expr_file, res) {
 
   script <- "
-    saveRDS(eval(readRDS(\"{expr_file}\")), file = \"{res}\")
+    saveRDS(do.call(do.call, readRDS(\"{expr_file}\")), file = \"{res}\")
   "
 
   tmp <- tempfile()

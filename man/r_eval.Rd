@@ -4,10 +4,12 @@
 \alias{r_eval}
 \title{Evaluate an expression in another R session}
 \usage{
-r_eval(expr, mode = c("vanilla", "copycat", "expert"), ...)
+r_eval(func, args = list(), mode = c("vanilla", "copycat", "expert"), ...)
 }
 \arguments{
-\item{expr}{Expression to evaluate.}
+\item{func}{Function object to call in the new R process.}
+
+\item{args}{Arguments to pass to the function.}
 
 \item{mode}{How to set up the other R session. See details below.}
 
@@ -43,13 +45,13 @@ Parameters in expert mode: \itemize{
 \examples{
 
 # Workspace is empty in vanilla mode
-r_eval(ls())
+r_eval(ls)
 
 # library path is "empty" in vanilla mode
-r_eval(.libPaths())
+r_eval(.libPaths)
 
 # This should ideally only include base and recommended packages
-r_eval(installed.packages())
+r_eval(installed.packages)
 
 }
 

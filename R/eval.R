@@ -24,37 +24,40 @@
 #' }
 #'
 #' @param mode How to set up the other R session. See details below.
-#' @param expr Expression to evaluate.
+#' @param func Function object to call in the new R process.
+#' @param args Arguments to pass to the function.
 #' @param ... Extra arguments, used in expert mode.
 #' @return Value of the evaluated expression.
 #'
 #' @examples
 #'
 #' # Workspace is empty in vanilla mode
-#' r_eval(ls())
+#' r_eval(ls)
 #'
 #' # library path is "empty" in vanilla mode
-#' r_eval(.libPaths())
+#' r_eval(.libPaths)
 #'
 #' # This should ideally only include base and recommended packages
-#' r_eval(installed.packages())
+#' r_eval(installed.packages)
 #'
 #' @export
 
-r_eval <- function(expr, mode = c("vanilla", "copycat", "expert"), ...) {
+r_eval <- function(func, args = list(),
+                   mode = c("vanilla", "copycat", "expert"), ...) {
 
   mode <- match.arg(mode)
-  expr <- substitute(expr)
+  stopifnot(is.function(func))
+  stopifnot(is.list(args))
   extra <- list(...)
 
   if (length(extra) && mode != "expert") {
     warning("Extra arguments are only considered in expert mode")
   }
 
-  ## Save expression to file
+  ## Save function to file
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
-  saveRDS(expr, file = tmp)
+  saveRDS(list(func, args), file = tmp)
 
   on.exit(unlink(res), add = TRUE)
   res <- if (mode == "vanilla") {
