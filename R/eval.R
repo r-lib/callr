@@ -58,7 +58,7 @@ r_eval_vanilla <- function(expr_file) {
   rscript <- make_vanilla_script(expr_file, res)
   on.exit(unlink(rscript), add = TRUE)
 
-  rbin <- file.path(R.home("bin"), "R")
+  rbin <- paste0(R.home("bin"), "/R")
 
   out <- with_envvar(
     c(R_LIBS = "",
