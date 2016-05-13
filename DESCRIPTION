@@ -1,0 +1,15 @@
+Package: callr
+Title: Call R from R
+Version: 1.0.0
+Author: Gábor Csárdi
+Maintainer: Gábor Csárdi <csardi.gabor@gmail.com>
+Description: It is sometimes useful to perform a computation in a separate R process,
+  without affecting the current R process at all. This packages does exactly
+  that.
+License: MIT + file LICENSE
+LazyData: true
+URL: https://github.com/MangoTheCat/callr
+BugReports: https://github.com/MangoTheCat/callr/issues
+RoxygenNote: 5.0.1.9000
+Suggests: 
+    testthat
