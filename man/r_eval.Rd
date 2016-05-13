@@ -4,12 +4,14 @@
 \alias{r_eval}
 \title{Evaluate an expression in another R session}
 \usage{
-r_eval(expr, mode = c("vanilla", "copycat"))
+r_eval(expr, mode = c("vanilla", "copycat", "expert"), ...)
 }
 \arguments{
 \item{expr}{Expression to evaluate.}
 
 \item{mode}{How to set up the other R session. See details below.}
+
+\item{...}{Extra arguments, used in expert mode.}
 }
 \value{
 Value of the evaluated expression.
@@ -26,6 +28,16 @@ Supported modes: \itemize{
   loaded and attached packages, and the \code{options("repos")}
   settings will be replicated in the new R session. Not yet
   implemented.
+\item \sQuote{expert} Various parameters are set up manually.
+  See parameters below.
+}
+}
+\details{
+Parameters in expert mode: \itemize{
+\item \sQuote{libpath} The library path. Defaults to the current
+  library path in expert mode.
+\item \sQuote{repos} The \sQuote{repos} option. Defaults to
+  \code{getOption("repos")} in expert mode.
 }
 }
 \examples{

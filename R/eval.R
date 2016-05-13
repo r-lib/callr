@@ -12,10 +12,20 @@
 #'   loaded and attached packages, and the \code{options("repos")}
 #'   settings will be replicated in the new R session. Not yet
 #'   implemented.
+#' \item \sQuote{expert} Various parameters are set up manually.
+#'   See parameters below.
+#' }
+#'
+#' Parameters in expert mode: \itemize{
+#' \item \sQuote{libpath} The library path. Defaults to the current
+#'   library path in expert mode.
+#' \item \sQuote{repos} The \sQuote{repos} option. Defaults to
+#'   \code{getOption("repos")} in expert mode.
 #' }
 #'
 #' @param mode How to set up the other R session. See details below.
 #' @param expr Expression to evaluate.
+#' @param ... Extra arguments, used in expert mode.
 #' @return Value of the evaluated expression.
 #'
 #' @examples
@@ -31,10 +41,15 @@
 #'
 #' @export
 
-r_eval <- function(expr, mode = c("vanilla", "copycat")) {
+r_eval <- function(expr, mode = c("vanilla", "copycat", "expert"), ...) {
 
   mode <- match.arg(mode)
   expr <- substitute(expr)
+  extra <- list(...)
+
+  if (length(extra) && mode != "expert") {
+    warning("Extra arguments are only considered in expert mode")
+  }
 
   ## Save expression to file
   tmp <- tempfile()
@@ -47,30 +62,20 @@ r_eval <- function(expr, mode = c("vanilla", "copycat")) {
 
   } else if (mode == "copycat") {
     r_eval_copycat(tmp)
+
+  } else if (mode == "expert") {
+    r_eval_expert(tmp, extra)
   }
 
   readRDS(res)
 }
 
 r_eval_vanilla <- function(expr_file) {
-  res <- tempfile()
-
-  rscript <- make_vanilla_script(expr_file, res)
-  on.exit(unlink(rscript), add = TRUE)
-
-  rbin <- paste0(R.home("bin"), "/R")
-
-  out <- with_envvar(
-    c(R_LIBS = "",
-      R_LIBS_USER = "",
-      R_LIBS_SITE = "",
-      R_PROFILE_USER = tempfile()),
-    safe_system(rbin, args = c("-q", "-f", rscript))
+  params <- list(
+    libpath = character(),
+    repos = c(CRAN = "@CRAN@")
   )
-
-  if (out$status != 0) stop("callr error: ", out$stderr)
-
-  res
+  r_eval_expert(expr_file, params)
 }
 
 r_eval_copycat <- function(expr) {
