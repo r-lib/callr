@@ -30,7 +30,7 @@ Supported modes: \itemize{
   loaded and attached packages, and the \code{options("repos")}
   settings will be replicated in the new R session. Not yet
   implemented.
-\item \sQuote{expert} Various parameters are set up manually.
+\item \sQuote{expert} Various parameters can be set up manually.
   See parameters below.
 }
 }
