@@ -23,6 +23,28 @@
 #'   \code{getOption("repos")} in expert mode.
 #' }
 #'
+#' @section Setting environment variables:
+#'
+#' \code{callr} itself does not support setting environment variables
+#' for the child process, because this can be done easily with other
+#' tools. In particular, you can call \code{callr} withing the
+#' the \code{withr} package's \code{with_envvar} function:
+#'
+#' \preformatted{  withr::with_envvar(
+#'     c(CALL_R_TESTING = "foobar"),
+#'     r_eval(function() Sys.getenv("CALL_R_TESTING"))
+#'   )}
+#'
+#' @section Setting the path:
+#'
+#' Similarly to environment variables, the PATH can be set using
+#' the \code{withr} package:
+#'
+#' \preformatted{  withr::with_path(
+#'     "/bin", action = "replace",
+#'     r_eval(function() Sys.getenv("PATH"))
+#'   )}
+#'
 #' @param mode How to set up the other R session. See details below.
 #' @param func Function object to call in the new R process.
 #' @param args Arguments to pass to the function.
