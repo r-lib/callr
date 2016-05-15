@@ -4,6 +4,8 @@ r_eval_expert <- function(expr_file, extra) {
   ## Parameters
   extra$libpath <- extra$libpath %||% .libPaths()
   extra$repos   <- extra$repos   %||% getOption("repos")
+  extra$stdout  <- extra$stdout  %||% NULL
+  extra$stderr  <- extra$stderr  %||% NULL
 
   res <- tempfile()
 
@@ -27,6 +29,9 @@ r_eval_expert <- function(expr_file, extra) {
       R_PROFILE_USER = profile),
     safe_system(rbin, args = c("-q", "-f", rscript))
   )
+
+  if (!is.null(extra$stdout)) cat(out$stdout, file = extra$stdout)
+  if (!is.null(extra$stderr)) cat(out$stderr, file = extra$stderr)
 
   if (out$status != 0) stop("callr error: ", out$stderr)
 

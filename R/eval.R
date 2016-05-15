@@ -21,6 +21,17 @@
 #'   library path in expert mode.
 #' \item \sQuote{repos} The \sQuote{repos} option. Defaults to
 #'   \code{getOption("repos")} in expert mode.
+#' \item \sQuote{stderr} The name of the file the standard output of
+#'   the child R process will be written to.
+#'   By default the child process runs with the \code{--slave} option,
+#'   so the commands executed are not echoed and will not be shown
+#'   in the standard output. Also note that you need to call `print()`
+#'   explicitly to show the output of the command(s).
+#' \item \sQuote{stderr} The name of the file the standard error of
+#'   the child R process will be written to.
+#'   In particular \code{message()} sends output to the standard
+#'   error. If nothing was sent to the standard error, then this file
+#'   will be empty.
 #' }
 #'
 #' @section Setting environment variables:
