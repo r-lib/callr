@@ -34,3 +34,7 @@ with_envvar <- function(new, code) {
   on.exit(set_envvar(old))
   force(code)
 }
+
+is_string <- function(x) {
+  is.character(x) && length(x) == 1 && !is.na(x)
+}

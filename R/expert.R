@@ -7,6 +7,8 @@ r_eval_expert <- function(expr_file, extra) {
   extra$stdout  <- extra$stdout  %||% NULL
   extra$stderr  <- extra$stderr  %||% NULL
 
+  check_extra_args(extra)
+
   res <- tempfile()
 
   rscript <- make_vanilla_script(expr_file, res)
@@ -36,4 +38,14 @@ r_eval_expert <- function(expr_file, extra) {
   if (out$status != 0) stop("callr error: ", out$stderr)
 
   res
+}
+
+check_extra_args <- function(extra) {
+
+  stopifnot(
+    is.character(extra$libpath),
+    is.character(extra$repos),
+    is.null(extra$stdout) || is_string(extra$stdout),
+    is.null(extra$stderr) || is_string(extra$stderr)
+  )
 }
