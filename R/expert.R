@@ -27,7 +27,7 @@ r_eval_expert <- function(expr_file, extra) {
       R_LIBS_USER = lib,
       R_LIBS_SITE = lib,
       R_PROFILE_USER = profile),
-    safe_system(rbin, args = c("-q", "-f", rscript))
+    safe_system(rbin, args = c("--slave", "-f", rscript))
   )
 
   if (!is.null(extra$stdout)) cat(out$stdout, file = extra$stdout)
