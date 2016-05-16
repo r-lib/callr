@@ -11,7 +11,8 @@ r_eval(func, args = list(), libpath = .libPaths(),
 \arguments{
 \item{func}{Function object to call in the new R process.}
 
-\item{args}{Arguments to pass to the function.}
+\item{args}{Arguments to pass to the function. A list or a character
+vector.}
 
 \item{libpath}{The library path. Defaults to the current
 library path.}

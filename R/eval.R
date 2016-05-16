@@ -2,7 +2,8 @@
 #' Evaluate an expression in another R session
 #'
 #' @param func Function object to call in the new R process.
-#' @param args Arguments to pass to the function.
+#' @param args Arguments to pass to the function. A list or a character
+#'   vector.
 #' @param libpath The library path. Defaults to the current
 #'   library path.
 #' @param repos The \sQuote{repos} option. Defaults to
@@ -83,6 +84,13 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
                    repos = getOption("repos"), stdout = NULL, stderr = NULL,
                    error = c("error", "stack", "debugger"),
                    cmdargs = "--slave") {
+
+  args <- as.list(args)
+  libpath <- as.character(libpath)
+  repos <- as.character(repos)
+  if (!is.null(stdout)) stdout <- as.character(stdout)
+  if (!is.null(stderr)) stderr <- as.character(stderr)
+  cmdargs <- as.character(cmdargs)
 
   stopifnot(
     is.function(func),
