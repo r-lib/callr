@@ -5,7 +5,8 @@
 \title{Evaluate an expression in another R session}
 \usage{
 r_eval(func, args = list(), libpath = .libPaths(),
-  repos = getOption("repos"), stdout = NULL, stderr = NULL)
+  repos = getOption("repos"), stdout = NULL, stderr = NULL,
+  error = c("error", "stack", "debugger"))
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}
@@ -30,6 +31,9 @@ the child R process will be written to.
 In particular \code{message()} sends output to the standard
 error. If nothing was sent to the standard error, then this file
 will be empty.}
+
+\item{error}{What to do if the remote process throws an error.
+See details below.}
 }
 \value{
 Value of the evaluated expression.
@@ -37,6 +41,28 @@ Value of the evaluated expression.
 \description{
 Evaluate an expression in another R session
 }
+\section{Error handling}{
+
+
+\code{callr} handles errors properly. If the child process throws an
+error, then \code{callr} throws an error with the same error message
+in the parent process.
+
+The \sQuote{error} expert option may be used to specify a different
+behavior on error. The following values are possible: \itemize{
+\item \sQuote{error} is the default behavior: throw an error
+  in the parent, with the same error message. In fact the same
+  error object is thrown again.
+\item \sQuote{stack} also throws an error in the parent, but the error
+  is of a special kind, class \code{callr_condition}, and it contains
+  both the original error object, and the call stack of the child,
+  as written out by \code{\link[utils]{dump.frames}}.
+\item \sQuote{debugger} is similar to \sQuote{stack}, but in addition
+  to returning the complete call stack, it also start up a debugger
+  in the child call stack, via \code{\link[utils]{debugger}}.
+}
+}
+
 \section{Setting environment variables}{
 
 

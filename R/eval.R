@@ -18,7 +18,29 @@
 #'   In particular \code{message()} sends output to the standard
 #'   error. If nothing was sent to the standard error, then this file
 #'   will be empty.
+#' @param error What to do if the remote process throws an error.
+#'   See details below.
 #' @return Value of the evaluated expression.
+#'
+#' @section Error handling:
+#'
+#' \code{callr} handles errors properly. If the child process throws an
+#' error, then \code{callr} throws an error with the same error message
+#' in the parent process.
+#'
+#' The \sQuote{error} expert option may be used to specify a different
+#' behavior on error. The following values are possible: \itemize{
+#' \item \sQuote{error} is the default behavior: throw an error
+#'   in the parent, with the same error message. In fact the same
+#'   error object is thrown again.
+#' \item \sQuote{stack} also throws an error in the parent, but the error
+#'   is of a special kind, class \code{callr_condition}, and it contains
+#'   both the original error object, and the call stack of the child,
+#'   as written out by \code{\link[utils]{dump.frames}}.
+#' \item \sQuote{debugger} is similar to \sQuote{stack}, but in addition
+#'   to returning the complete call stack, it also start up a debugger
+#'   in the child call stack, via \code{\link[utils]{debugger}}.
+#' }
 #'
 #' @section Setting environment variables:
 #'
@@ -54,8 +76,8 @@
 #' @export
 
 r_eval <- function(func, args = list(), libpath = .libPaths(),
-                   repos = getOption("repos"), stdout = NULL,
-                   stderr = NULL) {
+                   repos = getOption("repos"), stdout = NULL, stderr = NULL,
+                   error = c("error", "stack", "debugger")) {
 
   stopifnot(
     is.function(func),
@@ -65,23 +87,23 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
     is.null(stdout) || is_string(stdout),
     is.null(stderr) || is_string(stderr)
   )
+  error <- match.arg(error)
 
   ## Save function to file
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
   saveRDS(list(func, args), file = tmp)
 
-  on.exit(unlink(res), add = TRUE)
-  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr)
+  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr, error)
 
-  readRDS(res)
+  get_result(res)
 }
 
-r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr) {
+r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error) {
 
   res <- tempfile()
 
-  rscript <- make_vanilla_script(expr_file, res)
+  rscript <- make_vanilla_script(expr_file, res, error)
   on.exit(unlink(rscript), add = TRUE)
 
   rbin <- paste0(R.home("bin"), "/R")
@@ -105,7 +127,62 @@ r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr) {
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
   if (!is.null(stderr)) cat(out$stderr, file = stderr)
 
-  if (out$status != 0) stop("callr error: ", out$stderr)
+  res
+}
+
+#' Read the result object from the output file, or the error
+#'
+#' Even if an error happens, the ouput file might still exist,
+#' because saveRDS creates the file before evaluating its object
+#' argument. So we need to check for the error file to decide
+#' if an error happened.
+#'
+#' @param res Name of the result file to read. For the error file,
+#'   \code{".error"} is appended.
+#' @return If no error happened, the result is returned. Otherwise
+#'   we handle the error.
+#'
+#' @keywords internal
+
+get_result <- function(res) {
+
+  on.exit(try(unlink(res), silent = TRUE), add = TRUE)
+  on.exit(try(unlink(paste0(res, ".error")), silent = TRUE), add = TRUE)
+
+  if (! file.exists(paste0(res, ".error"))) return(readRDS(res))
+
+  err <- readRDS(paste0(res, ".error"))
+
+  if (err[[1]] == "error") {
+    stop(err[[2]])
+
+  } else if (err[[1]] == "stack") {
+    myerr <- structure(
+      list(
+        message = conditionMessage(err[[2]]),
+        call = conditionCall(err[[2]]),
+        stack = clean_stack(err[[3]])
+      ),
+      class = c("callrError", "error", "condition")
+    )
+    stop(myerr)
+
+  } else if (err[[1]] == "debugger") {
+    debugger(clean_stack(err[[3]]))
+
+  } else {
+    stop("Unknown callr error strategy: ", err[[1]])
+  }
+}
+
+clean_stack <- function(stack) {
+  ## We remove the first 4 calls (withCallingHandlers,
+  ## saveRDS, do.call and do.call) and the last two
+  ## (.handleSimpleError and h(simpleerror).
+  att <- attributes(stack)
+  att$names <- head(tail(att$names, -4), -2)
+  res <- head(tail(stack, -4), -2)
+  attributes(res) <- att
 
   res
 }
