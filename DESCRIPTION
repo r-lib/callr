@@ -11,6 +11,7 @@ LazyData: true
 URL: https://github.com/MangoTheCat/callr
 BugReports: https://github.com/MangoTheCat/callr/issues
 RoxygenNote: 5.0.1.9000
-Suggests: 
+Suggests:
+    covr,
     testthat
 Encoding: UTF-8

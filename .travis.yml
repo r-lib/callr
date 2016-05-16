@@ -18,6 +18,9 @@ script:
 after_failure:
   - ./pkg-build.sh dump_logs
 
+after_success:
+  - if [[ ! -z "$COVERAGE" ]];then ./pkg-build.sh run_script -e 'covr::codecov()'; fi
+
 notifications:
   email:
     on_success: change
@@ -27,5 +30,5 @@ env:
   matrix:
     - RVERSION=oldrel
     - RVERSION=release
-    - RVERSION=devel
+    - RVERSION=devel COVERAGE=true
 
