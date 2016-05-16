@@ -1,26 +1,11 @@
 
 #' Evaluate an expression in another R session
 #'
-#' Supported modes: \itemize{
-#' \item \sQuote{vanilla} Do not load any startup files, and
-#'   use a temporary empty package library. It tries to imitate
-#'   an empty vanilla R session. Note that it does not set
-#'   \code{options("repos")} currently, so if you want to use
-#'   a CRAN mirror, you need to set that.
-#' \item \sQuote{copycat} Try to mimic the settings from the
-#'   current R session: startup files, package libraries,
-#'   loaded and attached packages, and the \code{options("repos")}
-#'   settings will be replicated in the new R session. Not yet
-#'   implemented.
-#' \item \sQuote{expert} Various parameters can be set up manually.
-#'   See parameters below.
-#' }
-#'
-#' Parameters in expert mode: \itemize{
+#' Parameters \itemize{
 #' \item \sQuote{libpath} The library path. Defaults to the current
-#'   library path in expert mode.
+#'   library path.
 #' \item \sQuote{repos} The \sQuote{repos} option. Defaults to
-#'   \code{getOption("repos")} in expert mode.
+#'   \code{getOption("repos")}.
 #' \item \sQuote{stderr} The name of the file the standard output of
 #'   the child R process will be written to.
 #'   By default the child process runs with the \code{--slave} option,
@@ -56,36 +41,34 @@
 #'     r_eval(function() Sys.getenv("PATH"))
 #'   )}
 #'
-#' @param mode How to set up the other R session. See details below.
 #' @param func Function object to call in the new R process.
 #' @param args Arguments to pass to the function.
-#' @param ... Extra arguments, used in expert mode.
+#' @param ... Extra arguments, see below.
 #' @return Value of the evaluated expression.
 #'
 #' @examples
 #'
-#' # Workspace is empty in vanilla mode
+#' # Workspace is empty
 #' r_eval(ls)
 #'
-#' # library path is "empty" in vanilla mode
+#' # library path is the same by default
 #' r_eval(.libPaths)
-#'
-#' # This should ideally only include base and recommended packages
-#' r_eval(installed.packages)
+#' .libPaths()
 #'
 #' @export
 
-r_eval <- function(func, args = list(),
-                   mode = c("vanilla", "copycat", "expert"), ...) {
+r_eval <- function(func, args = list(), ...) {
 
-  mode <- match.arg(mode)
   stopifnot(is.function(func))
   stopifnot(is.list(args))
   extra <- list(...)
 
-  if (length(extra) && mode != "expert") {
-    warning("Extra arguments are only considered in expert mode")
-  }
+  ## Parameters
+  extra$libpath <- extra$libpath %||% .libPaths()
+  extra$repos   <- extra$repos   %||% getOption("repos")
+  extra$stdout  <- extra$stdout  %||% NULL
+  extra$stderr  <- extra$stderr  %||% NULL
+  check_extra_args(extra)
 
   ## Save function to file
   tmp <- tempfile()
@@ -93,27 +76,50 @@ r_eval <- function(func, args = list(),
   saveRDS(list(func, args), file = tmp)
 
   on.exit(unlink(res), add = TRUE)
-  res <- if (mode == "vanilla") {
-    r_eval_vanilla(tmp)
-
-  } else if (mode == "copycat") {
-    r_eval_copycat(tmp)
-
-  } else if (mode == "expert") {
-    r_eval_expert(tmp, extra)
-  }
+  res <- r_eval_tmp(tmp, extra)
 
   readRDS(res)
 }
 
-r_eval_vanilla <- function(expr_file) {
-  params <- list(
-    libpath = character(),
-    repos = c(CRAN = "@CRAN@")
+check_extra_args <- function(extra) {
+
+  stopifnot(
+    is.character(extra$libpath),
+    is.character(extra$repos),
+    is.null(extra$stdout) || is_string(extra$stdout),
+    is.null(extra$stderr) || is_string(extra$stderr)
   )
-  r_eval_expert(expr_file, params)
 }
 
-r_eval_copycat <- function(expr) {
-  stop("'copycat' is not yet implemented")
+r_eval_tmp <- function(expr_file, extra) {
+
+  res <- tempfile()
+
+  rscript <- make_vanilla_script(expr_file, res)
+  on.exit(unlink(rscript), add = TRUE)
+
+  rbin <- paste0(R.home("bin"), "/R")
+
+  ## Temporary profile
+  profile <- tempfile()
+  cat("options(repos=", deparse(extra$repos), ")\n", sep = "", file = profile)
+  on.exit(unlink(profile), add = TRUE)
+
+  ## Temporary library path
+  lib <- paste(extra$libpath, collapse = .Platform$path.sep)
+
+  out <- with_envvar(
+    c(R_LIBS = lib,
+      R_LIBS_USER = lib,
+      R_LIBS_SITE = lib,
+      R_PROFILE_USER = profile),
+    safe_system(rbin, args = c("--slave", "-f", rscript))
+  )
+
+  if (!is.null(extra$stdout)) cat(out$stdout, file = extra$stdout)
+  if (!is.null(extra$stderr)) cat(out$stderr, file = extra$stderr)
+
+  if (out$status != 0) stop("callr error: ", out$stderr)
+
+  res
 }

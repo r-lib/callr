@@ -4,42 +4,24 @@
 \alias{r_eval}
 \title{Evaluate an expression in another R session}
 \usage{
-r_eval(func, args = list(), mode = c("vanilla", "copycat", "expert"), ...)
+r_eval(func, args = list(), ...)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}
 
 \item{args}{Arguments to pass to the function.}
 
-\item{mode}{How to set up the other R session. See details below.}
-
-\item{...}{Extra arguments, used in expert mode.}
+\item{...}{Extra arguments, see below.}
 }
 \value{
 Value of the evaluated expression.
 }
 \description{
-Supported modes: \itemize{
-\item \sQuote{vanilla} Do not load any startup files, and
-  use a temporary empty package library. It tries to imitate
-  an empty vanilla R session. Note that it does not set
-  \code{options("repos")} currently, so if you want to use
-  a CRAN mirror, you need to set that.
-\item \sQuote{copycat} Try to mimic the settings from the
-  current R session: startup files, package libraries,
-  loaded and attached packages, and the \code{options("repos")}
-  settings will be replicated in the new R session. Not yet
-  implemented.
-\item \sQuote{expert} Various parameters can be set up manually.
-  See parameters below.
-}
-}
-\details{
-Parameters in expert mode: \itemize{
+Parameters \itemize{
 \item \sQuote{libpath} The library path. Defaults to the current
-  library path in expert mode.
+  library path.
 \item \sQuote{repos} The \sQuote{repos} option. Defaults to
-  \code{getOption("repos")} in expert mode.
+  \code{getOption("repos")}.
 \item \sQuote{stderr} The name of the file the standard output of
   the child R process will be written to.
   By default the child process runs with the \code{--slave} option,
@@ -80,14 +62,12 @@ the \code{withr} package:
 }
 \examples{
 
-# Workspace is empty in vanilla mode
+# Workspace is empty
 r_eval(ls)
 
-# library path is "empty" in vanilla mode
+# library path is the same by default
 r_eval(.libPaths)
-
-# This should ideally only include base and recommended packages
-r_eval(installed.packages)
+.libPaths()
 
 }
 
