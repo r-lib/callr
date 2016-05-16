@@ -4,36 +4,38 @@
 \alias{r_eval}
 \title{Evaluate an expression in another R session}
 \usage{
-r_eval(func, args = list(), ...)
+r_eval(func, args = list(), libpath = .libPaths(),
+  repos = getOption("repos"), stdout = NULL, stderr = NULL)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}
 
 \item{args}{Arguments to pass to the function.}
 
-\item{...}{Extra arguments, see below.}
+\item{libpath}{The library path. Defaults to the current
+library path.}
+
+\item{repos}{The \sQuote{repos} option. Defaults to
+\code{getOption("repos")}.}
+
+\item{stdout}{The name of the file the standard output of
+the child R process will be written to.
+By default the child process runs with the \code{--slave} option,
+so the commands executed are not echoed and will not be shown
+in the standard output. Also note that you need to call `print()`
+explicitly to show the output of the command(s).}
+
+\item{stderr}{The name of the file the standard error of
+the child R process will be written to.
+In particular \code{message()} sends output to the standard
+error. If nothing was sent to the standard error, then this file
+will be empty.}
 }
 \value{
 Value of the evaluated expression.
 }
 \description{
-Parameters \itemize{
-\item \sQuote{libpath} The library path. Defaults to the current
-  library path.
-\item \sQuote{repos} The \sQuote{repos} option. Defaults to
-  \code{getOption("repos")}.
-\item \sQuote{stderr} The name of the file the standard output of
-  the child R process will be written to.
-  By default the child process runs with the \code{--slave} option,
-  so the commands executed are not echoed and will not be shown
-  in the standard output. Also note that you need to call `print()`
-  explicitly to show the output of the command(s).
-\item \sQuote{stderr} The name of the file the standard error of
-  the child R process will be written to.
-  In particular \code{message()} sends output to the standard
-  error. If nothing was sent to the standard error, then this file
-  will be empty.
-}
+Evaluate an expression in another R session
 }
 \section{Setting environment variables}{
 

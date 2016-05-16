@@ -1,23 +1,24 @@
 
 #' Evaluate an expression in another R session
 #'
-#' Parameters \itemize{
-#' \item \sQuote{libpath} The library path. Defaults to the current
+#' @param func Function object to call in the new R process.
+#' @param args Arguments to pass to the function.
+#' @param libpath The library path. Defaults to the current
 #'   library path.
-#' \item \sQuote{repos} The \sQuote{repos} option. Defaults to
+#' @param repos The \sQuote{repos} option. Defaults to
 #'   \code{getOption("repos")}.
-#' \item \sQuote{stderr} The name of the file the standard output of
+#' @param stdout The name of the file the standard output of
 #'   the child R process will be written to.
 #'   By default the child process runs with the \code{--slave} option,
 #'   so the commands executed are not echoed and will not be shown
 #'   in the standard output. Also note that you need to call `print()`
 #'   explicitly to show the output of the command(s).
-#' \item \sQuote{stderr} The name of the file the standard error of
+#' @param stderr The name of the file the standard error of
 #'   the child R process will be written to.
 #'   In particular \code{message()} sends output to the standard
 #'   error. If nothing was sent to the standard error, then this file
 #'   will be empty.
-#' }
+#' @return Value of the evaluated expression.
 #'
 #' @section Setting environment variables:
 #'
@@ -41,11 +42,6 @@
 #'     r_eval(function() Sys.getenv("PATH"))
 #'   )}
 #'
-#' @param func Function object to call in the new R process.
-#' @param args Arguments to pass to the function.
-#' @param ... Extra arguments, see below.
-#' @return Value of the evaluated expression.
-#'
 #' @examples
 #'
 #' # Workspace is empty
@@ -57,18 +53,18 @@
 #'
 #' @export
 
-r_eval <- function(func, args = list(), ...) {
+r_eval <- function(func, args = list(), libpath = .libPaths(),
+                   repos = getOption("repos"), stdout = NULL,
+                   stderr = NULL) {
 
-  stopifnot(is.function(func))
-  stopifnot(is.list(args))
-  extra <- list(...)
-
-  ## Parameters
-  extra$libpath <- extra$libpath %||% .libPaths()
-  extra$repos   <- extra$repos   %||% getOption("repos")
-  extra$stdout  <- extra$stdout  %||% NULL
-  extra$stderr  <- extra$stderr  %||% NULL
-  check_extra_args(extra)
+  stopifnot(
+    is.function(func),
+    is.list(args),
+    is.character(libpath),
+    is.character(repos),
+    is.null(stdout) || is_string(stdout),
+    is.null(stderr) || is_string(stderr)
+  )
 
   ## Save function to file
   tmp <- tempfile()
@@ -76,22 +72,12 @@ r_eval <- function(func, args = list(), ...) {
   saveRDS(list(func, args), file = tmp)
 
   on.exit(unlink(res), add = TRUE)
-  res <- r_eval_tmp(tmp, extra)
+  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr)
 
   readRDS(res)
 }
 
-check_extra_args <- function(extra) {
-
-  stopifnot(
-    is.character(extra$libpath),
-    is.character(extra$repos),
-    is.null(extra$stdout) || is_string(extra$stdout),
-    is.null(extra$stderr) || is_string(extra$stderr)
-  )
-}
-
-r_eval_tmp <- function(expr_file, extra) {
+r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr) {
 
   res <- tempfile()
 
@@ -102,11 +88,11 @@ r_eval_tmp <- function(expr_file, extra) {
 
   ## Temporary profile
   profile <- tempfile()
-  cat("options(repos=", deparse(extra$repos), ")\n", sep = "", file = profile)
+  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
   on.exit(unlink(profile), add = TRUE)
 
   ## Temporary library path
-  lib <- paste(extra$libpath, collapse = .Platform$path.sep)
+  lib <- paste(libpath, collapse = .Platform$path.sep)
 
   out <- with_envvar(
     c(R_LIBS = lib,
@@ -116,8 +102,8 @@ r_eval_tmp <- function(expr_file, extra) {
     safe_system(rbin, args = c("--slave", "-f", rscript))
   )
 
-  if (!is.null(extra$stdout)) cat(out$stdout, file = extra$stdout)
-  if (!is.null(extra$stderr)) cat(out$stderr, file = extra$stderr)
+  if (!is.null(stdout)) cat(out$stdout, file = stdout)
+  if (!is.null(stderr)) cat(out$stderr, file = stderr)
 
   if (out$status != 0) stop("callr error: ", out$stderr)
 
