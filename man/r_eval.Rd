@@ -6,7 +6,7 @@
 \usage{
 r_eval(func, args = list(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
-  error = c("error", "stack", "debugger"))
+  error = c("error", "stack", "debugger"), cmdargs = "--slave")
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}
@@ -34,6 +34,11 @@ will be empty.}
 
 \item{error}{What to do if the remote process throws an error.
 See details below.}
+
+\item{cmdargs}{Command line arguments to pass to the R process.
+Note that \code{c("-f", rscript)} is appended to this, \code{rscript}
+is the name of the script file to run. This contains a call to the
+supplied function and some error handling code.}
 }
 \value{
 Value of the evaluated expression.

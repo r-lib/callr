@@ -20,6 +20,10 @@
 #'   will be empty.
 #' @param error What to do if the remote process throws an error.
 #'   See details below.
+#' @param cmdargs Command line arguments to pass to the R process.
+#'   Note that \code{c("-f", rscript)} is appended to this, \code{rscript}
+#'   is the name of the script file to run. This contains a call to the
+#'   supplied function and some error handling code.
 #' @return Value of the evaluated expression.
 #'
 #' @section Error handling:
@@ -77,7 +81,8 @@
 
 r_eval <- function(func, args = list(), libpath = .libPaths(),
                    repos = getOption("repos"), stdout = NULL, stderr = NULL,
-                   error = c("error", "stack", "debugger")) {
+                   error = c("error", "stack", "debugger"),
+                   cmdargs = "--slave") {
 
   stopifnot(
     is.function(func),
@@ -85,7 +90,8 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
     is.character(libpath),
     is.character(repos),
     is.null(stdout) || is_string(stdout),
-    is.null(stderr) || is_string(stderr)
+    is.null(stderr) || is_string(stderr),
+    is.character(cmdargs)
   )
   error <- match.arg(error)
 
@@ -94,12 +100,13 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
   on.exit(unlink(tmp), add = TRUE)
   saveRDS(list(func, args), file = tmp)
 
-  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr, error)
+  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs)
 
   get_result(res)
 }
 
-r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error) {
+r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
+                       cmdargs) {
 
   res <- tempfile()
 
@@ -121,7 +128,7 @@ r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error) {
       R_LIBS_USER = lib,
       R_LIBS_SITE = lib,
       R_PROFILE_USER = profile),
-    safe_system(rbin, args = c("--slave", "-f", rscript))
+    safe_system(rbin, args = c(cmdargs, "-f", rscript))
   )
 
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
