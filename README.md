@@ -4,7 +4,7 @@
 > Call R from R
 
 [![Linux Build Status](https://travis-ci.org/MangoTheCat/callr.svg?branch=master)](https://travis-ci.org/MangoTheCat/callr)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/github/MangoTheCat/callr?svg=true)](https://ci.appveyor.com/project/MangoTheCat/callr)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/github/MangoTheCat/callr?svg=true)](https://ci.appveyor.com/project/gaborcsardi/callr)
 [![](http://www.r-pkg.org/badges/version/callr)](http://www.r-pkg.org/pkg/callr)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/callr)](http://www.r-pkg.org/pkg/callr)
 [![Coverage Status](https://img.shields.io/codecov/c/github/MangoTheCat/callr/master.svg)](https://codecov.io/github/MangoTheCat/callr?branch=master)
