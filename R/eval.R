@@ -120,26 +120,14 @@ r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
   rscript <- make_vanilla_script(expr_file, res, error)
   on.exit(unlink(rscript), add = TRUE)
 
-  rbin <- paste0(R.home("bin"), "/R")
-
-  ## Temporary profile
-  profile <- tempfile()
-  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
-  on.exit(unlink(profile), add = TRUE)
-
-  ## Temporary library path
-  lib <- paste(libpath, collapse = .Platform$path.sep)
-
-  out <- with_envvar(
-    c(R_LIBS = lib,
-      R_LIBS_USER = lib,
-      R_LIBS_SITE = lib,
-      R_PROFILE_USER = profile),
-    safe_system(rbin, args = c(cmdargs, "-f", rscript))
+  out <- run_r(
+    bin = paste0(R.home("bin"), "/R"),
+    args = c(cmdargs, "-f", rscript),
+    libpath = libpath,
+    repos = repos,
+    stdout = stdout,
+    stderr= stderr
   )
-
-  if (!is.null(stdout)) cat(out$stdout, file = stdout)
-  if (!is.null(stderr)) cat(out$stderr, file = stderr)
 
   res
 }
