@@ -37,7 +37,7 @@ make_vanilla_script <- function(expr_file, res, error) {
   ## the function is called from an empty global environment.
   script <- substitute(
     {
-      withCallingHandlers(
+      withCallingHandlers(              # nocov start
         {
           saveRDS(
             do.call(
@@ -49,7 +49,7 @@ make_vanilla_script <- function(expr_file, res, error) {
           )
         },
         error = function(e) { `__error__`; stop(e) }
-      )
+      )                                 # nocov end
     },
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res)

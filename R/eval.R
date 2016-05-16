@@ -185,7 +185,7 @@ get_result <- function(res) {
     debugger(clean_stack(err[[3]]))
 
   } else {
-    stop("Unknown callr error strategy: ", err[[1]])
+    stop("Unknown callr error strategy: ", err[[1]]) # nocov
   }
 }
 
