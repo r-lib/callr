@@ -157,6 +157,7 @@ r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
 #'   we handle the error.
 #'
 #' @keywords internal
+#' @importFrom utils debugger
 
 get_result <- function(res) {
 
@@ -188,6 +189,8 @@ get_result <- function(res) {
     stop("Unknown callr error strategy: ", err[[1]]) # nocov
   }
 }
+
+#' @importFrom utils head tail
 
 clean_stack <- function(stack) {
   ## We remove the first 4 calls (withCallingHandlers,
