@@ -26,7 +26,7 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = getOption("repos"), stdout = NULL,
                  stderr = NULL, show = FALSE, callback = NULL) {
 
-  if(.Platform$OS.type == "windows") {
+  if(os_platform() == "windows") {
     rbin <- file.path(R.home("bin"), "Rcmd.exe")
     cmdargs <- c(cmd, cmdargs)
 
