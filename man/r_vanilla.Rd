@@ -60,4 +60,8 @@ r_vanilla(function() .libPaths())
 r(function() getOption("repos"))
 r_vanilla(function() getOption("repos"))
 }
+\seealso{
+Other callr functions: \code{\link{r_safe}},
+  \code{\link{r}}
+}
 

@@ -106,4 +106,8 @@ r(function() .libPaths())
 .libPaths()
 
 }
+\seealso{
+Other callr functions: \code{\link{r_safe}},
+  \code{\link{r_vanilla}}
+}
 

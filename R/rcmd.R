@@ -17,6 +17,7 @@
 #'   error (\code{stderr}) and exit status (\code{$status}) of the
 #'   external \code{R CMD} command.
 #'
+#' @family R CMD commands
 #' @export
 #'
 #' @examples
@@ -50,4 +51,28 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
     user_profile = user_profile,
     env = env
   )
+}
+
+#' Call R CMD <command> safely
+#'
+#' Very similar to \code{\link{rcmd}}, but with different defaults,
+#' that tend to create a less error-prone execution environment for the
+#' child process.
+#'
+#' @param ... Additional arguments are passed to \code{\link{rcmd}}.
+#' @inheritParams rcmd
+#'
+#' @family R CMD commands
+#' @export
+
+rcmd_safe <- function(cmd, cmdargs = character(), libpath = .libPaths(),
+                      repos = c(getOption("repos"),
+                        c(CRAN = "https://cran.rstudio.com")),
+                      system_profile = FALSE, user_profile = FALSE,
+                      env = c(CYGWIN = "nodosfilewarning", R_TESTS = "",
+                        R_BROWSER = "false", R_PDFVIEWER = "false"), ...) {
+
+  rcmd(cmd, cmdargs = cmdargs, libpath = libpath, repos = repos,
+       system_profile = system_profile, user_profile = user_profile,
+       env = env, ...)
 }

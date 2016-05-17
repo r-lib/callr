@@ -60,4 +60,8 @@ The following options are set up: \itemize{
     and \code{R_PDFVIEWER} to avoid starting a browser or a PDF viewer.
 }
 }
+\seealso{
+Other callr functions: \code{\link{r_vanilla}},
+  \code{\link{r}}
+}
 
