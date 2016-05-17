@@ -25,6 +25,14 @@
 #'   Note that \code{c("-f", rscript)} is appended to this, \code{rscript}
 #'   is the name of the script file to run. This contains a call to the
 #'   supplied function and some error handling code.
+#' @param show Logical, whether to show the standard output on the screen
+#'   while the child process is running. Note that this is independent
+#'   of the \code{stdout} and \code{stderr} arguments. The standard
+#'   error is not shown currently.
+#' @param callback A function to call for each line of the standard
+#'   output from the child process. It works together with the \code{show}
+#'   option; i.e. if \code{show = TRUE}, and a callback is provided, then
+#'   the output is shown of the screen, and the callback is also called.
 #' @return Value of the evaluated expression.
 #'
 #' @section Error handling:
@@ -83,7 +91,7 @@
 r_eval <- function(func, args = list(), libpath = .libPaths(),
                    repos = getOption("repos"), stdout = NULL, stderr = NULL,
                    error = c("error", "stack", "debugger"),
-                   cmdargs = "--slave") {
+                   cmdargs = "--slave", show = FALSE, callback = NULL) {
 
   libpath <- as.character(libpath)
   repos <- as.character(repos)
@@ -98,7 +106,9 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
     is.character(repos),
     is.null(stdout) || is_string(stdout),
     is.null(stderr) || is_string(stderr),
-    is.character(cmdargs)
+    is.character(cmdargs),
+    is_flag(show),
+    is.null(callback) || is.function(callback)
   )
   error <- match.arg(error)
 
@@ -107,13 +117,14 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
   on.exit(unlink(tmp), add = TRUE)
   saveRDS(list(func, args), file = tmp)
 
-  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs)
+  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
+                    show, callback)
 
   get_result(res)
 }
 
 r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
-                       cmdargs) {
+                       cmdargs, show, callback) {
 
   res <- tempfile()
 
@@ -126,7 +137,9 @@ r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     libpath = libpath,
     repos = repos,
     stdout = stdout,
-    stderr= stderr
+    stderr = stderr,
+    show = show,
+    callback = callback
   )
 
   res

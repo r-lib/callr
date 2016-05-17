@@ -6,7 +6,8 @@
 \usage{
 r_eval(func, args = list(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
-  error = c("error", "stack", "debugger"), cmdargs = "--slave")
+  error = c("error", "stack", "debugger"), cmdargs = "--slave",
+  show = FALSE, callback = NULL)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}
@@ -40,6 +41,16 @@ See details below.}
 Note that \code{c("-f", rscript)} is appended to this, \code{rscript}
 is the name of the script file to run. This contains a call to the
 supplied function and some error handling code.}
+
+\item{show}{Logical, whether to show the standard output on the screen
+while the child process is running. Note that this is independent
+of the \code{stdout} and \code{stderr} arguments. The standard
+error is not shown currently.}
+
+\item{callback}{A function to call for each line of the standard
+output from the child process. It works together with the \code{show}
+option; i.e. if \code{show = TRUE}, and a callback is provided, then
+the output is shown of the screen, and the callback is also called.}
 }
 \value{
 Value of the evaluated expression.

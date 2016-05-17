@@ -10,12 +10,9 @@
 #'   LINK, Rprof, Rdconv, Rd2pdf, Rd2txt, Stangle, Sweave, Rdiff, config,
 #'   javareconf, rtags.
 #' @param cmdargs Command line arguments.
-#' @param libpath R library path to set up using environment variables.
-#'   Defaults to the current library path.
-#' @param repos The \code{repos} option to set CRAN mirrors and other
-#'   CRAN-like repositories.
 #' @param stdout Optionally a file name to send the standard output to.
 #' @param stderr Optionally a file name to send the standard error to.
+#' @inheritParams r_eval
 #' @return A list with the standard output (\code{$stdout}), standard
 #'   error (\code{stderr}) and exit status (\code{$status}) of the
 #'   external \code{R CMD} command.
@@ -27,7 +24,7 @@
 
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = getOption("repos"), stdout = NULL,
-                 stderr = NULL) {
+                 stderr = NULL, show = FALSE, callback = NULL) {
 
   if(.Platform$OS.type == "windows") {
     rbin <- file.path(R.home("bin"), "Rcmd.exe")
@@ -44,6 +41,8 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
     libpath = libpath,
     repos = repos,
     stdout = stdout,
-    stderr = stderr
+    stderr = stderr,
+    show = show,
+    callback = callback
   )
 }

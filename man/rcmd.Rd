@@ -5,7 +5,8 @@
 \title{Run an R CMD command}
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
-  repos = getOption("repos"), stdout = NULL, stderr = NULL)
+  repos = getOption("repos"), stdout = NULL, stderr = NULL,
+  show = FALSE, callback = NULL)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -16,15 +17,25 @@ javareconf, rtags.}
 
 \item{cmdargs}{Command line arguments.}
 
-\item{libpath}{R library path to set up using environment variables.
-Defaults to the current library path.}
+\item{libpath}{The library path. Defaults to the current
+library path.}
 
-\item{repos}{The \code{repos} option to set CRAN mirrors and other
-CRAN-like repositories.}
+\item{repos}{The \sQuote{repos} option. Defaults to
+\code{getOption("repos")}.}
 
 \item{stdout}{Optionally a file name to send the standard output to.}
 
 \item{stderr}{Optionally a file name to send the standard error to.}
+
+\item{show}{Logical, whether to show the standard output on the screen
+while the child process is running. Note that this is independent
+of the \code{stdout} and \code{stderr} arguments. The standard
+error is not shown currently.}
+
+\item{callback}{A function to call for each line of the standard
+output from the child process. It works together with the \code{show}
+option; i.e. if \code{show = TRUE}, and a callback is provided, then
+the output is shown of the screen, and the callback is also called.}
 }
 \value{
 A list with the standard output (\code{$stdout}), standard
