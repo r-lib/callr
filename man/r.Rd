@@ -7,7 +7,7 @@
 r(func, args = list(), libpath = .libPaths(), repos = getOption("repos"),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = "--slave", show = FALSE, callback = NULL,
-  system_profile = FALSE, user_profile = FALSE)
+  system_profile = FALSE, user_profile = FALSE, env = character())
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}
@@ -58,6 +58,8 @@ the output is shown of the screen, and the callback is also called.}
 \item{system_profile}{Whether to use the system profile file.}
 
 \item{user_profile}{Whether to use the user's profile file.}
+
+\item{env}{Environment variables to set for the child process.}
 }
 \value{
 Value of the evaluated expression.

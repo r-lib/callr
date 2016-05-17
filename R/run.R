@@ -1,6 +1,6 @@
 
 run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
-                  callback, system_profile, user_profile) {
+                  callback, system_profile, user_profile, env) {
 
   ## Temporary profile
   profile <- make_profile(repos)
@@ -19,7 +19,9 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
     callback
   }
 
-  env <- c(R_LIBS = lib, R_LIBS_USER = lib, R_LIBS_SITE = lib)
+  if (is.na(env["R_LIBS"])) env["R_LIBS"] <- lib
+  if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- lib
+  if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- lib
   if (!system_profile) env["R_PROFILE"] <- profile
   if (!user_profile) env["R_PROFILE_USER"] <- profile
 

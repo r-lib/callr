@@ -7,7 +7,7 @@
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
   show = FALSE, callback = NULL, system_profile = FALSE,
-  user_profile = FALSE)
+  user_profile = FALSE, env = character())
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -44,6 +44,8 @@ the output is shown of the screen, and the callback is also called.}
 \item{system_profile}{Whether to use the system profile file.}
 
 \item{user_profile}{Whether to use the user's profile file.}
+
+\item{env}{Environment variables to set for the child process.}
 }
 \value{
 A list with the standard output (\code{$stdout}), standard

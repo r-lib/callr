@@ -34,3 +34,13 @@ test_that("cmdargs argument", {
 
   expect_true(length(readLines(o2)) > length(readLines(o1)))
 })
+
+test_that("env", {
+
+  expect_equal(
+    r(function() Sys.getenv("CALLR_FOOBAR"),
+      env = c(CALLR_FOOBAR = "indeed")
+      ),
+    "indeed"
+  )
+})

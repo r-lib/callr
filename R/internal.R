@@ -1,7 +1,7 @@
 
 r_internal <- function(func, args, libpath, repos, stdout, stderr,
                        error, cmdargs, show, callback, system_profile,
-                       user_profile) {
+                       user_profile, env) {
 
   libpath <- as.character(libpath)
   repos <- as.character(repos)
@@ -18,7 +18,10 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
     is.null(stderr) || is_string(stderr),
     is.character(cmdargs),
     is_flag(show),
-    is.null(callback) || is.function(callback)
+    is.null(callback) || is.function(callback),
+    is_flag(system_profile),
+    is_flag(user_profile),
+    is.character(env)
   )
 
   ## Save function to file
@@ -27,14 +30,14 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
   saveRDS(list(func, args), file = tmp)
 
   res <- r_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
-               show, callback, system_profile, user_profile)
+               show, callback, system_profile, user_profile, env)
 
   get_result(res)
 }
 
 r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
                   cmdargs, show, callback, system_profile,
-                  user_profile) {
+                  user_profile, env) {
 
   res <- tempfile()
 
@@ -51,7 +54,8 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     show = show,
     callback = callback,
     system_profile = system_profile,
-    user_profile = user_profile
+    user_profile = user_profile,
+    env = env
   )
 
   res

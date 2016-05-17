@@ -38,6 +38,7 @@
 #'   the output is shown of the screen, and the callback is also called.
 #' @param system_profile Whether to use the system profile file.
 #' @param user_profile Whether to use the user's profile file.
+#' @param env Environment variables to set for the child process.
 #' @return Value of the evaluated expression.
 #'
 #' @section Error handling:
@@ -75,13 +76,14 @@ r <- function(func, args = list(), libpath = .libPaths(),
               repos = getOption("repos"), stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
               cmdargs = "--slave", show = FALSE, callback = NULL,
-              system_profile = FALSE, user_profile = FALSE) {
+              system_profile = FALSE, user_profile = FALSE,
+              env = character()) {
 
   error <- match.arg(error)
   r_internal(
     func, args, libpath = libpath, repos = repos, stdout = stdout,
     stderr = stderr, error = error, cmdargs = cmdargs, show = show,
     callback = callback, system_profile = system_profile,
-    user_profile = user_profile
+    user_profile = user_profile, env = env
   )
 }
