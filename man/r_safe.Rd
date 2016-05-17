@@ -4,11 +4,12 @@
 \alias{r_safe}
 \title{Run an R child process in safe mode}
 \usage{
-r_safe(func, args = list(), libpath = .libPaths(), repos = c(CRAN =
-  "https://cran.rstudio.com"), cmdargs = c("--no-site-file", "--no-environ",
-  "--slave", "--no-save", "--no-restore"), system_profile = FALSE,
-  user_profile = FALSE, env = c(CYGWIN = "nodosfilewarning", R_TESTS = "",
-  R_BROWSER = "false", R_PDFVIEWER = "false"), ...)
+r_safe(func, args = list(), libpath = .libPaths(),
+  repos = c(getOption("repos"), c(CRAN = "https://cran.rstudio.com")),
+  cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
+  "--no-restore"), system_profile = FALSE, user_profile = FALSE,
+  env = c(CYGWIN = "nodosfilewarning", R_TESTS = "", R_BROWSER = "false",
+  R_PDFVIEWER = "false"), ...)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -49,7 +50,7 @@ supplied function and some error handling code.}
 \description{
 The following options are set up: \itemize{
   \item The library path is set to the current path.
-  \item The CRAN mirror is set to the R Studio mirror.
+  \item Makes sure that at least one reasonable CRAN mirror is set up.
   \item Some command line arguments are added to avoid saving
     \code{.RData} files, etc. See them above.
   \item The system and user profile files are ignored.
