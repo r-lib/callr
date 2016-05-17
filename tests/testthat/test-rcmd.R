@@ -26,3 +26,7 @@ test_that("rcmd on windows", {
   expect_match(wbin, "Rcmd.exe")
   expect_equal(wargs, c("config", "CC"))
 })
+
+test_that("rcmd_safe", {
+  expect_equal(rcmd_safe("config", "CC")$status, 0)
+})
