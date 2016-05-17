@@ -7,7 +7,7 @@
 r(func, args = list(), libpath = .libPaths(), repos = getOption("repos"),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = "--slave", show = FALSE, callback = NULL,
-  system_profile = FALSE, user_profile = FALSE, env = character())
+  system_profile = TRUE, user_profile = TRUE, env = character())
 }
 \arguments{
 \item{func}{Function object to call in the new R process.}

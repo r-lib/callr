@@ -76,7 +76,7 @@ r <- function(func, args = list(), libpath = .libPaths(),
               repos = getOption("repos"), stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
               cmdargs = "--slave", show = FALSE, callback = NULL,
-              system_profile = FALSE, user_profile = FALSE,
+              system_profile = TRUE, user_profile = TRUE,
               env = character()) {
 
   error <- match.arg(error)
