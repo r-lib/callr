@@ -24,6 +24,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
     c(R_LIBS = lib,
       R_LIBS_USER = lib,
       R_LIBS_SITE = lib,
+      R_PROFILE = profile,
       R_PROFILE_USER = profile),
     safe_system(bin, args = args, callback = real_callback)
   )
