@@ -12,11 +12,11 @@ make_vanilla_script <- function(expr_file, res, error) {
   } else if (error %in% c("stack", "debugger")) {
     substitute(
       {
-        dump.frames("__dump__")
+        dump.frames("__dump__")         # nocov start
         saveRDS(
           list(`__type__`, e, .GlobalEnv$`__dump__`),
           file = paste0(`__res__`, ".error")
-        )
+        )                               # nocov end
       },
       list(
         "__type__" = error,
