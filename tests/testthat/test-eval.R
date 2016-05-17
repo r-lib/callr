@@ -29,8 +29,8 @@ test_that("cmdargs argument", {
   o2 <- tempfile()
   on.exit(unlink(c(o1, o2)), add = TRUE)
 
-  r(ls, stdout = o1)
-  r(ls, stdout = o2, cmdargs = character())
+  r(function() ls(), stdout = o1)
+  r(function() ls(), stdout = o2, cmdargs = character())
 
   expect_true(length(readLines(o2)) > length(readLines(o1)))
 })

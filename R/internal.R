@@ -27,6 +27,7 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
   ## Save function to file
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
+  environment(func) <- .GlobalEnv
   saveRDS(list(func, args), file = tmp)
 
   res <- r_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,

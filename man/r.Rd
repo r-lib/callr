@@ -10,7 +10,17 @@ r(func, args = list(), libpath = .libPaths(), repos = getOption("repos"),
   system_profile = TRUE, user_profile = TRUE, env = character())
 }
 \arguments{
-\item{func}{Function object to call in the new R process.}
+\item{func}{Function object to call in the new R process.
+The function should be self-contained and only refer to
+other functions and use variables explicitly from other packages
+using the \code{::} notation. The environment of the function
+is set to \code{.GlobalEnv} before passing it to the child process.
+Because of this, it is good practice to create an anonymous
+function and pass that to \code{callr}, instead of passing
+a function object from a (base or other) package. In particular
+\preformatted{  r(.libPaths)} does not work, because it is
+defined in a special environment, but
+\preformatted{  r(function() .libPaths())} works just fine.}
 
 \item{args}{Arguments to pass to the function. Must be a list.
 vector.}
@@ -91,10 +101,10 @@ behavior on error. The following values are possible: \itemize{
 \examples{
 
 # Workspace is empty
-r(ls)
+r(function() ls())
 
 # library path is the same by default
-r(.libPaths)
+r(function() .libPaths())
 .libPaths()
 
 }
