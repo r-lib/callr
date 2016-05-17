@@ -25,19 +25,17 @@ defined in a special environment, but
 \item{args}{Arguments to pass to the function. Must be a list.
 vector.}
 
-\item{libpath}{The library path. Defaults to the current
-library path.}
+\item{libpath}{The library path.}
 
-\item{repos}{The \sQuote{repos} option. Defaults to
-\code{getOption("repos")}. If \code{NULL}, then no \code{repos}
-option is set. This options is only used if \code{user_profile}
-or \code{system_profile} is set to \code{FALSE}, as it is set
-using the system or the user profile.}
+\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+as it is set using the system or the user profile.}
 
 \item{stdout}{The name of the file the standard output of
 the child R process will be written to.
-By default the child process runs with the \code{--slave} option,
-so the commands executed are not echoed and will not be shown
+If the child process runs with the \code{--slave} option (the default),
+then the commands are not echoed and will not be shown
 in the standard output. Also note that you need to call `print()`
 explicitly to show the output of the command(s).}
 

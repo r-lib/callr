@@ -9,6 +9,9 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
   ## Temporary library path
   lib <- paste(libpath, collapse = .Platform$path.sep)
 
+  ## Workaround, R ignores "", need to set to non-existant file
+  if (lib == "") lib <- tempfile()
+
   real_callback <- if (show) {
     if (is.null(callback)) {
       function(x) cat(x, sep = "", "\n")

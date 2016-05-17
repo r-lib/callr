@@ -18,14 +18,12 @@ javareconf, rtags.}
 
 \item{cmdargs}{Command line arguments.}
 
-\item{libpath}{The library path. Defaults to the current
-library path.}
+\item{libpath}{The library path.}
 
-\item{repos}{The \sQuote{repos} option. Defaults to
-\code{getOption("repos")}. If \code{NULL}, then no \code{repos}
-option is set. This options is only used if \code{user_profile}
-or \code{system_profile} is set to \code{FALSE}, as it is set
-using the system or the user profile.}
+\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+as it is set using the system or the user profile.}
 
 \item{stdout}{Optionally a file name to send the standard output to.}
 
