@@ -6,7 +6,8 @@
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
-  show = FALSE, callback = NULL)
+  show = FALSE, callback = NULL, system_profile = FALSE,
+  user_profile = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -21,7 +22,10 @@ javareconf, rtags.}
 library path.}
 
 \item{repos}{The \sQuote{repos} option. Defaults to
-\code{getOption("repos")}.}
+\code{getOption("repos")}. If \code{NULL}, then no \code{repos}
+option is set. This options is only used if \code{user_profile}
+or \code{system_profile} is set to \code{FALSE}, as it is set
+using the system or the user profile.}
 
 \item{stdout}{Optionally a file name to send the standard output to.}
 
@@ -36,6 +40,10 @@ error is not shown currently.}
 output from the child process. It works together with the \code{show}
 option; i.e. if \code{show = TRUE}, and a callback is provided, then
 the output is shown of the screen, and the callback is also called.}
+
+\item{system_profile}{Whether to use the system profile file.}
+
+\item{user_profile}{Whether to use the user's profile file.}
 }
 \value{
 A list with the standard output (\code{$stdout}), standard

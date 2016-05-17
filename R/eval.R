@@ -7,7 +7,10 @@
 #' @param libpath The library path. Defaults to the current
 #'   library path.
 #' @param repos The \sQuote{repos} option. Defaults to
-#'   \code{getOption("repos")}.
+#'   \code{getOption("repos")}. If \code{NULL}, then no \code{repos}
+#'   option is set. This options is only used if \code{user_profile}
+#'   or \code{system_profile} is set to \code{FALSE}, as it is set
+#'   using the system or the user profile.
 #' @param stdout The name of the file the standard output of
 #'   the child R process will be written to.
 #'   By default the child process runs with the \code{--slave} option,
@@ -33,6 +36,8 @@
 #'   output from the child process. It works together with the \code{show}
 #'   option; i.e. if \code{show = TRUE}, and a callback is provided, then
 #'   the output is shown of the screen, and the callback is also called.
+#' @param system_profile Whether to use the system profile file.
+#' @param user_profile Whether to use the user's profile file.
 #' @return Value of the evaluated expression.
 #'
 #' @section Error handling:
@@ -69,12 +74,14 @@
 r <- function(func, args = list(), libpath = .libPaths(),
               repos = getOption("repos"), stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
-              cmdargs = "--slave", show = FALSE, callback = NULL) {
+              cmdargs = "--slave", show = FALSE, callback = NULL,
+              system_profile = FALSE, user_profile = FALSE) {
 
   error <- match.arg(error)
   r_internal(
     func, args, libpath = libpath, repos = repos, stdout = stdout,
     stderr = stderr, error = error, cmdargs = cmdargs, show = show,
-    callback = callback
+    callback = callback, system_profile = system_profile,
+    user_profile = user_profile
   )
 }

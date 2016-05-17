@@ -1,6 +1,7 @@
 
 r_internal <- function(func, args, libpath, repos, stdout, stderr,
-                       error, cmdargs, show, callback) {
+                       error, cmdargs, show, callback, system_profile,
+                       user_profile) {
 
   libpath <- as.character(libpath)
   repos <- as.character(repos)
@@ -26,13 +27,14 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
   saveRDS(list(func, args), file = tmp)
 
   res <- r_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
-               show, callback)
+               show, callback, system_profile, user_profile)
 
   get_result(res)
 }
 
 r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
-                       cmdargs, show, callback) {
+                  cmdargs, show, callback, system_profile,
+                  user_profile) {
 
   res <- tempfile()
 
@@ -47,7 +49,9 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     stdout = stdout,
     stderr = stderr,
     show = show,
-    callback = callback
+    callback = callback,
+    system_profile = system_profile,
+    user_profile = user_profile
   )
 
   res

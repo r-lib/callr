@@ -1,11 +1,10 @@
 
 run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
-                  callback) {
+                  callback, system_profile, user_profile) {
 
   ## Temporary profile
-  profile <- tempfile()
-  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
-  on.exit(unlink(profile), add = TRUE)
+  profile <- make_profile(repos)
+  on.exit(try(unlink(profile), silent = TRUE), add = TRUE)
 
   ## Temporary library path
   lib <- paste(libpath, collapse = .Platform$path.sep)
@@ -20,12 +19,12 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
     callback
   }
 
+  env <- c(R_LIBS = lib, R_LIBS_USER = lib, R_LIBS_SITE = lib)
+  if (!system_profile) env["R_PROFILE"] <- profile
+  if (!user_profile) env["R_PROFILE_USER"] <- profile
+
   out <- with_envvar(
-    c(R_LIBS = lib,
-      R_LIBS_USER = lib,
-      R_LIBS_SITE = lib,
-      R_PROFILE = profile,
-      R_PROFILE_USER = profile),
+    env,
     safe_system(bin, args = args, callback = real_callback)
   )
 
@@ -33,4 +32,10 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
   if (!is.null(stderr)) cat(out$stderr, file = stderr)
 
   out
+}
+
+make_profile <- function(repos) {
+  profile <- tempfile()
+  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
+  profile
 }
