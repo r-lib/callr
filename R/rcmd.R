@@ -12,7 +12,7 @@
 #' @param cmdargs Command line arguments.
 #' @param stdout Optionally a file name to send the standard output to.
 #' @param stderr Optionally a file name to send the standard error to.
-#' @inheritParams r_eval
+#' @inheritParams r
 #' @return A list with the standard output (\code{$stdout}), standard
 #'   error (\code{stderr}) and exit status (\code{$status}) of the
 #'   external \code{R CMD} command.

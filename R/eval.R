@@ -58,18 +58,29 @@
 #' @examples
 #'
 #' # Workspace is empty
-#' r_eval(ls)
+#' r(ls)
 #'
 #' # library path is the same by default
-#' r_eval(.libPaths)
+#' r(.libPaths)
 #' .libPaths()
 #'
 #' @export
 
-r_eval <- function(func, args = list(), libpath = .libPaths(),
-                   repos = getOption("repos"), stdout = NULL, stderr = NULL,
-                   error = c("error", "stack", "debugger"),
-                   cmdargs = "--slave", show = FALSE, callback = NULL) {
+r <- function(func, args = list(), libpath = .libPaths(),
+              repos = getOption("repos"), stdout = NULL, stderr = NULL,
+              error = c("error", "stack", "debugger"),
+              cmdargs = "--slave", show = FALSE, callback = NULL) {
+
+  error <- match.arg(error)
+  r_internal(
+    func, args, libpath = libpath, repos = repos, stdout = stdout,
+    stderr = stderr, error = error, cmdargs = cmdargs, show = show,
+    callback = callback
+  )
+}
+
+r_internal <- function(func, args, libpath, repos, stdout, stderr,
+                       error, cmdargs, show, callback) {
 
   libpath <- as.character(libpath)
   repos <- as.character(repos)
@@ -88,20 +99,19 @@ r_eval <- function(func, args = list(), libpath = .libPaths(),
     is_flag(show),
     is.null(callback) || is.function(callback)
   )
-  error <- match.arg(error)
 
   ## Save function to file
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
   saveRDS(list(func, args), file = tmp)
 
-  res <- r_eval_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
-                    show, callback)
+  res <- r_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
+               show, callback)
 
   get_result(res)
 }
 
-r_eval_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
+r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
                        cmdargs, show, callback) {
 
   res <- tempfile()

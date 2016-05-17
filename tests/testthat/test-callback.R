@@ -4,14 +4,14 @@ context("callbacks")
 test_that("show option works", {
 
   expect_output(
-    r_eval(function() print("hello"), show = TRUE),
+    r(function() print("hello"), show = TRUE),
     "hello"
   )
 })
 
 test_that("callbacks work", {
   out <- NULL
-  r_eval(function() cat("hello\n"), callback = function(x) out <<- x)
+  r(function() cat("hello\n"), callback = function(x) out <<- x)
   expect_equal(out, "hello")
 })
 
@@ -19,7 +19,7 @@ test_that("show and callbacks at the same time", {
   out <- NULL
 
   expect_output(
-    r_eval(
+    r(
       function() cat("hello\n"),
       show = TRUE,
       callback = function(x) out <<- x
