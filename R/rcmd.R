@@ -12,6 +12,7 @@
 #' @param cmdargs Command line arguments.
 #' @param stdout Optionally a file name to send the standard output to.
 #' @param stderr Optionally a file name to send the standard error to.
+#' @param echo Whether to echo the complete command run by \code{rcmd}.
 #' @inheritParams r
 #' @return A list with the standard output (\code{$stdout}), standard
 #'   error (\code{stderr}) and exit status (\code{$status}) of the
@@ -25,7 +26,7 @@
 
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = getOption("repos"), stdout = NULL,
-                 stderr = NULL, show = FALSE, callback = NULL,
+                 stderr = NULL, echo = FALSE, show = FALSE, callback = NULL,
                  system_profile = FALSE, user_profile = FALSE,
                  env = character()) {
 
@@ -45,6 +46,7 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
     repos = repos,
     stdout = stdout,
     stderr = stderr,
+    echo = echo,
     show = show,
     callback = callback,
     system_profile = system_profile,

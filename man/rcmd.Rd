@@ -6,7 +6,7 @@
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
-  show = FALSE, callback = NULL, system_profile = FALSE,
+  echo = FALSE, show = FALSE, callback = NULL, system_profile = FALSE,
   user_profile = FALSE, env = character())
 }
 \arguments{
@@ -28,6 +28,8 @@ as it is set using the system or the user profile.}
 \item{stdout}{Optionally a file name to send the standard output to.}
 
 \item{stderr}{Optionally a file name to send the standard error to.}
+
+\item{echo}{Whether to echo the complete command run by \code{rcmd}.}
 
 \item{show}{Logical, whether to show the standard output on the screen
 while the child process is running. Note that this is independent

@@ -10,6 +10,10 @@ test_that("rcmd show works", {
   expect_output(rcmd("config", "CC", show = TRUE), ".")
 })
 
+test_that("rcmd echo works", {
+  expect_output(rcmd("config", "CC", echo = TRUE), "CMD config CC")
+})
+
 test_that("rcmd on windows", {
 
   wbin <- NULL

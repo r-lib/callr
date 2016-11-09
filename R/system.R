@@ -1,5 +1,10 @@
 
-safe_system <- function(command, args, callback = NULL) {
+safe_system <- function(command, args, callback = NULL, echo = FALSE) {
+
+  if (echo) {
+    command_line <- paste(c(shQuote(command), args), collapse = " ")
+    cat(command_line, "\n", sep = "")
+  }
 
   if (!is.null(callback)) {
     safe_system_callback(command, args, callback)

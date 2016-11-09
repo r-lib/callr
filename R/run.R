@@ -1,5 +1,5 @@
 
-run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
+run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
                   callback, system_profile, user_profile, env) {
 
   ## Temporary profile
@@ -30,7 +30,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, show,
 
   out <- with_envvar(
     env,
-    safe_system(bin, args = args, callback = real_callback)
+    safe_system(bin, args = args, callback = real_callback, echo = echo)
   )
 
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
