@@ -1,6 +1,10 @@
 
 run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
-                  callback, system_profile, user_profile, env) {
+                  callback, system_profile, user_profile, env, wd) {
+
+  ## Temporary wd
+  oldwd <- setwd(wd)
+  on.exit(setwd(oldwd), add = TRUE)
 
   ## Temporary profile
   profile <- make_profile(repos)

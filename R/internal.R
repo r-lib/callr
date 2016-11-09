@@ -57,7 +57,8 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     callback = callback,
     system_profile = system_profile,
     user_profile = user_profile,
-    env = env
+    env = env,
+    wd = "."
   )
 
   res

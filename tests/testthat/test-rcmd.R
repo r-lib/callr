@@ -34,3 +34,19 @@ test_that("rcmd on windows", {
 test_that("rcmd_safe", {
   expect_equal(rcmd_safe("config", "CC")$status, 0)
 })
+
+test_that("wd argument", {
+  tmp <- tempfile(fileext = ".R")
+  tmpout <- paste0(tmp, "out")
+  cat("print(getwd())", file = tmp)
+
+  mywd <- getwd()
+
+  rcmd("BATCH", c(tmp, tmpout), wd = tempdir())
+
+  expect_equal(mywd, getwd())
+  expect_match(
+    paste(readLines(tmpout), collapse = "\n"),
+    basename(tempdir())
+  )
+})
