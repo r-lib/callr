@@ -1,6 +1,7 @@
 
 run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
-                  callback, system_profile, user_profile, env, wd) {
+                  callback, system_profile, user_profile, env, wd,
+                  fail_on_status) {
 
   ## Temporary wd
   oldwd <- setwd(wd)
@@ -39,6 +40,19 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
 
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
   if (!is.null(stderr)) cat(out$stderr, file = stderr)
+
+  if (fail_on_status && out$status != 0) {
+    myerr <- structure(
+      list(
+        message = paste("Command failed:\n", out$command, "\n", stderr),
+        status = out$status,
+        stdout = out$stdout,
+        stderr = out$stderr
+      ),
+      class = c("rcmdError", "error", "condition")
+    )
+    stop(myerr)
+  }
 
   out
 }

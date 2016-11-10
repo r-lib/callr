@@ -15,6 +15,8 @@
 #' @param echo Whether to echo the complete command run by \code{rcmd}.
 #' @param wd Working directory to use for running the command. Defaults
 #'   to the current working directory.
+#' @param fail_on_status Whether to throw an R error if the command returns
+#'   with a non-zero status code. By default no error is thrown.
 #' @inheritParams r
 #' @return A list with the command line (\code{$command}),
 #'   standard output (\code{$stdout}), standard error (\code{stderr})
@@ -30,7 +32,7 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = getOption("repos"), stdout = NULL,
                  stderr = NULL, echo = FALSE, show = FALSE, callback = NULL,
                  system_profile = FALSE, user_profile = FALSE,
-                 env = character(), wd = ".") {
+                 env = character(), wd = ".", fail_on_status = FALSE) {
 
   if(os_platform() == "windows") {
     rbin <- file.path(R.home("bin"), "Rcmd.exe")
@@ -54,7 +56,8 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
     system_profile = system_profile,
     user_profile = user_profile,
     env = env,
-    wd = wd
+    wd = wd,
+    fail_on_status = fail_on_status
   )
 }
 

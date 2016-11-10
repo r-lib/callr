@@ -7,7 +7,8 @@
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
   echo = FALSE, show = FALSE, callback = NULL, system_profile = FALSE,
-  user_profile = FALSE, env = character())
+  user_profile = FALSE, env = character(), wd = ".",
+  fail_on_status = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -46,6 +47,12 @@ the output is shown of the screen, and the callback is also called.}
 \item{user_profile}{Whether to use the user's profile file.}
 
 \item{env}{Environment variables to set for the child process.}
+
+\item{wd}{Working directory to use for running the command. Defaults
+to the current working directory.}
+
+\item{fail_on_status}{Whether to throw an R error if the command returns
+with a non-zero status code. By default no error is thrown.}
 }
 \value{
 A list with the command line (\code{$command}),
