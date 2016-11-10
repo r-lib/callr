@@ -44,7 +44,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   if (fail_on_status && out$status != 0) {
     myerr <- structure(
       list(
-        message = paste("Command failed:\n", out$command, "\n", stderr),
+        message = paste("Command failed:\n", out$command, "\n", out$stderr),
         status = out$status,
         stdout = out$stdout,
         stderr = out$stderr
