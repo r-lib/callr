@@ -1,17 +1,22 @@
 
 safe_system <- function(command, args, callback = NULL, echo = FALSE) {
 
+  command_line <- paste(c(shQuote(command), args), collapse = " ")
+
   if (echo) {
-    command_line <- paste(c(shQuote(command), args), collapse = " ")
     cat(command_line, "\n", sep = "")
   }
 
-  if (!is.null(callback)) {
+  out <- if (!is.null(callback)) {
     safe_system_callback(command, args, callback)
 
   } else {
     safe_system_sync(command, args)
   }
+
+  out$command <- command_line
+
+  out
 }
 
 safe_system_sync <- function(command, args) {

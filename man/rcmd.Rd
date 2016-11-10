@@ -48,9 +48,9 @@ the output is shown of the screen, and the callback is also called.}
 \item{env}{Environment variables to set for the child process.}
 }
 \value{
-A list with the standard output (\code{$stdout}), standard
-  error (\code{stderr}) and exit status (\code{$status}) of the
-  external \code{R CMD} command.
+A list with the command line (\code{$command}),
+  standard output (\code{$stdout}), standard error (\code{stderr})
+  and exit status (\code{$status}) of the external \code{R CMD} command.
 }
 \description{
 Run an R CMD command form within R. This will usually start

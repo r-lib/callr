@@ -16,9 +16,9 @@
 #' @param wd Working directory to use for running the command. Defaults
 #'   to the current working directory.
 #' @inheritParams r
-#' @return A list with the standard output (\code{$stdout}), standard
-#'   error (\code{stderr}) and exit status (\code{$status}) of the
-#'   external \code{R CMD} command.
+#' @return A list with the command line (\code{$command}),
+#'   standard output (\code{$stdout}), standard error (\code{stderr})
+#'   and exit status (\code{$status}) of the external \code{R CMD} command.
 #'
 #' @family R CMD commands
 #' @export
