@@ -2,13 +2,15 @@
 % Please edit documentation in R/rcmd.R
 \name{rcmd_safe}
 \alias{rcmd_safe}
+\alias{rcmd_safe_env}
 \title{Call R CMD <command> safely}
 \usage{
 rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cran.rstudio.com")),
-  system_profile = FALSE, user_profile = FALSE, env = c(CYGWIN =
-  "nodosfilewarning", R_TESTS = "", R_BROWSER = "false", R_PDFVIEWER = "false"),
+  system_profile = FALSE, user_profile = FALSE, env = rcmd_safe_env(),
   ...)
+
+rcmd_safe_env()
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -38,6 +40,9 @@ as it is set using the system or the user profile.}
 Very similar to \code{\link{rcmd}}, but with different defaults,
 that tend to create a less error-prone execution environment for the
 child process.
+
+\code{rcmd_safe_env} returns a set of environment variables that are
+more appropriate for \code{rcmd_safe}.
 }
 \seealso{
 Other R CMD commands: \code{\link{rcmd}}

@@ -77,10 +77,31 @@ rcmd_safe <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                       repos = c(getOption("repos"),
                         c(CRAN = "https://cran.rstudio.com")),
                       system_profile = FALSE, user_profile = FALSE,
-                      env = c(CYGWIN = "nodosfilewarning", R_TESTS = "",
-                        R_BROWSER = "false", R_PDFVIEWER = "false"), ...) {
+                      env = rcmd_safe_env(), ...) {
 
   rcmd(cmd, cmdargs = cmdargs, libpath = libpath, repos = repos,
        system_profile = system_profile, user_profile = user_profile,
        env = env, ...)
+}
+
+#' \code{rcmd_safe_env} returns a set of environment variables that are
+#' more appropriate for \code{rcmd_safe}.
+#'
+#' @export
+#' @rdname rcmd_safe
+
+rcmd_safe_env <- function() {
+
+  vars <- c(
+    CYGWIN = "nodosfilewarning",
+    R_TESTS = "",
+    R_BROWSER = "false",
+    R_PDFVIEWER = "false"
+  )
+
+  if (is.na(Sys.getenv("NOT_CRAN", unset = NA))) {
+    vars[["NOT_CRAN"]] <- "true"
+  }
+
+  vars
 }
