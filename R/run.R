@@ -39,7 +39,14 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   )
 
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
-  if (!is.null(stderr)) cat(out$stderr, file = stderr)
+
+  ## If the same file is selected for stdout and stderr,
+  ## then we need to append here
+  if (!is.null(stderr)) {
+    append <- ! is.null(stdout) &&
+      normalizePath(stdout) == normalizePath(stderr)
+    cat(out$stderr, file = stderr, append = append)
+  }
 
   if (fail_on_status && out$status != 0) {
     myerr <- structure(
