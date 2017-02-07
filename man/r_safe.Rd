@@ -24,8 +24,7 @@ a function object from a (base or other) package. In particular
 defined in a special environment, but
 \preformatted{  r(function() .libPaths())} works just fine.}
 
-\item{args}{Arguments to pass to the function. Must be a list.
-vector.}
+\item{args}{Arguments to pass to the function. Must be a list.}
 
 \item{libpath}{The library path.}
 
@@ -64,4 +63,3 @@ The following options are set up: \itemize{
 Other callr functions: \code{\link{r_vanilla}},
   \code{\link{r}}
 }
-

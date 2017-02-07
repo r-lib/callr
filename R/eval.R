@@ -13,7 +13,6 @@
 #'   defined in a special environment, but
 #'   \preformatted{  r(function() .libPaths())} works just fine.
 #' @param args Arguments to pass to the function. Must be a list.
-#'   vector.
 #' @param libpath The library path.
 #' @param repos The \sQuote{repos} option. If \code{NULL}, then no
 #'   \code{repos} option is set. This options is only used if

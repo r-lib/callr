@@ -47,4 +47,3 @@ more appropriate for \code{rcmd_safe}.
 \seealso{
 Other R CMD commands: \code{\link{rcmd}}
 }
-

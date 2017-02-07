@@ -69,4 +69,3 @@ rcmd("config", "CC")
 \seealso{
 Other R CMD commands: \code{\link{rcmd_safe}}
 }
-

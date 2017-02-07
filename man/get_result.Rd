@@ -21,4 +21,3 @@ argument. So we need to check for the error file to decide
 if an error happened.
 }
 \keyword{internal}
-

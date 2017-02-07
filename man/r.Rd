@@ -22,8 +22,7 @@ a function object from a (base or other) package. In particular
 defined in a special environment, but
 \preformatted{  r(function() .libPaths())} works just fine.}
 
-\item{args}{Arguments to pass to the function. Must be a list.
-vector.}
+\item{args}{Arguments to pass to the function. Must be a list.}
 
 \item{libpath}{The library path.}
 
@@ -96,6 +95,7 @@ behavior on error. The following values are possible: \itemize{
   in the child call stack, via \code{\link[utils]{debugger}}.
 }
 }
+
 \examples{
 
 # Workspace is empty
@@ -110,4 +110,3 @@ r(function() .libPaths())
 Other callr functions: \code{\link{r_safe}},
   \code{\link{r_vanilla}}
 }
-
