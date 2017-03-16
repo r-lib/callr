@@ -44,7 +44,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   ## then we need to append here
   if (!is.null(stderr)) {
     append <- ! is.null(stdout) &&
-      normalizePath(stdout) == normalizePath(stderr)
+      normalizePath(stdout) == normalizePath(stderr, mustWork = FALSE)
     cat(out$stderr, file = stderr, append = append)
   }
 
