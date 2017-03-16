@@ -24,6 +24,18 @@ test_that("standard error", {
   expect_equal(readLines(tmp), "hello")
 })
 
+test_that("standard output and standard error", {
+  tmp_out <- tempfile("stdout-")
+  tmp_err <- tempfile("stderr-")
+  on.exit(unlink(c(tmp_out, tmp_err)), add = TRUE)
+  expect_silent(
+    r(function() { cat("hello world!\n"); message("hello again!") },
+      stdout = tmp_out, stderr = tmp_err)
+  )
+  expect_equal(readLines(tmp_out), "hello world!")
+  expect_equal(readLines(tmp_err), "hello again!")
+})
+
 test_that("cmdargs argument", {
   o1 <- tempfile()
   o2 <- tempfile()
