@@ -10,11 +10,8 @@ License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/MangoTheCat/callr
 BugReports: https://github.com/MangoTheCat/callr/issues
-RoxygenNote: 6.0.1
-Imports:
-    processx
+RoxygenNote: 6.0.0
 Suggests:
     covr,
     testthat
-Remotes: r-pkgs/processx
 Encoding: UTF-8

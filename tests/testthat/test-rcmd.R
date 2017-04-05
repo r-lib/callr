@@ -11,7 +11,7 @@ test_that("rcmd show works", {
 })
 
 test_that("rcmd echo works", {
-  expect_output(rcmd("config", "CC", echo = TRUE), "config\\s+CC")
+  expect_output(rcmd("config", "CC", echo = TRUE), "config CC")
 })
 
 test_that("rcmd on windows", {
