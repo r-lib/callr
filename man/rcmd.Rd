@@ -6,9 +6,9 @@
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
-  echo = FALSE, show = FALSE, callback = NULL, block_callback = NULL,
-  system_profile = FALSE, user_profile = FALSE, env = character(),
-  wd = ".", fail_on_status = FALSE)
+  echo = FALSE, show = FALSE, callback = NULL, system_profile = FALSE,
+  user_profile = FALSE, env = character(), wd = ".",
+  fail_on_status = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -38,14 +38,9 @@ of the \code{stdout} and \code{stderr} arguments. The standard
 error is not shown currently.}
 
 \item{callback}{A function to call for each line of the standard
-output and standard error from the child process. It works together
-with the \code{show} option; i.e. if \code{show = TRUE}, and a
-callback is provided, then the output is shown of the screen, and the
-callback is also called.}
-
-\item{block_callback}{A function to call for each block of the standard
-output and standard error. This callback is not line oriented, i.e.
-multiple lines or half a line can be passed to the callback.}
+output from the child process. It works together with the \code{show}
+option; i.e. if \code{show = TRUE}, and a callback is provided, then
+the output is shown of the screen, and the callback is also called.}
 
 \item{system_profile}{Whether to use the system profile file.}
 

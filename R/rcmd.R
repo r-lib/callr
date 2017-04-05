@@ -31,9 +31,8 @@
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = getOption("repos"), stdout = NULL,
                  stderr = NULL, echo = FALSE, show = FALSE, callback = NULL,
-                 block_callback = NULL, system_profile = FALSE,
-                 user_profile = FALSE, env = character(), wd = ".",
-                 fail_on_status = FALSE) {
+                 system_profile = FALSE, user_profile = FALSE,
+                 env = character(), wd = ".", fail_on_status = FALSE) {
 
   if(os_platform() == "windows") {
     rbin <- file.path(R.home("bin"), "Rcmd.exe")
@@ -54,7 +53,6 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
     echo = echo,
     show = show,
     callback = callback,
-    block_callback = block_callback,
     system_profile = system_profile,
     user_profile = user_profile,
     env = env,

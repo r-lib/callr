@@ -40,13 +40,9 @@
 #'   of the \code{stdout} and \code{stderr} arguments. The standard
 #'   error is not shown currently.
 #' @param callback A function to call for each line of the standard
-#'   output and standard error from the child process. It works together
-#'   with the \code{show} option; i.e. if \code{show = TRUE}, and a
-#'   callback is provided, then the output is shown of the screen, and the
-#'   callback is also called.
-#' @param block_callback A function to call for each block of the standard
-#'   output and standard error. This callback is not line oriented, i.e.
-#'   multiple lines or half a line can be passed to the callback.
+#'   output from the child process. It works together with the \code{show}
+#'   option; i.e. if \code{show = TRUE}, and a callback is provided, then
+#'   the output is shown of the screen, and the callback is also called.
 #' @param system_profile Whether to use the system profile file.
 #' @param user_profile Whether to use the user's profile file.
 #' @param env Environment variables to set for the child process.
@@ -88,14 +84,14 @@ r <- function(func, args = list(), libpath = .libPaths(),
               repos = getOption("repos"), stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
               cmdargs = "--slave", show = FALSE, callback = NULL,
-              block_callback = NULL, system_profile = TRUE,
-              user_profile = TRUE, env = character()) {
+              system_profile = TRUE, user_profile = TRUE,
+              env = character()) {
 
   error <- match.arg(error)
   r_internal(
     func, args, libpath = libpath, repos = repos, stdout = stdout,
     stderr = stderr, error = error, cmdargs = cmdargs, show = show,
-    callback = callback, block_callback = block_callback,
-    system_profile = system_profile, user_profile = user_profile, env = env
+    callback = callback, system_profile = system_profile,
+    user_profile = user_profile, env = env
   )
 }
