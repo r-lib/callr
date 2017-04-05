@@ -1,7 +1,7 @@
 
 r_internal <- function(func, args, libpath, repos, stdout, stderr,
                        error, cmdargs, show, callback, block_callback,
-                       spinner, system_profile, user_profile, env) {
+                       system_profile, user_profile, env) {
 
   libpath <- as.character(libpath)
   repos <- as.character(repos)
@@ -20,7 +20,6 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
     is_flag(show),
     is.null(callback) || is.function(callback),
     is.null(block_callback) || is.function(block_callback),
-    is_flag(spinner),
     is_flag(system_profile),
     is_flag(user_profile),
     is.character(env)
@@ -33,15 +32,15 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
   saveRDS(list(func, args), file = tmp)
 
   res <- r_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
-               show, callback, block_callback, spinner, system_profile,
+               show, callback, block_callback, system_profile,
                user_profile, env)
 
   get_result(res)
 }
 
 r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
-                  cmdargs, show, callback, block_callback, spinner,
-                  system_profile, user_profile, env) {
+                  cmdargs, show, callback, block_callback, system_profile,
+                  user_profile, env) {
 
   res <- tempfile()
 
@@ -59,7 +58,6 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     show = show,
     callback = callback,
     block_callback = block_callback,
-    spinner = spinner,
     system_profile = system_profile,
     user_profile = user_profile,
     env = env,

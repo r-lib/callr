@@ -2,8 +2,8 @@
 #' @importFrom processx run
 
 run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
-                  callback, block_callback, spinner, system_profile,
-                  user_profile, env, wd, fail_on_status) {
+                  callback, block_callback, system_profile, user_profile,
+                  env, wd, fail_on_status) {
 
   ## Temporary wd
   oldwd <- setwd(wd)
@@ -45,7 +45,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
         stderr_line_callback = real_callback,
         stdout_callback = real_block_callback,
         stderr_callback = real_block_callback, echo_cmd = echo,
-        spinner = spinner, error_on_status = FALSE)
+        error_on_status = FALSE)
   )
 
   if (!is.null(stdout)) cat(out$stdout, file = stdout)

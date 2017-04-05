@@ -47,9 +47,6 @@
 #' @param block_callback A function to call for each block of the standard
 #'   output and standard error. This callback is not line oriented, i.e.
 #'   multiple lines or half a line can be passed to the callback.
-#' @param spinner Whether to snow a calming spinner on the screen while
-#'   the child R session is running. By default it is show if
-#'   \code{show = TRUE} and the R session is interactive.
 #' @param system_profile Whether to use the system profile file.
 #' @param user_profile Whether to use the user's profile file.
 #' @param env Environment variables to set for the child process.
@@ -91,15 +88,14 @@ r <- function(func, args = list(), libpath = .libPaths(),
               repos = getOption("repos"), stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
               cmdargs = "--slave", show = FALSE, callback = NULL,
-              block_callback = NULL, spinner = show && interactive(),
-              system_profile = TRUE, user_profile = TRUE,
-              env = character()) {
+              block_callback = NULL, system_profile = TRUE,
+              user_profile = TRUE, env = character()) {
 
   error <- match.arg(error)
   r_internal(
     func, args, libpath = libpath, repos = repos, stdout = stdout,
     stderr = stderr, error = error, cmdargs = cmdargs, show = show,
-    callback = callback, block_callback = block_callback, spinner = spinner,
+    callback = callback, block_callback = block_callback,
     system_profile = system_profile, user_profile = user_profile, env = env
   )
 }

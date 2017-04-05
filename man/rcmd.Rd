@@ -7,9 +7,8 @@
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
   echo = FALSE, show = FALSE, callback = NULL, block_callback = NULL,
-  spinner = show && interactive(), system_profile = FALSE,
-  user_profile = FALSE, env = character(), wd = ".",
-  fail_on_status = FALSE)
+  system_profile = FALSE, user_profile = FALSE, env = character(),
+  wd = ".", fail_on_status = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -47,10 +46,6 @@ callback is also called.}
 \item{block_callback}{A function to call for each block of the standard
 output and standard error. This callback is not line oriented, i.e.
 multiple lines or half a line can be passed to the callback.}
-
-\item{spinner}{Whether to snow a calming spinner on the screen while
-the child R session is running. By default it is show if
-\code{show = TRUE} and the R session is interactive.}
 
 \item{system_profile}{Whether to use the system profile file.}
 
