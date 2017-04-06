@@ -7,8 +7,8 @@
 r(func, args = list(), libpath = .libPaths(), repos = getOption("repos"),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = "--slave", show = FALSE, callback = NULL,
-  block_callback = NULL, system_profile = TRUE, user_profile = TRUE,
-  env = character())
+  block_callback = NULL, spinner = show && interactive(),
+  system_profile = TRUE, user_profile = TRUE, env = character())
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -67,6 +67,10 @@ callback is also called.}
 \item{block_callback}{A function to call for each block of the standard
 output and standard error. This callback is not line oriented, i.e.
 multiple lines or half a line can be passed to the callback.}
+
+\item{spinner}{Whether to snow a calming spinner on the screen while
+the child R session is running. By default it is show if
+\code{show = TRUE} and the R session is interactive.}
 
 \item{system_profile}{Whether to use the system profile file.}
 
