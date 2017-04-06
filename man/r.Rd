@@ -7,7 +7,8 @@
 r(func, args = list(), libpath = .libPaths(), repos = getOption("repos"),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = "--slave", show = FALSE, callback = NULL,
-  system_profile = TRUE, user_profile = TRUE, env = character())
+  block_callback = NULL, system_profile = TRUE, user_profile = TRUE,
+  env = character())
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -58,9 +59,14 @@ of the \code{stdout} and \code{stderr} arguments. The standard
 error is not shown currently.}
 
 \item{callback}{A function to call for each line of the standard
-output from the child process. It works together with the \code{show}
-option; i.e. if \code{show = TRUE}, and a callback is provided, then
-the output is shown of the screen, and the callback is also called.}
+output and standard error from the child process. It works together
+with the \code{show} option; i.e. if \code{show = TRUE}, and a
+callback is provided, then the output is shown of the screen, and the
+callback is also called.}
+
+\item{block_callback}{A function to call for each block of the standard
+output and standard error. This callback is not line oriented, i.e.
+multiple lines or half a line can be passed to the callback.}
 
 \item{system_profile}{Whether to use the system profile file.}
 

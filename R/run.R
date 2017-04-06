@@ -2,8 +2,8 @@
 #' @importFrom processx run
 
 run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
-                  callback, system_profile, user_profile, env, wd,
-                  fail_on_status) {
+                  callback, block_callback, system_profile, user_profile,
+                  env, wd, fail_on_status) {
 
   ## Temporary wd
   oldwd <- setwd(wd)
@@ -19,15 +19,19 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   ## Workaround, R ignores "", need to set to non-existant file
   if (lib == "") lib <- tempfile()
 
-  real_callback <- if (show) {
-    if (is.null(callback)) {
-      function(x, proc) cat(x, sep = "", "\n")
-    } else {
-      function(x, proc) { cat(x, sep = "", "\n"); callback(x) }
+  real_block_callback <-
+    if (show) {
+      if (is.null(block_callback)) {
+        function(x, proc) cat(x)
+      } else {
+        function(x, proc) { cat(x); block_callback(x) }
+      }
+    } else if (!is.null(block_callback)) {
+      function(x, proc) block_callback(x)
     }
-  } else {
-    if (is.null(callback)) NULL else function(x, proc) callback(x)
-  }
+
+  real_callback <-
+    if (!is.null(callback)) function(x, proc) callback(x)
 
   if (is.na(env["R_LIBS"])) env["R_LIBS"] <- lib
   if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- lib
@@ -38,7 +42,9 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   out <- with_envvar(
     env,
     run(bin, args = args, stdout_line_callback = real_callback,
-        stderr_line_callback = real_callback, echo_cmd = echo,
+        stderr_line_callback = real_callback,
+        stdout_callback = real_block_callback,
+        stderr_callback = real_block_callback, echo_cmd = echo,
         error_on_status = FALSE)
   )
 
