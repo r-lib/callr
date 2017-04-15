@@ -53,6 +53,11 @@
 #' @param system_profile Whether to use the system profile file.
 #' @param user_profile Whether to use the user's profile file.
 #' @param env Environment variables to set for the child process.
+#' @param timeout Timeout for the function call to finish. It can be a
+#'   \code{\link{difftime}} object, or a real number, meaning seconds.
+#'   If the process does not finish before the timeout period expires,
+#'   then a `system_command_timeout_error` error is thrown. \code{Inf}
+#'   means no timeout.
 #' @return Value of the evaluated expression.
 #'
 #' @section Error handling:
@@ -93,13 +98,14 @@ r <- function(func, args = list(), libpath = .libPaths(),
               cmdargs = "--slave", show = FALSE, callback = NULL,
               block_callback = NULL, spinner = show && interactive(),
               system_profile = TRUE, user_profile = TRUE,
-              env = character()) {
+              env = character(), timeout = Inf) {
 
   error <- match.arg(error)
   r_internal(
     func, args, libpath = libpath, repos = repos, stdout = stdout,
     stderr = stderr, error = error, cmdargs = cmdargs, show = show,
     callback = callback, block_callback = block_callback, spinner = spinner,
-    system_profile = system_profile, user_profile = user_profile, env = env
+    system_profile = system_profile, user_profile = user_profile, env = env,
+    timeout = timeout
   )
 }

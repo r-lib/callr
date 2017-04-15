@@ -1,13 +1,17 @@
 
 r_internal <- function(func, args, libpath, repos, stdout, stderr,
                        error, cmdargs, show, callback, block_callback,
-                       spinner, system_profile, user_profile, env) {
+                       spinner, system_profile, user_profile, env,
+                       timeout) {
 
   libpath <- as.character(libpath)
   repos <- as.character(repos)
   if (!is.null(stdout)) stdout <- as.character(stdout)
   if (!is.null(stderr)) stderr <- as.character(stderr)
   cmdargs <- as.character(cmdargs)
+  if (!inherits(timeout, "difftime")) {
+    timeout <- as.difftime(as.double(timeout), units = "secs")
+  }
 
   stopifnot(
     is.function(func),
@@ -23,7 +27,8 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
     is_flag(spinner),
     is_flag(system_profile),
     is_flag(user_profile),
-    is.character(env)
+    is.character(env),
+    length(timeout) == 1 && !is.na(timeout)
   )
 
   ## Save function to file
@@ -34,14 +39,18 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
 
   res <- r_tmp(tmp, libpath, repos, stdout, stderr, error, cmdargs,
                show, callback, block_callback, spinner, system_profile,
-               user_profile, env)
+               user_profile, env, timeout)
+
+  ## If a timeout or a system error happens, then r_tmp already throws
+  ## an error. Otherwise the result files should exist, and we can collect
+  ## them.
 
   get_result(res)
 }
 
 r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
                   cmdargs, show, callback, block_callback, spinner,
-                  system_profile, user_profile, env) {
+                  system_profile, user_profile, env, timeout) {
 
   res <- tempfile()
 
@@ -63,6 +72,7 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     system_profile = system_profile,
     user_profile = user_profile,
     env = env,
+    timeout = timeout,
     wd = ".",
     fail_on_status = FALSE
   )
