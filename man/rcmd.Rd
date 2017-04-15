@@ -8,7 +8,7 @@ rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = getOption("repos"), stdout = NULL, stderr = NULL,
   echo = FALSE, show = FALSE, callback = NULL, block_callback = NULL,
   spinner = show && interactive(), system_profile = FALSE,
-  user_profile = FALSE, env = character(), wd = ".",
+  user_profile = FALSE, env = character(), timeout = Inf, wd = ".",
   fail_on_status = FALSE)
 }
 \arguments{
@@ -57,6 +57,12 @@ the child R session is running. By default it is show if
 \item{user_profile}{Whether to use the user's profile file.}
 
 \item{env}{Environment variables to set for the child process.}
+
+\item{timeout}{Timeout for the function call to finish. It can be a
+\code{\link{difftime}} object, or a real number, meaning seconds.
+If the process does not finish before the timeout period expires,
+then a `system_command_timeout_error` error is thrown. \code{Inf}
+means no timeout.}
 
 \item{wd}{Working directory to use for running the command. Defaults
 to the current working directory.}

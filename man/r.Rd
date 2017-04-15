@@ -8,7 +8,8 @@ r(func, args = list(), libpath = .libPaths(), repos = getOption("repos"),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = "--slave", show = FALSE, callback = NULL,
   block_callback = NULL, spinner = show && interactive(),
-  system_profile = TRUE, user_profile = TRUE, env = character())
+  system_profile = TRUE, user_profile = TRUE, env = character(),
+  timeout = Inf)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -77,6 +78,12 @@ the child R session is running. By default it is show if
 \item{user_profile}{Whether to use the user's profile file.}
 
 \item{env}{Environment variables to set for the child process.}
+
+\item{timeout}{Timeout for the function call to finish. It can be a
+\code{\link{difftime}} object, or a real number, meaning seconds.
+If the process does not finish before the timeout period expires,
+then a `system_command_timeout_error` error is thrown. \code{Inf}
+means no timeout.}
 }
 \value{
 Value of the evaluated expression.
