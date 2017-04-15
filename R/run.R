@@ -48,6 +48,8 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
         spinner = spinner, error_on_status = FALSE, timeout = timeout)
   )
 
+  if (out$timeout) stop(make_timeout_error(out))
+
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
 
   ## If the same file is selected for stdout and stderr,
@@ -78,4 +80,17 @@ make_profile <- function(repos) {
   profile <- tempfile()
   cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
   profile
+}
+
+make_timeout_error <- function(out) {
+  structure(
+    list(
+      message = "System command timeout",
+      stdout = out$stdout,
+      stderr = out$stderr,
+      status = out$status
+    ),
+    class = c("system_command_timeout_error",
+              "system_command_error", "error", "condition")
+  )
 }
