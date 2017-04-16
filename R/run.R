@@ -48,8 +48,6 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
         spinner = spinner, error_on_status = FALSE, timeout = timeout)
   )
 
-  if (out$timeout) stop(make_timeout_error(out))
-
   if (!is.null(stdout)) cat(out$stdout, file = stdout)
 
   ## If the same file is selected for stdout and stderr,
@@ -60,18 +58,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
     cat(out$stderr, file = stderr, append = append)
   }
 
-  if (fail_on_status && out$status != 0) {
-    myerr <- structure(
-      list(
-        message = paste("Command failed:\n", out$command, "\n", out$stderr),
-        status = out$status,
-        stdout = out$stdout,
-        stderr = out$stderr
-      ),
-      class = c("rcmdError", "error", "condition")
-    )
-    stop(myerr)
-  }
+  if (fail_on_status && out$status != 0) stop(make_error(out))
 
   out
 }

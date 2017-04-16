@@ -41,10 +41,6 @@ r_internal <- function(func, args, libpath, repos, stdout, stderr,
                show, callback, block_callback, spinner, system_profile,
                user_profile, env, timeout)
 
-  ## If a timeout or a system error happens, then r_tmp already throws
-  ## an error. Otherwise the result files should exist, and we can collect
-  ## them.
-
   get_result(res)
 }
 
@@ -77,7 +73,7 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
     fail_on_status = FALSE
   )
 
-  res
+  list(output = out, result_file = res)
 }
 
 #' Read the result object from the output file, or the error
@@ -87,18 +83,25 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
 #' argument. So we need to check for the error file to decide
 #' if an error happened.
 #'
-#' @param res Name of the result file to read. For the error file,
-#'   \code{".error"} is appended.
+#' @param out List of the output object from `processx::run` and
+#'   the name of the result file to read. For the error file,
+#'   \code{".error"} is appended to this.
 #' @return If no error happened, the result is returned. Otherwise
 #'   we handle the error.
 #'
 #' @keywords internal
 #' @importFrom utils debugger
 
-get_result <- function(res) {
+get_result <- function(out) {
+
+  res <- out$result_file
 
   on.exit(try(unlink(res), silent = TRUE), add = TRUE)
   on.exit(try(unlink(paste0(res, ".error")), silent = TRUE), add = TRUE)
+
+  ## This is a system error, not an R error, the result file does not
+  ## even exist. Maybe a timeout.
+  if (! file.exists(res)) stop(make_error(out$output))
 
   if (! file.exists(paste0(res, ".error"))) return(readRDS(res))
 

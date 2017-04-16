@@ -7,5 +7,5 @@ test_that("r with timeout", {
     error = function(e) e
   )
 
-  expect_true("system_command_timeout_error" %in% class(e))
+  expect_true("callr_timeout_error" %in% class(e))
 })

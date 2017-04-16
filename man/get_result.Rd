@@ -4,11 +4,12 @@
 \alias{get_result}
 \title{Read the result object from the output file, or the error}
 \usage{
-get_result(res)
+get_result(out)
 }
 \arguments{
-\item{res}{Name of the result file to read. For the error file,
-\code{".error"} is appended.}
+\item{out}{List of the output object from `processx::run` and
+the name of the result file to read. For the error file,
+\code{".error"} is appended to this.}
 }
 \value{
 If no error happened, the result is returned. Otherwise
