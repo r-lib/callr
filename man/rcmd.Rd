@@ -83,5 +83,6 @@ another R process, from a shell script.
 rcmd("config", "CC")
 }
 \seealso{
-Other R CMD commands: \code{\link{rcmd_safe}}
+Other R CMD commands: \code{\link{rcmd_bg}},
+  \code{\link{rcmd_safe}}
 }
