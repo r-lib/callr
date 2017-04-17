@@ -36,18 +36,11 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  env = character(), timeout = Inf, wd = ".",
                  fail_on_status = FALSE) {
 
-  if(os_platform() == "windows") {
-    rbin <- file.path(R.home("bin"), "Rcmd.exe")
-    cmdargs <- c(cmd, cmdargs)
-
-  } else {
-    rbin <- file.path(R.home("bin"), "R")
-    cmdargs <- c("CMD", cmd, cmdargs)
-  }
+  bin_args <- get_bin_and_args(cmd, cmdargs)
 
   run_r(
-    bin = rbin,
-    args = cmdargs,
+    bin = bin_args$rbin,
+    args = bin_args$cmdargs,
     libpath = libpath,
     repos = repos,
     stdout = stdout,
@@ -64,6 +57,22 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
     wd = wd,
     fail_on_status = fail_on_status
   )
+}
+
+get_bin_and_args <- function(cmd, cmdargs) {
+
+  if(os_platform() == "windows") {
+    list(
+      rbin = file.path(R.home("bin"), "Rcmd.exe"),
+      cmdargs = c(cmd, cmdargs)
+    )
+
+  } else {
+    list(
+      rbin = file.path(R.home("bin"), "R"),
+      cmdargs = c("CMD", cmd, cmdargs)
+    )
+  }
 }
 
 #' Call R CMD <command> safely
