@@ -2,7 +2,7 @@
 % Please edit documentation in R/rcmd-bg.R
 \name{rcmd_bg}
 \alias{rcmd_bg}
-\title{Run an R CMD command}
+\title{Run an R CMD command in the background}
 \usage{
 rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(), stdout = "|",
   stderr = "|", repos = getOption("repos"), system_profile = FALSE,
@@ -23,9 +23,9 @@ javareconf, rtags.}
 
 \item{stderr}{Optionally a file name to send the standard error to.}
 
-\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
-\code{repos} option is set. This options is only used if
-\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+\item{repos}{The \emph{repos} option. If \code{NULL}, then no
+\emph{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
 \item{system_profile}{Whether to use the system profile file.}
@@ -37,8 +37,15 @@ as it is set using the system or the user profile.}
 \item{wd}{Working directory to use for running the command. Defaults
 to the current working directory.}
 }
+\value{
+It returns a \link[processx:process]{processx::process} object.
+}
 \description{
-Run an R CMD command
+The child process is started in the background, and the function
+return immediately.
+}
+\details{
+TODO: this function is currently broken and untested.
 }
 \seealso{
 Other R CMD commands: \code{\link{rcmd_safe}},

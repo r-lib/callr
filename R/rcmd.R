@@ -4,7 +4,7 @@
 #' Run an R CMD command form within R. This will usually start
 #' another R process, from a shell script.
 #'
-#' @param cmd Command to run. See \code{R --help} from the command
+#' @param cmd Command to run. See `R --help` from the command
 #'   line for the various commands. In the current version of R (3.2.4)
 #'   these are: BATCH, COMPILE, SHLIB, INSTALL, REMOVE, build, check,
 #'   LINK, Rprof, Rdconv, Rd2pdf, Rd2txt, Stangle, Sweave, Rdiff, config,
@@ -12,15 +12,16 @@
 #' @param cmdargs Command line arguments.
 #' @param stdout Optionally a file name to send the standard output to.
 #' @param stderr Optionally a file name to send the standard error to.
-#' @param echo Whether to echo the complete command run by \code{rcmd}.
+#' @param echo Whether to echo the complete command run by `rcmd`.
 #' @param wd Working directory to use for running the command. Defaults
 #'   to the current working directory.
 #' @param fail_on_status Whether to throw an R error if the command returns
 #'   with a non-zero status code. By default no error is thrown.
 #' @inheritParams r
-#' @return A list with the command line (\code{$command}),
-#'   standard output (\code{$stdout}), standard error (\code{stderr})
-#'   and exit status (\code{$status}) of the external \code{R CMD} command.
+#' @return A list with the command line `$command`),
+#'   standard output (`$stdout`), standard error (`stderr`),
+#'   exit status (`$status`) of the external `R CMD` command, and
+#'   whether a timeout was reached (`$timeout`).
 #'
 #' @family R CMD commands
 #' @export
@@ -36,52 +37,24 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  env = character(), timeout = Inf, wd = ".",
                  fail_on_status = FALSE) {
 
-  bin_args <- get_bin_and_args(cmd, cmdargs)
+  ## This contains the context that we set up in steps
+  options <- convert_and_check_my_args(as.list(environment()))
 
-  run_r(
-    bin = bin_args$rbin,
-    args = bin_args$cmdargs,
-    libpath = libpath,
-    repos = repos,
-    stdout = stdout,
-    stderr = stderr,
-    echo = echo,
-    show = show,
-    callback = callback,
-    block_callback = block_callback,
-    spinner = spinner,
-    system_profile = system_profile,
-    user_profile = user_profile,
-    env = env,
-    timeout = timeout,
-    wd = wd,
-    fail_on_status = fail_on_status
-  )
-}
+  options <- setup_context(options)
+  options <- setup_callbacks(options)
+  options <- setup_rcmd_binary_and_args(options)
 
-get_bin_and_args <- function(cmd, cmdargs) {
-
-  if(os_platform() == "windows") {
-    list(
-      rbin = file.path(R.home("bin"), "Rcmd.exe"),
-      cmdargs = c(cmd, cmdargs)
-    )
-
-  } else {
-    list(
-      rbin = file.path(R.home("bin"), "R"),
-      cmdargs = c("CMD", cmd, cmdargs)
-    )
-  }
+  out <- run_r(options)
+  post_process_run(out, options)
 }
 
 #' Call R CMD <command> safely
 #'
-#' Very similar to \code{\link{rcmd}}, but with different defaults,
+#' Very similar to [rcmd()], but with different defaults,
 #' that tend to create a less error-prone execution environment for the
 #' child process.
 #'
-#' @param ... Additional arguments are passed to \code{\link{rcmd}}.
+#' @param ... Additional arguments are passed to [rcmd()].
 #' @inheritParams rcmd
 #'
 #' @family R CMD commands
@@ -98,8 +71,33 @@ rcmd_safe <- function(cmd, cmdargs = character(), libpath = .libPaths(),
        env = env, ...)
 }
 
-#' \code{rcmd_safe_env} returns a set of environment variables that are
-#' more appropriate for \code{rcmd_safe}.
+#' `rcmd_safe_env` returns a set of environment variables that are
+#' more appropriate for [rcmd_safe()]. It is exported to allow manipulating
+#' these variables (e.g. add an extra one), before passing them to the
+#' [rcmd()] functions.
+#'
+#' It currently has the following variables:
+#' * `CYGWIN="nodosfilewarning"`: On Windows, do not warn about MS-DOS
+#'   style file names.
+#' * `R_TESTS=""` This variable is set by `R CMD check`, and makes the
+#'   child R process load a startup file at startup, from the current
+#'   working directory, that is assumed to be the `/test` dirctory
+#'   of the package being checked. If the current working directory is
+#'   changed to something else (as it typically is by `testthat`, then R
+#'   cannot start. Setting it to the empty string ensures that `callr` can
+#'   be used from unit tests.
+#' * `R_BROWSER="false"`: typically we don't want to start up a browser
+#'   from the child R process.
+#' * `R_PDFVIEWER="false"`: similarly for the PDF viewer.
+#' * `NOT_CRAN="true"`: if `NOT_CRAN` is not set to anything else, then
+#'   it is set to `"true"`.
+#'
+#' Note that `callr` also sets the `R_LIBS`, `R_LIBS_USER`,
+#' `R_LIBS_SITE`, `R_PROFILE` and `R_PROFILE_USER` environment variables
+#' appropriately, unless these are set by the user in the `env` argument
+#' of the `r`, etc. calls.
+#'
+#' @return A named character vector of environment variables.
 #'
 #' @export
 #' @rdname rcmd_safe

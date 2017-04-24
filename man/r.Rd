@@ -19,25 +19,29 @@ using the \code{::} notation. The environment of the function
 is set to \code{.GlobalEnv} before passing it to the child process.
 Because of this, it is good practice to create an anonymous
 function and pass that to \code{callr}, instead of passing
-a function object from a (base or other) package. In particular
-\preformatted{  r(.libPaths)} does not work, because it is
-defined in a special environment, but
-\preformatted{  r(function() .libPaths())} works just fine.}
+a function object from a (base or other) package. In particular\preformatted{r(.libPaths)
+}
+
+does not work, because \code{.libPaths} is defined in a special
+environment, but\preformatted{r(function() .libPaths())
+}
+
+works just fine.}
 
 \item{args}{Arguments to pass to the function. Must be a list.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
-\code{repos} option is set. This options is only used if
-\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+\item{repos}{The \emph{repos} option. If \code{NULL}, then no
+\emph{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
 \item{stdout}{The name of the file the standard output of
 the child R process will be written to.
 If the child process runs with the \code{--slave} option (the default),
 then the commands are not echoed and will not be shown
-in the standard output. Also note that you need to call `print()`
+in the standard output. Also note that you need to call \code{print()}
 explicitly to show the output of the command(s).}
 
 \item{stderr}{The name of the file the standard error of
@@ -80,9 +84,9 @@ the child R session is running. By default it is show if
 \item{env}{Environment variables to set for the child process.}
 
 \item{timeout}{Timeout for the function call to finish. It can be a
-\code{\link{difftime}} object, or a real number, meaning seconds.
+\link[base:difftime]{base::difftime} object, or a real number, meaning seconds.
 If the process does not finish before the timeout period expires,
-then a `system_command_timeout_error` error is thrown. \code{Inf}
+then a \code{system_command_timeout_error} error is thrown. \code{Inf}
 means no timeout.}
 }
 \value{
@@ -98,18 +102,18 @@ Evaluate an expression in another R session
 error, then \code{callr} throws an error with the same error message
 in the parent process.
 
-The \sQuote{error} expert option may be used to specify a different
-behavior on error. The following values are possible: \itemize{
-\item \sQuote{error} is the default behavior: throw an error
-  in the parent, with the same error message. In fact the same
-  error object is thrown again.
-\item \sQuote{stack} also throws an error in the parent, but the error
-  is of a special kind, class \code{callr_condition}, and it contains
-  both the original error object, and the call stack of the child,
-  as written out by \code{\link[utils]{dump.frames}}.
-\item \sQuote{debugger} is similar to \sQuote{stack}, but in addition
-  to returning the complete call stack, it also start up a debugger
-  in the child call stack, via \code{\link[utils]{debugger}}.
+The \code{error} expert argument may be used to specify a different
+behavior on error. The following values are possible:
+\itemize{
+\item \code{error} is the default behavior: throw an error in the parent, with
+the same error message. In fact the same error object is thrown again.
+\item \code{stack} also throws an error in the parent, but the error
+is of a special kind, class \code{callr_error}, and it contains
+both the original error object, and the call stack of the child,
+as written out by \code{\link[utils:dump.frames]{utils::dump.frames()}}.
+\item \code{debugger} is similar to \code{stack}, but in addition
+to returning the complete call stack, it also start up a debugger
+in the child call stack, via \code{\link[utils:debugger]{utils::debugger()}}.
 }
 }
 

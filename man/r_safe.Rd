@@ -8,8 +8,7 @@ r_safe(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cran.rstudio.com")),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
   "--no-restore"), system_profile = FALSE, user_profile = FALSE,
-  env = c(CYGWIN = "nodosfilewarning", R_TESTS = "", R_BROWSER = "false",
-  R_PDFVIEWER = "false"), ...)
+  env = rcmd_safe_env(), ...)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -19,18 +18,22 @@ using the \code{::} notation. The environment of the function
 is set to \code{.GlobalEnv} before passing it to the child process.
 Because of this, it is good practice to create an anonymous
 function and pass that to \code{callr}, instead of passing
-a function object from a (base or other) package. In particular
-\preformatted{  r(.libPaths)} does not work, because it is
-defined in a special environment, but
-\preformatted{  r(function() .libPaths())} works just fine.}
+a function object from a (base or other) package. In particular\preformatted{r(.libPaths)
+}
+
+does not work, because \code{.libPaths} is defined in a special
+environment, but\preformatted{r(function() .libPaths())
+}
+
+works just fine.}
 
 \item{args}{Arguments to pass to the function. Must be a list.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
-\code{repos} option is set. This options is only used if
-\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+\item{repos}{The \emph{repos} option. If \code{NULL}, then no
+\emph{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
 \item{cmdargs}{Command line arguments to pass to the R process.
@@ -44,19 +47,23 @@ supplied function and some error handling code.}
 
 \item{env}{Environment variables to set for the child process.}
 
-\item{...}{Additional arguments are passed to \code{\link{r}}.}
+\item{...}{Additional arguments are passed to \code{\link[=r]{r()}}.}
 }
 \description{
-The following options are set up: \itemize{
-  \item The library path is set to the current path.
-  \item Makes sure that at least one reasonable CRAN mirror is set up.
-  \item Some command line arguments are added to avoid saving
-    \code{.RData} files, etc. See them above.
-  \item The system and user profile files are ignored.
-  \item Various environment variables are set: \code{CYGWIN} to avoid
-    warnings about DOS-style paths, \code{R_TESTS} to avoid issues
-    when \code{callr} is invoked from unit tests, \code{R_BROWSER}
-    and \code{R_PDFVIEWER} to avoid starting a browser or a PDF viewer.
+The following options are set up:
+\itemize{
+\item The library path is set to the current path.
+\item Makes sure that at least one reasonable CRAN mirror is set up.
+\itemize{
+\item Some command line arguments are added to avoid saving
+\code{.RData} files, etc. See them above.
+\item The system and user profile files are ignored.
+\item Various environment variables are set: \code{CYGWIN} to avoid
+warnings about DOS-style paths, \code{R_TESTS} to avoid issues
+when \code{callr} is invoked from unit tests, \code{R_BROWSER}
+and \code{R_PDFVIEWER} to avoid starting a browser or a PDF viewer.
+See \code{\link[=rcmd_safe_env]{rcmd_safe_env()}}.
+}
 }
 }
 \seealso{

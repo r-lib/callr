@@ -16,19 +16,16 @@ test_that("rcmd echo works", {
 
 test_that("rcmd on windows", {
 
-  wbin <- NULL
-  wargs <- NULL
+  woptions <<- NULL
 
   with_mock(
     `callr::os_platform` = function() "windows",
-    `callr::run_r` = function(bin, args, ...) {
-      wbin <<- bin; wargs <<- args
-    },
+    `callr::run_r` = function(options) woptions <<- options,
     rcmd("config", "CC")
   )
 
-  expect_match(wbin, "Rcmd.exe")
-  expect_equal(wargs, c("config", "CC"))
+  expect_match(woptions$bin, "Rcmd.exe")
+  expect_equal(woptions$real_cmdargs, c("config", "CC"))
 })
 
 test_that("rcmd_safe", {

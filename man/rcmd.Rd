@@ -22,9 +22,9 @@ javareconf, rtags.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
-\code{repos} option is set. This options is only used if
-\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+\item{repos}{The \emph{repos} option. If \code{NULL}, then no
+\emph{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
 \item{stdout}{Optionally a file name to send the standard output to.}
@@ -59,9 +59,9 @@ the child R session is running. By default it is show if
 \item{env}{Environment variables to set for the child process.}
 
 \item{timeout}{Timeout for the function call to finish. It can be a
-\code{\link{difftime}} object, or a real number, meaning seconds.
+\link[base:difftime]{base::difftime} object, or a real number, meaning seconds.
 If the process does not finish before the timeout period expires,
-then a `system_command_timeout_error` error is thrown. \code{Inf}
+then a \code{system_command_timeout_error} error is thrown. \code{Inf}
 means no timeout.}
 
 \item{wd}{Working directory to use for running the command. Defaults
@@ -71,9 +71,10 @@ to the current working directory.}
 with a non-zero status code. By default no error is thrown.}
 }
 \value{
-A list with the command line (\code{$command}),
-  standard output (\code{$stdout}), standard error (\code{stderr})
-  and exit status (\code{$status}) of the external \code{R CMD} command.
+A list with the command line \code{$command}),
+standard output (\code{$stdout}), standard error (\code{stderr}),
+exit status (\code{$status}) of the external \code{R CMD} command, and
+whether a timeout was reached (\code{$timeout}).
 }
 \description{
 Run an R CMD command form within R. This will usually start
