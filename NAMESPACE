@@ -3,7 +3,6 @@
 export(r)
 export(r_bg)
 export(r_bg_safe)
-export(r_process)
 export(r_safe)
 export(r_vanilla)
 export(rcmd)

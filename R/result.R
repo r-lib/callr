@@ -20,9 +20,6 @@ get_result <- function(output, options) {
 
   res <- options$result_file
 
-  on.exit(try(unlink(res), silent = TRUE), add = TRUE)
-  on.exit(try(unlink(paste0(res, ".error")), silent = TRUE), add = TRUE)
-
   ## Timeout?
   if (output$timeout) stop(make_error(output))
 
