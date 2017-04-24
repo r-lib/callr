@@ -17,6 +17,9 @@ save_function_to_temp <- function(options) {
 
 setup_context <- function(options) {
 
+  ## Avoid R CMD check warning...
+  repos <- libpath <- system_profile <- user_profile <- NULL
+
   within(options, {
     ## profiles
     profile <- make_profile(repos)
