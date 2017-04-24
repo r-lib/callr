@@ -26,6 +26,8 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
 }
 
 #' @export
+#' @rdname rcmd_bg
+#' @param ... Additional arguments are passed to [rcmd_bg()].
 
 rcmd_bg_safe <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                          stdout = "|", stderr = "|",
