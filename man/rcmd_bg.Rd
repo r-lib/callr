@@ -44,9 +44,6 @@ It returns a \link[processx:process]{processx::process} object.
 The child process is started in the background, and the function
 return immediately.
 }
-\details{
-TODO: this function is currently broken and untested.
-}
 \seealso{
 Other R CMD commands: \code{\link{rcmd_safe}},
   \code{\link{rcmd}}
