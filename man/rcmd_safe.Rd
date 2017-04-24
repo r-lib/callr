@@ -23,9 +23,9 @@ javareconf, rtags.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
-\code{repos} option is set. This options is only used if
-\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+\item{repos}{The \emph{repos} option. If \code{NULL}, then no
+\emph{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
 \item{system_profile}{Whether to use the system profile file.}
@@ -34,15 +34,39 @@ as it is set using the system or the user profile.}
 
 \item{env}{Environment variables to set for the child process.}
 
-\item{...}{Additional arguments are passed to \code{\link{rcmd}}.}
+\item{...}{Additional arguments are passed to \code{\link[=rcmd]{rcmd()}}.}
+}
+\value{
+A named character vector of environment variables.
 }
 \description{
-Very similar to \code{\link{rcmd}}, but with different defaults,
+Very similar to \code{\link[=rcmd]{rcmd()}}, but with different defaults,
 that tend to create a less error-prone execution environment for the
 child process.
 
-\code{rcmd_safe_env} returns a set of environment variables that are
-more appropriate for \code{rcmd_safe}.
+It currently has the following variables:
+\itemize{
+\item \code{CYGWIN="nodosfilewarning"}: On Windows, do not warn about MS-DOS
+style file names.
+\item \code{R_TESTS=""} This variable is set by \code{R CMD check}, and makes the
+child R process load a startup file at startup, from the current
+working directory, that is assumed to be the \code{/test} dirctory
+of the package being checked. If the current working directory is
+changed to something else (as it typically is by \code{testthat}, then R
+cannot start. Setting it to the empty string ensures that \code{callr} can
+be used from unit tests.
+\item \code{R_BROWSER="false"}: typically we don't want to start up a browser
+from the child R process.
+\item \code{R_PDFVIEWER="false"}: similarly for the PDF viewer.
+\item \code{NOT_CRAN="true"}: if \code{NOT_CRAN} is not set to anything else, then
+it is set to \code{"true"}.
+}
+}
+\details{
+Note that \code{callr} also sets the \code{R_LIBS}, \code{R_LIBS_USER},
+\code{R_LIBS_SITE}, \code{R_PROFILE} and \code{R_PROFILE_USER} environment variables
+appropriately, unless these are set by the user in the \code{env} argument
+of the \code{r}, etc. calls.
 }
 \seealso{
 Other R CMD commands: \code{\link{rcmd_bg}},

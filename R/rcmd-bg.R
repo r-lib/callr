@@ -1,7 +1,13 @@
 
-#' Run an R CMD command
+#' Run an R CMD command in the background
+#'
+#' The child process is started in the background, and the function
+#' return immediately.
+#'
+#' TODO: this function is currently broken and untested.
 #'
 #' @inheritParams rcmd
+#' @return It returns a [processx::process] object.
 #'
 #' @family R CMD commands
 #' @export
@@ -11,6 +17,8 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     stdout = "|", stderr = "|", repos = getOption("repos"),
                     system_profile = FALSE, user_profile = FALSE,
                     env = character(), wd = ".") {
+
+  check_my_args()
 
   bin_args <- get_bin_and_args(cmd, cmdargs)
 
