@@ -4,8 +4,6 @@
 #' The child process is started in the background, and the function
 #' return immediately.
 #'
-#' TODO: this function is currently broken and untested.
-#'
 #' @inheritParams rcmd
 #' @return It returns a [processx::process] object.
 #'
@@ -18,35 +16,13 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     system_profile = FALSE, user_profile = FALSE,
                     env = character(), wd = ".") {
 
-  check_my_args()
+  ## This contains the context that we set up in steps
+  options <- convert_and_check_my_args(as.list(environment()))
 
-  bin_args <- get_bin_and_args(cmd, cmdargs)
+  options <- setup_context(options)
+  options <- setup_rcmd_binary_and_args(options)
 
-  ## Temporary wd
-  oldwd <- setwd(wd)
-  on.exit(setwd(oldwd), add = TRUE)
-
-  ## Temporary profile
-  profile <- make_profile(repos)
-  on.exit(try(unlink(profile), silent = TRUE), add = TRUE)
-
-  ## Temporary library path
-  lib <- paste(libpath, collapse = .Platform$path.sep)
-
-  ## Workaround, R ignores "", need to set to non-existant file
-  if (lib == "") lib <- tempfile()
-
-  if (is.na(env["R_LIBS"])) env["R_LIBS"] <- lib
-  if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- lib
-  if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- lib
-  if (!system_profile) env["R_PROFILE"] <- profile
-  if (!user_profile) env["R_PROFILE_USER"] <- profile
-
-  with_envvar(
-    env,
-    process$new(bin_args$rbin, bin_args$cmdargs, stdout = stdout,
-                stderr = stderr)
-  )
+  run_r_bg(options)
 }
 
 #' @export
