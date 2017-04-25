@@ -58,16 +58,9 @@ setup_callbacks <- function(options) {
   ## This is cumbersome, because we cannot easily set a named list
   ## element to NULL
   options <- append(
-    options, list("real_block_callback" =
-      if (options$show) {
-        if (is.null(block_cb)) {
-          function(x, proc) cat(x)
-        } else {
-          function(x, proc) { cat(x); block_cb(x) }
-        }
-      } else if (!is.null(block_cb)) {
-        function(x, proc) block_cb(x)
-      })
+    options,
+    list("real_block_callback" =
+           if (!is.null(block_cb)) function(x, proc) block_cb(x))
   )
 
   options <- append(
