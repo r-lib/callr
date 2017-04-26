@@ -16,7 +16,7 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     system_profile = FALSE, user_profile = FALSE,
                     env = character(), wd = ".") {
 
-  rcmd_process$new(.options = as.list(environment()))
+  rcmd_process$new(options = as.list(environment()))
 }
 
 #' @export

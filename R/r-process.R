@@ -20,8 +20,8 @@ r_process <- R6Class(
   "r_process",
   inherit = processx::process,
   public = list(
-    initialize = function(..., .options = NULL)
-      rp_init(self, private, super, ..., .options = .options),
+    initialize = function(options)
+      rp_init(self, private, super, options),
     get_result = function()
       rp_get_result(self, private)
   ),
@@ -30,16 +30,7 @@ r_process <- R6Class(
   )
 )
 
-rp_init <- function(self, private, super, ..., .options) {
-
-  options <- list(...)
-
-  if (length(options) && length(.options)) {
-    stop(sQuote(".options"), " must be either ", sQuote("NULL"),
-         " or must contain all arguments")
-  }
-
-  if (length(.options)) options <- .options
+rp_init <- function(self, private, super, options) {
 
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(options)
