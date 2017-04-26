@@ -26,7 +26,7 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                  system_profile = TRUE, user_profile = TRUE,
                  env = character()) {
 
-  r_process$new(.options = as.list(environment()))
+  r_process$new(options = as.list(environment()))
 }
 
 #' @param ... Additional argument, passed to [r_bg()].
