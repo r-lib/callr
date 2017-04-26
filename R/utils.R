@@ -10,7 +10,7 @@ read_char <- function(path, ...) {
 }
 
 is.named <- function(x) {
-  !is.null(names(x)) && all(names(x) != "")
+  length(names(x)) == length(x) && all(names(x) != "")
 }
 
 set_envvar <- function(envs) {
@@ -46,3 +46,14 @@ is_flag <- function(x) {
 os_platform <- function() .Platform$OS.type
 
 try_silently <- function(expr) try(expr, silent = TRUE)
+
+enumerate <- function(x) {
+  if (length(x) == 0) {
+    ""
+  } else if (length(x) == 1) {
+    x
+  } else {
+    l <- length(x)
+    paste0(paste(x[-l], collapse = ", "), " and ", x[[l]])
+  }
+}
