@@ -1,12 +1,27 @@
 
+#' External R Process
+#'
+#' @section Usage:
+#' TODO
+#'
+#' @section Arguments:
+#' TODO
+#'
+#' @section Details:
+#' TODO
+#'
+#' @name r_process
+NULL
+
 #' @importFrom R6 R6Class
+#' @export
 
 r_process <- R6Class(
   "r_process",
   inherit = processx::process,
   public = list(
-    initialize = function(options)
-      rp_init(self, private, super, options),
+    initialize = function(..., .options = NULL)
+      rp_init(self, private, super, ..., .options = .options),
     get_result = function()
       rp_get_result(self, private)
   ),
@@ -15,13 +30,32 @@ r_process <- R6Class(
   )
 )
 
-rp_init <- function(self, private, super, options) {
+rp_init <- function(self, private, super, ..., .options) {
+
+  options <- list(...)
+
+  if (length(options) && length(.options)) {
+    stop(sQuote(".options"), " must be either ", sQuote("NULL"),
+         " or must contain all arguments")
+  }
+
+  if (length(.options)) options <- .options
+
+  ## This contains the context that we set up in steps
+  options <- convert_and_check_my_args(options)
+
+  options <- setup_script_files(options)
+  options <- setup_context(options)
+  options <- setup_r_binary_and_args(options)
 
   private$options <- options
 
-  super$initialize(options$bin, options$real_cmdargs,
-                   stdout = options$stdout, stderr = options$stderr)
-  
+  with_envvar(
+    options$env,
+    super$initialize(options$bin, options$real_cmdargs,
+                     stdout = options$stdout, stderr = options$stderr)
+  )
+
   invisible(self)
 }
 
