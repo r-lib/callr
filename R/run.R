@@ -22,18 +22,3 @@ run_r <- function(options) {
     )
   )
 }
-
-run_r_bg <- function(options) {
-
-  oldwd <- getwd()
-  setwd(options$wd)
-  on.exit(setwd(oldwd), add = TRUE)
-
-  with(
-    options,
-    with_envvar(
-      env,
-      process$new(bin, real_cmdargs, stdout = stdout, stderr = stderr)
-    )
-  )
-}

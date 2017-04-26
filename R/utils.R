@@ -44,3 +44,5 @@ is_flag <- function(x) {
 }
 
 os_platform <- function() .Platform$OS.type
+
+try_silently <- function(expr) try(expr, silent = TRUE)

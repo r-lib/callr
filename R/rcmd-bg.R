@@ -16,13 +16,7 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     system_profile = FALSE, user_profile = FALSE,
                     env = character(), wd = ".") {
 
-  ## This contains the context that we set up in steps
-  options <- convert_and_check_my_args(as.list(environment()))
-
-  options <- setup_context(options)
-  options <- setup_rcmd_binary_and_args(options)
-
-  run_r_bg(options)
+  rcmd_process$new(.options = as.list(environment()))
 }
 
 #' @export
