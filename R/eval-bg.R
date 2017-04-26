@@ -26,14 +26,7 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                  system_profile = TRUE, user_profile = TRUE,
                  env = character()) {
 
-  ## This contains the context that we set up in steps
-  options <- convert_and_check_my_args(as.list(environment()))
-
-  options <- setup_script_files(options)
-  options <- setup_context(options)
-  options <- setup_r_binary_and_args(options)
-
-  with_envvar(env, r_process$new(options))
+  r_process$new(.options = as.list(environment()))
 }
 
 #' @param ... Additional argument, passed to [r_bg()].

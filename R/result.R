@@ -24,7 +24,7 @@ get_result <- function(output, options) {
   if (output$timeout) stop(make_error(output))
 
   ## No output files? Some other (system?) error
-  if (! file.exists(res)) stop("callr error running child R process")
+  if (! file.exists(res)) stop("child process crashed or was killed")
 
   ## No error file? Then all is well, return the output
   if (! file.exists(paste0(res, ".error"))) return(readRDS(res))
