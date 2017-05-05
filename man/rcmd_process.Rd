@@ -4,20 +4,30 @@
 \alias{rcmd_process}
 \title{External R CMD Process}
 \description{
-External R CMD Process
+An \code{R CMD *} command that runs in the background. This is an R6 class
+that extends the \link[processx:process]{processx::process} class.
 }
 \section{Usage}{
-
-TODO
+\preformatted{rp <- rcmd_process$new(options)
+}
 }
 
 \section{Arguments}{
 
-TODO
+\itemize{
+\item \code{options} A list of options created via \code{\link[=rcmd_process_options]{rcmd_process_options()}}.
+}
 }
 
 \section{Details}{
 
-TODO
+\code{rcmd_process$new} creates a new instance. Its \code{options} argument is
+best created by the \code{\link[=r_process_options]{r_process_options()}} function.
 }
 
+\examples{
+options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
+rp <- rcmd_process$new(options)
+rp$wait()
+rp$read_output_lines()
+}
