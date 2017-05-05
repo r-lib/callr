@@ -1,16 +1,39 @@
 
 #' External R Process
 #'
+#' An R process that runs in the background. This is an R6 class that
+#' extends the [processx::process] class.
+#'
 #' @section Usage:
-#' TODO
+#' ```
+#' rp <- r_process$new(options)
+#' rp$get_result()
+#' ```
+#'
+#' See `[processx::process] for the inherited methods.
 #'
 #' @section Arguments:
-#' TODO
+#' * `options` A list of options created via [r_process_options()].
 #'
 #' @section Details:
-#' TODO
+#' `r_process$new` creates a new instance. Its `options` argument is best
+#' created by the [r_process_options()] function.
+#'
+#' `rp$get_result()` returns the result, an R object, from a finished
+#' background R process. If the process has not finished yet, it throws an
+#' error. (You can use `rp$wait()` to wait for the process to finish,
+#' optionally with a timeout.)
 #'
 #' @name r_process
+#' @examples
+#' ## List all options and their default values:
+#' r_process_options()
+#'
+#' ## Start an R process in the background, wait for it, get result
+#' opts <- r_process_options(func = function() 1 + 1)
+#' rp <- r_process$new(opts)
+#' rp$wait()
+#' rp$get_result()
 NULL
 
 #' @importFrom R6 R6Class

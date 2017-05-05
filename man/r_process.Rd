@@ -4,20 +4,42 @@
 \alias{r_process}
 \title{External R Process}
 \description{
-External R Process
+An R process that runs in the background. This is an R6 class that
+extends the \link[processx:process]{processx::process} class.
 }
 \section{Usage}{
+\preformatted{rp <- r_process$new(options)
+rp$get_result()
+}
 
-TODO
+See `\link[processx:process]{processx::process} for the inherited methods.
 }
 
 \section{Arguments}{
 
-TODO
+\itemize{
+\item \code{options} A list of options created via \code{\link[=r_process_options]{r_process_options()}}.
+}
 }
 
 \section{Details}{
 
-TODO
+\code{r_process$new} creates a new instance. Its \code{options} argument is best
+created by the \code{\link[=r_process_options]{r_process_options()}} function.
+
+\code{rp$get_result()} returns the result, an R object, from a finished
+background R process. If the process has not finished yet, it throws an
+error. (You can use \code{rp$wait()} to wait for the process to finish,
+optionally with a timeout.)
 }
 
+\examples{
+## List all options and their default values:
+r_process_options()
+
+## Start an R process in the background, wait for it, get result
+opts <- r_process_options(func = function() 1 + 1)
+rp <- r_process$new(opts)
+rp$wait()
+rp$get_result()
+}

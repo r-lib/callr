@@ -1,11 +1,40 @@
 
+#' Create options for an [r_process] object
+#'
+#' @param ... Options to override, named arguments.
+#' @return A list of options.
+#'
+#' `r_process_options()` creates a set of options to initialize a new
+#' object from the `r_process` class. Its arguments must be named, the
+#' names are used as option names. The options correspond to (some of)
+#' the arguments of the [r()] function. At least the `func` option must be
+#' specified, this is the R function to run in the background.
+#'
 #' @export
+#' @examples
+#' ## List all options and their default values:
+#' r_process_options()
 
 r_process_options <- function(...) {
   update_options(r_process_options_default(), ...)
 }
 
+#' Create options for an [rcmd_process] object
+#'
+#' @param ... Options to override, named arguments.
+#' @return A list of options.
+#'
+#' `rcmd_process_options()` creates a set of options to initialize a new
+#' object from the `rcmd_process` class. Its arguments must be named, the
+#' names are used as option names. The options correspond to (some of)
+#' the arguments of the [rcmd()] function. At least the `cmd` option must
+#' be specified, to select the `R CMD` subcommand to run. Typically
+#' `cmdargs` is specified as well, to supply more arguments to `R CMD`.
+#'
 #' @export
+#' @examples
+#' ## List all options and their default values:
+#' rcmd_process_options()
 
 rcmd_process_options <- function(...) {
   update_options(rcmd_process_options_default(), ...)
@@ -41,6 +70,8 @@ rcmd_process_options_default <- function() {
     wd = "."
   )
 }
+
+#' @importFrom utils modifyList
 
 update_options <- function(old_opts, ...) {
   new_opts <- list(...)

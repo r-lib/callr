@@ -1,16 +1,27 @@
 
 #' External R CMD Process
 #'
+#' An `R CMD *` command that runs in the background. This is an R6 class
+#' that extends the [processx::process] class.
+#'
 #' @section Usage:
-#' TODO
+#' ```
+#' rp <- rcmd_process$new(options)
+#' ```
 #'
 #' @section Arguments:
-#' TODO
+#' * `options` A list of options created via [rcmd_process_options()].
 #'
 #' @section Details:
-#' TODO
+#' `rcmd_process$new` creates a new instance. Its `options` argument is
+#' best created by the [r_process_options()] function.
 #'
 #' @name rcmd_process
+#' @examples
+#' options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
+#' rp <- rcmd_process$new(options)
+#' rp$wait()
+#' rp$read_output_lines()
 NULL
 
 #' @importFrom R6 R6Class
