@@ -1,6 +1,4 @@
 
-`%||%` <- function(l, r) if (is.null(l)) r else l
-
 win2unix <- function(str) {
   gsub("\r\n", "\n", str, fixed = TRUE)
 }
