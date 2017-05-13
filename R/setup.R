@@ -63,11 +63,27 @@ setup_callbacks <- function(options) {
            if (!is.null(block_cb)) function(x, proc) block_cb(x))
   )
 
-  options <- append(
-    options,
-    list("real_callback" = if (!is.null(cb)) function(x, proc) cb(x))
-  )
+  callback_factory <- function(stream) {
+    ## Need to evaluate it when the callback is created
+    force(stream)
 
+    ## In case there is no output, we create an empty file here
+    if (!is.null(stream)) cat("", file = stream)
+
+    if (!is.null(cb)) {
+      function(x, proc) {
+        if (!is.null(stream)) cat(x, file = stream, sep = "\n", append = TRUE)
+        cb(x)
+      }
+
+    } else {
+      function(x, proc) {
+        if (!is.null(stream)) cat(x, file = stream, sep = "\n", append = TRUE)
+      }
+    }
+  }
+
+  options <- append(options, list("real_callback" = callback_factory))
   options
 }
 
