@@ -4,7 +4,10 @@ win2unix <- function(str) {
 }
 
 read_char <- function(path, ...) {
-  readChar(path, nchars = file.info(path)$size, useBytes = TRUE, ...)
+  x <- readChar(path, nchars = file.info(path)$size, useBytes = TRUE, ...)
+  x <- enc2utf8(x)
+  Encoding(x) <- "UTF-8"
+  x
 }
 
 is.named <- function(x) {
