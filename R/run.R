@@ -12,8 +12,9 @@ run_r <- function(options) {
     with_envvar(
       env,
       run(
-        bin, args = real_cmdargs, stdout_line_callback = real_callback,
-        stderr_line_callback = real_callback,
+        bin, args = real_cmdargs,
+        stdout_line_callback = real_callback(stdout),
+        stderr_line_callback = real_callback(stderr),
         stdout_callback = real_block_callback,
         stderr_callback = real_block_callback, echo_cmd = echo,
         echo = show, spinner = spinner, error_on_status = fail_on_status,
