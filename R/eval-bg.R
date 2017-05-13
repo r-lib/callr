@@ -2,7 +2,7 @@
 #' Evaluate an expression in another R session, in the background
 #'
 #' Starts evaluating an R function call in a background R process, and
-#' return immediately.
+#' returns immediately.
 #'
 #' @inheritParams r
 #' @return An `r_process` object, which inherits from [processx::process],

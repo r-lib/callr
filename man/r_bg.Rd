@@ -78,7 +78,7 @@ has a \code{get_result()} method to collect the result.
 }
 \description{
 Starts evaluating an R function call in a background R process, and
-return immediately.
+returns immediately.
 }
 \examples{
 rx <- r_bg(function() 1 + 2)
