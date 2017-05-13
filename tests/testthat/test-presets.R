@@ -15,9 +15,10 @@ test_that("r", {
   )
 })
 
+## Need to supply libpath for covr...
 test_that("r_vanilla", {
   expect_equal(
-    r_vanilla(function() getOption("repos")),
+    r_vanilla(function() getOption("repos"), libpath = .libPaths()),
     "@CRAN@"
   )
 })
