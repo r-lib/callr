@@ -4,7 +4,7 @@ win2unix <- function(str) {
 }
 
 read_char <- function(path, ...) {
-  readChar(path, nchars = file.info(path)$size, ...)
+  readChar(path, nchars = file.info(path)$size, useBytes = TRUE, ...)
 }
 
 is.named <- function(x) {
