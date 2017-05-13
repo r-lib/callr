@@ -42,7 +42,9 @@ explicitly to show the output of the command(s).}
 the child R process will be written to.
 In particular \code{message()} sends output to the standard
 error. If nothing was sent to the standard error, then this file
-will be empty.}
+will be empty. This can be the same file as `stderr`, although there
+is no guarantee that the lines will be in the correct chronological
+order.}
 
 \item{error}{What to do if the remote process throws an error.
 See details below.}

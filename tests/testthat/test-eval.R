@@ -61,8 +61,16 @@ test_that("stdout and stderr in the same file", {
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
 
-  r(function() { cat("hello1\n"); message("hello2"); cat("hello3\n") },
-    stdout = tmp, stderr = tmp)
 
-  expect_equal(sort(readLines(tmp)), sort(paste0("hello", 1:3)))
+  r(function() {
+      cat("hello1\n")
+      Sys.sleep(0.1)
+      message("hello2")
+      Sys.sleep(0.1)
+      cat("hello3\n")
+    },
+    stdout = tmp, stderr = tmp
+  )
+
+  expect_equal(readLines(tmp), paste0("hello", 1:3))
 })
