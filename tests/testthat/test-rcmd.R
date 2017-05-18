@@ -57,3 +57,9 @@ test_that("fail_on_status", {
   expect_silent(out <- rcmd("BATCH", rand, fail_on_status = FALSE))
   expect_true(out$status != 0)
 })
+
+test_that("command is included in result", {
+  res <- rcmd_safe("config", "CC")
+  expect_false(is.null(res$command))
+  expect_true(is.character(res$command))
+})

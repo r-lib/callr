@@ -7,7 +7,7 @@ run_r <- function(options) {
   setwd(options$wd)
   on.exit(setwd(oldwd), add = TRUE)
 
-  with(
+  res <- with(
     options,
     with_envvar(
       env,
@@ -22,4 +22,7 @@ run_r <- function(options) {
       )
     )
   )
+
+  res$command <- c(options$bin, options$real_cmdargs)
+  res
 }
