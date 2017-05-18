@@ -44,4 +44,6 @@ artifacts:
     name: Bits
 
 environment:
-  NOT_CRAN: yes
+  global:
+    NOT_CRAN: yes
+    USE_RTOOLS: true
