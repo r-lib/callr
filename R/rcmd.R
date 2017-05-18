@@ -44,8 +44,7 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
   options <- setup_callbacks(options)
   options <- setup_rcmd_binary_and_args(options)
 
-  out <- run_r(options)
-  post_process_run(out, options)
+  run_r(options)
 }
 
 #' Call R CMD <command> safely

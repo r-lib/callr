@@ -90,8 +90,3 @@ This is run with `.` as the working directory for `r` and `r_bg`.
 2. set up profiles
 3. set up library path
 4. set up LIB and PROFILE env vars
-
-#### Run in `r` and `rcmd`, `post_process_run`:
-
-1. write stdout & stderr to file, if needed
-2. fail on status, if requested

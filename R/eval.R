@@ -118,7 +118,6 @@ r <- function(func, args = list(), libpath = .libPaths(),
   options <- setup_r_binary_and_args(options)
 
   out <- run_r(options)
-  out <- post_process_run(out, options)
 
   get_result(output = out, options)
 }
