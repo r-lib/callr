@@ -1,15 +1,4 @@
 
-win2unix <- function(str) {
-  gsub("\r\n", "\n", str, fixed = TRUE)
-}
-
-read_char <- function(path, ...) {
-  x <- readChar(path, nchars = file.info(path)$size, useBytes = TRUE, ...)
-  x <- enc2utf8(x)
-  Encoding(x) <- "UTF-8"
-  x
-}
-
 is.named <- function(x) {
   length(names(x)) == length(x) && all(names(x) != "")
 }
