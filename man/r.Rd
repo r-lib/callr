@@ -6,18 +6,18 @@
 \title{Evaluate an expression in another R session}
 \usage{
 r(func, args = list(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cran.rstudio.com")),
+  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
   "--no-restore"), show = FALSE, callback = NULL, system_profile = FALSE,
   user_profile = FALSE, env = rcmd_safe_env())
 
 r_safe(func, args = list(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cran.rstudio.com")),
+  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
+  stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
-  "--no-restore"), system_profile = FALSE, user_profile = FALSE,
-  env = c(CYGWIN = "nodosfilewarning", R_TESTS = "", R_BROWSER = "false",
-  R_PDFVIEWER = "false"), ...)
+  "--no-restore"), show = FALSE, callback = NULL, system_profile = FALSE,
+  user_profile = FALSE, env = rcmd_safe_env())
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -99,7 +99,7 @@ See \code{\link[=rcmd_safe_env]{rcmd_safe_env()}}.
 }
 }
 \details{
-The pre-2.0.0 \code{r()} function is called \code{r_copycat()} now.
+The pre-2.0.0 \code{r()} function is called \code{\link[=r_copycat]{r_copycat()}} now.
 }
 \section{Error handling}{
 

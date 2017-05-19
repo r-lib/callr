@@ -13,7 +13,7 @@
 #'   and `R_PDFVIEWER` to avoid starting a browser or a PDF viewer.
 #'   See [rcmd_safe_env()].
 #'
-#' The pre-2.0.0 `r()` function is called `r_copycat()` now.
+#' The pre-2.0.0 `r()` function is called [r_copycat()] now.
 #'
 #' @param func Function object to call in the new R process.
 #'   The function should be self-contained and only refer to
@@ -98,7 +98,7 @@
 
 r <- function(func, args = list(), libpath = .libPaths(),
               repos = c(getOption("repos"),
-                c(CRAN = "https://cran.rstudio.com")),
+                c(CRAN = "https://cloud.r-project.org")),
               stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
               cmdargs = c("--no-site-file", "--no-environ", "--slave",

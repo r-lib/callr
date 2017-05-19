@@ -8,8 +8,43 @@ r_copycat(func, args = list(), libpath = .libPaths(),
   repos = getOption("repos"), cmdargs = "--slave", system_profile = TRUE,
   user_profile = TRUE, env = character(), ...)
 }
+\arguments{
+\item{func}{Function object to call in the new R process.
+The function should be self-contained and only refer to
+other functions and use variables explicitly from other packages
+using the \code{::} notation. The environment of the function
+is set to \code{.GlobalEnv} before passing it to the child process.
+Because of this, it is good practice to create an anonymous
+function and pass that to \code{callr}, instead of passing
+a function object from a (base or other) package. In particular
+\preformatted{  r(.libPaths)} does not work, because it is
+defined in a special environment, but
+\preformatted{  r(function() .libPaths())} works just fine.}
+
+\item{args}{Arguments to pass to the function. Must be a list.}
+
+\item{libpath}{The library path.}
+
+\item{repos}{The \sQuote{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
+\code{user_profile} or \code{system_profile} is set to \code{FALSE},
+as it is set using the system or the user profile.}
+
+\item{cmdargs}{Command line arguments to pass to the R process.
+Note that \code{c("-f", rscript)} is appended to this, \code{rscript}
+is the name of the script file to run. This contains a call to the
+supplied function and some error handling code.}
+
+\item{system_profile}{Whether to use the system profile file.}
+
+\item{user_profile}{Whether to use the user's profile file.}
+
+\item{env}{Environment variables to set for the child process.}
+
+\item{...}{Additional arguments are passed to \code{\link[=r]{r()}}.}
+}
 \description{
-Differences to \code{r()}:
+Differences to \code{\link[=r]{r()}}:
 \itemize{
 \item No extra repoditories are set up.
 \item The \code{--no-site-file}, \code{--no-environ}, \code{--no-save}, \code{--no-restore}

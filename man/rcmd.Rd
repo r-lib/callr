@@ -2,13 +2,20 @@
 % Please edit documentation in R/rcmd.R
 \name{rcmd}
 \alias{rcmd}
+\alias{rcmd_safe}
 \title{Run an R CMD command}
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
-  repos = getOption("repos"), stdout = NULL, stderr = NULL,
-  echo = FALSE, show = FALSE, callback = NULL, system_profile = FALSE,
-  user_profile = FALSE, env = character(), wd = ".",
-  fail_on_status = FALSE)
+  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
+  stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
+  callback = NULL, system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), wd = ".", fail_on_status = FALSE)
+
+rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
+  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
+  stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
+  callback = NULL, system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), wd = ".", fail_on_status = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -63,9 +70,14 @@ and exit status (\code{$status}) of the external \code{R CMD} command.
 Run an R CMD command form within R. This will usually start
 another R process, from a shell script.
 }
+\details{
+Starting from \code{callr} 1.1.0, \code{rcmd()} has safer defaults, the same as
+the \code{rcmd_safe()} default values. Use \code{\link[=rcmd_copycat]{rcmd_copycat()}} for the old
+defaults.
+}
 \examples{
 rcmd("config", "CC")
 }
 \seealso{
-Other R CMD commands: \code{\link{rcmd_safe}}
+Other R CMD commands: \code{\link{rcmd_copycat}}
 }
