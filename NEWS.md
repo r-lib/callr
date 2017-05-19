@@ -3,8 +3,16 @@
 
 * Use the `processx` package to start R processes
 
-* Run R or R CMD * in the background, see `r_bg()`, `r_bg_safe()`,
-  `rcmd_bg()`, `rcmd_bg_safe()`, and also `r_process` and `rcmd_process`
+* Run R or R CMD * in the background, see `r_bg()`, `rcmd_bg()`,
+  and also `r_process` and `rcmd_process`
+
+* The defaults for `r()` are safer now, the match the defaults of
+  `r_safe()`. `r_safe()` is kept for compatibility. `r_copycat()` has the
+  old `r()` defaults.
+
+* The defaults for `rcmd()` are safer now, the match the defaults of
+`rcmd_safe()`. `rcmd_safe()` is kept for compatibility. `rcmd_copycat()`
+  has the old `rcmd()` defaults.
 
 * Support block callbacks, in addition to line callbacks. Block callbacks
   are called for arbitrary chunks of output, even without a newline

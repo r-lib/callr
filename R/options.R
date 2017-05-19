@@ -45,13 +45,14 @@ r_process_options_default <- function() {
     func = NULL,
     args = list(),
     libpath = .libPaths(),
-    repos = getOption("repos"),
+    repos = c(getOption("repos"), CRAN = "https://cloud.r-project.org"),
     stdout = "|",
     stderr = "|",
     error = c("error", "stack", "debugger"),
-    cmdargs = "--slave",
-    system_profile = TRUE,
-    user_profile = TRUE,
+    cmdargs = c("--no-site-file", "--no-environ", "--slave",
+      "--no-save", "--no-restore"),
+    system_profile = FALSE,
+    user_profile = FALSE,
     env = character()
   )
 }
@@ -63,10 +64,10 @@ rcmd_process_options_default <- function() {
     libpath = .libPaths(),
     stdout = "|",
     stderr = "|",
-    repos = getOption("repos"),
+    repos = c(getOption("repos"), CRAN = "https://cloud.r-project.org"),
     system_profile = FALSE,
     user_profile = FALSE,
-    env = character(),
+    env = rcmd_safe_env(),
     wd = "."
   )
 }

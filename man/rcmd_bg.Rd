@@ -2,17 +2,12 @@
 % Please edit documentation in R/rcmd-bg.R
 \name{rcmd_bg}
 \alias{rcmd_bg}
-\alias{rcmd_bg_safe}
 \title{Run an R CMD command in the background}
 \usage{
 rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(), stdout = "|",
-  stderr = "|", repos = getOption("repos"), system_profile = FALSE,
-  user_profile = FALSE, env = character(), wd = ".")
-
-rcmd_bg_safe(cmd, cmdargs = character(), libpath = .libPaths(),
-  stdout = "|", stderr = "|", repos = c(getOption("repos"), c(CRAN =
-  "https://cran.rstudio.com")), system_profile = FALSE,
-  user_profile = FALSE, env = rcmd_safe_env(), ...)
+  stderr = "|", repos = c(getOption("repos"), c(CRAN =
+  "https://cloud.r-project.org")), system_profile = FALSE,
+  user_profile = FALSE, env = rcmd_safe_env(), wd = ".")
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -42,8 +37,6 @@ as it is set using the system or the user profile.}
 
 \item{wd}{Working directory to use for running the command. Defaults
 to the current working directory.}
-
-\item{...}{Additional arguments are passed to \code{\link[=rcmd_bg]{rcmd_bg()}}.}
 }
 \value{
 It returns a \link[processx:process]{processx::process} object.
@@ -53,6 +46,6 @@ The child process is started in the background, and the function
 return immediately.
 }
 \seealso{
-Other R CMD commands: \code{\link{rcmd_safe}},
+Other R CMD commands: \code{\link{rcmd_copycat}},
   \code{\link{rcmd}}
 }

@@ -20,27 +20,14 @@
 #' rx$get_result()
 
 r_bg <- function(func, args = list(), libpath = .libPaths(),
-                 repos = getOption("repos"), stdout = "|", stderr = "|",
+                 repos = c(getOption("repos"),
+                   c(CRAN = "https://cloud.r-project.org")),
+                 stdout = "|", stderr = "|",
                  error = c("error", "stack", "debugger"),
-                 cmdargs = "--slave",
-                 system_profile = TRUE, user_profile = TRUE,
-                 env = character()) {
+                 cmdargs = c("--no-site-file", "--no-environ", "--slave",
+                   "--no-save", "--no-restore"),
+                 system_profile = FALSE, user_profile = FALSE,
+                 env = rcmd_safe_env()) {
 
   r_process$new(options = as.list(environment()))
-}
-
-#' @param ... Additional argument, passed to [r_bg()].
-#' @export
-#' @rdname r_bg
-
-r_bg_safe <- function(func, args = list(), libpath = .libPaths(),
-                      repos = c(getOption("repos"),
-                        c(CRAN = "https://cran.rstudio.com")),
-                      cmdargs = c("--no-site-file", "--no-environ", "--slave",
-                        "--no-save", "--no-restore"), system_profile = FALSE,
-                      user_profile = FALSE, env = rcmd_safe_env(), ...) {
-
-  r_bg(func, args = args, libpath = libpath, repos = repos,
-       cmdargs = cmdargs, system_profile = system_profile,
-       user_profile = user_profile, env = env, ...)
 }

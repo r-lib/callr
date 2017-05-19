@@ -2,19 +2,14 @@
 % Please edit documentation in R/eval-bg.R
 \name{r_bg}
 \alias{r_bg}
-\alias{r_bg_safe}
 \title{Evaluate an expression in another R session, in the background}
 \usage{
 r_bg(func, args = list(), libpath = .libPaths(),
-  repos = getOption("repos"), stdout = "|", stderr = "|",
-  error = c("error", "stack", "debugger"), cmdargs = "--slave",
-  system_profile = TRUE, user_profile = TRUE, env = character())
-
-r_bg_safe(func, args = list(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cran.rstudio.com")),
+  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
+  stdout = "|", stderr = "|", error = c("error", "stack", "debugger"),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
   "--no-restore"), system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env(), ...)
+  env = rcmd_safe_env())
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -70,8 +65,6 @@ supplied function and some error handling code.}
 \item{user_profile}{Whether to use the user's profile file.}
 
 \item{env}{Environment variables to set for the child process.}
-
-\item{...}{Additional argument, passed to \code{\link[=r_bg]{r_bg()}}.}
 }
 \value{
 An \code{r_process} object, which inherits from \link[processx:process]{processx::process},

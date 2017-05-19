@@ -12,25 +12,11 @@
 #' @importFrom processx process
 
 rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
-                    stdout = "|", stderr = "|", repos = getOption("repos"),
+                    stdout = "|", stderr = "|",
+                    repos = c(getOption("repos"),
+                      c(CRAN = "https://cloud.r-project.org")),
                     system_profile = FALSE, user_profile = FALSE,
-                    env = character(), wd = ".") {
+                    env = rcmd_safe_env(), wd = ".") {
 
   rcmd_process$new(options = as.list(environment()))
-}
-
-#' @export
-#' @rdname rcmd_bg
-#' @param ... Additional arguments are passed to [rcmd_bg()].
-
-rcmd_bg_safe <- function(cmd, cmdargs = character(), libpath = .libPaths(),
-                         stdout = "|", stderr = "|",
-                         repos = c(getOption("repos"),
-                           c(CRAN = "https://cran.rstudio.com")),
-                         system_profile = FALSE, user_profile = FALSE,
-                         env = rcmd_safe_env(), ...) {
-
-  rcmd_bg(cmd, cmdargs = cmdargs, libpath = libpath, stdout = stdout,
-          stderr = stderr, repos = repos, system_profile = system_profile,
-          user_profile = user_profile, env = env, ...)
 }

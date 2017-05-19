@@ -4,6 +4,10 @@
 #' Run an R CMD command form within R. This will usually start
 #' another R process, from a shell script.
 #'
+#' Starting from `callr` 2.0.0, `rcmd()` has safer defaults, the same as
+#' the `rcmd_safe()` default values. Use [rcmd_copycat()] for the old
+#' defaults.
+#'
 #' @param cmd Command to run. See `R --help` from the command
 #'   line for the various commands. In the current version of R (3.2.4)
 #'   these are: BATCH, COMPILE, SHLIB, INSTALL, REMOVE, build, check,
@@ -30,11 +34,13 @@
 #' rcmd("config", "CC")
 
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
-                 repos = getOption("repos"), stdout = NULL,
-                 stderr = NULL, echo = FALSE, show = FALSE, callback = NULL,
-                 block_callback = NULL, spinner = show && interactive(),
+                 repos = c(getOption("repos"),
+                   c(CRAN = "https://cloud.r-project.org")),
+                 stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
+                 callback = NULL, block_callback = NULL,
+                 spinner = show && interactive(),
                  system_profile = FALSE, user_profile = FALSE,
-                 env = character(), timeout = Inf, wd = ".",
+                 env = rcmd_safe_env(), timeout = Inf, wd = ".",
                  fail_on_status = FALSE) {
 
   ## This contains the context that we set up in steps
@@ -47,28 +53,10 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
   run_r(options)
 }
 
-#' Call R CMD <command> safely
-#'
-#' Very similar to [rcmd()], but with different defaults,
-#' that tend to create a less error-prone execution environment for the
-#' child process.
-#'
-#' @param ... Additional arguments are passed to [rcmd()].
-#' @inheritParams rcmd
-#'
-#' @family R CMD commands
+#' @rdname rcmd
 #' @export
 
-rcmd_safe <- function(cmd, cmdargs = character(), libpath = .libPaths(),
-                      repos = c(getOption("repos"),
-                        c(CRAN = "https://cran.rstudio.com")),
-                      system_profile = FALSE, user_profile = FALSE,
-                      env = rcmd_safe_env(), ...) {
-
-  rcmd(cmd, cmdargs = cmdargs, libpath = libpath, repos = repos,
-       system_profile = system_profile, user_profile = user_profile,
-       env = env, ...)
-}
+rcmd_safe <- rcmd
 
 #' `rcmd_safe_env` returns a set of environment variables that are
 #' more appropriate for [rcmd_safe()]. It is exported to allow manipulating
@@ -115,4 +103,24 @@ rcmd_safe_env <- function() {
   }
 
   vars
+}
+
+#' Call and R CMD command, while mimicking the current R session
+#'
+#' This function is similar to [rcmd()], but it has slightly different
+#' defaults:
+#' * The `repos` options is unchanged.
+#' * No extra environment variables are defined.
+#'
+#' @inheritParams rcmd
+#' @param ... Additional arguments are passed to [rcmd()].
+#'
+#' @family R CMD commands
+#' @export
+
+rcmd_copycat <- function(cmd, cmdargs = character(), libpath = .libPaths(),
+                         repos = getOption("repos"), env = character(),
+                         ...) {
+
+  rcmd(cmd, cmdargs = cmdargs, libpath = libpath, repos = repos, env = env)
 }

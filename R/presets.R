@@ -33,26 +33,19 @@ r_vanilla <- function(func, args = list(), libpath = character(),
 #' @rdname r
 #' @export
 
-r_safe <- function(func, args = list(), libpath = .libPaths(),
-                   repos = c(getOption("repos"),
-                     c(CRAN = "https://cran.rstudio.com")),
-                   cmdargs = c("--no-site-file", "--no-environ", "--slave",
-                     "--no-save", "--no-restore"), system_profile = FALSE,
-                   user_profile = FALSE, env = rcmd_safe_env(), ...) {
-
-  r(func, args = args, libpath = libpath, repos = repos,
-    cmdargs = cmdargs, system_profile = system_profile,
-    user_profile = user_profile, env = env, ...)
-}
+r_safe <- r
 
 #' Run an R process that mimics the current R process
 #'
-#' Differences to `r()`:
+#' Differences to [r()]:
 #' * No extra repoditories are set up.
 #' * The `--no-site-file`, `--no-environ`, `--no-save`, `--no-restore`
 #'   command line arguments are not used. (But `--slave` still is.)
 #' * The system profile and the user profile are loaded.
 #' * No extra environment variables are set up.
+#'
+#' @inheritParams r
+#' @param ... Additional arguments are passed to [r()].
 #'
 #' @family callr functions
 #' @export
