@@ -56,8 +56,8 @@ with a non-zero status code. By default no error is thrown.}
 }
 \value{
 A list with the command line (\code{$command}),
-  standard output (\code{$stdout}), standard error (\code{stderr})
-  and exit status (\code{$status}) of the external \code{R CMD} command.
+standard output (\code{$stdout}), standard error (\code{stderr})
+and exit status (\code{$status}) of the external \code{R CMD} command.
 }
 \description{
 Run an R CMD command form within R. This will usually start

@@ -60,6 +60,6 @@ r(function() getOption("repos"))
 r_vanilla(function() getOption("repos"))
 }
 \seealso{
-Other callr functions: \code{\link{r_safe}},
+Other callr functions: \code{\link{r_copycat}},
   \code{\link{r}}
 }

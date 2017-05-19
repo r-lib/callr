@@ -12,7 +12,7 @@ get_result(res)
 }
 \value{
 If no error happened, the result is returned. Otherwise
-  we handle the error.
+we handle the error.
 }
 \description{
 Even if an error happens, the ouput file might still exist,
