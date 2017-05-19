@@ -30,24 +30,7 @@ r_vanilla <- function(func, args = list(), libpath = character(),
     user_profile = user_profile, env = env, ...)
 }
 
-#' Run an R child process in safe mode
-#'
-#' The following options are set up:
-#' * The library path is set to the current path.
-#' * Makes sure that at least one reasonable CRAN mirror is set up.
-#'     * Some command line arguments are added to avoid saving
-#'       `.RData` files, etc. See them above.
-#'     * The system and user profile files are ignored.
-#'     * Various environment variables are set: `CYGWIN` to avoid
-#'       warnings about DOS-style paths, `R_TESTS` to avoid issues
-#'       when `callr` is invoked from unit tests, `R_BROWSER`
-#'       and `R_PDFVIEWER` to avoid starting a browser or a PDF viewer.
-#'       See [rcmd_safe_env()].
-#'
-#' @param ... Additional arguments are passed to [r()].
-#' @inheritParams r
-#'
-#' @family callr functions
+#' @rdname r
 #' @export
 
 r_safe <- function(func, args = list(), libpath = .libPaths(),
@@ -60,4 +43,26 @@ r_safe <- function(func, args = list(), libpath = .libPaths(),
   r(func, args = args, libpath = libpath, repos = repos,
     cmdargs = cmdargs, system_profile = system_profile,
     user_profile = user_profile, env = env, ...)
+}
+
+#' Run an R process that mimics the current R process
+#'
+#' Differences to `r()`:
+#' * No extra repoditories are set up.
+#' * The `--no-site-file`, `--no-environ`, `--no-save`, `--no-restore`
+#'   command line arguments are not used. (But `--slave` still is.)
+#' * The system profile and the user profile are loaded.
+#' * No extra environment variables are set up.
+#'
+#' @family callr functions
+#' @export
+
+r_copycat <- function(func, args = list(), libpath = .libPaths(),
+                      repos = getOption("repos"), cmdargs = "--slave",
+                      system_profile = TRUE, user_profile = TRUE,
+                      env = character(), ...) {
+
+  r(func, args = args, libpath = libpath, repos = repos, cmdargs = cmdargs,
+    system_profile = system_profile, user_profile = user_profile,
+    env = env, ...)
 }

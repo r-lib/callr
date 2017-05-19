@@ -6,7 +6,7 @@ test_that("r", {
   withr::with_options(
     list(repos = "foobar"),
     expect_equal(
-      r(function() getOption("repos"),
+      r_copycat(function() getOption("repos"),
         user_profile = FALSE,
         system_profile = FALSE
       ),

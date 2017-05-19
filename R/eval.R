@@ -1,6 +1,20 @@
 
 #' Evaluate an expression in another R session
 #'
+#' From `callr` version 2.0.0, `r()` is equivalent to `r_safe()`, and
+#' tries to set up a less error prone execution environment. In particular:
+#' * It makes sure that at least one reasonable CRAN mirror is set up.
+#' * Adds some command line arguments are added to avoid saving
+#'   `.RData` files, etc.
+#' * Ignores the system and user profiles.
+#' * Various environment variables are set: `CYGWIN` to avoid
+#'   warnings about DOS-style paths, `R_TESTS` to avoid issues
+#'   when `callr` is invoked from unit tests, `R_BROWSER`
+#'   and `R_PDFVIEWER` to avoid starting a browser or a PDF viewer.
+#'   See [rcmd_safe_env()].
+#'
+#' The pre-2.0.0 `r()` function is called `r_copycat()` now.
+#'
 #' @param func Function object to call in the new R process.
 #'   The function should be self-contained and only refer to
 #'   other functions and use variables explicitly from other packages
@@ -56,7 +70,7 @@
 #'   output and standard error. This callback is not line oriented, i.e.
 #'   multiple lines or half a line can be passed to the callback.
 #' @param spinner Whether to snow a calming spinner on the screen while
-#'   the child R session is running. By default it is show if
+#'   the child R session is running. By default it is shown if
 #'   `show = TRUE` and the R session is interactive.
 #' @param system_profile Whether to use the system profile file.
 #' @param user_profile Whether to use the user's profile file.
@@ -99,12 +113,16 @@
 #' @export
 
 r <- function(func, args = list(), libpath = .libPaths(),
-              repos = getOption("repos"), stdout = NULL, stderr = NULL,
+              repos = c(getOption("repos"),
+                c(CRAN = "https://cran.rstudio.com")),
+              stdout = NULL, stderr = NULL,
               error = c("error", "stack", "debugger"),
-              cmdargs = "--slave", show = FALSE, callback = NULL,
+              cmdargs = c("--no-site-file", "--no-environ", "--slave",
+                "--no-save", "--no-restore"),
+              show = FALSE, callback = NULL,
               block_callback = NULL, spinner = show && interactive(),
-              system_profile = TRUE, user_profile = TRUE,
-              env = character(), timeout = Inf) {
+              system_profile = FALSE, user_profile = FALSE,
+              env = rcmd_safe_env(), timeout = Inf) {
 
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))
