@@ -38,7 +38,7 @@ source("https://install-github.me/r-pkgs/callr")
 ### Introduction
 
 Use `r` to run an R function in a new child process. The results are
-passed back seemlessly:
+passed back seamlessly:
 
 ```r
 r(function() var(iris[, 1:4]))
@@ -52,10 +52,10 @@ r(function() var(iris[, 1:4]))
 
 ### Passing arguments
 
-You can pass arguments to the function, just set `args` to the list of
+You can pass arguments to the function by setting `args` to the list of
 arguments. This is often necessary as these arguments are explicitly
 passed to the child process, whereas the evaluated function cannot
-refer to variables in the parent. For the example the following does
+refer to variables in the parent. For example, the following does
 not work:
 
 ```r
@@ -79,14 +79,14 @@ r(function(x) summary(x), args = list(mycars))
 #> Max.   :25.0   Max.   :120.00
 ```
 
-Note that the arguments will be serialized and save to a file,
-so if they are large R objects, then it might take a long time for the
+Note that the arguments will be serialized and saved to a file,
+so if they are large R objects, it might take a long time for the
 child process to start up.
 
 ### Using packages
 
-You can use any R package in the child process, just make sure that you
-refer to it explicitly with the `::` operator. For example the following
+You can use any R package in the child process, just make sure to
+refer to it explicitly with the `::` operator. For example, the following
 code creates an [igraph](https://github.com/igraph/rigraph) graph
 in the child, and calculates some metrics of it.
 
@@ -106,7 +106,7 @@ r(function() 1 + "A")
 #> Error in 1 + "A" : non-numeric argument to binary operator
 ```
 
-You can catch these error on the parent, but the context is of course
+You can catch these errors on the parent, but the context is of course
 lost. To get the context, you need to specify the `error = "stack"`
 option. This copies the whole stack to the parent on an error.
 The stack is part of the error object thrown on the parent, and you
@@ -156,7 +156,7 @@ r(function() { f <- function() g(); g <- function() 1 + "A"; f() },
 
 ### Standard output and error
 
-By default the standard output and error of the child is lost,
+By default, the standard output and error of the child is lost,
 but you can request `callr` to redirect them to files, and then
 inspect the files in the parent:
 
@@ -184,8 +184,8 @@ of the parent.
 
 It is good practice to create an anonymous function for the `r()` call,
 instead of passing a function from a package to `r()` directly. This is
-because `callr` resets the environment of the function, and some functions
-will not work then. Here is an example:
+because `callr` resets the environment of the function, which prevents
+some functions from working. Here is an example:
 ```r
 r(praise::praise)
 
@@ -201,7 +201,7 @@ r(function() praise::praise())
 
 ### `R CMD <command>`
 
-The `rcmd()` function calls an `R CMD` command. For example you can
+The `rcmd()` function calls an `R CMD` command. For example, you can
 call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
 
 ```r
@@ -217,8 +217,8 @@ rcmd("config", "CC")
 #>[1] 0
 ```
 
-It returns a list with three components: the standard output, the standard
-error and the exit (status) code of the `R CMD` command.
+This returns a list with three components: the standard output, the standard
+error, and the exit (status) code of the `R CMD` command.
 
 ## License
 
