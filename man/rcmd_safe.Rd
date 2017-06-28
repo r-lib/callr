@@ -27,6 +27,8 @@ be used from unit tests.
 \item \code{R_BROWSER="false"}: typically we don't want to start up a browser
 from the child R process.
 \item \code{R_PDFVIEWER="false"}: similarly for the PDF viewer.
+\item \code{R_ENVIRON_USER=tempfile()}: this prevents R from loading the user
+\code{.Renviron}.
 \item \code{NOT_CRAN="true"}: if \code{NOT_CRAN} is not set to anything else, then
 it is set to \code{"true"}.
 }

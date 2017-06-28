@@ -76,6 +76,8 @@ rcmd_safe <- rcmd
 #' * `R_BROWSER="false"`: typically we don't want to start up a browser
 #'   from the child R process.
 #' * `R_PDFVIEWER="false"`: similarly for the PDF viewer.
+#' * `R_ENVIRON_USER=tempfile()`: this prevents R from loading the user
+#'   `.Renviron`.
 #' * `NOT_CRAN="true"`: if `NOT_CRAN` is not set to anything else, then
 #'   it is set to `"true"`.
 #'
@@ -95,7 +97,8 @@ rcmd_safe_env <- function() {
     CYGWIN = "nodosfilewarning",
     R_TESTS = "",
     R_BROWSER = "false",
-    R_PDFVIEWER = "false"
+    R_PDFVIEWER = "false",
+    R_ENVIRON_USER = tempfile()
   )
 
   if (is.na(Sys.getenv("NOT_CRAN", unset = NA))) {
