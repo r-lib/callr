@@ -145,13 +145,14 @@ in the child call stack, via \code{\link[utils:debugger]{utils::debugger()}}.
 }
 
 \examples{
-
+\dontrun{
 # Workspace is empty
 r(function() ls())
 
 # library path is the same by default
 r(function() .libPaths())
 .libPaths()
+}
 
 }
 \seealso{

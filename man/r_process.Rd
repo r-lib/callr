@@ -34,6 +34,7 @@ optionally with a timeout.)
 }
 
 \examples{
+\dontrun{
 ## List all options and their default values:
 r_process_options()
 
@@ -42,4 +43,5 @@ opts <- r_process_options(func = function() 1 + 1)
 rp <- r_process$new(opts)
 rp$wait()
 rp$get_result()
+}
 }

@@ -26,6 +26,7 @@
 #'
 #' @name r_process
 #' @examples
+#' \dontrun{
 #' ## List all options and their default values:
 #' r_process_options()
 #'
@@ -34,6 +35,7 @@
 #' rp <- r_process$new(opts)
 #' rp$wait()
 #' rp$get_result()
+#' }
 NULL
 
 #' @importFrom R6 R6Class

@@ -56,13 +56,14 @@ It tries to mimic a fresh R installation. In particular:
 }
 }
 \examples{
-
+\dontrun{
 # Compare to r()
 r(function() .libPaths())
 r_vanilla(function() .libPaths())
 
 r(function() getOption("repos"))
 r_vanilla(function() getOption("repos"))
+}
 }
 \seealso{
 Other callr functions: \code{\link{r_copycat}},

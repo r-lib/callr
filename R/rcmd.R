@@ -31,7 +31,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' rcmd("config", "CC")
+#' }
 
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = c(getOption("repos"),

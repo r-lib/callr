@@ -26,8 +26,10 @@ best created by the \code{\link[=r_process_options]{r_process_options()}} functi
 }
 
 \examples{
+\dontrun{
 options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
 rp <- rcmd_process$new(options)
 rp$wait()
 rp$read_output_lines()
+}
 }

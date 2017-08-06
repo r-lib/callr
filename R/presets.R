@@ -12,13 +12,14 @@
 #' @family callr functions
 #' @export
 #' @examples
-#'
+#' \dontrun{
 #' # Compare to r()
 #' r(function() .libPaths())
 #' r_vanilla(function() .libPaths())
 #'
 #' r(function() getOption("repos"))
 #' r_vanilla(function() getOption("repos"))
+#' }
 
 r_vanilla <- function(func, args = list(), libpath = character(),
                       repos = c(CRAN = "@CRAN@"), cmdargs = "--slave",

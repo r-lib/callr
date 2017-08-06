@@ -94,7 +94,9 @@ the \code{rcmd_safe()} default values. Use \code{\link[=rcmd_copycat]{rcmd_copyc
 defaults.
 }
 \examples{
+\dontrun{
 rcmd("config", "CC")
+}
 }
 \seealso{
 Other R CMD commands: \code{\link{rcmd_bg}},

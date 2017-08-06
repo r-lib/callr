@@ -12,12 +12,14 @@
 #' @export
 #' @importFrom processx process
 #' @examples
+#' \dontrun{
 #' rx <- r_bg(function() 1 + 2)
 #'
 #' # wait until it is done
 #' rx$wait()
 #' rx$is_alive()
 #' rx$get_result()
+#' }
 
 r_bg <- function(func, args = list(), libpath = .libPaths(),
                  repos = c(getOption("repos"),

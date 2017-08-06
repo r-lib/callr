@@ -18,10 +18,12 @@
 #'
 #' @name rcmd_process
 #' @examples
+#' \dontrun{
 #' options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
 #' rp <- rcmd_process$new(options)
 #' rp$wait()
 #' rp$read_output_lines()
+#' }
 NULL
 
 #' @importFrom R6 R6Class

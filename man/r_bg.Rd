@@ -76,10 +76,12 @@ Starts evaluating an R function call in a background R process, and
 returns immediately.
 }
 \examples{
+\dontrun{
 rx <- r_bg(function() 1 + 2)
 
 # wait until it is done
 rx$wait()
 rx$is_alive()
 rx$get_result()
+}
 }
