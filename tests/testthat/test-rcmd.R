@@ -16,7 +16,7 @@ test_that("rcmd echo works", {
 
 test_that("rcmd on windows", {
 
-  woptions <<- NULL
+  woptions <- NULL
 
   with_mock(
     `callr::os_platform` = function() "windows",
