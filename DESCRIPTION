@@ -20,5 +20,4 @@ Suggests:
     covr,
     testthat,
     withr
-Remotes: r-lib/processx
 Encoding: UTF-8
