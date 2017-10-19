@@ -6,5 +6,6 @@ test_that("create and run rcmd_process", {
   x <- rcmd_process$new(opts)
   x$wait()
   expect_equal(x$get_exit_status(), 0)
-  expect_match(x$read_output_lines(), ".")
+  out <- x$read_output_lines()
+  expect_match(out, ".")
 })

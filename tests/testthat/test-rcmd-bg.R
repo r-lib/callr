@@ -2,9 +2,11 @@
 context("rcmd_bg")
 
 test_that("rcmd_bg runs", {
+  out1 <- gsub("\r?\n", "", rcmd("config", "CC")$stdout)
   x <- rcmd_bg("config", "CC")
   x$wait()
-  expect_match(x$read_output_lines(), ".")
+  out2 <- x$read_output_lines()
+  expect_equal(out1, out2)
   expect_equal(x$get_exit_status(), 0)
 })
 
