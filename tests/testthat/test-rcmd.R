@@ -14,20 +14,6 @@ test_that("rcmd echo works", {
   expect_output(rcmd("config", "CC", echo = TRUE), "config\\s+CC")
 })
 
-test_that("rcmd on windows", {
-
-  woptions <- NULL
-
-  with_mock(
-    `callr::os_platform` = function() "windows",
-    `callr::run_r` = function(options) woptions <<- options,
-    rcmd("config", "CC")
-  )
-
-  expect_match(woptions$bin, "Rcmd.exe")
-  expect_equal(woptions$real_cmdargs, c("config", "CC"))
-})
-
 test_that("rcmd_safe", {
   expect_equal(rcmd_safe("config", "CC")$status, 0)
 })
