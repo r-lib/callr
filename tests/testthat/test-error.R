@@ -37,15 +37,3 @@ test_that("error stack is passed", {
   expect_true(inherits(err, "callrError"))
   expect_equal(length(err$stack), 3)
 })
-
-test_that("debugger is called", {
-
-  called <- FALSE
-
-  with_mock(
-    `utils::debugger` = function(...) called <<- TRUE,
-    r(function() { 1 + "A" }, error = "debugger")
-  )
-
-  expect_true(called)
-})
