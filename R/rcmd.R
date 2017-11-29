@@ -80,8 +80,6 @@ rcmd_safe <- rcmd
 #' * `R_PDFVIEWER="false"`: similarly for the PDF viewer.
 #' * `R_ENVIRON_USER=tempfile()`: this prevents R from loading the user
 #'   `.Renviron`.
-#' * `NOT_CRAN="true"`: if `NOT_CRAN` is not set to anything else, then
-#'   it is set to `"true"`.
 #'
 #' Note that `callr` also sets the `R_LIBS`, `R_LIBS_USER`,
 #' `R_LIBS_SITE`, `R_PROFILE` and `R_PROFILE_USER` environment variables
@@ -102,10 +100,6 @@ rcmd_safe_env <- function() {
     R_PDFVIEWER = "false",
     R_ENVIRON_USER = tempfile()
   )
-
-  if (is.na(Sys.getenv("NOT_CRAN", unset = NA))) {
-    vars[["NOT_CRAN"]] <- "true"
-  }
 
   vars
 }
