@@ -61,3 +61,4 @@ command line arguments are not used. (But \code{--slave} still is.)
 Other callr functions: \code{\link{r_vanilla}},
   \code{\link{r}}
 }
+\concept{callr functions}

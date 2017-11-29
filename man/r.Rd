@@ -159,3 +159,4 @@ r(function() .libPaths())
 Other callr functions: \code{\link{r_copycat}},
   \code{\link{r_vanilla}}
 }
+\concept{callr functions}

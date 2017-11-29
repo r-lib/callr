@@ -49,3 +49,4 @@ return immediately.
 Other R CMD commands: \code{\link{rcmd_copycat}},
   \code{\link{rcmd}}
 }
+\concept{R CMD commands}
