@@ -6,7 +6,7 @@
 #' 2. the second one is thrown after an R error (in the other session):
 #'    `callr_status_error`.
 #'
-#' @param out The object returned by [processx::run()].
+#' @param out The object returned by [run()].
 #' @keywords internal
 
 make_error <- function(out) {

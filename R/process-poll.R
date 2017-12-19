@@ -83,7 +83,7 @@ poll <- function(processes, ms) {
   })
 
   res <- lapply(
-    .Call(c_processx_poll, statuses, as.integer(ms)),
+    .Call(c_callr_poll, statuses, as.integer(ms)),
     function(x) structure(poll_codes[x], names = c("output", "error"))
   )
 

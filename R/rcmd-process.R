@@ -2,7 +2,7 @@
 #' External R CMD Process
 #'
 #' An `R CMD *` command that runs in the background. This is an R6 class
-#' that extends the [processx::process] class.
+#' that extends the [process] class.
 #'
 #' @section Usage:
 #' ```
@@ -31,7 +31,7 @@ NULL
 
 rcmd_process <- R6Class(
   "rcmd_process",
-  inherit = processx::process,
+  inherit = process,
   public = list(
     initialize = function(options)
       rcmdp_init(self, private, super, options)

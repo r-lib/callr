@@ -1,7 +1,7 @@
 
 #include <testthat.h>
 
-#include "processx.h"
+#include "callr.h"
 
 #include <fcntl.h>
 #include <stdio.h>
@@ -122,89 +122,89 @@ int open_temp_file(char **filename, size_t bytes, const char *pattern) {
 context("Basics") {
 
   test_that("can create a connection from os handle") {
-    processx_file_handle_t handle = open_file("fixtures/simple.txt");
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_file_handle_t handle = open_file("fixtures/simple.txt");
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
     expect_true(ccon != 0);
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
   }
 }
 
 context("Reading characters") {
 
   test_that("can read characters and set EOF") {
-    processx_file_handle_t handle = open_file("fixtures/simple.txt");
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_file_handle_t handle = open_file("fixtures/simple.txt");
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
 
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
-    processx_pollable_t pollable;
-    processx_c_pollable_from_connection(&pollable, ccon);
+    callr_pollable_t pollable;
+    callr_c_pollable_from_connection(&pollable, ccon);
 
     char buffer[10];
-    processx_c_connection_poll(&pollable, 1, -1);
-    size_t ret = processx_c_connection_read_chars(ccon, buffer, 10);
+    callr_c_connection_poll(&pollable, 1, -1);
+    size_t ret = callr_c_connection_read_chars(ccon, buffer, 10);
     expect_true(ret == 10);
     expect_true(! strncmp(buffer, "simple tex", 10));
 
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
-    ret = processx_c_connection_read_chars(ccon, buffer, 10);
+    ret = callr_c_connection_read_chars(ccon, buffer, 10);
     // on windows it might end with \r\n, depending on git settings for EOL
     expect_true(ret >= 7);
     expect_true(ret <= 8);
     if (ret == 7) expect_true(! strncmp(buffer, "t file\n", 7));
     if (ret == 8) expect_true(! strncmp(buffer, "t file\r\n", 8));
 
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
-    processx_c_connection_poll(&pollable, 1, -1);
-    ret = processx_c_connection_read_chars(ccon, buffer, 10);
+    callr_c_connection_poll(&pollable, 1, -1);
+    ret = callr_c_connection_read_chars(ccon, buffer, 10);
     expect_true(ret == 0);
 
-    expect_true(processx_c_connection_is_eof(ccon));
+    expect_true(callr_c_connection_is_eof(ccon));
 
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
   }
 
   test_that("EOF edge case") {
-    processx_file_handle_t handle = open_file("fixtures/simple.txt");
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_file_handle_t handle = open_file("fixtures/simple.txt");
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
 
     // Read all contents of the file, it is still not EOF
     char buffer[18];
-    size_t ret = processx_c_connection_read_chars(ccon, buffer, 18);
+    size_t ret = callr_c_connection_read_chars(ccon, buffer, 18);
     expect_true(ret >= 17);
     expect_true(ret <= 18);
     if (ret == 17) expect_true(! strncmp(buffer, "simple text file\n", 17));
     if (ret == 18) expect_true(! strncmp(buffer, "simple text file\r\n", 18));
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
     // But if we read again, EOF is set
-    ret = processx_c_connection_read_chars(ccon, buffer, 17);
+    ret = callr_c_connection_read_chars(ccon, buffer, 17);
     expect_true(ret == 0);
-    expect_true(processx_c_connection_is_eof(ccon));
+    expect_true(callr_c_connection_is_eof(ccon));
 
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
   }
 
   test_that("A larger file that needs buffering") {
     char *filename;
-    processx_file_handle_t handle = open_temp_file(&filename, 100000, 0);
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_file_handle_t handle = open_temp_file(&filename, 100000, 0);
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
 
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
     char buffer[1024];
-    while (! processx_c_connection_is_eof(ccon)) {
-      size_t ret = processx_c_connection_read_chars(ccon, buffer, 1024);
-      if (ret == 0) expect_true(processx_c_connection_is_eof(ccon));
+    while (! callr_c_connection_is_eof(ccon)) {
+      size_t ret = callr_c_connection_read_chars(ccon, buffer, 1024);
+      if (ret == 0) expect_true(callr_c_connection_is_eof(ccon));
     }
 
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
     unlink(filename);
     free(filename);
   }
@@ -212,38 +212,38 @@ context("Reading characters") {
   test_that("Reading UTF-8 file") {
     char *filename;
     // A 2-byte character, then a 3-byte character, then a 4-byte one
-    processx_file_handle_t handle =
+    callr_file_handle_t handle =
       open_temp_file(&filename, 1, "\xc2\xa0\xe2\x86\x92\xf0\x90\x84\x82");
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
 
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
     char buffer[4];
-    ssize_t ret = processx_c_connection_read_chars(ccon, buffer, 4);
+    ssize_t ret = callr_c_connection_read_chars(ccon, buffer, 4);
     expect_true(ret == 2);
     expect_true(buffer[0] == '\xc2');
     expect_true(buffer[1] == '\xa0');
 
-    ret = processx_c_connection_read_chars(ccon, buffer, 4);
+    ret = callr_c_connection_read_chars(ccon, buffer, 4);
     expect_true(ret == 3);
     expect_true(buffer[0] == '\xe2');
     expect_true(buffer[1] == '\x86');
     expect_true(buffer[2] == '\x92');
 
-    ret = processx_c_connection_read_chars(ccon, buffer, 4);
+    ret = callr_c_connection_read_chars(ccon, buffer, 4);
     expect_true(ret == 4);
     expect_true(buffer[0] == '\xf0');
     expect_true(buffer[1] == '\x90');
     expect_true(buffer[2] == '\x84');
     expect_true(buffer[3] == '\x82');
 
-    expect_false(processx_c_connection_is_eof(ccon));
-    ret = processx_c_connection_read_chars(ccon, buffer, 4);
+    expect_false(callr_c_connection_is_eof(ccon));
+    ret = callr_c_connection_read_chars(ccon, buffer, 4);
     expect_true(ret == 0);
-    expect_true(processx_c_connection_is_eof(ccon));
+    expect_true(callr_c_connection_is_eof(ccon));
 
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
     unlink(filename);
     free(filename);
   }
@@ -252,25 +252,25 @@ context("Reading characters") {
     char *filename;
     const char *latin1 = "\xe1\xe9\xed";
     const char *utf8 = "\xc3\xa1\xc3\xa9\xc3\xad";
-    processx_file_handle_t handle = open_temp_file(&filename, 1, latin1);
+    callr_file_handle_t handle = open_temp_file(&filename, 1, latin1);
 
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "latin1", 0);
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "latin1", 0);
 
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
     char buffer[10];
-    ssize_t ret = processx_c_connection_read_chars(ccon, buffer, 10);
+    ssize_t ret = callr_c_connection_read_chars(ccon, buffer, 10);
     expect_true(ret == 6);
     buffer[6] = '\0';
     expect_true(!strcmp(buffer, utf8));
 
-    expect_false(processx_c_connection_is_eof(ccon));
-    ret = processx_c_connection_read_chars(ccon, buffer, 4);
+    expect_false(callr_c_connection_is_eof(ccon));
+    ret = callr_c_connection_read_chars(ccon, buffer, 4);
     expect_true(ret == 0);
-    expect_true(processx_c_connection_is_eof(ccon));
+    expect_true(callr_c_connection_is_eof(ccon));
 
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
     unlink(filename);
     free(filename);
   }
@@ -281,55 +281,55 @@ context("Reading lines") {
 
   test_that("Reading a line") {
     char *filename;
-    processx_file_handle_t handle = open_temp_file(&filename, 50, "hello\n");
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_file_handle_t handle = open_temp_file(&filename, 50, "hello\n");
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
 
     char *linep = 0;
     size_t linecapp = 0;
-    ssize_t read = processx_c_connection_read_line(ccon, &linep, &linecapp);
+    ssize_t read = callr_c_connection_read_line(ccon, &linep, &linecapp);
     expect_true(read == 5);
     expect_true(!strcmp(linep, "hello"));
     expect_true(linecapp == 6);
 
     free(linep);
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
     unlink(filename);
     free(filename);
   }
 
   test_that("Reading the last incomplete line") {
     char *filename;
-    processx_file_handle_t handle = open_temp_file(&filename, 1, "hello\nhello\nagain");
-    processx_connection_t *ccon =
-      processx_c_connection_create(handle, PROCESSX_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
+    callr_file_handle_t handle = open_temp_file(&filename, 1, "hello\nhello\nagain");
+    callr_connection_t *ccon =
+      callr_c_connection_create(handle, CALLR_FILE_TYPE_ASYNCFILE, "UTF-8", 0);
 
     char *linep = 0;
     size_t linecapp = 0;
     ssize_t read;
 
     for (int i = 0; i < 2; i++) {
-      read = processx_c_connection_read_line(ccon, &linep, &linecapp);
+      read = callr_c_connection_read_line(ccon, &linep, &linecapp);
       expect_true(linep[5] == '\0');
       expect_true(read == 5);
       expect_true(!strcmp(linep, "hello"));
       expect_true(linecapp == 6);
-      expect_false(processx_c_connection_is_eof(ccon));
+      expect_false(callr_c_connection_is_eof(ccon));
     }
 
-    read = processx_c_connection_read_line(ccon, &linep, &linecapp);
+    read = callr_c_connection_read_line(ccon, &linep, &linecapp);
     expect_true(linep[5] == '\0');
     expect_true(read == 5);
     expect_true(!strcmp(linep, "again"));
     expect_true(linecapp == 6);
-    expect_false(processx_c_connection_is_eof(ccon));
+    expect_false(callr_c_connection_is_eof(ccon));
 
-    read = processx_c_connection_read_chars(ccon, linep, 4);
+    read = callr_c_connection_read_chars(ccon, linep, 4);
     expect_true(read == 0);
-    expect_true(processx_c_connection_is_eof(ccon));
+    expect_true(callr_c_connection_is_eof(ccon));
 
     free(linep);
-    processx_c_connection_destroy(ccon);
+    callr_c_connection_destroy(ccon);
     unlink(filename);
     free(filename);
   }

@@ -1,6 +1,6 @@
-OBJECTS = test-connections.o init.o poll.o processx-connection.o     \
-          processx-vector.o                                          \
-          win/processx.o win/stdio.o win/named_pipe.o win/cleanup.o  \
+OBJECTS = test-connections.o init.o poll.o callr-connection.o     \
+          callr-vector.o                                          \
+          win/callr.o win/stdio.o win/named_pipe.o win/cleanup.o  \
 	  test-runner.o
 
 .PHONY: all clean

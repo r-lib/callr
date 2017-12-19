@@ -25,14 +25,6 @@ with_envvar <- function(new, code) {
   force(code)
 }
 
-is_string <- function(x) {
-  is.character(x) && length(x) == 1 && !is.na(x)
-}
-
-is_flag <- function(x) {
-  is.logical(x) && length(x) == 1 && !is.na(x)
-}
-
 os_platform <- function() .Platform$OS.type
 
 try_silently <- function(expr) try(expr, silent = TRUE)

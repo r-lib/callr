@@ -8,12 +8,12 @@
 #include <windows.h>
 
 
-SEXP processx_is_named_pipe_open(SEXP pipe_ext) {
+SEXP callr_is_named_pipe_open(SEXP pipe_ext) {
     if (pipe_ext == R_NilValue)
         error("Not a named pipe handle.");
 
     // This function currently only tests if the named pipe has been closed
-    // "properly", by processx_close_named_pipe(). It doesn't test if the
+    // "properly", by callr_close_named_pipe(). It doesn't test if the
     // other end of the pipe has been closed.
 
     if (R_ExternalPtrAddr(pipe_ext) == NULL)
@@ -23,7 +23,7 @@ SEXP processx_is_named_pipe_open(SEXP pipe_ext) {
 }
 
 
-SEXP processx_close_named_pipe(SEXP pipe_ext) {
+SEXP callr_close_named_pipe(SEXP pipe_ext) {
     if (pipe_ext == R_NilValue || R_ExternalPtrAddr(pipe_ext) == NULL)
         return R_NilValue;
 
@@ -38,11 +38,11 @@ SEXP processx_close_named_pipe(SEXP pipe_ext) {
 
 // For the finalizer, we need to wrap the SEXP function with a void function.
 void named_pipe_finalizer(SEXP pipe_ext) {
-    processx_close_named_pipe(pipe_ext);
+    callr_close_named_pipe(pipe_ext);
 }
 
 
-SEXP processx_create_named_pipe(SEXP name, SEXP mode) {
+SEXP callr_create_named_pipe(SEXP name, SEXP mode) {
     if (!isString(name) || name == R_NilValue || length(name) != 1) {
         error("`name` must be a character vector of length 1.");
     }
@@ -96,7 +96,7 @@ SEXP processx_create_named_pipe(SEXP name, SEXP mode) {
 }
 
     
-SEXP processx_write_named_pipe(SEXP pipe_ext, SEXP text) {
+SEXP callr_write_named_pipe(SEXP pipe_ext, SEXP text) {
     if (!isString(text) || text == R_NilValue || length(text) != 1) {
         error("`text` must be a character vector of length 1.");
     }

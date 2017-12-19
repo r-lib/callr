@@ -5,14 +5,14 @@
 \title{External R Process}
 \description{
 An R process that runs in the background. This is an R6 class that
-extends the \link[processx:process]{processx::process} class.
+extends the \link{process} class.
 }
 \section{Usage}{
 \preformatted{rp <- r_process$new(options)
 rp$get_result()
 }
 
-See `\link[processx:process]{processx::process} for the inherited methods.
+See \link{process} for the inherited methods.
 }
 
 \section{Arguments}{

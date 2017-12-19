@@ -1,7 +1,4 @@
 
-#' @useDynLib processx, .registration = TRUE, .fixes = "c_"
-NULL
-
 #' External process
 #'
 #' Managing external processes from R is not trivial, and this
@@ -80,7 +77,7 @@ NULL
 #' * `n`: Number of characters or lines to read.
 #' * `encoding`: The encoding to assume for `stdout` and
 #'     `stderr`. By default the encoding of the current locale is
-#'     used. Note that `processx` always reencodes the output of
+#'     used. Note that `callr` always reencodes the output of
 #'     both streams in UTF-8 currently. If you want to read them
 #'     without any conversion, on all platforms, specify `"UTF-8"` as
 #'     encoding.
@@ -103,7 +100,7 @@ NULL
 #' processes, except if they have created a new process group (on Unix),
 #' or job object (on Windows). It returns `TRUE` if the process
 #' was killed, and `FALSE` if it was no killed (because it was
-#' already finished/dead when `processx` tried to kill it).
+#' already finished/dead when `callr` tried to kill it).
 #'
 #' `$wait()` waits until the process finishes, or a timeout happens.
 #' Note that if the process never finishes, and the timeout is infinite
@@ -390,7 +387,7 @@ process_restart <- function(self, private) {
   ## So we set the tag of the external pointer to NULL here, which signals
   ## the finalizer not to set `private$*`.
   if (!is.null(private$status)) {
-    .Call(c_processx__disconnect_process_handle, private$status);
+    .Call(c_callr__disconnect_process_handle, private$status);
   }
 
   ## Wipe out state, to be sure
@@ -428,7 +425,7 @@ process_wait <- function(self, private, timeout) {
   if (private$exited) {
     ## Nothing
   } else {
-    .Call(c_processx_wait, private$status, as.integer(timeout))
+    .Call(c_callr_wait, private$status, as.integer(timeout))
   }
   invisible(self)
 }
@@ -438,7 +435,7 @@ process_is_alive <- function(self, private) {
   if (private$exited) {
     FALSE
   } else {
-    .Call(c_processx_is_alive, private$status)
+    .Call(c_callr_is_alive, private$status)
   }
 }
 
@@ -447,7 +444,7 @@ process_get_exit_status <- function(self, private) {
   if (private$exited) {
     private$exitcode
   } else {
-    .Call(c_processx_get_exit_status, private$status)
+    .Call(c_callr_get_exit_status, private$status)
   }
 }
 
@@ -456,7 +453,7 @@ process_signal <- function(self, private, signal) {
   if (private$exited) {
     FALSE
   } else {
-    .Call(c_processx_signal, private$status, as.integer(signal))
+    .Call(c_callr_signal, private$status, as.integer(signal))
   }
 }
 
@@ -465,7 +462,7 @@ process_kill <- function(self, private, grace) {
   if (private$exited) {
     FALSE
   } else {
-    .Call(c_processx_kill, private$status, as.numeric(grace))
+    .Call(c_callr_kill, private$status, as.numeric(grace))
   }
 }
 
@@ -477,7 +474,7 @@ process_get_pid <- function(self, private) {
   if (private$exited) {
     private$pid
   } else {
-    .Call(c_processx_get_pid, private$status)
+    .Call(c_callr_get_pid, private$status)
   }
 }
 

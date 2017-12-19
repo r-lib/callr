@@ -102,4 +102,3 @@ rcmd("config", "CC")
 Other R CMD commands: \code{\link{rcmd_bg}},
   \code{\link{rcmd_copycat}}
 }
-\concept{R CMD commands}

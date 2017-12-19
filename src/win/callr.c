@@ -2,16 +2,16 @@
 #include <R.h>
 #include <R_ext/Rdynload.h>
 
-#include "../processx.h"
+#include "../callr.h"
 
-static HANDLE processx__global_job_handle = NULL;
+static HANDLE callr__global_job_handle = NULL;
 
-static void processx__init_global_job_handle(void) {
+static void callr__init_global_job_handle(void) {
   /* Create a job object and set it up to kill all contained processes when
    * it's closed. Since this handle is made non-inheritable and we're not
    * giving it to anyone, we're the only process holding a reference to it.
    * That means that if this process exits it is closed and all the
-   * processes it contains are killed. All processes created with processx
+   * processes it contains are killed. All processes created with callr
    * that are spawned without the cleanup flag are assigned to this job.
    *
    * We're setting the JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK flag so only
@@ -20,7 +20,7 @@ static void processx__init_global_job_handle(void) {
    * limited in their ability to use job control on Windows versions that
    * don't deal with nested jobs (prior to Windows 8 / Server 2012). It
    * also lets our child processes create detached processes without
-   * explicitly breaking away from job control (which processx_exec
+   * explicitly breaking away from job control (which callr_exec
    * doesn't do, either). */
 
   SECURITY_ATTRIBUTES attr;
@@ -36,33 +36,33 @@ static void processx__init_global_job_handle(void) {
       JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION |
       JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
 
-  processx__global_job_handle = CreateJobObjectW(&attr, NULL);
-  if (processx__global_job_handle == NULL) {
-    PROCESSX_ERROR("Creating global job object", GetLastError());
+  callr__global_job_handle = CreateJobObjectW(&attr, NULL);
+  if (callr__global_job_handle == NULL) {
+    CALLR_ERROR("Creating global job object", GetLastError());
   }
 
-  if (!SetInformationJobObject(processx__global_job_handle,
+  if (!SetInformationJobObject(callr__global_job_handle,
                                JobObjectExtendedLimitInformation,
                                &info,
                                sizeof info)) {
-    PROCESSX_ERROR("Setting up global job object", GetLastError());
+    CALLR_ERROR("Setting up global job object", GetLastError());
   }
 }
 
-void R_init_processx_win() {
+void R_init_callr_win() {
   /* Nothing to do currently */
 }
 
-SEXP processx__killem_all() {
-  if (processx__global_job_handle) {
-    TerminateJobObject(processx__global_job_handle, 1);
-    CloseHandle(processx__global_job_handle);
-    processx__global_job_handle = NULL;
+SEXP callr__killem_all() {
+  if (callr__global_job_handle) {
+    TerminateJobObject(callr__global_job_handle, 1);
+    CloseHandle(callr__global_job_handle);
+    callr__global_job_handle = NULL;
   }
   return R_NilValue;
 }
 
-int processx__utf8_to_utf16_alloc(const char* s, WCHAR** ws_ptr) {
+int callr__utf8_to_utf16_alloc(const char* s, WCHAR** ws_ptr) {
   int ws_len, r;
   WCHAR* ws;
 
@@ -88,14 +88,14 @@ int processx__utf8_to_utf16_alloc(const char* s, WCHAR** ws_ptr) {
     /* cchWideChar =    */ ws_len);
 
   if (r != ws_len) {
-    error("processx error interpreting UTF8 command or arguments");
+    error("callr error interpreting UTF8 command or arguments");
   }
 
   *ws_ptr = ws;
   return 0;
 }
 
-WCHAR* processx__quote_cmd_arg(const WCHAR *source, WCHAR *target) {
+WCHAR* callr__quote_cmd_arg(const WCHAR *source, WCHAR *target) {
   size_t len = wcslen(source);
   size_t i;
   int quote_hit;
@@ -167,7 +167,7 @@ WCHAR* processx__quote_cmd_arg(const WCHAR *source, WCHAR *target) {
   return target;
 }
 
-static int processx__make_program_args(SEXP args, int verbatim_arguments,
+static int callr__make_program_args(SEXP args, int verbatim_arguments,
 				       WCHAR **dst_ptr) {
   const char* arg;
   WCHAR* dst = NULL;
@@ -234,7 +234,7 @@ static int processx__make_program_args(SEXP args, int verbatim_arguments,
       pos += arg_len - 1;
     } else {
       /* Quote/escape, if needed. */
-      pos = processx__quote_cmd_arg(temp_buffer, pos);
+      pos = callr__quote_cmd_arg(temp_buffer, pos);
     }
 
     *pos++ = i < arg_count - 1 ? L' ' : L'\0';
@@ -247,7 +247,7 @@ error:
   return err;
 }
 
-static WCHAR* processx__search_path_join_test(const WCHAR* dir,
+static WCHAR* callr__search_path_join_test(const WCHAR* dir,
 					      size_t dir_len,
 					      const WCHAR* name,
 					      size_t name_len,
@@ -340,7 +340,7 @@ static WCHAR* processx__search_path_join_test(const WCHAR* dir,
 /*
  * Helper function for search_path
  */
-static WCHAR* processx__path_search_walk_ext(const WCHAR *dir,
+static WCHAR* callr__path_search_walk_ext(const WCHAR *dir,
 					     size_t dir_len,
 					     const WCHAR *name,
 					     size_t name_len,
@@ -351,7 +351,7 @@ static WCHAR* processx__path_search_walk_ext(const WCHAR *dir,
 
   /* If the name itself has a nonempty extension, try this extension first */
   if (name_has_ext) {
-    result = processx__search_path_join_test(dir, dir_len,
+    result = callr__search_path_join_test(dir, dir_len,
 					     name, name_len,
 					     L"", 0,
 					     cwd, cwd_len);
@@ -361,7 +361,7 @@ static WCHAR* processx__path_search_walk_ext(const WCHAR *dir,
   }
 
   /* Try .com extension */
-  result = processx__search_path_join_test(dir, dir_len,
+  result = callr__search_path_join_test(dir, dir_len,
 					   name, name_len,
 					   L"com", 3,
 					   cwd, cwd_len);
@@ -370,7 +370,7 @@ static WCHAR* processx__path_search_walk_ext(const WCHAR *dir,
   }
 
   /* Try .exe extension */
-  result = processx__search_path_join_test(dir, dir_len,
+  result = callr__search_path_join_test(dir, dir_len,
 					   name, name_len,
 					   L"exe", 3,
 					   cwd, cwd_len);
@@ -425,7 +425,7 @@ static WCHAR* processx__path_search_walk_ext(const WCHAR *dir,
  * really a pointless restriction.
  *
  */
-static WCHAR* processx__search_path(const WCHAR *file,
+static WCHAR* callr__search_path(const WCHAR *file,
 				    WCHAR *cwd,
 				    const WCHAR *path) {
   int file_has_dir;
@@ -464,7 +464,7 @@ static WCHAR* processx__search_path(const WCHAR *file,
 
   if (file_has_dir) {
     /* The file has a path inside, don't use path */
-    result = processx__path_search_walk_ext(
+    result = callr__path_search_walk_ext(
         file, file_name_start - file,
         file_name_start, file_len - (file_name_start - file),
         cwd, cwd_len,
@@ -474,7 +474,7 @@ static WCHAR* processx__search_path(const WCHAR *file,
     dir_end = path;
 
     /* The file is really only a name; look in cwd first, then scan path */
-    result = processx__path_search_walk_ext(L"", 0,
+    result = callr__path_search_walk_ext(L"", 0,
 					    file, file_len,
 					    cwd, cwd_len,
 					    name_has_ext);
@@ -516,7 +516,7 @@ static WCHAR* processx__search_path(const WCHAR *file,
         --dir_len;
       }
 
-      result = processx__path_search_walk_ext(dir_path, dir_len,
+      result = callr__path_search_walk_ext(dir_path, dir_len,
 					      file, file_len,
 					      cwd, cwd_len,
 					      name_has_ext);
@@ -526,7 +526,7 @@ static WCHAR* processx__search_path(const WCHAR *file,
   return result;
 }
 
-void processx__error(const char *message, DWORD errorcode,
+void callr__error(const char *message, DWORD errorcode,
 		     const char *file, int line) {
   LPVOID lpMsgBuf;
   char *msg;
@@ -545,17 +545,17 @@ void processx__error(const char *message, DWORD errorcode,
   strcpy(msg, lpMsgBuf);
   LocalFree(lpMsgBuf);
 
-  error("processx error, %s: #%d %s at '%s:%d'", message,
+  error("callr error, %s: #%d %s at '%s:%d'", message,
 	(int) errorcode, msg, file, line);
 }
 
-void processx__collect_exit_status(SEXP status, DWORD exitcode);
+void callr__collect_exit_status(SEXP status, DWORD exitcode);
 
-DWORD processx__terminate(processx_handle_t *handle, SEXP status) {
+DWORD callr__terminate(callr_handle_t *handle, SEXP status) {
   DWORD err;
 
   err = TerminateProcess(handle->hProcess, 2);
-  if (err) processx__collect_exit_status(status, 2);
+  if (err) callr__collect_exit_status(status, 2);
 
   WaitForSingleObject(handle->hProcess, INFINITE);
   CloseHandle(handle->hProcess);
@@ -563,20 +563,20 @@ DWORD processx__terminate(processx_handle_t *handle, SEXP status) {
   return err;
 }
 
-SEXP processx__disconnect_process_handle(SEXP status) {
+SEXP callr__disconnect_process_handle(SEXP status) {
   R_SetExternalPtrTag(status, R_NilValue);
   return R_NilValue;
 }
 
-void processx__finalizer(SEXP status) {
-  processx_handle_t *handle = (processx_handle_t*) R_ExternalPtrAddr(status);
+void callr__finalizer(SEXP status) {
+  callr_handle_t *handle = (callr_handle_t*) R_ExternalPtrAddr(status);
   SEXP private;
 
   if (!handle) return;
 
   if (handle->cleanup && !handle->collected) {
     /* Just in case it is running */
-    processx__terminate(handle, status);
+    callr__terminate(handle, status);
   }
 
   /* Copy over pid and exit status */
@@ -595,32 +595,32 @@ void processx__finalizer(SEXP status) {
 
   if (handle->hProcess) CloseHandle(handle->hProcess);
   R_ClearExternalPtr(status);
-  processx__handle_destroy(handle);
+  callr__handle_destroy(handle);
 }
 
-SEXP processx__make_handle(SEXP private, int cleanup) {
-  processx_handle_t * handle;
+SEXP callr__make_handle(SEXP private, int cleanup) {
+  callr_handle_t * handle;
   SEXP result;
 
-  handle = (processx_handle_t*) malloc(sizeof(processx_handle_t));
+  handle = (callr_handle_t*) malloc(sizeof(callr_handle_t));
   if (!handle) { error("Out of memory"); }
-  memset(handle, 0, sizeof(processx_handle_t));
+  memset(handle, 0, sizeof(callr_handle_t));
 
   result = PROTECT(R_MakeExternalPtr(handle, private, R_NilValue));
-  R_RegisterCFinalizerEx(result, processx__finalizer, 1);
+  R_RegisterCFinalizerEx(result, callr__finalizer, 1);
   handle->cleanup = cleanup;
 
   UNPROTECT(1);
   return result;
 }
 
-void processx__handle_destroy(processx_handle_t *handle) {
+void callr__handle_destroy(callr_handle_t *handle) {
   if (!handle) return;
   if (handle->child_stdio_buffer) free(handle->child_stdio_buffer);
   free(handle);
 }
 
-SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
+SEXP callr_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
 		   SEXP windows_verbatim_args, SEXP windows_hide,
 		   SEXP private, SEXP cleanup, SEXP encoding) {
 
@@ -632,12 +632,12 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
   WCHAR *path;
   WCHAR *application_path = NULL, *application = NULL, *arguments = NULL,
     *cwd = NULL;
-  processx_options_t options;
+  callr_options_t options;
   STARTUPINFOW startup = { 0 };
   PROCESS_INFORMATION info = { 0 };
   DWORD process_flags;
 
-  processx_handle_t *handle;
+  callr_handle_t *handle;
   int ccleanup = INTEGER(cleanup)[0];
   SEXP result;
   DWORD dwerr;
@@ -645,15 +645,15 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
   options.windows_verbatim_args = LOGICAL(windows_verbatim_args)[0];
   options.windows_hide = LOGICAL(windows_hide)[0];
 
-  err = processx__utf8_to_utf16_alloc(CHAR(STRING_ELT(command, 0)),
+  err = callr__utf8_to_utf16_alloc(CHAR(STRING_ELT(command, 0)),
 				      &application);
-  if (err) { PROCESSX_ERROR("utf8 -> utf16 conversion", err); }
+  if (err) { CALLR_ERROR("utf8 -> utf16 conversion", err); }
 
-  err = processx__make_program_args(
+  err = callr__make_program_args(
       args,
       options.windows_verbatim_args,
       &arguments);
-  if (err) { PROCESSX_ERROR("making program args", err); }
+  if (err) { CALLR_ERROR("making program args", err); }
 
   /* Inherit cwd */
   {
@@ -661,14 +661,14 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
 
     cwd_len = GetCurrentDirectoryW(0, NULL);
     if (!cwd_len) {
-      PROCESSX_ERROR("get current directory length", GetLastError());
+      CALLR_ERROR("get current directory length", GetLastError());
     }
 
     cwd = (WCHAR*) R_alloc(cwd_len, sizeof(WCHAR));
 
     r = GetCurrentDirectoryW(cwd_len, cwd);
     if (r == 0 || r >= cwd_len) {
-      PROCESSX_ERROR("get current directory", GetLastError());
+      CALLR_ERROR("get current directory", GetLastError());
     }
   }
 
@@ -678,29 +678,29 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
 
     path_len = GetEnvironmentVariableW(L"PATH", NULL, 0);
     if (!path_len) {
-      PROCESSX_ERROR("get env var length", GetLastError());
+      CALLR_ERROR("get env var length", GetLastError());
     }
 
     path = (WCHAR*) R_alloc(path_len, sizeof(WCHAR));
 
     r = GetEnvironmentVariableW(L"PATH", path, path_len);
     if (r == 0 || r >= path_len) {
-      PROCESSX_ERROR("get env var", GetLastError());
+      CALLR_ERROR("get env var", GetLastError());
     }
   }
 
-  result = PROTECT(processx__make_handle(private, ccleanup));
+  result = PROTECT(callr__make_handle(private, ccleanup));
   handle = R_ExternalPtrAddr(result);
 
-  err = processx__stdio_create(handle, cstd_out, cstd_err,
+  err = callr__stdio_create(handle, cstd_out, cstd_err,
 			       &handle->child_stdio_buffer, private,
 			       cencoding);
-  if (err) { PROCESSX_ERROR("setup stdio", err); }
+  if (err) { CALLR_ERROR("setup stdio", err); }
 
-  application_path = processx__search_path(application, cwd, path);
+  application_path = callr__search_path(application, cwd, path);
   if (!application_path) {
     R_ClearExternalPtr(result);
-    processx__stdio_destroy(handle->child_stdio_buffer);
+    callr__stdio_destroy(handle->child_stdio_buffer);
     free(handle);
     error("Command not found");
   }
@@ -711,12 +711,12 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
   startup.lpTitle = NULL;
   startup.dwFlags = STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
 
-  startup.cbReserved2 = processx__stdio_size(handle->child_stdio_buffer);
+  startup.cbReserved2 = callr__stdio_size(handle->child_stdio_buffer);
   startup.lpReserved2 = (BYTE*) handle->child_stdio_buffer;
 
-  startup.hStdInput = processx__stdio_handle(handle->child_stdio_buffer, 0);
-  startup.hStdOutput = processx__stdio_handle(handle->child_stdio_buffer, 1);
-  startup.hStdError = processx__stdio_handle(handle->child_stdio_buffer, 2);
+  startup.hStdInput = callr__stdio_handle(handle->child_stdio_buffer, 0);
+  startup.hStdOutput = callr__stdio_handle(handle->child_stdio_buffer, 1);
+  startup.hStdError = callr__stdio_handle(handle->child_stdio_buffer, 2);
   startup.wShowWindow = options.windows_hide ? SW_HIDE : SW_SHOWDEFAULT;
 
   process_flags = CREATE_UNICODE_ENVIRONMENT |
@@ -725,9 +725,9 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
 
   if (!ccleanup) {
     /* Note that we're not setting the CREATE_BREAKAWAY_FROM_JOB flag. That
-     * means that processx might not let you create a fully deamonized
+     * means that callr might not let you create a fully deamonized
      * process when run under job control. However the type of job control
-     * that processx itself creates doesn't trickle down to subprocesses
+     * that callr itself creates doesn't trickle down to subprocesses
      * so they can still daemonize.
      *
      * A reason to not do this is that CREATE_BREAKAWAY_FROM_JOB makes the
@@ -750,7 +750,7 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
     /* lpStartupInfo =        */ &startup,
     /* lpProcessInformation = */ &info);
 
-  if (!err) { PROCESSX_ERROR("create process", GetLastError()); }
+  if (!err) { CALLR_ERROR("create process", GetLastError()); }
 
   handle->hProcess = info.hProcess;
   handle->dwProcessId = info.dwProcessId;
@@ -758,9 +758,9 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
   /* If the process isn't spawned as detached, assign to the global job */
   /* object so windows will kill it when the parent process dies. */
   if (!ccleanup) {
-    if (! processx__global_job_handle) processx__init_global_job_handle();
+    if (! callr__global_job_handle) callr__init_global_job_handle();
 
-    if (!AssignProcessToJobObject(processx__global_job_handle, info.hProcess)) {
+    if (!AssignProcessToJobObject(callr__global_job_handle, info.hProcess)) {
       /* AssignProcessToJobObject might fail if this process is under job
        * control and the job doesn't have the
        * JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK flag set, on a Windows
@@ -768,46 +768,46 @@ SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
        *
        * When that happens we just swallow the error and continue without
        * establishing a kill-child-on-parent-exit relationship, otherwise
-       * there would be no way for R/processx applications run under job
+       * there would be no way for R/callr applications run under job
        * control to spawn processes at all.
        */
       DWORD err = GetLastError();
       if (err != ERROR_ACCESS_DENIED) {
-	PROCESSX_ERROR("Assign to job object", err);
+	CALLR_ERROR("Assign to job object", err);
       }
     }
   }
 
   dwerr = ResumeThread(info.hThread);
-  if (dwerr == (DWORD) -1) PROCESSX_ERROR("resume thread", GetLastError());
+  if (dwerr == (DWORD) -1) CALLR_ERROR("resume thread", GetLastError());
   CloseHandle(info.hThread);
 
-  processx__stdio_destroy(handle->child_stdio_buffer);
+  callr__stdio_destroy(handle->child_stdio_buffer);
   handle->child_stdio_buffer = NULL;
 
   UNPROTECT(1);
   return result;
 }
 
-void processx__collect_exit_status(SEXP status, DWORD exitcode) {
-  processx_handle_t *handle = R_ExternalPtrAddr(status);
+void callr__collect_exit_status(SEXP status, DWORD exitcode) {
+  callr_handle_t *handle = R_ExternalPtrAddr(status);
   handle->exitcode = exitcode;
   handle->collected = 1;
 }
 
-SEXP processx_wait(SEXP status, SEXP timeout) {
+SEXP callr_wait(SEXP status, SEXP timeout) {
   int ctimeout = INTEGER(timeout)[0], timeleft = ctimeout;
-  processx_handle_t *handle = R_ExternalPtrAddr(status);
+  callr_handle_t *handle = R_ExternalPtrAddr(status);
   DWORD err, err2, exitcode;
 
   if (handle->collected) return R_NilValue;
 
   err2 = WAIT_TIMEOUT;
-  while (ctimeout < 0 || timeleft > PROCESSX_INTERRUPT_INTERVAL) {
-    err2 = WaitForSingleObject(handle->hProcess, PROCESSX_INTERRUPT_INTERVAL);
+  while (ctimeout < 0 || timeleft > CALLR_INTERRUPT_INTERVAL) {
+    err2 = WaitForSingleObject(handle->hProcess, CALLR_INTERRUPT_INTERVAL);
     if (err2 != WAIT_TIMEOUT) break;
     R_CheckUserInterrupt();
-    timeleft -= PROCESSX_INTERRUPT_INTERVAL;
+    timeleft -= CALLR_INTERRUPT_INTERVAL;
   }
 
   /* Maybe there is some time left from the timeout */
@@ -816,22 +816,22 @@ SEXP processx_wait(SEXP status, SEXP timeout) {
   }
 
   if (err2 == WAIT_FAILED) {
-    PROCESSX_ERROR("wait on process", GetLastError());
+    CALLR_ERROR("wait on process", GetLastError());
   } else if (err2 == WAIT_TIMEOUT) {
     return ScalarLogical(FALSE);
   }
 
   /* Collect  */
   err = GetExitCodeProcess(handle->hProcess, &exitcode);
-  if (!err) { PROCESSX_ERROR("get exit code after wait", GetLastError()); }
+  if (!err) { CALLR_ERROR("get exit code after wait", GetLastError()); }
 
-  processx__collect_exit_status(status, exitcode);
+  callr__collect_exit_status(status, exitcode);
 
   return ScalarLogical(TRUE);
 }
 
-SEXP processx_is_alive(SEXP status) {
-  processx_handle_t *handle = R_ExternalPtrAddr(status);
+SEXP callr_is_alive(SEXP status) {
+  callr_handle_t *handle = R_ExternalPtrAddr(status);
   DWORD err, exitcode;
 
   if (handle->collected) return ScalarLogical(0);
@@ -839,37 +839,37 @@ SEXP processx_is_alive(SEXP status) {
   /* Otherwise try to get exit code */
   err = GetExitCodeProcess(handle->hProcess, &exitcode);
   if (!err) {
-    PROCESSX_ERROR("get exit code to check if alive", GetLastError());
+    CALLR_ERROR("get exit code to check if alive", GetLastError());
   }
 
   if (exitcode == STILL_ACTIVE) {
     return ScalarLogical(1);
   } else {
-    processx__collect_exit_status(status, exitcode);
+    callr__collect_exit_status(status, exitcode);
     return ScalarLogical(0);
   }
 }
 
-SEXP processx_get_exit_status(SEXP status) {
-  processx_handle_t *handle = R_ExternalPtrAddr(status);
+SEXP callr_get_exit_status(SEXP status) {
+  callr_handle_t *handle = R_ExternalPtrAddr(status);
   DWORD err, exitcode;
 
   if (handle->collected) return ScalarInteger(handle->exitcode);
 
   /* Otherwise try to get exit code */
   err = GetExitCodeProcess(handle->hProcess, &exitcode);
-  if (!err) {PROCESSX_ERROR("get exit status", GetLastError()); }
+  if (!err) {CALLR_ERROR("get exit status", GetLastError()); }
 
   if (exitcode == STILL_ACTIVE) {
     return R_NilValue;
   } else {
-    processx__collect_exit_status(status, exitcode);
+    callr__collect_exit_status(status, exitcode);
     return ScalarInteger(handle->exitcode);
   }
 }
 
-SEXP processx_signal(SEXP status, SEXP signal) {
-  processx_handle_t *handle = R_ExternalPtrAddr(status);
+SEXP callr_signal(SEXP status, SEXP signal) {
+  callr_handle_t *handle = R_ExternalPtrAddr(status);
   DWORD err, exitcode = STILL_ACTIVE;
 
   if (handle->collected) return ScalarLogical(0);
@@ -884,7 +884,7 @@ SEXP processx_signal(SEXP status, SEXP signal) {
        we are terminating it... */
     err = GetExitCodeProcess(handle->hProcess, &exitcode);
     if (!err) {
-      PROCESSX_ERROR("get exit code after signal", GetLastError());
+      CALLR_ERROR("get exit code after signal", GetLastError());
     }
 
     if (exitcode == STILL_ACTIVE) {
@@ -892,12 +892,12 @@ SEXP processx_signal(SEXP status, SEXP signal) {
       /* We only cleanup the tree if the process is still running. */
       /* TODO: we are not running this for now, until we can properly
 	 work around pid reuse. */
-      /* processx__cleanup_child_tree(handle->dwProcessId); */
-      err = processx__terminate(handle, status);
+      /* callr__cleanup_child_tree(handle->dwProcessId); */
+      err = callr__terminate(handle, status);
       return ScalarLogical(err != 0);
 
     } else {
-      processx__collect_exit_status(status, exitcode);
+      callr__collect_exit_status(status, exitcode);
       return ScalarLogical(0);
     }
   }
@@ -906,7 +906,7 @@ SEXP processx_signal(SEXP status, SEXP signal) {
     /* Health check: is the process still alive? */
     err = GetExitCodeProcess(handle->hProcess, &exitcode);
     if (!err) {
-      PROCESSX_ERROR("get exit code for signal 0", GetLastError());
+      CALLR_ERROR("get exit code for signal 0", GetLastError());
     }
 
     if (exitcode == STILL_ACTIVE) {
@@ -922,25 +922,25 @@ SEXP processx_signal(SEXP status, SEXP signal) {
   }
 }
 
-SEXP processx_kill(SEXP status, SEXP grace) {
-  return processx_signal(status, ScalarInteger(9));
+SEXP callr_kill(SEXP status, SEXP grace) {
+  return callr_signal(status, ScalarInteger(9));
 }
 
-SEXP processx_get_pid(SEXP status) {
-  processx_handle_t *handle = R_ExternalPtrAddr(status);
+SEXP callr_get_pid(SEXP status) {
+  callr_handle_t *handle = R_ExternalPtrAddr(status);
 
-  if (!handle) { error("Internal processx error, handle already removed"); }
+  if (!handle) { error("Internal callr error, handle already removed"); }
 
   return ScalarInteger(handle->dwProcessId);
 }
 
-SEXP processx__process_exists(SEXP pid) {
+SEXP callr__process_exists(SEXP pid) {
   DWORD cpid = INTEGER(pid)[0];
   HANDLE proc = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, cpid);
   if (proc == NULL) {
     DWORD err = GetLastError();
     if (err == ERROR_INVALID_PARAMETER) return ScalarLogical(0);
-    PROCESSX_ERROR("open process to check if it exists", err);
+    CALLR_ERROR("open process to check if it exists", err);
     return R_NilValue;
   } else {
     /* Maybe just finished, and in that case we still have a valid handle.
@@ -949,7 +949,7 @@ SEXP processx__process_exists(SEXP pid) {
     DWORD err = GetExitCodeProcess(proc, &exitcode);
     CloseHandle(proc);
     if (!err) {
-      PROCESSX_ERROR(
+      CALLR_ERROR(
 	"get exit code to check if it exists",
 	GetLastError());
     }

@@ -39,4 +39,3 @@ defaults:
 Other R CMD commands: \code{\link{rcmd_bg}},
   \code{\link{rcmd}}
 }
-\concept{R CMD commands}

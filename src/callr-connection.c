@@ -1,5 +1,5 @@
 
-#include "processx-connection.h"
+#include "callr-connection.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -12,45 +12,45 @@
 #include <poll.h>
 #endif
 
-#include "processx.h"
+#include "callr.h"
 
 /* Internal functions in this file */
 
-static void processx__connection_find_chars(processx_connection_t *ccon,
+static void callr__connection_find_chars(callr_connection_t *ccon,
 					    ssize_t maxchars,
 					    ssize_t maxbytes,
 					    size_t *chars,
 					    size_t *bytes);
 
-static void processx__connection_find_lines(processx_connection_t *ccon,
+static void callr__connection_find_lines(callr_connection_t *ccon,
 					    ssize_t maxlines,
 					    size_t *lines,
 					    int *eof);
 
-static void processx__connection_alloc(processx_connection_t *ccon);
-static void processx__connection_realloc(processx_connection_t *ccon);
-static ssize_t processx__connection_read(processx_connection_t *ccon);
-static ssize_t processx__find_newline(processx_connection_t *ccon,
+static void callr__connection_alloc(callr_connection_t *ccon);
+static void callr__connection_realloc(callr_connection_t *ccon);
+static ssize_t callr__connection_read(callr_connection_t *ccon);
+static ssize_t callr__find_newline(callr_connection_t *ccon,
 				      size_t start);
-static ssize_t processx__connection_read_until_newline(processx_connection_t
+static ssize_t callr__connection_read_until_newline(callr_connection_t
 						       *ccon);
-static void processx__connection_xfinalizer(SEXP con);
-static ssize_t processx__connection_to_utf8(processx_connection_t *ccon);
-static void processx__connection_find_utf8_chars(processx_connection_t *ccon,
+static void callr__connection_xfinalizer(SEXP con);
+static ssize_t callr__connection_to_utf8(callr_connection_t *ccon);
+static void callr__connection_find_utf8_chars(callr_connection_t *ccon,
 						 ssize_t maxchars,
 						 ssize_t maxbytes,
 						 size_t *chars,
 						 size_t *bytes);
 
 #ifdef _WIN32
-#define PROCESSX_CHECK_VALID_CONN(x) do {				\
+#define CALLR_CHECK_VALID_CONN(x) do {				\
     if (!x) error("Invalid connection object");				\
     if (!(x)->handle.handle) {						\
       error("Invalid (uninitialized or closed?) connection object");	\
     }									\
   } while (0)
 #else
-#define PROCESSX_CHECK_VALID_CONN(x) do {				\
+#define CALLR_CHECK_VALID_CONN(x) do {				\
     if (!x) error("Invalid connection object");				\
     if ((x)->handle < 0) {                                              \
       error("Invalid (uninitialized or closed?) connection object");	\
@@ -62,26 +62,26 @@ static void processx__connection_find_utf8_chars(processx_connection_t *ccon,
 /* API from R                                                            */
 /* --------------------------------------------------------------------- */
 
-SEXP processx_connection_create(SEXP handle, SEXP encoding) {
-  processx_file_handle_t *os_handle = R_ExternalPtrAddr(handle);
+SEXP callr_connection_create(SEXP handle, SEXP encoding) {
+  callr_file_handle_t *os_handle = R_ExternalPtrAddr(handle);
   const char *c_encoding = CHAR(STRING_ELT(encoding, 0));
   SEXP result = R_NilValue;
 
   if (!os_handle) error("Cannot create connection, invalid handle");
 
-  processx_c_connection_create(*os_handle, PROCESSX_FILE_TYPE_ASYNCPIPE,
+  callr_c_connection_create(*os_handle, CALLR_FILE_TYPE_ASYNCPIPE,
 			       c_encoding, &result);
   return result;
 }
 
-SEXP processx_connection_read_chars(SEXP con, SEXP nchars) {
+SEXP callr_connection_read_chars(SEXP con, SEXP nchars) {
 
-  processx_connection_t *ccon = R_ExternalPtrAddr(con);
+  callr_connection_t *ccon = R_ExternalPtrAddr(con);
   SEXP result;
   int cnchars = asInteger(nchars);
   size_t utf8_chars, utf8_bytes;
 
-  processx__connection_find_chars(ccon, cnchars, -1, &utf8_chars,
+  callr__connection_find_chars(ccon, cnchars, -1, &utf8_chars,
 				  &utf8_bytes);
 
   result = PROTECT(ScalarString(mkCharLenCE(ccon->utf8, utf8_bytes,
@@ -93,9 +93,9 @@ SEXP processx_connection_read_chars(SEXP con, SEXP nchars) {
   return result;
 }
 
-SEXP processx_connection_read_lines(SEXP con, SEXP nlines) {
+SEXP callr_connection_read_lines(SEXP con, SEXP nlines) {
 
-  processx_connection_t *ccon = R_ExternalPtrAddr(con);
+  callr_connection_t *ccon = R_ExternalPtrAddr(con);
   SEXP result;
   int cn = asInteger(nlines);
   ssize_t newline, eol = -1;
@@ -103,11 +103,11 @@ SEXP processx_connection_read_lines(SEXP con, SEXP nlines) {
   int eof = 0;
   int slashr;
 
-  processx__connection_find_lines(ccon, cn, &lines_read, &eof);
+  callr__connection_find_lines(ccon, cn, &lines_read, &eof);
 
   result = PROTECT(allocVector(STRSXP, lines_read + eof));
   for (l = 0, newline = -1; l < lines_read; l++) {
-    eol = processx__find_newline(ccon, newline + 1);
+    eol = callr__find_newline(ccon, newline + 1);
     slashr = ccon->utf8[eol - 1] == '\r';
     SET_STRING_ELT(
       result, l,
@@ -131,27 +131,27 @@ SEXP processx_connection_read_lines(SEXP con, SEXP nlines) {
   return result;
 }
 
-SEXP processx_connection_is_eof(SEXP con) {
-  processx_connection_t *ccon = R_ExternalPtrAddr(con);
+SEXP callr_connection_is_eof(SEXP con) {
+  callr_connection_t *ccon = R_ExternalPtrAddr(con);
   if (!ccon) error("Invalid connection object");
   return ScalarLogical(ccon->is_eof_);
 }
 
-SEXP processx_connection_close(SEXP con) {
-  processx_connection_t *ccon = R_ExternalPtrAddr(con);
+SEXP callr_connection_close(SEXP con) {
+  callr_connection_t *ccon = R_ExternalPtrAddr(con);
   if (!ccon) error("Invalid connection object");
-  processx_c_connection_close(ccon);
+  callr_c_connection_close(ccon);
   return R_NilValue;
 }
 
-SEXP processx_connection_is_closed(SEXP con) {
-  processx_connection_t *ccon = R_ExternalPtrAddr(con);
+SEXP callr_connection_is_closed(SEXP con) {
+  callr_connection_t *ccon = R_ExternalPtrAddr(con);
   if (!ccon) error("Invalid connection object");
-  return ScalarLogical(processx_c_connection_is_closed(ccon));
+  return ScalarLogical(callr_c_connection_is_closed(ccon));
 }
 
 /* Poll connections and other pollable handles */
-SEXP processx_connection_poll(SEXP pollables, SEXP timeout) {
+SEXP callr_connection_poll(SEXP pollables, SEXP timeout) {
   /* TODO: this is not used currently */
   error("Not implemented");
   return R_NilValue;
@@ -159,16 +159,16 @@ SEXP processx_connection_poll(SEXP pollables, SEXP timeout) {
 
 /* Api from C -----------------------------------------------------------*/
 
-processx_connection_t *processx_c_connection_create(
-  processx_file_handle_t os_handle,
-  processx_file_type_t type,
+callr_connection_t *callr_c_connection_create(
+  callr_file_handle_t os_handle,
+  callr_file_type_t type,
   const char *encoding,
   SEXP *r_connection) {
 
-  processx_connection_t *con;
+  callr_connection_t *con;
   SEXP result, class;
 
-  con = malloc(sizeof(processx_connection_t));
+  con = malloc(sizeof(callr_connection_t));
   if (!con) error("out of memory");
 
   con->type = type;
@@ -207,7 +207,7 @@ processx_connection_t *processx_c_connection_create(
 
   if (con->handle.overlapped.hEvent == NULL) {
     free(con);
-    PROCESSX_ERROR("Cannot create connection event", GetLastError());
+    CALLR_ERROR("Cannot create connection event", GetLastError());
     return 0; 			/* never reached */
   }
 #else
@@ -216,8 +216,8 @@ processx_connection_t *processx_c_connection_create(
 
   if (r_connection) {
     result = PROTECT(R_MakeExternalPtr(con, R_NilValue, R_NilValue));
-    R_RegisterCFinalizerEx(result, processx__connection_xfinalizer, 1);
-    class = PROTECT(ScalarString(mkChar("processx_connection")));
+    R_RegisterCFinalizerEx(result, callr__connection_xfinalizer, 1);
+    class = PROTECT(ScalarString(mkChar("callr_connection")));
     setAttrib(result, R_ClassSymbol, class);
     *r_connection = result;
   }
@@ -227,9 +227,9 @@ processx_connection_t *processx_c_connection_create(
 }
 
 /* Destroy */
-void processx_c_connection_destroy(processx_connection_t *ccon) {
+void callr_c_connection_destroy(callr_connection_t *ccon) {
 
-  processx_c_connection_close(ccon);
+  callr_c_connection_close(ccon);
 
   if (!ccon) return;
 
@@ -243,7 +243,7 @@ void processx_c_connection_destroy(processx_connection_t *ccon) {
 }
 
 /* Read characters */
-ssize_t processx_c_connection_read_chars(processx_connection_t *ccon,
+ssize_t callr_c_connection_read_chars(callr_connection_t *ccon,
 					 void *buffer,
 					 size_t nbyte) {
   size_t utf8_chars, utf8_bytes;
@@ -253,7 +253,7 @@ ssize_t processx_c_connection_read_chars(processx_connection_t *ccon,
 	  "characters");
   }
 
-  processx__connection_find_chars(ccon, -1, nbyte, &utf8_chars, &utf8_bytes);
+  callr__connection_find_chars(ccon, -1, nbyte, &utf8_chars, &utf8_bytes);
 
   memcpy(buffer, ccon->utf8, utf8_bytes);
   ccon->utf8_data_size -= utf8_bytes;
@@ -279,7 +279,7 @@ ssize_t processx_c_connection_read_chars(processx_connection_t *ccon,
  *   and `linecapp` are not touched.
  *
  */
-ssize_t processx_c_connection_read_line(processx_connection_t *ccon,
+ssize_t callr_c_connection_read_line(callr_connection_t *ccon,
 					char **linep, size_t *linecapp) {
 
   int eof = 0;
@@ -292,7 +292,7 @@ ssize_t processx_c_connection_read_line(processx_connection_t *ccon,
 
   /* Read until a newline character shows up, or there is nothing more
      to read (at least for now). */
-  newline = processx__connection_read_until_newline(ccon);
+  newline = callr__connection_read_until_newline(ccon);
 
   /* If there is no newline at the end of the file, we still add the
      last line. */
@@ -333,12 +333,12 @@ ssize_t processx_c_connection_read_line(processx_connection_t *ccon,
 }
 
 /* Check if the connection has ended */
-int processx_c_connection_is_eof(processx_connection_t *ccon) {
+int callr_c_connection_is_eof(callr_connection_t *ccon) {
   return ccon->is_eof_;
 }
 
 /* Close */
-void processx_c_connection_close(processx_connection_t *ccon) {
+void callr_c_connection_close(callr_connection_t *ccon) {
 #ifdef _WIN32
   if (ccon->handle.handle) CloseHandle(ccon->handle.handle);
   ccon->handle.handle = 0;
@@ -353,13 +353,13 @@ void processx_c_connection_close(processx_connection_t *ccon) {
   ccon->is_closed_ = 1;
 }
 
-int processx_c_connection_is_closed(processx_connection_t *ccon) {
+int callr_c_connection_is_closed(callr_connection_t *ccon) {
   return ccon->is_closed_;
 }
 
 #ifdef _WIN32
 
-int processx_c_connection_poll(processx_pollable_t pollables[],
+int callr_c_connection_poll(callr_pollable_t pollables[],
 			       size_t npollables, int timeout) {
 
   int hasdata = 0;
@@ -373,8 +373,8 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
   handles = (HANDLE*) R_alloc(npollables, sizeof(HANDLE));
 
   for (i = 0; i < npollables; i++) {
-    processx_pollable_t *el = pollables + i;
-    processx_file_handle_t handle = 0;
+    callr_pollable_t *el = pollables + i;
+    callr_file_handle_t handle = 0;
     int again;
     el->event = el->poll_func(el->object, 0, &handle, &again);
     if (el->event == PXNOPIPE || el->event == PXCLOSED) {
@@ -395,16 +395,16 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
   if (hasdata) timeout = timeleft = 0;
 
   waitres = WAIT_TIMEOUT;
-  while (timeout < 0 || timeleft > PROCESSX_INTERRUPT_INTERVAL) {
+  while (timeout < 0 || timeleft > CALLR_INTERRUPT_INTERVAL) {
     waitres = WaitForMultipleObjects(
       j,
       handles,
       /* bWaitAll = */ FALSE,
-      PROCESSX_INTERRUPT_INTERVAL);
+      CALLR_INTERRUPT_INTERVAL);
     if (waitres != WAIT_TIMEOUT) break;
 
     R_CheckUserInterrupt();
-    timeleft -= PROCESSX_INTERRUPT_INTERVAL;
+    timeleft -= CALLR_INTERRUPT_INTERVAL;
   }
 
   /* Maybe some time left from the timeout */
@@ -417,7 +417,7 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
   }
 
   if (waitres == WAIT_FAILED) {
-    PROCESSX_ERROR("waiting in poll", GetLastError());
+    CALLR_ERROR("waiting in poll", GetLastError());
 
   } else if (waitres == WAIT_TIMEOUT) {
     if (hasdata == 0) {
@@ -435,14 +435,14 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
 
 #else
 
-static int processx__poll_decode(short code) {
+static int callr__poll_decode(short code) {
   if (code & POLLNVAL) return PXCLOSED;
   if (code & POLLIN || code & POLLHUP) return PXREADY;
   return PXSILENT;
 }
 
 /* Poll connections and other pollable handles */
-int processx_c_connection_poll(processx_pollable_t pollables[],
+int callr_c_connection_poll(callr_pollable_t pollables[],
 			       size_t npollables, int timeout) {
 
   int hasdata = 0;
@@ -459,8 +459,8 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
 
   /* Need to call the poll method for every pollable */
   for (i = 0; i < npollables; i++) {
-    processx_pollable_t *el = pollables + i;
-    processx_file_handle_t handle;
+    callr_pollable_t *el = pollables + i;
+    callr_file_handle_t handle;
     int again;
     el->event = el->poll_func(el->object, 0, &handle, &again);
     if (el->event == PXNOPIPE || el->event == PXCLOSED) {
@@ -485,10 +485,10 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
 
   /* If we already have some data, then we don't wait any more,
      just check if other connections are ready */
-  ret = processx__interruptible_poll(fds, j, hasdata > 0 ? 0 : timeout);
+  ret = callr__interruptible_poll(fds, j, hasdata > 0 ? 0 : timeout);
 
   if (ret == -1) {
-    error("Processx poll error: %s", strerror(errno));
+    error("Callr poll error: %s", strerror(errno));
 
   } else if (ret == 0) {
     if (hasdata == 0) {
@@ -497,7 +497,7 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
 
   } else {
     for (i = 0; i < j; i++) {
-      pollables[ptr[i]].event = processx__poll_decode(fds[i].revents);
+      pollables[ptr[i]].event = callr__poll_decode(fds[i].revents);
       hasdata += (pollables[ptr[i]].event == PXREADY);
     }
   }
@@ -509,7 +509,7 @@ int processx_c_connection_poll(processx_pollable_t pollables[],
 
 #ifdef _WIN32
 
-void processx__connection_start_read(processx_connection_t *ccon) {
+void callr__connection_start_read(callr_connection_t *ccon) {
   DWORD bytes_read;
   BOOLEAN res;
   size_t todo;
@@ -518,12 +518,12 @@ void processx__connection_start_read(processx_connection_t *ccon) {
 
   if (ccon->handle.read_pending) return;
 
-  if (!ccon->buffer) processx__connection_alloc(ccon);
+  if (!ccon->buffer) callr__connection_alloc(ccon);
 
   todo = ccon->buffer_allocated_size - ccon->buffer_data_size;
 
   /* These need to be set to zero for non-file handles */
-  if (ccon->type != PROCESSX_FILE_TYPE_ASYNCFILE) {
+  if (ccon->type != CALLR_FILE_TYPE_ASYNCFILE) {
      ccon->handle.overlapped.Offset = 0;
      ccon->handle.overlapped.OffsetHigh = 0;
   }
@@ -545,13 +545,13 @@ void processx__connection_start_read(processx_connection_t *ccon) {
       ccon->handle.read_pending = TRUE;
     } else {
       ccon->handle.read_pending = FALSE;
-      PROCESSX_ERROR("reading from connection", err);
+      CALLR_ERROR("reading from connection", err);
     }
   } else {
     /* Returned synchronously. */
     ccon->handle.read_pending = FALSE;
     ccon->buffer_data_size += bytes_read;
-    if (ccon->type == PROCESSX_FILE_TYPE_ASYNCFILE) {
+    if (ccon->type == CALLR_FILE_TYPE_ASYNCFILE) {
       /* TODO: large files */
       ccon->handle.overlapped.Offset += bytes_read;
     }
@@ -576,31 +576,31 @@ void processx__connection_start_read(processx_connection_t *ccon) {
  *    to convert it to UTF8.
  */
 
-#define PROCESSX__I_POLL_FUNC_CONNECTION_READY do {			\
+#define CALLR__I_POLL_FUNC_CONNECTION_READY do {			\
   if (!ccon) return PXNOPIPE;						\
   if (ccon->is_closed_) return PXCLOSED;				\
   if (ccon->is_eof_) return PXREADY;					\
   if (ccon->utf8_data_size > 0) return PXREADY;				\
   if (ccon->buffer_data_size > 0 && ccon->is_eof_raw_) return PXREADY;	\
   if (ccon->buffer_data_size > 0) {					\
-    processx__connection_to_utf8(ccon);					\
+    callr__connection_to_utf8(ccon);					\
     if (ccon->utf8_data_size > 0) return PXREADY;			\
   } } while (0)
 
-int processx_i_poll_func_connection(
+int callr_i_poll_func_connection(
   void * object,
   int status,
-  processx_file_handle_t *handle,
+  callr_file_handle_t *handle,
   int *again) {
 
-  processx_connection_t *ccon = (processx_connection_t*) object;
+  callr_connection_t *ccon = (callr_connection_t*) object;
 
-  PROCESSX__I_POLL_FUNC_CONNECTION_READY;
+  CALLR__I_POLL_FUNC_CONNECTION_READY;
 
 #ifdef _WIN32
-  processx__connection_read(ccon);
+  callr__connection_read(ccon);
   /* Starting to read may actually get some data, or an EOF, so check again */
-  PROCESSX__I_POLL_FUNC_CONNECTION_READY;
+  CALLR__I_POLL_FUNC_CONNECTION_READY;
   if (handle) *handle = ccon->handle.overlapped.hEvent;
 #else
   if (handle) *handle = ccon->handle;
@@ -611,11 +611,11 @@ int processx_i_poll_func_connection(
   return PXSILENT;
 }
 
-int processx_c_pollable_from_connection(
-  processx_pollable_t *pollable,
-  processx_connection_t *ccon) {
+int callr_c_pollable_from_connection(
+  callr_pollable_t *pollable,
+  callr_connection_t *ccon) {
 
-  pollable->poll_func = processx_i_poll_func_connection;
+  pollable->poll_func = callr_i_poll_func_connection;
   pollable->object = ccon;
   pollable->free = 0;
   return 0;
@@ -639,7 +639,7 @@ int processx_c_pollable_from_connection(
  *
  */
 
-static void processx__connection_find_chars(processx_connection_t *ccon,
+static void callr__connection_find_chars(callr_connection_t *ccon,
 					    ssize_t maxchars,
 					    ssize_t maxbytes,
 					    size_t *chars,
@@ -647,15 +647,15 @@ static void processx__connection_find_chars(processx_connection_t *ccon,
 
   int should_read_more;
 
-  PROCESSX_CHECK_VALID_CONN(ccon);
+  CALLR_CHECK_VALID_CONN(ccon);
 
   should_read_more = ! ccon->is_eof_ && ccon->utf8_data_size == 0;
-  if (should_read_more) processx__connection_read(ccon);
+  if (should_read_more) callr__connection_read(ccon);
 
   if (ccon->utf8_data_size == 0 || maxchars == 0) { *bytes = 0; return; }
 
   /* At at most cnchars characters from the UTF8 buffer */
-  processx__connection_find_utf8_chars(ccon, maxchars, maxbytes, chars,
+  callr__connection_find_utf8_chars(ccon, maxchars, maxbytes, chars,
 				       bytes);
 }
 
@@ -673,7 +673,7 @@ static void processx__connection_find_chars(processx_connection_t *ccon,
  *
  */
 
-static void processx__connection_find_lines(processx_connection_t *ccon,
+static void callr__connection_find_lines(callr_connection_t *ccon,
 					    ssize_t maxlines,
 					    size_t *lines,
 					    int *eof ) {
@@ -684,16 +684,16 @@ static void processx__connection_find_lines(processx_connection_t *ccon,
 
   if (maxlines < 0) maxlines = 1000;
 
-  PROCESSX_CHECK_VALID_CONN(ccon);
+  CALLR_CHECK_VALID_CONN(ccon);
 
   /* Read until a newline character shows up, or there is nothing more
      to read (at least for now). */
-  newline = processx__connection_read_until_newline(ccon);
+  newline = callr__connection_read_until_newline(ccon);
 
   /* Count the number of lines we got. */
   while (newline != -1 && *lines < maxlines) {
     (*lines) ++;
-    newline = processx__find_newline(ccon, /* start = */ newline + 1);
+    newline = callr__find_newline(ccon, /* start = */ newline + 1);
   }
 
   /* If there is no newline at the end of the file, we still add the
@@ -706,13 +706,13 @@ static void processx__connection_find_lines(processx_connection_t *ccon,
 
 }
 
-static void processx__connection_xfinalizer(SEXP con) {
-  processx_connection_t *ccon = R_ExternalPtrAddr(con);
+static void callr__connection_xfinalizer(SEXP con) {
+  callr_connection_t *ccon = R_ExternalPtrAddr(con);
 
-  processx_c_connection_destroy(ccon);
+  callr_c_connection_destroy(ccon);
 }
 
-static ssize_t processx__find_newline(processx_connection_t *ccon,
+static ssize_t callr__find_newline(callr_connection_t *ccon,
 				     size_t start) {
 
   if (ccon->utf8_data_size == 0) return -1;
@@ -724,13 +724,13 @@ static ssize_t processx__find_newline(processx_connection_t *ccon,
   if (ret < end) return ret - ccon->utf8; else return -1;
 }
 
-static ssize_t processx__connection_read_until_newline
-  (processx_connection_t *ccon) {
+static ssize_t callr__connection_read_until_newline
+  (callr_connection_t *ccon) {
 
   char *ptr, *end;
 
   /* Make sure we try to have something, unless EOF */
-  if (ccon->utf8_data_size == 0) processx__connection_read(ccon);
+  if (ccon->utf8_data_size == 0) callr__connection_read(ccon);
   if (ccon->utf8_data_size == 0) return -1;
 
   /* We have sg in the utf8 at this point */
@@ -754,11 +754,11 @@ static ssize_t processx__connection_read_until_newline
     if (ccon->utf8_data_size >= ccon->utf8_allocated_size - 8) {
       size_t ptrnum = ptr - ccon->utf8;
       size_t endnum = end - ccon->utf8;
-      processx__connection_realloc(ccon);
+      callr__connection_realloc(ccon);
       ptr = ccon->utf8 + ptrnum;
       end = ccon->utf8 + endnum;
     }
-    new_bytes = processx__connection_read(ccon);
+    new_bytes = callr__connection_read(ccon);
 
     /* If we cannot read now, then we give up */
     if (new_bytes == 0) return -1;
@@ -767,16 +767,16 @@ static ssize_t processx__connection_read_until_newline
 
 /* Allocate buffer for reading */
 
-static void processx__connection_alloc(processx_connection_t *ccon) {
+static void callr__connection_alloc(callr_connection_t *ccon) {
   ccon->buffer = malloc(64 * 1024);
-  if (!ccon->buffer) error("Cannot allocate memory for processx buffer");
+  if (!ccon->buffer) error("Cannot allocate memory for callr buffer");
   ccon->buffer_allocated_size = 64 * 1024;
   ccon->buffer_data_size = 0;
 
   ccon->utf8 = malloc(64 * 1024);
   if (!ccon->utf8) {
     free(ccon->buffer);
-    error("Cannot allocate memory for processx buffer");
+    error("Cannot allocate memory for callr buffer");
   }
   ccon->utf8_allocated_size = 64 * 1024;
   ccon->utf8_data_size = 0;
@@ -785,9 +785,9 @@ static void processx__connection_alloc(processx_connection_t *ccon) {
 /* We only really need to re-alloc the UTF8 buffer, because the
    other buffer is transient, even if there are no newline characters. */
 
-static void processx__connection_realloc(processx_connection_t *ccon) {
+static void callr__connection_realloc(callr_connection_t *ccon) {
   void *nb = realloc(ccon->utf8, ccon->utf8_allocated_size * 1.2);
-  if (!nb) error("Cannot allocate memory for processx line");
+  if (!nb) error("Cannot allocate memory for callr line");
   ccon->utf8 = nb;
   ccon->utf8_allocated_size = ccon->utf8_allocated_size * 1.2;
 }
@@ -801,7 +801,7 @@ static void processx__connection_realloc(processx_connection_t *ccon) {
 
 #ifdef _WIN32
 
-static ssize_t processx__connection_read(processx_connection_t *ccon) {
+static ssize_t callr__connection_read(callr_connection_t *ccon) {
   DWORD todo, bytes_read = 0;
   BOOLEAN result;
 
@@ -811,14 +811,14 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
     return 0;
   }
 
-  if (!ccon->buffer) processx__connection_alloc(ccon);
+  if (!ccon->buffer) callr__connection_alloc(ccon);
 
   /* If cannot read anything more, then try to convert to UTF8 */
   todo = ccon->buffer_allocated_size - ccon->buffer_data_size;
-  if (todo == 0) return processx__connection_to_utf8(ccon);
+  if (todo == 0) return callr__connection_to_utf8(ccon);
 
   /* Otherwise we read. If there is no read pending, we start one. */
-  processx__connection_start_read(ccon);
+  callr__connection_start_read(ccon);
 
   /* A read might be pending at this point. See if it has finished. */
   if (ccon->handle.read_pending) {
@@ -842,14 +842,14 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
 
       } else {
 	ccon->handle.read_pending = FALSE;
-	PROCESSX_ERROR("getting overlapped result in connection read", err);
+	CALLR_ERROR("getting overlapped result in connection read", err);
 	return 0;			/* never called */
       }
 
     } else {
       ccon->handle.read_pending = FALSE;
       ccon->buffer_data_size += bytes_read;
-      if (ccon->type == PROCESSX_FILE_TYPE_ASYNCFILE) {
+      if (ccon->type == CALLR_FILE_TYPE_ASYNCFILE) {
 	/* TODO: large files */
 	ccon->handle.overlapped.Offset += bytes_read;
       }
@@ -858,7 +858,7 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
 
   /* If there is anything to convert to UTF8, try converting */
   if (ccon->buffer_data_size > 0) {
-    bytes_read = processx__connection_to_utf8(ccon);
+    bytes_read = callr__connection_to_utf8(ccon);
   } else {
     bytes_read = 0;
   }
@@ -868,7 +868,7 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
 
 #else
 
-static ssize_t processx__connection_read(processx_connection_t *ccon) {
+static ssize_t callr__connection_read(callr_connection_t *ccon) {
   ssize_t todo, bytes_read;
 
   /* Nothing to read, nothing to convert to UTF8 */
@@ -877,11 +877,11 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
     return 0;
   }
 
-  if (!ccon->buffer) processx__connection_alloc(ccon);
+  if (!ccon->buffer) callr__connection_alloc(ccon);
 
   /* If cannot read anything more, then try to convert to UTF8 */
   todo = ccon->buffer_allocated_size - ccon->buffer_data_size;
-  if (todo == 0) return processx__connection_to_utf8(ccon);
+  if (todo == 0) return callr__connection_to_utf8(ccon);
 
   /* Otherwise we read */
   bytes_read = read(ccon->handle, ccon->buffer + ccon->buffer_data_size, todo);
@@ -899,14 +899,14 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
 
   } else if (bytes_read == -1) {
     /* Proper error  */
-    error("Cannot read from processx connection: %s", strerror(errno));
+    error("Cannot read from callr connection: %s", strerror(errno));
   }
 
   ccon->buffer_data_size += bytes_read;
 
   /* If there is anything to convert to UTF8, try converting */
   if (ccon->buffer_data_size > 0) {
-    bytes_read = processx__connection_to_utf8(ccon);
+    bytes_read = callr__connection_to_utf8(ccon);
   } else {
     bytes_read = 0;
   }
@@ -915,7 +915,7 @@ static ssize_t processx__connection_read(processx_connection_t *ccon) {
 }
 #endif
 
-static ssize_t processx__connection_to_utf8(processx_connection_t *ccon) {
+static ssize_t callr__connection_to_utf8(callr_connection_t *ccon) {
 
   const char *inbuf, *inbufold;
   char *outbuf, *outbufold;
@@ -981,13 +981,13 @@ static ssize_t processx__connection_to_utf8(processx_connection_t *ccon) {
  * bytes. */
 
 /* Number of additional bytes */
-static const unsigned char processx__utf8_length[] = {
+static const unsigned char callr__utf8_length[] = {
   2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
   2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
   3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
   4,4,4,4,4,4,4,4,5,5,5,5,6,6,6,6 };
 
-static void processx__connection_find_utf8_chars(processx_connection_t *ccon,
+static void callr__connection_find_utf8_chars(callr_connection_t *ccon,
 						 ssize_t maxchars,
 						 ssize_t maxbytes,
 						 size_t *chars,
@@ -1013,7 +1013,7 @@ static void processx__connection_find_utf8_chars(processx_connection_t *ccon,
     if (c <  0xc0) goto invalid;
     if (c >= 0xfe) goto invalid;
 
-    clen = processx__utf8_length[c & 0x3f];
+    clen = callr__utf8_length[c & 0x3f];
     if (length < clen) goto invalid;
     if (maxbytes > 0 && clen > maxbytes) break;
     (*chars) ++; (*bytes) += clen; ptr += clen; length -= clen;
@@ -1029,21 +1029,21 @@ static void processx__connection_find_utf8_chars(processx_connection_t *ccon,
 
 #ifndef _WIN32
 
-int processx__interruptible_poll(struct pollfd fds[],
+int callr__interruptible_poll(struct pollfd fds[],
 				 nfds_t nfds, int timeout) {
   int ret = 0;
   int timeleft = timeout;
 
-  while (timeout < 0 || timeleft > PROCESSX_INTERRUPT_INTERVAL) {
+  while (timeout < 0 || timeleft > CALLR_INTERRUPT_INTERVAL) {
     do {
-      ret = poll(fds, nfds, PROCESSX_INTERRUPT_INTERVAL);
+      ret = poll(fds, nfds, CALLR_INTERRUPT_INTERVAL);
     } while (ret == -1 && errno == EINTR);
 
     /* If not a timeout, then return */
     if (ret != 0) return ret;
 
     R_CheckUserInterrupt();
-    timeleft -= PROCESSX_INTERRUPT_INTERVAL;
+    timeleft -= CALLR_INTERRUPT_INTERVAL;
   }
 
   /* Maybe we are not done, and there is a little left from the timeout */
@@ -1058,4 +1058,4 @@ int processx__interruptible_poll(struct pollfd fds[],
 
 #endif
 
-#undef PROCESSX_CHECK_VALID_CONN
+#undef CALLR_CHECK_VALID_CONN

@@ -13,11 +13,15 @@ BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Imports:
-    processx,
+    assertthat,
+    crayon,
+    debugme,
     R6,
     utils
 Suggests:
     covr,
     testthat,
     withr
+LinkingTo:
+    testthat
 Encoding: UTF-8

@@ -1,6 +1,6 @@
 
-#ifndef PROCESSX_H
-#define PROCESSX_H
+#ifndef CALLR_H
+#define CALLR_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,41 +21,41 @@ extern "C" {
 #endif
 
 #include <Rinternals.h>
-#include "processx-connection.h"
+#include "callr-connection.h"
 
 #ifdef _WIN32
-#include "win/processx-win.h"
+#include "win/callr-win.h"
 #else
-#include "unix/processx-unix.h"
+#include "unix/callr-unix.h"
 #endif
 
 /* API from R */
 
-SEXP processx_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
+SEXP callr_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
 		   SEXP windows_verbatim_args,
 		   SEXP windows_hide_window, SEXP private_, SEXP cleanup,
 		   SEXP encoding);
-SEXP processx_wait(SEXP status, SEXP timeout);
-SEXP processx_is_alive(SEXP status);
-SEXP processx_get_exit_status(SEXP status);
-SEXP processx_signal(SEXP status, SEXP signal);
-SEXP processx_kill(SEXP status, SEXP grace);
-SEXP processx_get_pid(SEXP status);
+SEXP callr_wait(SEXP status, SEXP timeout);
+SEXP callr_is_alive(SEXP status);
+SEXP callr_get_exit_status(SEXP status);
+SEXP callr_signal(SEXP status, SEXP signal);
+SEXP callr_kill(SEXP status, SEXP grace);
+SEXP callr_get_pid(SEXP status);
 
-SEXP processx_poll(SEXP statuses, SEXP ms);
+SEXP callr_poll(SEXP statuses, SEXP ms);
 
-SEXP processx__process_exists(SEXP pid);
-SEXP processx__disconnect_process_handle(SEXP status);
+SEXP callr__process_exists(SEXP pid);
+SEXP callr__disconnect_process_handle(SEXP status);
 
-SEXP processx_is_named_pipe_open(SEXP pipe_ext);
-SEXP processx_close_named_pipe(SEXP pipe_ext);
-SEXP processx_create_named_pipe(SEXP name, SEXP mode);
-SEXP processx_write_named_pipe(SEXP pipe_ext, SEXP text);
+SEXP callr_is_named_pipe_open(SEXP pipe_ext);
+SEXP callr_close_named_pipe(SEXP pipe_ext);
+SEXP callr_create_named_pipe(SEXP name, SEXP mode);
+SEXP callr_write_named_pipe(SEXP pipe_ext, SEXP text);
 
 /* Common declarations */
 
 /* Interruption interval in ms */
-#define PROCESSX_INTERRUPT_INTERVAL 200
+#define CALLR_INTERRUPT_INTERVAL 200
 
 /* Various OSes and OS versions return various poll codes when the
    child's end of the pipe is closed, so we cannot provide a more
@@ -78,7 +78,7 @@ SEXP processx_write_named_pipe(SEXP pipe_ext, SEXP text);
 typedef struct {
   int windows_verbatim_args;
   int windows_hide;
-} processx_options_t;
+} callr_options_t;
 
 #ifdef __cplusplus
 }

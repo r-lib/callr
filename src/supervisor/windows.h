@@ -1,5 +1,5 @@
-#ifndef R_PROCESSX_SUPERVISOR_WINDOWS_H
-#define R_PROCESSX_SUPERVISOR_WINDOWS_H
+#ifndef R_CALLR_SUPERVISOR_WINDOWS_H
+#define R_CALLR_SUPERVISOR_WINDOWS_H
 
 #include <windows.h>
 #include <tlhelp32.h>

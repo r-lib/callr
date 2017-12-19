@@ -39,7 +39,7 @@ as it is set using the system or the user profile.}
 to the current working directory.}
 }
 \value{
-It returns a \link[processx:process]{processx::process} object.
+It returns a \link{process} object.
 }
 \description{
 The child process is started in the background, and the function
@@ -49,4 +49,3 @@ return immediately.
 Other R CMD commands: \code{\link{rcmd_copycat}},
   \code{\link{rcmd}}
 }
-\concept{R CMD commands}

@@ -67,7 +67,7 @@ supplied function and some error handling code.}
 \item{env}{Environment variables to set for the child process.}
 }
 \value{
-An \code{r_process} object, which inherits from \link[processx:process]{processx::process},
+An \code{r_process} object, which inherits from \link{process},
 so all \code{process} methods can be called on it, and in addition it also
 has a \code{get_result()} method to collect the result.
 }

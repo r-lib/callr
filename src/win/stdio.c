@@ -1,7 +1,7 @@
 
 #include <R.h>
 
-#include "../processx.h"
+#include "../callr.h"
 
 /*
  * The `child_stdio_buffer` buffer has the following layout:
@@ -37,7 +37,7 @@
 #define FDEV        0x40
 #define FTEXT       0x80
 
-static int processx__create_nul_handle(HANDLE *handle_ptr, DWORD access) {
+static int callr__create_nul_handle(HANDLE *handle_ptr, DWORD access) {
   HANDLE handle;
   SECURITY_ATTRIBUTES sa;
 
@@ -59,7 +59,7 @@ static int processx__create_nul_handle(HANDLE *handle_ptr, DWORD access) {
   return 0;
 }
 
-static int processx__create_output_handle(HANDLE *handle_ptr, const char *file,
+static int callr__create_output_handle(HANDLE *handle_ptr, const char *file,
 					  DWORD access) {
   HANDLE handle;
   SECURITY_ATTRIBUTES sa;
@@ -70,7 +70,7 @@ static int processx__create_output_handle(HANDLE *handle_ptr, const char *file,
   sa.bInheritHandle = TRUE;
   WCHAR *filew;
 
-  err = processx__utf8_to_utf16_alloc(file, &filew);
+  err = callr__utf8_to_utf16_alloc(file, &filew);
   if (err) return(err);
 
   handle = CreateFileW(
@@ -90,11 +90,11 @@ static int processx__create_output_handle(HANDLE *handle_ptr, const char *file,
   return 0;
 }
 
-static void processx__unique_pipe_name(char* ptr, char* name, size_t size) {
+static void callr__unique_pipe_name(char* ptr, char* name, size_t size) {
   snprintf(name, size, "\\\\?\\pipe\\px\\%p-%lu", ptr, GetCurrentProcessId());
 }
 
-int processx__create_pipe(void *id, HANDLE* parent_pipe_ptr, HANDLE* child_pipe_ptr) {
+int callr__create_pipe(void *id, HANDLE* parent_pipe_ptr, HANDLE* child_pipe_ptr) {
 
   char pipe_name[40];
   HANDLE hOutputRead = INVALID_HANDLE_VALUE;
@@ -107,7 +107,7 @@ int processx__create_pipe(void *id, HANDLE* parent_pipe_ptr, HANDLE* child_pipe_
   sa.lpSecurityDescriptor = NULL;
   sa.bInheritHandle = TRUE;
 
-  processx__unique_pipe_name(id, pipe_name, sizeof(pipe_name));
+  callr__unique_pipe_name(id, pipe_name, sizeof(pipe_name));
 
   hOutputRead = CreateNamedPipeA(
     pipe_name,
@@ -147,20 +147,20 @@ int processx__create_pipe(void *id, HANDLE* parent_pipe_ptr, HANDLE* child_pipe_
  error:
   if (hOutputRead != INVALID_HANDLE_VALUE) CloseHandle(hOutputRead);
   if (hOutputWrite != INVALID_HANDLE_VALUE) CloseHandle(hOutputWrite);
-  PROCESSX_ERROR(errmessage, err);
+  CALLR_ERROR(errmessage, err);
   return 0;			/* never reached */
 }
 
 
 
-processx_connection_t * processx__create_connection(
+callr_connection_t * callr__create_connection(
   HANDLE pipe_handle, const char *membername, SEXP private,
   const char *encoding) {
 
-  processx_connection_t *con;
+  callr_connection_t *con;
   SEXP res;
 
-  con = processx_c_connection_create(pipe_handle, PROCESSX_FILE_TYPE_ASYNCPIPE,
+  con = callr_c_connection_create(pipe_handle, CALLR_FILE_TYPE_ASYNCPIPE,
 				     encoding, &res);
 
   defineVar(install(membername), res, private);
@@ -168,7 +168,7 @@ processx_connection_t * processx__create_connection(
   return con;
 }
 
-int processx__stdio_create(processx_handle_t *handle,
+int callr__stdio_create(callr_handle_t *handle,
 			   const char *std_out, const char *std_err,
 			   BYTE** buffer_ptr, SEXP private,
 			   const char *encoding) {
@@ -197,28 +197,28 @@ int processx__stdio_create(processx_handle_t *handle,
 
     if (!output) {
       /* ignored output */
-      err = processx__create_nul_handle(&CHILD_STDIO_HANDLE(buffer, i), access);
+      err = callr__create_nul_handle(&CHILD_STDIO_HANDLE(buffer, i), access);
       if (err) { goto error; }
       CHILD_STDIO_CRT_FLAGS(buffer, i) = FOPEN | FDEV;
 
     } else if (strcmp("|", output)) {
       /* output to file */
-      err = processx__create_output_handle(&CHILD_STDIO_HANDLE(buffer, i),
+      err = callr__create_output_handle(&CHILD_STDIO_HANDLE(buffer, i),
 					   output, access);
       if (err) { goto error; }
       CHILD_STDIO_CRT_FLAGS(buffer, i) = FOPEN | FDEV;
 
     } else {
       /* piped output */
-      processx_connection_t *con = 0;
+      callr_connection_t *con = 0;
       const char *r_pipe_name = i == 1 ? "stdout_pipe" : "stderr_pipe";
       GetRNGstate();
-      err = processx__create_pipe(handle + (int)(unif_rand() * 65000),
+      err = callr__create_pipe(handle + (int)(unif_rand() * 65000),
 				  &pipe_handle[i], &CHILD_STDIO_HANDLE(buffer, i));
       PutRNGstate();
       if (err) goto error;
       CHILD_STDIO_CRT_FLAGS(buffer, i) = FOPEN | FPIPE;
-      con = processx__create_connection(pipe_handle[i], r_pipe_name,
+      con = callr__create_connection(pipe_handle[i], r_pipe_name,
 					private, encoding);
       handle->pipes[i] = con;
     }
@@ -236,7 +236,7 @@ int processx__stdio_create(processx_handle_t *handle,
   return err;
 }
 
-void processx__stdio_destroy(BYTE* buffer) {
+void callr__stdio_destroy(BYTE* buffer) {
   int i, count;
 
   count = CHILD_STDIO_COUNT(buffer);
@@ -250,10 +250,10 @@ void processx__stdio_destroy(BYTE* buffer) {
   free(buffer);
 }
 
-WORD processx__stdio_size(BYTE* buffer) {
+WORD callr__stdio_size(BYTE* buffer) {
   return (WORD) CHILD_STDIO_SIZE(CHILD_STDIO_COUNT((buffer)));
 }
 
-HANDLE processx__stdio_handle(BYTE* buffer, int fd) {
+HANDLE callr__stdio_handle(BYTE* buffer, int fd) {
   return CHILD_STDIO_HANDLE(buffer, fd);
 }

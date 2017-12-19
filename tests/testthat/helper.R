@@ -14,9 +14,9 @@ try_silently <- function(expr) {
 
 get_tool <- function(prog) {
   if (os_type() == "windows") prog <- paste0(prog, ".exe")
-  exe <- system.file(package = "processx", "bin", .Platform$r_arch, prog)
+  exe <- system.file(package = "callr", "bin", .Platform$r_arch, prog)
   if (exe == "") {
-    pkgpath <- system.file(package = "processx")
+    pkgpath <- system.file(package = "callr")
     if (basename(pkgpath) == "inst") pkgpath <- dirname(pkgpath)
     exe <- file.path(pkgpath, "src", "tools", prog)
     if (!file.exists(exe)) return("")

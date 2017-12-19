@@ -5,3 +5,8 @@
 ^.travis.yml$
 ^appveyor.yml$
 ^revdep$
+^README.markdown$
+^src/callr\.so$
+^src/.*\.o$
+^src/tools/px$
+^src/tools/px.exe$

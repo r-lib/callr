@@ -1,8 +1,8 @@
 
 #include <R.h>
-#include "processx-types.h"
+#include "callr-types.h"
 
-void processx_vector_init(processx_vector_t *v, size_t size, size_t alloc_size) {
+void callr_vector_init(callr_vector_t *v, size_t size, size_t alloc_size) {
   if (alloc_size < size) alloc_size = size;
   if (alloc_size == 0) alloc_size = 1;
   v->stor_begin = (pid_t*) R_alloc(alloc_size, sizeof(pid_t));
@@ -11,12 +11,12 @@ void processx_vector_init(processx_vector_t *v, size_t size, size_t alloc_size) 
   v->end      = v->stor_begin + size;
 }
 
-size_t processx_vector_size(const processx_vector_t *v) {
+size_t callr_vector_size(const callr_vector_t *v) {
   return v->end - v->stor_begin;
 }
 
-void processx_vector_reserve(processx_vector_t *v, size_t size) {
-  size_t actual_size = processx_vector_size(v);
+void callr_vector_reserve(callr_vector_t *v, size_t size) {
+  size_t actual_size = callr_vector_size(v);
   size_t alloc_size = v->stor_end - v->stor_begin;
   pid_t *tmp;
   if (size <= actual_size) return;
@@ -27,16 +27,16 @@ void processx_vector_reserve(processx_vector_t *v, size_t size) {
   v->end        = v->stor_begin + actual_size;
 }
 
-void processx_vector_clear(processx_vector_t *v) {
+void callr_vector_clear(callr_vector_t *v) {
   v->end = v->stor_begin;
 }
 
-void processx_vector_push_back(processx_vector_t *v, pid_t e) {
+void callr_vector_push_back(callr_vector_t *v, pid_t e) {
   /* full, allocate more storage */
   if (v->stor_end == v->end) {
-    long int new_size = processx_vector_size(v) * 2;
+    long int new_size = callr_vector_size(v) * 2;
     if (new_size == 0) { new_size = 1; }
-    processx_vector_reserve(v, new_size);
+    callr_vector_reserve(v, new_size);
   }
 
   *(v->end) = e;
@@ -54,8 +54,8 @@ void processx_vector_push_back(processx_vector_t *v, pid_t e) {
  * @return Non-zero if `e` is found, zero otherwise.
  */
 
-int processx_vector_find(const processx_vector_t *v, pid_t e, size_t from, size_t *idx) {
-  size_t size = processx_vector_size(v);
+int callr_vector_find(const callr_vector_t *v, pid_t e, size_t from, size_t *idx) {
+  size_t size = callr_vector_size(v);
 
   while (from < size) {
     if (VECTOR(*v)[from] == e) {
@@ -79,25 +79,25 @@ int processx_vector_find(const processx_vector_t *v, pid_t e, size_t from, size_
  *   (zeroth) element.
  */
 
-void processx_vector_rooted_tree(pid_t root, const processx_vector_t *nodes,
-				 const processx_vector_t *parents,
-				 processx_vector_t *result) {
+void callr_vector_rooted_tree(pid_t root, const callr_vector_t *nodes,
+				 const callr_vector_t *parents,
+				 callr_vector_t *result) {
 
-  size_t len = processx_vector_size(nodes);
+  size_t len = callr_vector_size(nodes);
   size_t done = 0, next_done = 1;
 
-  processx_vector_clear(result);
-  processx_vector_push_back(result, root);
+  callr_vector_clear(result);
+  callr_vector_push_back(result, root);
 
   while (done < next_done) {
     size_t i;
     for (i = 0; i < len; i++) {
       pid_t parent = VECTOR(*parents)[i];
-      if (processx_vector_find(result, parent, done, 0)) {
-	processx_vector_push_back(result, VECTOR(*nodes)[i]);
+      if (callr_vector_find(result, parent, done, 0)) {
+	callr_vector_push_back(result, VECTOR(*nodes)[i]);
       }
     }
     done = next_done;
-    next_done = processx_vector_size(result);
+    next_done = callr_vector_size(result);
   }
 }

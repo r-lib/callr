@@ -46,7 +46,7 @@ process_initialize <- function(self, private, command, args,
 
   "!DEBUG process_initialize exec()"
   private$status <- .Call(
-    c_processx_exec,
+    c_callr_exec,
     command, c(command, args), stdout, stderr,
     windows_verbatim_args, windows_hide_window,
     private, cleanup, encoding

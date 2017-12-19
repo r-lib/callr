@@ -2,7 +2,7 @@
 #' External R Process
 #'
 #' An R process that runs in the background. This is an R6 class that
-#' extends the [processx::process] class.
+#' extends the [process] class.
 #'
 #' @section Usage:
 #' ```
@@ -10,7 +10,7 @@
 #' rp$get_result()
 #' ```
 #'
-#' See `[processx::process] for the inherited methods.
+#' See [process] for the inherited methods.
 #'
 #' @section Arguments:
 #' * `options` A list of options created via [r_process_options()].
@@ -43,7 +43,7 @@ NULL
 
 r_process <- R6Class(
   "r_process",
-  inherit = processx::process,
+  inherit = process,
   public = list(
     initialize = function(options)
       rp_init(self, private, super, options),

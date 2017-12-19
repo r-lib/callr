@@ -3,7 +3,7 @@ supervisor_info <- new.env()
 
 reg.finalizer(supervisor_info, function(s) {
   # Pass s to `supervisor_kill`, in case the GC event happens _after_ a new
-  # `processx:::supervisor_info` has been created and the name
+  # `callr:::supervisor_info` has been created and the name
   # `supervisor_info` is bound to the new object. This could happen if the
   # package is unloaded and reloaded.
   supervisor_kill(s)
@@ -116,7 +116,7 @@ supervisor_start <- function() {
   # Two ways of reaching this: if process has died, or if it hasn't emitted
   # "Ready" after 5 seconds.
   if (!ready)
-    stop("processx supervisor was not ready after 5 seconds.")
+    stop("callr supervisor was not ready after 5 seconds.")
 
   supervisor_info$pid <- p$get_pid()
 }
@@ -141,5 +141,5 @@ supervisor_path <- function() {
     subdir <- paste0(subdir, Sys.getenv("R_ARCH"))
   }
 
-  system.file(subdir, supervisor_name, package = "processx", mustWork = TRUE)
+  system.file(subdir, supervisor_name, package = "callr", mustWork = TRUE)
 }

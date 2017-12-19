@@ -26,36 +26,36 @@ process_get_error_connection <- function(self, private) {
 process_read_output <- function(self, private, n) {
   "!DEBUG process_read_output `private$get_short_name()`"
   con <- process_get_output_connection(self, private)
-  .Call(c_processx_connection_read_chars, con, n)
+  .Call(c_callr_connection_read_chars, con, n)
 }
 
 process_read_error <- function(self, private, n) {
   "!DEBUG process_read_error `private$get_short_name()`"
   con <- process_get_error_connection(self, private)
-  .Call(c_processx_connection_read_chars, con, n)
+  .Call(c_callr_connection_read_chars, con, n)
 
 }
 
 process_read_output_lines <- function(self, private, n) {
   "!DEBUG process_read_output_lines `private$get_short_name()`"
   con <- process_get_output_connection(self, private)
-  .Call(c_processx_connection_read_lines, con, n)
+  .Call(c_callr_connection_read_lines, con, n)
 }
 
 process_read_error_lines <- function(self, private, n) {
   "!DEBUG process_read_error_lines `private$get_short_name()`"
   con <- process_get_error_connection(self, private)
-  .Call(c_processx_connection_read_lines, con, n)
+  .Call(c_callr_connection_read_lines, con, n)
 }
 
 process_is_incompelete_output <- function(self, private) {
   con <- process_get_output_connection(self, private)
-  ! .Call(c_processx_connection_is_eof, con)
+  ! .Call(c_callr_connection_is_eof, con)
 }
 
 process_is_incompelete_error <- function(self, private) {
   con <- process_get_error_connection(self, private)
-  ! .Call(c_processx_connection_is_eof, con)
+  ! .Call(c_callr_connection_is_eof, con)
 }
 
 process_read_all_output <- function(self, private) {
@@ -110,6 +110,6 @@ process_poll_io <- function(self, private, ms) {
 
 #' @export
 
-close.processx_connection <- function(con, ...) {
-  .Call(c_processx_connection_close, con)
+close.callr_connection <- function(con, ...) {
+  .Call(c_callr_connection_close, con)
 }

@@ -5,6 +5,6 @@
 }
 
 .onUnload <- function(libpath) {
-  if (os_type() != "windows") .Call(c_processx__killem_all)
+  if (os_type() != "windows") .Call(c_callr__killem_all)
   supervisor_reset()
 }

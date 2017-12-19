@@ -1,20 +1,20 @@
 
-#include "../processx.h"
+#include "../callr.h"
 
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
 
 
-processx_connection_t* processx__create_connection(
+callr_connection_t* callr__create_connection(
   int fd, const char *membername,
   SEXP private,
   const char *encoding) {
 
-  processx_connection_t *con;
+  callr_connection_t *con;
   SEXP res;
 
-  con = processx_c_connection_create(fd, PROCESSX_FILE_TYPE_ASYNCPIPE,
+  con = callr_c_connection_create(fd, CALLR_FILE_TYPE_ASYNCPIPE,
 				     encoding, &res);
 
   defineVar(install(membername), res, private);
@@ -22,12 +22,12 @@ processx_connection_t* processx__create_connection(
   return con;
 }
 
-void processx__create_connections(processx_handle_t *handle, SEXP private,
+void callr__create_connections(callr_handle_t *handle, SEXP private,
 				  const char *encoding) {
   handle->pipes[0] = handle->pipes[1] = handle->pipes[2] = 0;
 
   if (handle->fd1 >= 0) {
-    handle->pipes[1] = processx__create_connection(
+    handle->pipes[1] = callr__create_connection(
       handle->fd1,
       "stdout_pipe",
       private,
@@ -35,7 +35,7 @@ void processx__create_connections(processx_handle_t *handle, SEXP private,
   }
 
   if (handle->fd2 >= 0) {
-    handle->pipes[2] = processx__create_connection(
+    handle->pipes[2] = callr__create_connection(
       handle->fd2,
       "stderr_pipe",
       private,

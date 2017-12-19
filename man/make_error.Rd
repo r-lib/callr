@@ -7,7 +7,7 @@
 make_error(out)
 }
 \arguments{
-\item{out}{The object returned by \code{\link[processx:run]{processx::run()}}.}
+\item{out}{The object returned by \code{\link[=run]{run()}}.}
 }
 \description{
 There are two kinds of errors, both have class \code{callr_error}:

@@ -2,3 +2,13 @@
 .Rhistory
 .RData
 /revdep
+/src/*.o
+/src/unix/*.o
+/src/win/*.o
+/src/supervisor/supervisor
+/src/supervisor/supervisor.exe
+/src/supervisor/supervisor.dSYM
+/src/tools/px
+/src/tools/px.exe
+/src/tools/px.dSYM
+/src/callr.so

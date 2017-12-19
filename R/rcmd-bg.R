@@ -5,11 +5,10 @@
 #' return immediately.
 #'
 #' @inheritParams rcmd
-#' @return It returns a [processx::process] object.
+#' @return It returns a [process] object.
 #'
 #' @family R CMD commands
 #' @export
-#' @importFrom processx process
 
 rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     stdout = "|", stderr = "|",

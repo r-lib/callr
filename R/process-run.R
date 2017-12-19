@@ -59,7 +59,7 @@
 #'   application on windows. Ignored on other platforms.
 #' @param encoding The encoding to assume for `stdout` and
 #'   `stderr`. By default the encoding of the current locale is
-#'   used. Note that `processx` always reencodes the output of
+#'   used. Note that `callr` always reencodes the output of
 #'   both streams in UTF-8 currently.
 #' @return A list with components:
 #'   * status The exit status of the process. If this is `NA`, then the
