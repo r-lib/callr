@@ -17,7 +17,7 @@ test_that("r_bg can be killed", {
   x <- r_bg(function() Sys.sleep(2))
   x$kill()
   expect_false(x$is_alive())
-  expect_error(x$get_result(), "child process crashed or was killed")
+  expect_error(x$get_result())
 })
 
 test_that("r_bg can get the error back", {
