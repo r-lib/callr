@@ -72,5 +72,5 @@ test_that("stdout and stderr in the same file", {
     stdout = tmp, stderr = tmp
   )
 
-  expect_equal(readLines(tmp), paste0("hello", 1:3))
+  expect_equal(sort(readLines(tmp)), sort(paste0("hello", 1:3)))
 })
