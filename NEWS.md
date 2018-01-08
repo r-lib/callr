@@ -1,5 +1,5 @@
 
-# 1.0.0.9000
+# 1.1.0
 
 * `callr` suppresses `R_ENVIRON_USER` now.
 
