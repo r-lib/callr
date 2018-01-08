@@ -78,19 +78,22 @@ test_that("stdout and stderr in the same file", {
 test_that(".Renviron is used, but lib path is set over it", {
   dir.create(tmp <- tempfile())
   on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-  withr::with_dir(tmp, {
-    ## Create .Renviron file
-    dir.create("not")
-    dir.create("yes")
-    cat("R_LIBS=\"", file.path(getwd(), "not"), "\"\n",
-        sep = "", file = ".Renviron")
-    cat("FOO=bar\n", file = ".Renviron", append = TRUE)
+  withr::with_dir(tmp,
+    withr::with_envvar(c(R_ENVIRON_USER = file.path(getwd(), ".Renviron")), {
 
-    res <- r(
-      function() list(.libPaths(), Sys.getenv("FOO")),
-      libpath = file.path(getwd(), "yes")
-    )
-  })
+      ## Create .Renviron file
+      dir.create("not")
+      dir.create("yes")
+      cat("R_LIBS=\"", file.path(getwd(), "not"), "\"\n",
+          sep = "", file = ".Renviron")
+      cat("FOO=bar\n", file = ".Renviron", append = TRUE)
+
+      res <- r(
+        function() list(.libPaths(), Sys.getenv("FOO")),
+        libpath = file.path(getwd(), "yes")
+      )
+    })
+  )
 
   expect_equal(basename(res[[1]][1]), "yes")
   expect_equal(res[[2]], "bar")
