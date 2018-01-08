@@ -40,7 +40,7 @@ r_safe <- r
 #'
 #' Differences to [r()]:
 #' * No extra repoditories are set up.
-#' * The `--no-site-file`, `--no-environ`, `--no-save`, `--no-restore`
+#' * The `--no-site-file`, `--no-save`, `--no-restore`
 #'   command line arguments are not used. (But `--slave` still is.)
 #' * The system profile and the user profile are loaded.
 #' * No extra environment variables are set up.

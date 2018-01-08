@@ -8,7 +8,7 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   on.exit(setwd(oldwd), add = TRUE)
 
   ## Temporary profile
-  profile <- make_profile(repos)
+  profile <- make_profile(repos, libpath)
   on.exit(try(unlink(profile), silent = TRUE), add = TRUE)
 
   ## Temporary library path
@@ -64,8 +64,13 @@ run_r <- function(bin, args, libpath, repos, stdout, stderr, echo, show,
   out
 }
 
-make_profile <- function(repos) {
+## We set the lib path here as well, in case it was set in .Renviron, etc.
+## The supplied libpath should take precedence over .Renviron.
+
+make_profile <- function(repos, libpath) {
   profile <- tempfile()
   cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
+  cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = profile,
+      append = TRUE)
   profile
 }

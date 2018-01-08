@@ -1,7 +1,8 @@
 
 # 1.1.0
 
-* `callr` suppresses `R_ENVIRON_USER` now.
+* `callr` users `.Renviron` files (and `R_ENVIRON_USER` as well),
+  but overrides the library path, as requested in `r()`, etc. (#30)
 
 * The defaults for `r()` are safer now, the match the defaults of
   `r_safe()`. `r_safe()` is kept for compatibility. `r_copycat()`

@@ -8,15 +8,15 @@
 r(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
-  cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
-  "--no-restore"), show = FALSE, callback = NULL, system_profile = FALSE,
+  cmdargs = c("--no-site-file", "--slave", "--no-save", "--no-restore"),
+  show = FALSE, callback = NULL, system_profile = FALSE,
   user_profile = FALSE, env = rcmd_safe_env())
 
 r_safe(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
   stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
-  cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
-  "--no-restore"), show = FALSE, callback = NULL, system_profile = FALSE,
+  cmdargs = c("--no-site-file", "--slave", "--no-save", "--no-restore"),
+  show = FALSE, callback = NULL, system_profile = FALSE,
   user_profile = FALSE, env = rcmd_safe_env())
 }
 \arguments{
