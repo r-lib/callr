@@ -88,7 +88,8 @@ setup_callbacks <- function(options) {
 }
 
 setup_r_binary_and_args <- function(options) {
-  options$bin <- paste0(R.home("bin"), "/R")
+  exec <- if (os_platform() == "windows") "Rterm" else "R"
+  options$bin <- file.path(R.home("bin"), exec)
   options$real_cmdargs <- c(options$cmdargs, "-f", options$script_file)
   options
 }
