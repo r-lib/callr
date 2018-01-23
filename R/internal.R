@@ -45,8 +45,9 @@ r_tmp <- function(expr_file, libpath, repos, stdout, stderr, error,
   rscript <- make_vanilla_script(expr_file, res, error)
   on.exit(unlink(rscript), add = TRUE)
 
+  exec <- if (os_platform() == "windows") "Rterm" else "R"
   out <- run_r(
-    bin = paste0(R.home("bin"), "/R"),
+    bin = file.path(R.home("bin"), exec),
     args = c(cmdargs, "-f", rscript),
     libpath = libpath,
     repos = repos,
