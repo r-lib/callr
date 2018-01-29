@@ -1,7 +1,7 @@
 Package: callr
 Title: Call R from R
-Version: 1.0.0.9000
-Author: Gábor Csárdi
+Version: 2.0.0
+Author: Gábor Csárdi, Winston Chang
 Maintainer: Gábor Csárdi <csardi.gabor@gmail.com>
 Description: It is sometimes useful to perform a computation in a
     separate R process, without affecting the current R process at all.
@@ -13,11 +13,15 @@ BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Imports:
-    processx,
+    assertthat,
+    crayon,
+    debugme,
     R6,
     utils
 Suggests:
     covr,
     testthat,
     withr
+LinkingTo:
+    testthat
 Encoding: UTF-8

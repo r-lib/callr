@@ -1,7 +1,5 @@
 
-# 1.0.0.9000
-
-* Use the `processx` package to start R processes
+# 2.0.0
 
 * Run R or R CMD * in the background, see `r_bg()`, `rcmd_bg()`,
   and also `r_process` and `rcmd_process`

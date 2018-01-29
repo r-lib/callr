@@ -1,0 +1,22 @@
+
+OBJECTS = init.o poll.o callr-connection.o            \
+          callr-vector.o                              \
+	  unix/childlist.o unix/connection.o             \
+          unix/callr.o unix/sigchld.o unix/utils.o    \
+	  unix/named_pipe.o   		 		 \
+	  test-connections.o test-runner.o
+
+.PHONY: all clean
+
+all: tools/px supervisor/supervisor $(SHLIB)
+
+tools/px: tools/px.c
+	$(CC) $(CFLAGS) -Wall $< -o $@
+
+supervisor/supervisor: supervisor/supervisor.c supervisor/utils.c
+	$(CC) $(CFLAGS) $^ -o supervisor/supervisor
+
+clean:
+	rm -rf $(SHLIB) $(OBJECTS)				\
+	    supervisor/supervisor supervisor/supervisor.dSYM 	\
+	    supervisor/supervisor.exe

@@ -5,7 +5,7 @@
 \title{External R CMD Process}
 \description{
 An \code{R CMD *} command that runs in the background. This is an R6 class
-that extends the \link[processx:process]{processx::process} class.
+that extends the \link{process} class.
 }
 \section{Usage}{
 \preformatted{rp <- rcmd_process$new(options)

@@ -69,4 +69,3 @@ r_vanilla(function() getOption("repos"))
 Other callr functions: \code{\link{r_copycat}},
   \code{\link{r}}
 }
-\concept{callr functions}

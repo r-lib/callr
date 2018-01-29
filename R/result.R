@@ -6,7 +6,7 @@
 #' argument. So we need to check for the error file to decide
 #' if an error happened.
 #'
-#' @param out List of the output object from `processx::run` and
+#' @param out List of the output object from [run()] and
 #'   the name of the result file to read. For the error file,
 #'   `.error` is appended to this.
 #' @param options The context, including all parameters.

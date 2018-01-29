@@ -25,14 +25,6 @@ with_envvar <- function(new, code) {
   force(code)
 }
 
-is_string <- function(x) {
-  is.character(x) && length(x) == 1 && !is.na(x)
-}
-
-is_flag <- function(x) {
-  is.logical(x) && length(x) == 1 && !is.na(x)
-}
-
 os_platform <- function() .Platform$OS.type
 
 try_silently <- function(expr) try(expr, silent = TRUE)
@@ -46,4 +38,20 @@ enumerate <- function(x) {
     l <- length(x)
     paste0(paste(x[-l], collapse = ", "), " and ", x[[l]])
   }
+}
+
+strrep <- function(x, times) {
+  x <- as.character(x)
+  if (length(x) == 0L) return(x)
+  r <- .mapply(
+    function(x, times) {
+      if (is.na(x) || is.na(times)) return(NA_character_)
+      if (times <= 0L) return("")
+      paste0(replicate(times, x), collapse = "")
+    },
+    list(x = x, times = times),
+    MoreArgs = list()
+  )
+
+  unlist(r, use.names = FALSE)
 }

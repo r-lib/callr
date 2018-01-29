@@ -1,0 +1,20 @@
+OBJECTS = test-connections.o init.o poll.o callr-connection.o     \
+          callr-vector.o                                          \
+          win/callr.o win/stdio.o win/named_pipe.o win/cleanup.o  \
+	  test-runner.o
+
+.PHONY: all clean
+
+all: tools/px.exe supervisor/supervisor.exe $(SHLIB)
+
+tools/px.exe: tools/px.c
+	$(CC) $(CFLAGS) -Wall $< -o $@
+
+supervisor/supervisor.exe: supervisor/supervisor.c supervisor/utils.c \
+			   supervisor/windows.c
+	$(CC) $(CFLAGS) $^ -o supervisor/supervisor.exe
+
+clean:
+	rm -rf $(SHLIB) $(OBJECTS) \
+	    supervisor/supervisor supervisor/supervisor.dSYM \
+	    supervisor/supervisor.exe wintools/sleep.exe

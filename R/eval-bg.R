@@ -5,12 +5,11 @@
 #' returns immediately.
 #'
 #' @inheritParams r
-#' @return An `r_process` object, which inherits from [processx::process],
+#' @return An `r_process` object, which inherits from [process],
 #'   so all `process` methods can be called on it, and in addition it also
 #'   has a `get_result()` method to collect the result.
 #'
 #' @export
-#' @importFrom processx process
 #' @examples
 #' \dontrun{
 #' rx <- r_bg(function() 1 + 2)
