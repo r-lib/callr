@@ -11,10 +11,11 @@ OBJECTS = init.o poll.o callr-connection.o            \
 all: tools/px supervisor/supervisor $(SHLIB)
 
 tools/px: tools/px.c
-	$(CC) $(CFLAGS) -Wall $< -o $@
+	$(CC) $(CFLAGS) -Wall tools/px.c -o tools/px
 
 supervisor/supervisor: supervisor/supervisor.c supervisor/utils.c
-	$(CC) $(CFLAGS) $^ -o supervisor/supervisor
+	$(CC) $(CFLAGS) supervisor/supervisor.c supervisor/utils.c \
+	      -o supervisor/supervisor
 
 clean:
 	rm -rf $(SHLIB) $(OBJECTS)				\
