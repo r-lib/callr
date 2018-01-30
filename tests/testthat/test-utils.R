@@ -16,7 +16,10 @@ test_that("full_path gives correct values", {
   expect_identical(full_path("a/b"), file.path(getwd(), "a/b"))
 
   expect_identical(full_path("a/../b/c"), file.path(getwd(), "b/c"))
-  expect_identical(full_path("../../../../../../../../../../../a"), file.path(drive, "a"))
+  expect_identical(
+    full_path(
+      "../../../../../../../../../../../../../../../../../../../../../../../a"),
+    file.path(drive, "a"))
   expect_identical(full_path("/../.././a"), file.path(drive, "a"))
   expect_identical(full_path("/a/./b/../c"), file.path(drive, "a/c"))
 
