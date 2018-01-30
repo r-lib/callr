@@ -1,4 +1,10 @@
 
+# 2.0.1
+
+* Fix compilation issues on CRAN's Solarix machine
+
+* Fix a test failure on CRAN's macOS machine
+
 # 2.0.0
 
 * Run R or R CMD * in the background, see `r_bg()`, `rcmd_bg()`,
