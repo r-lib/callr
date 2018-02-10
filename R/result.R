@@ -23,13 +23,16 @@ get_result <- function(output, options) {
   ## Timeout?
   if (output$timeout) stop(make_error(output))
 
-  ## No output files? Some other (system?) error
-  if (! file.exists(res)) stop("child process crashed or was killed")
+  ## No output file and no error file? Some other (system?) error then
+  errorres <- paste0(res, ".error")
+  if (! file.exists(res) && ! file.exists(errorres)) {
+    stop("child process crashed or was killed")
+  }
 
   ## No error file? Then all is well, return the output
-  if (! file.exists(paste0(res, ".error"))) return(readRDS(res))
+  if (! file.exists(errorres)) return(readRDS(res))
 
-  err <- readRDS(paste0(res, ".error"))
+  err <- readRDS(errorres)
 
   if (err[[1]] == "error") {
     stop(err[[2]])
