@@ -1,4 +1,10 @@
 
+# 2.0.2
+
+* Fix a bug with R-devel, caused by the change on 2018-02-08:
+  https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5
+  #37, #38
+
 # 2.0.1
 
 * Fix compilation issues on CRAN's Solarix machine
