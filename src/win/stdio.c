@@ -133,10 +133,32 @@ int callr__create_pipe(void *id, HANDLE* parent_pipe_ptr, HANDLE* child_pipe_ptr
     OPEN_EXISTING,
     FILE_ATTRIBUTE_NORMAL,
     NULL);
+
+  /* We might need to wait for the server, otherwise
+     this is a race condition. We wait 10 secs, which should
+     be plenty. */
   if (hOutputWrite == INVALID_HANDLE_VALUE) {
     err = GetLastError();
-    errmessage = "creating write pipe";
-    goto error;
+    if (err == ERROR_PIPE_BUSY) {
+      while (WaitNamedPipeA(pipe_name, 10000)) {
+	hOutputWrite = CreateFileA(
+          pipe_name,
+	  GENERIC_WRITE,
+	  0,
+	  &sa,
+	  OPEN_EXISTING,
+	  FILE_ATTRIBUTE_NORMAL,
+	  NULL);
+
+	if (hOutputWrite != INVALID_HANDLE_VALUE) {
+	  break;
+	}
+      }
+
+    } else {
+      errmessage = "creating write pipe";
+      goto error;
+    }
   }
 
   *parent_pipe_ptr = hOutputRead;

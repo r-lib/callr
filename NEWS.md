@@ -5,6 +5,10 @@
   https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5
   #37, #38
 
+* Fix a race condition on Windows, when creating named pipes for stdout
+  or stderr. The client sometimes didn't wait for the server, and callr
+  failed with ERROR_PIPE_BUSY (231, All pipe instances are busy).
+
 # 2.0.1
 
 * Fix compilation issues on CRAN's Solarix machine
