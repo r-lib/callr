@@ -23,12 +23,14 @@ make_vanilla_script <- function(expr_file, res, error) {
         "__res__" = res
       )
     )
+  } else {
+    stop("Unknown `error` argument: `", error, "`")
   }
 
-  ## The function to run and its arguments are saved as list:
+  ## The function to run and its arguments are saved as a list:
   ## list(fun, args). args itself is a list.
   ## So the first do.call will create the call: do.call(fun, args)
-  ## This second do.call will perform fun(args).
+  ## The second do.call will perform fun(args).
   ##
   ## The c() is needed because the first .GlobalEnv is itself
   ## an argument to the do.call within the do.call.

@@ -7,7 +7,7 @@
 \usage{
 r(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
+  stdout = NULL, stderr = NULL, error = getOption("callr.error", "error"),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
   "--no-restore"), show = FALSE, callback = NULL, block_callback = NULL,
   spinner = show && interactive(), system_profile = FALSE,
@@ -15,7 +15,7 @@ r(func, args = list(), libpath = .libPaths(),
 
 r_safe(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, error = c("error", "stack", "debugger"),
+  stdout = NULL, stderr = NULL, error = getOption("callr.error", "error"),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
   "--no-restore"), show = FALSE, callback = NULL, block_callback = NULL,
   spinner = show && interactive(), system_profile = FALSE,
@@ -142,6 +142,9 @@ as written out by \code{\link[utils:dump.frames]{utils::dump.frames()}}.
 to returning the complete call stack, it also start up a debugger
 in the child call stack, via \code{\link[utils:debugger]{utils::debugger()}}.
 }
+
+The default error behavior can be also set using the \code{callr.error}
+option. This is useful to debug code that uses \code{callr}.
 }
 
 \examples{

@@ -48,7 +48,7 @@ r_process_options_default <- function() {
     repos = c(getOption("repos"), CRAN = "https://cloud.r-project.org"),
     stdout = "|",
     stderr = "|",
-    error = c("error", "stack", "debugger"),
+    error = getOption("callr.error", "error"),
     cmdargs = c("--no-site-file", "--no-environ", "--slave",
       "--no-save", "--no-restore"),
     system_profile = FALSE,

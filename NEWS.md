@@ -1,4 +1,9 @@
 
+# 2.0.2.9000
+
+* The default behavior on error can be set now with the `callr.error`
+  option.
+
 # 2.0.2
 
 * Fix a bug with R-devel, caused by the change on 2018-02-08:
