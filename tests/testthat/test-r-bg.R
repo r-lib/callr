@@ -21,7 +21,7 @@ test_that("r_bg can be killed", {
 })
 
 test_that("r_bg can get the error back", {
-  x <- r_bg(function() 1 + "A")
+  x <- r_bg(function() 1 + "A", error = "error")
   x$wait()
   expect_error(x$get_result(), "non-numeric argument to binary operator")
 })
