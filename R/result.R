@@ -25,14 +25,28 @@ get_result <- function(output, options) {
 
   ## No output file and no error file? Some other (system?) error then
   errorres <- paste0(res, ".error")
+  killmsg <- "could not start R, or it has crashed or was killed"
   if (! file.exists(res) && ! file.exists(errorres)) {
-    stop("child process crashed or was killed")
+    stop(make_error(output, killmsg))
   }
 
-  ## No error file? Then all is well, return the output
-  if (! file.exists(errorres)) return(readRDS(res))
+  ## No error file? Then probably all is well, return the output
+  ## If this is currupt, then the R process has crashed
+  ## This cannot happen from R 3.5.0, because that version only writes
+  ## out the output file if no error or crash has happened.
+  if (! file.exists(errorres)) {
+    tryCatch(
+      ret <- readRDS(res),
+      error = function(e) stop(make_error(output, killmsg)))
+    return(ret)
+  }
 
-  err <- readRDS(errorres)
+  ## The error RDS might be corrupt, too, if we crashed/got killed after
+  ## an error
+  tryCatch(
+    err <- readRDS(errorres),
+    error = function(e) stop(make_error(output, killmsg))
+  )
 
   if (err[[1]] == "error") {
     stop(err[[2]])

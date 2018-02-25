@@ -55,3 +55,11 @@ strrep <- function(x, times) {
 
   unlist(r, use.names = FALSE)
 }
+
+## Thanks to Romain for the idea!
+## https://github.com/romainfrancois/trump/blob/
+## 7845b83343afa356e4259c054e7c9a910034f170/R/trump.R
+
+crash <- function() {
+  get("attach")( structure(list(), class = "UserDefinedDatabase")  )
+}

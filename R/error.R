@@ -7,14 +7,18 @@
 #'    `callr_status_error`.
 #'
 #' @param out The object returned by [run()].
+#' @param msg An extra message to add to the error message.
 #' @keywords internal
 
-make_error <- function(out) {
+make_error <- function(out, msg = NULL) {
   error_class <- c(
     if (out$timeout) "callr_timeout_error" else "callr_status_error",
     "callr_error", "error", "condition"
   )
-  error_msg <- if (out$timeout) "callr timed out" else "callr failed:"
+  error_msg <- paste0(
+    if (out$timeout) "callr timed out" else "callr failed",
+    if (!is.null(msg)) paste0(", ", msg) else if (!out$timeout) ":"
+  )
   structure(
     list(
       message = paste(error_msg, out$stderr),

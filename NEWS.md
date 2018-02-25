@@ -2,7 +2,9 @@
 # 2.0.2.9000
 
 * The default behavior on error can be set now with the `callr.error`
-  option.
+option.
+
+* Better error message if the child R process crashes or gets killed. (#41)
 
 # 2.0.2
 

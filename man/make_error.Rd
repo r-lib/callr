@@ -4,10 +4,12 @@
 \alias{make_error}
 \title{Create an error object}
 \usage{
-make_error(out)
+make_error(out, msg = NULL)
 }
 \arguments{
 \item{out}{The object returned by \code{\link[=run]{run()}}.}
+
+\item{msg}{An extra message to add to the error message.}
 }
 \description{
 There are two kinds of errors, both have class \code{callr_error}:
