@@ -14,7 +14,7 @@
 #'                  echo_cmd = FALSE, supervise = FALSE,
 #'                  windows_verbatim_args = FALSE,
 #'                  windows_hide_window = FALSE,
-#'                  encoding = "")
+#'                  encoding = "", post_process = NULL)
 #'
 #' p$is_alive()
 #' p$signal(signal)
@@ -39,6 +39,8 @@
 #' p$read_all_error_lines()
 #'
 #' p$poll_io(timeout)
+#'
+#' p$get_result()
 #'
 #' print(p)
 #' ```
@@ -81,6 +83,9 @@
 #'     both streams in UTF-8 currently. If you want to read them
 #'     without any conversion, on all platforms, specify `"UTF-8"` as
 #'     encoding.
+#' * `post_process`: An optional function to run when the process has
+#'     finished. Currently it only runs if `$get_result()` is called.
+#'     It is only run once.
 #'
 #' @section Details:
 #' `$new()` starts a new process in the background, and then returns
@@ -206,6 +211,10 @@
 #' the _Polling_ section, and see also the [poll()] function
 #' to poll on multiple processes.
 #'
+#' `$get_result()` returns the result of the post processesing function.
+#' It can only be called once the process has finished. If the process has
+#' no post-processing function, then `NULL` is returned.
+#'
 #' `print(p)` or `p$print()` shows some information about the
 #' process on the screen, whether it is running and it's process id, etc.
 #'
@@ -248,11 +257,11 @@ process <- R6Class(
     initialize = function(command = NULL, args = character(),
       stdout = NULL, stderr = NULL, cleanup = TRUE,
       echo_cmd = FALSE, supervise = FALSE, windows_verbatim_args = FALSE,
-      windows_hide_window = FALSE, encoding = "")
+      windows_hide_window = FALSE, encoding = "", post_process = NULL)
       process_initialize(self, private, command, args,
                          stdout, stderr, cleanup, echo_cmd, supervise,
                          windows_verbatim_args, windows_hide_window,
-                         encoding),
+                         encoding, post_process),
 
     kill = function(grace = 0.1)
       process_kill(self, private, grace),
@@ -338,7 +347,10 @@ process <- R6Class(
       process_get_error_file(self, private),
 
     poll_io = function(timeout)
-      process_poll_io(self, private, timeout)
+      process_poll_io(self, private, timeout),
+
+    get_result = function()
+      process_get_result(self, private)
   ),
 
   private = list(
@@ -367,6 +379,10 @@ process <- R6Class(
     stderr_pipe = NULL,
 
     encoding = "",
+
+    post_process = NULL,
+    post_process_result = NULL,
+    post_process_done = FALSE,
 
     get_short_name = function()
       process_get_short_name(self, private)
@@ -411,7 +427,8 @@ process_restart <- function(self, private) {
     private$supervised,
     private$windows_verbatim_args,
     private$windows_hide_window,
-    private$encoding
+    private$encoding,
+    private$post_process
   )
 
   invisible(self)
@@ -491,4 +508,13 @@ process_supervise <- function(self, private, status) {
     supervisor_unwatch_pid(self$get_pid())
     private$supervised <- FALSE
   }
+}
+
+process_get_result <- function(self, private) {
+  if (self$is_alive()) stop("Process is still alive")
+  if (!private$post_process_done && is.function(private$post_process)) {
+    private$post_process_result <- private$post_process()
+    private$post_process_done <- TRUE
+  }
+  private$post_process_result
 }

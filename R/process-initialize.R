@@ -11,6 +11,7 @@
 #' @param echo_cmd Echo command before starting it?
 #' @param supervise Should the process be supervised?
 #' @param encoding Assumed stdout and stderr encoding.
+#' @param post_process Post processing function.
 #'
 #' @keywords internal
 #' @importFrom utils head tail
@@ -18,7 +19,7 @@
 process_initialize <- function(self, private, command, args,
                                stdout, stderr, cleanup,
                                echo_cmd, supervise, windows_verbatim_args,
-                               windows_hide_window, encoding) {
+                               windows_hide_window, encoding, post_process) {
 
   "!DEBUG process_initialize `command`"
 
@@ -31,6 +32,7 @@ process_initialize <- function(self, private, command, args,
   assert_that(is_flag(windows_verbatim_args))
   assert_that(is_flag(windows_hide_window))
   assert_that(is_string(encoding))
+  assert_that(is.function(post_process) || is.null(post_process))
 
   private$command <- command
   private$args <- args
@@ -41,6 +43,7 @@ process_initialize <- function(self, private, command, args,
   private$windows_verbatim_args <- windows_verbatim_args
   private$windows_hide_window <- windows_hide_window
   private$encoding <- encoding
+  private$post_process <- post_process
 
   if (echo_cmd) do_echo_cmd(command, args)
 

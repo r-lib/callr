@@ -5,7 +5,8 @@
 \title{Start a process}
 \usage{
 process_initialize(self, private, command, args, stdout, stderr, cleanup,
-  echo_cmd, supervise, windows_verbatim_args, windows_hide_window, encoding)
+  echo_cmd, supervise, windows_verbatim_args, windows_hide_window, encoding,
+  post_process)
 }
 \arguments{
 \item{self}{this}
@@ -27,6 +28,8 @@ process_initialize(self, private, command, args, stdout, stderr, cleanup,
 \item{supervise}{Should the process be supervised?}
 
 \item{encoding}{Assumed stdout and stderr encoding.}
+
+\item{post_process}{Post processing function.}
 }
 \description{
 Start a process
