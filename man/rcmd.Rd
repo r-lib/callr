@@ -56,7 +56,7 @@ callback is also called.}
 output and standard error. This callback is not line oriented, i.e.
 multiple lines or half a line can be passed to the callback.}
 
-\item{spinner}{Whether to snow a calming spinner on the screen while
+\item{spinner}{Whether to show a calming spinner on the screen while
 the child R session is running. By default it is shown if
 \code{show = TRUE} and the R session is interactive.}
 
