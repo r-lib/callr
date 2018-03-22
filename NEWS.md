@@ -6,6 +6,8 @@ option.
 
 * Better error message if the child R process crashes or gets killed. (#41)
 
+* `r_bg` and `rcmd_bg` now have the `supervise` option (#45).
+
 # 2.0.2
 
 * Fix a bug with R-devel, caused by the change on 2018-02-08:
