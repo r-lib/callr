@@ -53,7 +53,8 @@ r_process_options_default <- function() {
       "--no-save", "--no-restore"),
     system_profile = FALSE,
     user_profile = FALSE,
-    env = character()
+    env = character(),
+    supervise = FALSE
   )
 }
 
@@ -68,7 +69,8 @@ rcmd_process_options_default <- function() {
     system_profile = FALSE,
     user_profile = FALSE,
     env = rcmd_safe_env(),
-    wd = "."
+    wd = ".",
+    supervise = FALSE
   )
 }
 

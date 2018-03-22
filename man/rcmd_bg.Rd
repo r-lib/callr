@@ -7,7 +7,8 @@
 rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(), stdout = "|",
   stderr = "|", repos = c(getOption("repos"), c(CRAN =
   "https://cloud.r-project.org")), system_profile = FALSE,
-  user_profile = FALSE, env = rcmd_safe_env(), wd = ".")
+  user_profile = FALSE, env = rcmd_safe_env(), wd = ".",
+  supervise = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -37,6 +38,10 @@ as it is set using the system or the user profile.}
 
 \item{wd}{Working directory to use for running the command. Defaults
 to the current working directory.}
+
+\item{supervise}{Whether to register the process with a supervisor. If \code{TRUE},
+the supervisor will ensure that the process is killed when the R process
+exits.}
 }
 \value{
 It returns a \link{process} object.

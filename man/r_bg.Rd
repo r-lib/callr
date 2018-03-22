@@ -9,7 +9,7 @@ r_bg(func, args = list(), libpath = .libPaths(),
   stdout = "|", stderr = "|", error = getOption("callr.error", "error"),
   cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
   "--no-restore"), system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env())
+  env = rcmd_safe_env(), supervise = FALSE)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -65,6 +65,10 @@ supplied function and some error handling code.}
 \item{user_profile}{Whether to use the user's profile file.}
 
 \item{env}{Environment variables to set for the child process.}
+
+\item{supervise}{Whether to register the process with a supervisor. If \code{TRUE},
+the supervisor will ensure that the process is killed when the R process
+exits.}
 }
 \value{
 An \code{r_process} object, which inherits from \link{process},
