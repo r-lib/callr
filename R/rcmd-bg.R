@@ -5,6 +5,9 @@
 #' return immediately.
 #'
 #' @inheritParams rcmd
+#' @param supervise Whether to register the process with a supervisor. If \code{TRUE},
+#'   the supervisor will ensure that the process is killed when the R process
+#'   exits.
 #' @return It returns a [process] object.
 #'
 #' @family R CMD commands
@@ -15,7 +18,8 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     repos = c(getOption("repos"),
                       c(CRAN = "https://cloud.r-project.org")),
                     system_profile = FALSE, user_profile = FALSE,
-                    env = rcmd_safe_env(), wd = ".") {
+                    env = rcmd_safe_env(), wd = ".",
+                    supervise = FALSE) {
 
   rcmd_process$new(options = as.list(environment()))
 }

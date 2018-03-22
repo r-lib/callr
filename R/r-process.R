@@ -69,7 +69,8 @@ rp_init <- function(self, private, super, options) {
   with_envvar(
     options$env,
     super$initialize(options$bin, options$real_cmdargs,
-                     stdout = options$stdout, stderr = options$stderr)
+                     stdout = options$stdout, stderr = options$stderr,
+                     supervise = options$supervise)
   )
 
   invisible(self)
