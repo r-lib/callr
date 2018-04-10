@@ -110,12 +110,21 @@
 #' `$wait()` waits until the process finishes, or a timeout happens.
 #' Note that if the process never finishes, and the timeout is infinite
 #' (the default), then R will never regain control. It returns
-#' the process itself, invisibly.
+#' the process itself, invisibly. In some rare cases, `$wait()` might take
+#' a bit longer than specified to time out. This happens on Unix, when
+#' another package overwrites the processx SIGCHLD signal handler, after the
+#' processx process has started. One such package is parallel, if used
+#' with fork clusters, e.g. through [parallel::mcparallel()].
 #'
 #' `$get_pid()` returns the process id of the process.
 #'
 #' `$get_exit_status` returns the exit code of the process if it has
-#' finished and `NULL` otherwise.
+#' finished and `NULL` otherwise. On Unix, in some rare cases, the exit
+#' status might be `NA`. This happens if another package (or R itself)
+#' overwrites the processx SIGCHLD handler, after the processx process
+#' has started. In these cases processx cannot determine the real exit
+#' status of the process. One such package is parallel, if used with
+#' fork clusters, e.g. through the [parallel::mcparallel()] function.
 #'
 #' `$restart()` restarts a process. It returns the process itself.
 #'

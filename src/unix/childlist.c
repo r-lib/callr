@@ -89,6 +89,8 @@ SEXP callr__killem_all() {
       if (ret == 0) killed++;
     }
 
+    /* waitpid errors are ignored here... */
+
     R_ClearExternalPtr(status);
     /* The handle will be freed in the finalizer, otherwise there is
        a race condition here. */
