@@ -156,7 +156,7 @@ void callr__finalizer(SEXP status) {
     } while (wp == -1 && errno == EINTR);
 
     /* Maybe just waited on it? Then collect status */
-    if (wp == pid) callr__collect_exit_status(status, wstat);
+    if (wp == pid) callr__collect_exit_status(status, wp, wstat);
 
     /* If it is running, we need to kill it, and wait for the exit status */
     if (wp == 0) {
@@ -164,7 +164,7 @@ void callr__finalizer(SEXP status) {
       do {
 	wp = waitpid(pid, &wstat, 0);
       } while (wp == -1 && errno == EINTR);
-      callr__collect_exit_status(status, wstat);
+      callr__collect_exit_status(status, wp, wstat);
     }
   }
 
@@ -367,7 +367,7 @@ SEXP callr_exec(SEXP command, SEXP args, SEXP std_out, SEXP std_err,
   error("callr error");
 }
 
-void callr__collect_exit_status(SEXP status, int wstat) {
+void callr__collect_exit_status(SEXP status, int retval, int wstat) {
   callr_handle_t *handle = R_ExternalPtrAddr(status);
 
   /* This must be called from a function that blocks SIGCHLD.
@@ -379,8 +379,11 @@ void callr__collect_exit_status(SEXP status, int wstat) {
 
   if (handle->collected) { return; }
 
-  /* We assume that errors were handled before */
-  if (WIFEXITED(wstat)) {
+  /* If waitpid returned -1, then an error happened, e.g. ECHILD, because
+     another SIGCHLD handler collected the exit status already. */
+  if (retval == -1) {
+    handle->exitcode = NA_INTEGER;
+  } else if (WIFEXITED(wstat)) {
     handle->exitcode = WEXITSTATUS(wstat);
   } else {
     handle->exitcode = - WTERMSIG(wstat);
@@ -466,7 +469,9 @@ SEXP callr_wait(SEXP status, SEXP timeout) {
     R_CheckUserInterrupt();
 
     /* We also check if the process is alive, because the SIGCHLD is
-       not delivered in valgrind :( */
+       not delivered in valgrind :( This also works around the issue
+       of SIGCHLD handler interference, i.e. if another package (like
+       parallel) removes our signal handler. */
     ret = kill(pid, 0);
     if (ret != 0) return ScalarLogical(1);
 
@@ -527,6 +532,13 @@ SEXP callr_is_alive(SEXP status) {
     wp = waitpid(pid, &wstat, WNOHANG);
   } while (wp == -1 && errno == EINTR);
 
+  /* Maybe another SIGCHLD handler collected the exit status?
+     Then we just set it to NA (in the collect_exit_status call) */
+  if (wp == -1 && errno == ECHILD) {
+    callr__collect_exit_status(status, wp, wstat);
+    goto cleanup;
+  }
+
   /* Some other error? */
   if (wp == -1) {
     callr__unblock_sigchld();
@@ -537,7 +549,7 @@ SEXP callr_is_alive(SEXP status) {
   if (wp == 0) {
     ret = 1;
   } else {
-    callr__collect_exit_status(status, wstat);
+    callr__collect_exit_status(status, wp, wstat);
   }
 
  cleanup:
@@ -574,6 +586,14 @@ SEXP callr_get_exit_status(SEXP status) {
     wp = waitpid(pid, &wstat, WNOHANG);
   } while (wp == -1 && errno == EINTR);
 
+  /* Another SIGCHLD handler already collected the exit code?
+     Then we set it to NA (in the collect_exit_status call). */
+  if (wp == -1 && errno == ECHILD) {
+    callr__collect_exit_status(status, wp, wstat);
+    result = PROTECT(ScalarInteger(handle->exitcode));
+    goto cleanup;
+  }
+
   /* Some other error? */
   if (wp == -1) {
     callr__unblock_sigchld();
@@ -584,7 +604,7 @@ SEXP callr_get_exit_status(SEXP status) {
   if (wp == 0) {
     result = PROTECT(R_NilValue);
   } else {
-    callr__collect_exit_status(status, wstat);
+    callr__collect_exit_status(status, wp, wstat);
     result = PROTECT(ScalarInteger(handle->exitcode));
   }
 
@@ -642,9 +662,15 @@ SEXP callr_signal(SEXP status, SEXP signal) {
     wp = waitpid(pid, &wstat, WNOHANG);
   } while (wp == -1 && errno == EINTR);
 
+  /* Maybe another SIGCHLD handler collected it already? */
+  if (wp == -1 && errno == ECHILD) {
+    callr__collect_exit_status(status, wp, wstat);
+    goto cleanup;
+  }
+
   if (wp == -1) {
     callr__unblock_sigchld();
-    error("callr_get_exit_status: %s", strerror(errno));
+    error("callr_signal: %s", strerror(errno));
   }
 
  cleanup:
@@ -684,6 +710,13 @@ SEXP callr_kill(SEXP status, SEXP grace) {
     wp = waitpid(pid, &wstat, WNOHANG);
   } while (wp == -1 && errno == EINTR);
 
+  /* The child does not exist any more, set exit status to NA &
+     return FALSE. */
+  if (wp == -1 && errno == ECHILD) {
+    callr__collect_exit_status(status, wp, wstat);
+    goto cleanup;
+  }
+
   /* Some other error? */
   if (wp == -1) {
     callr__unblock_sigchld();
@@ -708,8 +741,10 @@ SEXP callr_kill(SEXP status, SEXP grace) {
 
   /* Collect exit status, and check if it was killed by a SIGKILL
      If yes, this was most probably us (although we cannot be sure in
-     general... */
-  callr__collect_exit_status(status, wstat);
+     general...
+     If the status was collected by another SIGCHLD, then the exit
+     status will be set to NA */
+  callr__collect_exit_status(status, wp, wstat);
   result = handle->exitcode == - SIGKILL;
 
  cleanup:

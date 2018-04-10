@@ -40,7 +40,7 @@ callr__child_list_t *callr__child_find(pid_t pid);
 void callr__freelist_add(callr__child_list_t *ptr);
 void callr__freelist_free();
 
-void callr__collect_exit_status(SEXP status, int wstat);
+void callr__collect_exit_status(SEXP status, int retval, int wstat);
 
 int callr__nonblock_fcntl(int fd, int set);
 int callr__cloexec_fcntl(int fd, int set);
