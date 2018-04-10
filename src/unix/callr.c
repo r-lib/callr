@@ -473,7 +473,10 @@ SEXP callr_wait(SEXP status, SEXP timeout) {
        of SIGCHLD handler interference, i.e. if another package (like
        parallel) removes our signal handler. */
     ret = kill(pid, 0);
-    if (ret != 0) return ScalarLogical(1);
+    if (ret != 0) {
+      ret = 1;
+      goto cleanup;
+    }
 
     if (ctimeout >= 0) timeleft -= CALLR_INTERRUPT_INTERVAL;
   }
@@ -489,6 +492,7 @@ SEXP callr_wait(SEXP status, SEXP timeout) {
     error("callr wait with timeout error: %s", strerror(errno));
   }
 
+ cleanup:
   if (handle->waitpipe[0] >= 0) close(handle->waitpipe[0]);
   if (handle->waitpipe[1] >= 0) close(handle->waitpipe[1]);
   handle->waitpipe[0] = -1;
