@@ -1,5 +1,5 @@
 
-# 2.0.2.9000
+# 2.0.3
 
 * The default behavior on error can be set now with the `callr.error`
 option.
