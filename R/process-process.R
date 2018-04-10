@@ -114,7 +114,7 @@
 #' a bit longer than specified to time out. This happens on Unix, when
 #' another package overwrites the processx SIGCHLD signal handler, after the
 #' processx process has started. One such package is parallel, if used
-#' with fork clusters, e.g. through [parallel::mcparallel()].
+#' with fork clusters, e.g. through `parallel::mcparallel()`.
 #'
 #' `$get_pid()` returns the process id of the process.
 #'
@@ -124,7 +124,7 @@
 #' overwrites the processx SIGCHLD handler, after the processx process
 #' has started. In these cases processx cannot determine the real exit
 #' status of the process. One such package is parallel, if used with
-#' fork clusters, e.g. through the [parallel::mcparallel()] function.
+#' fork clusters, e.g. through the `parallel::mcparallel()` function.
 #'
 #' `$restart()` restarts a process. It returns the process itself.
 #'

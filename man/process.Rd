@@ -122,7 +122,7 @@ the process itself, invisibly. In some rare cases, \code{$wait()} might take
 a bit longer than specified to time out. This happens on Unix, when
 another package overwrites the processx SIGCHLD signal handler, after the
 processx process has started. One such package is parallel, if used
-with fork clusters, e.g. through \code{\link[parallel:mcparallel]{parallel::mcparallel()}}.
+with fork clusters, e.g. through \code{parallel::mcparallel()}.
 
 \code{$get_pid()} returns the process id of the process.
 
@@ -132,7 +132,7 @@ status might be \code{NA}. This happens if another package (or R itself)
 overwrites the processx SIGCHLD handler, after the processx process
 has started. In these cases processx cannot determine the real exit
 status of the process. One such package is parallel, if used with
-fork clusters, e.g. through the \code{\link[parallel:mcparallel]{parallel::mcparallel()}} function.
+fork clusters, e.g. through the \code{parallel::mcparallel()} function.
 
 \code{$restart()} restarts a process. It returns the process itself.
 

@@ -20,7 +20,7 @@ option.
 
 # 2.0.1
 
-* Fix compilation issues on CRAN's Solarix machine
+* Fix compilation issues on CRAN's Solaris machine
 
 * Fix a test failure on CRAN's macOS machine
 
