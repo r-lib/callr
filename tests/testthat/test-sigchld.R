@@ -64,7 +64,7 @@ test_that("signal", {
   q <- mcparallel(Sys.sleep(1))
   res <- mccollect(list(p, q))
   expect_false(px$signal(2))            # SIGINT
-  expect_identical(px$get_exit_status(), NA_integer_)
+  expect_true(print(px$get_exit_status()) %in% c(0L, NA_integer_))
 })
 
 test_that("kill", {
