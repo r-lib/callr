@@ -15,7 +15,9 @@ SEXP callr_poll(SEXP statuses, SEXP ms) {
     SEXP status = VECTOR_ELT(statuses, i);
     callr_handle_t *handle = R_ExternalPtrAddr(status);
     callr_c_pollable_from_connection(&pollables[i*2], handle->pipes[1]);
+    if (handle->pipes[1]) handle->pipes[1]->poll_idx = i * 2;
     callr_c_pollable_from_connection(&pollables[i*2+1], handle->pipes[2]);
+    if (handle->pipes[2]) handle->pipes[2]->poll_idx = i * 2 + 1;
     SET_VECTOR_ELT(result, i, allocVector(INTSXP, 2));
   }
 

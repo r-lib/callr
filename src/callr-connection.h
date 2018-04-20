@@ -55,6 +55,7 @@ typedef struct callr_connection_s {
   size_t utf8_allocated_size;
   size_t utf8_data_size;
 
+  int poll_idx;
 } callr_connection_t;
 
 /* Generic poll method
@@ -173,6 +174,11 @@ int callr_c_pollable_from_connection(
 
 #ifndef _WIN32
 typedef unsigned long DWORD;
+#endif
+
+#ifdef _WIN32
+extern HANDLE callr__connection_iocp;
+HANDLE callr__get_default_iocp();
 #endif
 
 #define CALLR_ERROR(m,c) callr__error((m),(c),__FILE__,__LINE__)

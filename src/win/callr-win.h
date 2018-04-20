@@ -15,8 +15,6 @@ typedef struct callr_handle_s {
   int cleanup;
 } callr_handle_t;
 
-extern HANDLE callr__iocp;
-
 int callr__utf8_to_utf16_alloc(const char* s, WCHAR** ws_ptr);
 
 int callr__stdio_create(callr_handle_t *handle,
