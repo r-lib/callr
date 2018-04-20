@@ -37,6 +37,8 @@
 #define FDEV        0x40
 #define FTEXT       0x80
 
+HANDLE callr__default_iocp = NULL;
+
 static int callr__create_nul_handle(HANDLE *handle_ptr, DWORD access) {
   HANDLE handle;
   SECURITY_ATTRIBUTES sa;
@@ -172,8 +174,6 @@ int callr__create_pipe(void *id, HANDLE* parent_pipe_ptr, HANDLE* child_pipe_ptr
   CALLR_ERROR(errmessage, err);
   return 0;			/* never reached */
 }
-
-
 
 callr_connection_t * callr__create_connection(
   HANDLE pipe_handle, const char *membername, SEXP private,

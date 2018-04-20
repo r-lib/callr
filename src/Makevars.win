@@ -1,7 +1,7 @@
 OBJECTS = test-connections.o init.o poll.o callr-connection.o     \
           callr-vector.o                                          \
           win/callr.o win/stdio.o win/named_pipe.o win/cleanup.o  \
-	  test-runner.o
+	  win/iocp.o test-runner.o
 
 .PHONY: all clean
 

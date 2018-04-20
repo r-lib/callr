@@ -115,13 +115,17 @@ test_that("polling and buffering", {
 
     ## We poll until p1 has output. We read out some of the output,
     ## and leave the rest in the buffer.
+    tick <- Sys.time()
     p1$poll_io(-1)
+    expect_true(Sys.time() - tick < as.difftime(1, units = "secs"))
     expect_equal(p1$read_output_lines(n = 1), "1")
 
     ## Now poll should return immediately, because there is output ready
     ## from p1. The status of p2 should be 'silent' (and not 'timeout')
     tick <- Sys.time()
     s <- poll(list(p1, p2), 3000)
+    dt <- Sys.time() - tick
+    expect_true(dt < as.difftime(2, units = "secs"))
     expect_equal(
       s,
       list(
@@ -129,14 +133,10 @@ test_that("polling and buffering", {
         c(output = "silent", error = "silent")
       )
     )
-    if (s[[2]][1] != "silent") break;
 
     p1$kill()
     p2$kill()
-
-    ## Check that poll has returned immediately
-    dt <- Sys.time() - tick
-    expect_true(dt < as.difftime(2, units = "secs"))
+    if (s[[2]][1] != "silent") break;
   }
 })
 
