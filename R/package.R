@@ -6,6 +6,5 @@
 #' does exactly that.
 #'
 #' @docType package
-#' @useDynLib callr, .registration = TRUE, .fixes = "c_"
 #' @name callr
 NULL
