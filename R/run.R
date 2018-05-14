@@ -1,4 +1,6 @@
 
+#' @importFrom processx run
+
 run_r <- function(options) {
 
   oldwd <- getwd()
