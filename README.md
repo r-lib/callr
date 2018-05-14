@@ -29,6 +29,14 @@ that.
 
 ## Installation
 
+Install the stable version from CRAN:
+
+```r
+install.packages("callr")
+```
+
+Install the development version from GitHub:
+
 ```r
 source("https://install-github.me/r-lib/callr")
 ```
