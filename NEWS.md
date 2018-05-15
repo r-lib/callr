@@ -1,12 +1,12 @@
 
-# callr 2.0.3-9000
+# callr 2.0.4
 
 * pkgdown web site at https://callr.r-lib.org  (#52, #53).
 
 * callr users `.Renviron` files now (and `R_ENVIRON_USER` as well),
   but overrides the library path, as requested in `r()`, etc. (#30).
 
-* `r()` 
+* callr now  handles the case when the subprocess calls `quit()`.
 
 # callr 2.0.3
 
