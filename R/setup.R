@@ -26,11 +26,13 @@ setup_context <- function(options) {
     tmp_files <- c(tmp_files, profile)
 
     ## Lib path is set in the profile
-    lib <- tempfile()
-    if (is.na(env["R_LIBS"])) env["R_LIBS"] <- lib
-    if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- lib
-    if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- lib
-    if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- lib
+    empty <- tempfile()
+    cat("", file =  empty)
+    tmp_files  <- c(tmp_files, empty)
+    if (is.na(env["R_LIBS"])) env["R_LIBS"] <- empty
+    if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- empty
+    if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- empty
+    if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- empty
     if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profile
   })
 }

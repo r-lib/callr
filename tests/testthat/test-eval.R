@@ -117,10 +117,14 @@ test_that(".Renviron is used, but lib path is set over it", {
         sep = "", file = ".Renviron")
     cat("FOO=bar\n", file = ".Renviron", append = TRUE)
 
-    res <- r(
-      function() list(.libPaths(), Sys.getenv("FOO")),
-      libpath = file.path(getwd(), "yes")
-    )
+    ## R CMD check sets R_ENVIRON and R_ENVIRON_USER to empty,
+    ## so we need to recover that.
+    withr::with_envvar(c(R_ENVIRON_USER=".Renviron"), {
+      res <- r(
+        function() list(.libPaths(), Sys.getenv("FOO")),
+        libpath = file.path(getwd(), "yes")
+      )
+    })
   })
 
   expect_equal(basename(res[[1]][1]), "yes")
