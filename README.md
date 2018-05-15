@@ -190,7 +190,7 @@ of the parent.
 
 ### Tips
 
-It is good practice to create an anonymous function for the `r()` call,
+1) It is good practice to create an anonymous function for the `r()` call,
 instead of passing a function from a package to `r()` directly. This is
 because `callr` resets the environment of the function, which prevents
 some functions from working. Here is an example:
@@ -205,6 +205,18 @@ But with an anonymous function this works fine:
 r(function() praise::praise())
 
 #> [1] "You are outstanding!"
+```
+
+2) If the function you call in the other session calls `quit()` with a
+non-zero status, then callr interprets that as an R crash. Zero status is
+a clean exit, but callr returns `NULL`, as no results were saved:
+
+```r
+r(function() quit(status = 0))
+#> NULL
+
+r(function() quit(status = 2))
+#> Error: callr failed, could not start R, exited with non-zero status, has crashed or was killed
 ```
 
 ### `R CMD <command>`

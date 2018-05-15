@@ -6,6 +6,8 @@
 * callr users `.Renviron` files now (and `R_ENVIRON_USER` as well),
   but overrides the library path, as requested in `r()`, etc. (#30).
 
+* `r()` 
+
 # callr 2.0.3
 
 * The default behavior on error can be set now with the `callr.error`
