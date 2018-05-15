@@ -18,13 +18,11 @@ BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Imports:
-    processx (>= 3.0.3.9000),
+    processx (>= 3.1.0),
     R6,
     utils
 Suggests:
     covr,
     testthat,
     withr
-Remotes:
-    r-lib/processx
 Encoding: UTF-8
