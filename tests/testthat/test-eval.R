@@ -122,7 +122,7 @@ test_that(".Renviron is used, but lib path is set over it", {
     withr::with_envvar(c(R_ENVIRON_USER=".Renviron"), {
       res <- r(
         function() list(.libPaths(), Sys.getenv("FOO")),
-        libpath = file.path(getwd(), "yes")
+        libpath = c(file.path(getwd(), "yes"), .libPaths())
       )
     })
   })
