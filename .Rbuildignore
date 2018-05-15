@@ -11,3 +11,4 @@
 ^src/tools/px$
 ^src/tools/px.exe$
 ^docs$
+^_pkgdown\.yml$
