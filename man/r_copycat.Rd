@@ -51,7 +51,7 @@ supplied function and some error handling code.}
 Differences to \code{\link[=r]{r()}}:
 \itemize{
 \item No extra repoditories are set up.
-\item The \code{--no-site-file}, \code{--no-environ}, \code{--no-save}, \code{--no-restore}
+\item The \code{--no-site-file}, \code{--no-save}, \code{--no-restore}
 command line arguments are not used. (But \code{--slave} still is.)
 \item The system profile and the user profile are loaded.
 \item No extra environment variables are set up.

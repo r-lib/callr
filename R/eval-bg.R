@@ -28,7 +28,7 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                    c(CRAN = "https://cloud.r-project.org")),
                  stdout = "|", stderr = "|",
                  error = getOption("callr.error", "error"),
-                 cmdargs = c("--no-site-file", "--no-environ", "--slave",
+                 cmdargs = c("--no-site-file", "--slave",
                    "--no-save", "--no-restore"),
                  system_profile = FALSE, user_profile = FALSE,
                  env = rcmd_safe_env(), supervise = FALSE) {

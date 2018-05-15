@@ -97,8 +97,7 @@ rcmd_safe_env <- function() {
     CYGWIN = "nodosfilewarning",
     R_TESTS = "",
     R_BROWSER = "false",
-    R_PDFVIEWER = "false",
-    R_ENVIRON_USER = tempfile()
+    R_PDFVIEWER = "false"
   )
 
   vars

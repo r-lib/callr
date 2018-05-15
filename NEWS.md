@@ -3,6 +3,9 @@
 
 * pkgdown web site at https://callr.r-lib.org  (#52, #53).
 
+* callr users `.Renviron` files now (and `R_ENVIRON_USER` as well),
+  but overrides the library path, as requested in `r()`, etc. (#30).
+
 # callr 2.0.3
 
 * The default behavior on error can be set now with the `callr.error`

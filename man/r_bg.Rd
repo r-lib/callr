@@ -7,9 +7,9 @@
 r_bg(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
   stdout = "|", stderr = "|", error = getOption("callr.error", "error"),
-  cmdargs = c("--no-site-file", "--no-environ", "--slave", "--no-save",
-  "--no-restore"), system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env(), supervise = FALSE)
+  cmdargs = c("--no-site-file", "--slave", "--no-save", "--no-restore"),
+  system_profile = FALSE, user_profile = FALSE, env = rcmd_safe_env(),
+  supervise = FALSE)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.

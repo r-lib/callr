@@ -22,28 +22,58 @@ setup_context <- function(options) {
 
   within(options, {
     ## profiles
-    profile <- make_profile(repos)
+    profile <- make_profile(system_profile, user_profile, repos, libpath)
     tmp_files <- c(tmp_files, profile)
 
-    ## Temporary library path
-    lib <- paste(libpath, collapse = .Platform$path.sep)
-
-    ## Workaround, R ignores "", need to set to non-existant file
-    if (lib == "") lib <- tempfile()
-
-    ## LIB and PROFILE env vars
+    ## Lib path is set in the profile
+    lib <- tempfile()
     if (is.na(env["R_LIBS"])) env["R_LIBS"] <- lib
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- lib
     if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- lib
-    if (!system_profile) env["R_PROFILE"] <- profile
-    if (!user_profile) env["R_PROFILE_USER"] <- profile
+    if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- lib
+    if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profile
   })
 }
 
 
-make_profile <- function(repos) {
+## We need to combine all profiles into a single one. The combined profile
+## might include the system and user profile, depending on options.
+## It always includes the `repos` and `.libPaths()` settingd.
+##
+## We set  lib path here as well, in case it was set in .Renviron, etc.,
+## because the supplied libpath should take precedence over .Renviron.
+
+make_profile <- function(system, user, repos, libpath) {
   profile <- tempfile()
-  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile)
+
+  ## Create file
+  cat("", file = profile)
+
+  ## Add profiles
+  if (system) {
+    sys <- Sys.getenv("R_PROFILE",
+                      file.path(R.home("etc"), "Rprofile.site"))
+    sys <- path.expand(sys)
+    if (file.exists(sys)) file.append(profile, sys)
+  }
+
+  if (user) {
+    user <- Sys.getenv("R_PROFILE_USER", NA_character_)
+    local <- ".Rprofile"
+    home  <- path.expand("~/.Rprofile")
+    if (is.na(user) && file.exists(local)) user <- local
+    if (is.na(user) && file.exists(home)) user <- home
+    if (!is.na(user) && file.exists(user)) file.append(profile, user)
+  }
+
+  ## Override repos and library path, as requested
+  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile,
+      append  = TRUE)
+  if (!is.null(libpath)) {
+    cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = profile,
+        append = TRUE)
+  }
+
   profile
 }
 
