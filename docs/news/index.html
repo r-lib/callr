@@ -55,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.3.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.4</span>
       </span>
     </div>
 
@@ -98,14 +98,15 @@
       <small>Source: <a href='https://github.com/r-lib/callr#readme/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="callr-2-0-3-9000" class="section level1">
+    <div id="callr-2-0-4" class="section level1">
 <h1 class="page-header">
-<a href="#callr-2-0-3-9000" class="anchor"></a>callr 2.0.3-9000<small> Unreleased </small>
+<a href="#callr-2-0-4" class="anchor"></a>callr 2.0.4<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>pkgdown web site at <a href="https://callr.r-lib.org" class="uri">https://callr.r-lib.org</a> (<a href='https://github.com/r-lib/callr#readme/issues/52'>#52</a>, <a href='https://github.com/r-lib/callr#readme/issues/53'>#53</a>).</p></li>
 <li><p>callr users <code>.Renviron</code> files now (and <code>R_ENVIRON_USER</code> as well), but overrides the library path, as requested in <code><a href="../reference/r.html">r()</a></code>, etc. (<a href='https://github.com/r-lib/callr#readme/issues/30'>#30</a>).</p></li>
-<li><p><code><a href="../reference/r.html">r()</a></code></p></li>
+<li><p>callr now handles the case when the subprocess calls <code>quit()</code>.</p></li>
+<li><p>callr now uses the processx package, instead of embedded code, to create and control processes.</p></li>
 </ul>
 </div>
     <div id="callr-2-0-3" class="section level1">
@@ -168,7 +169,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#callr-2-0-3-9000">2.0.3-9000</a></li>
+        <li><a href="#callr-2-0-4">2.0.4</a></li>
         <li><a href="#callr-2-0-3">2.0.3</a></li>
         <li><a href="#callr-2-0-2">2.0.2</a></li>
         <li><a href="#callr-2-0-1">2.0.1</a></li>

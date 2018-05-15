@@ -6,7 +6,10 @@
 * callr users `.Renviron` files now (and `R_ENVIRON_USER` as well),
   but overrides the library path, as requested in `r()`, etc. (#30).
 
-* callr now  handles the case when the subprocess calls `quit()`.
+* callr now handles the case when the subprocess calls `quit()`.
+
+* callr now uses the processx package, instead of embedded code,
+  to create and control processes.
 
 # callr 2.0.3
 
