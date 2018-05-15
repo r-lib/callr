@@ -10,3 +10,4 @@
 ^src/.*\.o$
 ^src/tools/px$
 ^src/tools/px.exe$
+^docs$

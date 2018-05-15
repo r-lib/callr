@@ -1,0 +1,8 @@
+pandoc: 2.1.3
+pkgdown: 1.0.0.9000
+pkgdown_sha: ~
+articles: []
+urls:
+  reference: http://processx.r-lib.org/reference
+  article: http://processx.r-lib.org/articles
+

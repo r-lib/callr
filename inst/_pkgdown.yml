@@ -1,0 +1,44 @@
+url: http://processx.r-lib.org
+
+authors:
+  "Gábor Csárdi":
+    href: https://github.com/gaborcsardi
+  "Winston Chang":
+    href: https://github.com/wch
+
+reference:
+- title: Introduction
+  contents:
+  - callr
+
+- title: Run R
+  contents:
+  - r
+  - r_copycat
+  - r_safe
+  - r_vanilla
+
+- title: Run R in the background
+  contents:
+  - r_bg
+  - r_process
+  - r_process_options
+
+- title: Run R CMD
+  contents:
+  - rcmd
+  - rcmd_copycat
+  - rcmd_safe
+  - rcmd_safe_env
+
+- title: Run R CMD in the background
+  contents:
+  - rcmd_bg
+  - rcmd_process
+  - rcmd_process_options
+
+- title: Re-exported functions
+  contents:
+  - process
+  - run
+  - poll
