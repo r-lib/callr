@@ -1,4 +1,89 @@
 
+#' External R Session
+#'
+#' A permanent R session that runs in the background. This is an R6 class
+#' that extends the [processx::process] class.
+#'
+#' The process is started at the creation of the object, and then it can
+#' be used to evaluate R function calls, one at a time.
+#'
+#' @section Usage:
+#' ```
+#' rs <- r_session$new(options)
+#' rs$run(func, args = list())
+#' rs$call(func, args = list())
+#' rs$wait_for_call(timeout = -1)
+#' rs$get_result()
+#' rs$get_running_time()
+#' rs$get_state()
+#' rs$finish()
+#' ```
+#'
+#' @section Arguments:
+#' * `options`: A list of options created via [r_session_options()].
+#' * `func`: Function object to call in the background R process.
+#' *   Please read the notes for the similar argument of [r()]
+#' * `args`: Arguments to pass to the function. Must be a list.
+#' * `timeout`: Timeout in milliseconds.
+#'
+#' @section Details:
+#' `r_session$new()` creates a new R background process. It returns
+#' immediately, i.e. before the process is actually ready to run. You may
+#' call `wait_for_call()` to make sure it is ready.
+#'
+#' `rs$run()` is similar to [r()], but runs the function in the `rs` R
+#' session. Note that if a timeout happens, the session and the background
+#' computation is not terminated. You can call `rs$finish()` to terminate
+#' the R process. There is currently no way to terminate the computation
+#' without terminating the background R process.
+#'
+#' `rs$call()` starts running a function in the background R session, and
+#' returns immediately. To check if the function is done, call the
+#' `wait_for_call()` method. To get the result call the `get_result()`
+#' method.
+#'
+#' `rs$wait_for_call()` waits for an `rs$call()` computation, or the R
+#' session startup to finish. This is essentially a poll operation.
+#' If there is no computation running, it returns immediately.
+#'
+#' `rs$get_result()` returns the result of the last `rs$call()`
+#' computation. (Or the result of the last `rs$run()`, if it was
+#' interrupted.) If there is no result to return, because the computation
+#' has not finished yet, or some other reason, it throws an error.
+#'
+#' `rs$get_running_time()` returns the elapsed time since the R process
+#' has started, and the elapsed time since the current computation has
+#' started. The latter is NA if there is no active computation.
+#'
+#' `rs$get_state()` return the state of the R session. Possible values:
+#' * `"starting"`: starting up,
+#' * `"idle"`: ready to compute,
+#' * `"busy"`: computing right now,
+#' * `"ready"`: computation finished, result can be read out,
+#' * `"finished"`: the R process has finished.
+#' `rs$get_state()` automatically updates the state, i.e. it performs a
+#' quick `wait_for_call()`, if needed.
+#'
+#' `r$finish()` terminates the current computation and the R process.
+#' The session object will be in `"finished"` state after this.
+#'
+#' @name r_session
+#' @examples
+#' \dontrun{
+#' opt <- r_session_options()
+#' rs <- r_ression$new(opt)
+#'
+#' rs$run(function() 1 + 2)
+#'
+#' rs$call(function() Sys.sleep(1))
+#' rs$get_state()
+#' rs$wait_for_call()
+#'
+#' rs$get_result()
+#' }
+NULL
+
+
 #' @importFrom R6 R6Class
 #' @export
 
@@ -49,6 +134,7 @@ r_session <- R6Class(
 rs_init <- function(self, private, super, options) {
 
   options$func <- options$func %||% function() { }
+  options$args <- list()
   options <- convert_and_check_my_args(options)
   options <- setup_context(options)
   options <- setup_r_binary_and_args(options, script_file = FALSE)
@@ -207,8 +293,14 @@ rs__status_expr <- function(code, text = "", fd = 3) {
   )
 }
 
+#' Create options for an [r_session] object
+#'
+#' @param  ... Options to override, named arguments.
+#'
 #' @export
 
 r_session_options <- function(...) {
-  r_process_options(...)
+  opt <-  r_process_options(...)
+  opt$func <- opt$args <- NULL
+  opt
 }
