@@ -26,5 +26,5 @@ Suggests:
     testthat,
     withr
 Remotes:
-    r-lib/processx
+    r-lib/processx@feature/pollable-connection
 Encoding: UTF-8
