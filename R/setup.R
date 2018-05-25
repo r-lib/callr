@@ -3,7 +3,8 @@ setup_script_files <- function(options) {
   within(options, {
     func_file   <- save_function_to_temp(options)
     result_file <- tempfile()
-    script_file <- make_vanilla_script(func_file, result_file, options$error)
+    script_file <- make_vanilla_script_file(
+      func_file, result_file, options$error)
     tmp_files <- c(tmp_files, func_file, script_file, result_file)
   })
 }
@@ -119,10 +120,11 @@ setup_callbacks <- function(options) {
   options
 }
 
-setup_r_binary_and_args <- function(options) {
+setup_r_binary_and_args <- function(options, script_file = TRUE) {
   exec <- if (os_platform() == "windows") "Rterm" else "R"
   options$bin <- file.path(R.home("bin"), exec)
-  options$real_cmdargs <- c(options$cmdargs, "-f", options$script_file)
+  options$real_cmdargs <-
+    c(options$cmdargs, if (script_file) c("-f", options$script_file))
   options
 }
 

@@ -1,0 +1,214 @@
+
+#' @importFrom R6 R6Class
+#' @export
+
+r_session <- R6Class(
+  "r_session",
+  inherit = process,
+
+  public = list(
+    initialize = function(options)
+      rs_init(self, private, super, options),
+    run = function(func, args = list(), timeout = -1)
+      rs_run(self, private, func, args, timeout),
+    call = function(func, args = list())
+      rs_call(self, private, func, args),
+    wait = function(timeout = -1)
+      rs_wait(self, private, timeout),
+    get_result = function()
+      rs_get_result(self, private),
+    get_running_time = function()
+      rs_get_running_time(self, private),
+    get_state = function()
+      rs_get_state(self, private),
+    finish = function(grace = 200)
+      rs_finish(self, private, grace)
+  ),
+
+  private = list(
+    options = NULL,
+    state = NULL,
+    started_at = NULL,
+    fun_started_at = as.POSIXct(NA),
+    pipe = NULL,                   # Two connections, for me and child
+
+    func_file = NULL,
+    res_file = NULL,
+
+    update_state = function()
+      rs__update_state(self, private),
+    report_back = function(code, text = "")
+      rs__report_back(self, private, code, text),
+    write_for_sure = function(text)
+      rs__write_for_sure(self, private, text)
+  )
+)
+
+#' @importFrom processx conn_create_pipepair
+
+rs_init <- function(self, private, super, options) {
+
+  options$func <- options$func %||% function() { }
+  options <- convert_and_check_my_args(options)
+  options <- setup_context(options)
+  options <- setup_r_binary_and_args(options, script_file = FALSE)
+
+  private$options <- options
+
+  private$pipe <- conn_create_pipepair()
+
+  with_envvar(
+    options$env,
+    super$initialize(options$bin, options$real_cmdargs, stdin = "|",
+                     stdout = options$stdout, stderr = options$stderr,
+                     connections = list(private$pipe[[2]]))
+  )
+  private$started_at <- Sys.time()
+  private$state <- "starting"
+
+  ## Make child report back when ready
+  private$report_back(200, "ready to go")
+
+  invisible(self)
+}
+
+rs_run <- function(self, private, func, args, timeout) {
+  self$call(func, args)
+  self$wait(timeout)
+  self$get_result()
+}
+
+rs_call <- function(self, private, func, args) {
+  private$update_state()
+  if (private$state != "idle") stop("R session busy")
+
+  ## Save the function in a file
+  private$options$func <- func
+  private$options$args <- args
+  private$options$func_file <- save_function_to_temp(private$options)
+  private$options$result_file <- tempfile()
+  private$options$tmp_files <-
+    c(private$options$tmp_files, private$options$func_file,
+      private$options$result_file)
+
+  ## Run an expr that loads it, in the child process, with error handlers
+  expr <- make_vanilla_script_expr(private$options$func_file,
+                                   private$options$result_file,
+                                   private$options$error)
+  cmd <- paste0(deparse(expr), "\n")
+
+  ## Write this to stdin
+  private$write_for_sure(cmd)
+
+  ## Report back when done
+  report_str <- paste0("DONE", basename(private$options$result_file))
+  private$report_back(200, report_str)
+
+  private$state <- "busy"
+}
+
+rs_wait <- function(self, private, timeout) {
+  if (private$state %in% c("finished", "ready", "idle")) return()
+
+  pr <- poll(list(private$pipe[[1]]), timeout)[[1]]
+  if (pr == "ready") {
+    if (private$state == "starting") {
+      private$state <- "idle"
+    } else {
+      private$state <- "ready"
+    }
+    invisible(conn_read_lines(private$pipe[[1]], 1))
+  } else {
+    invisible()
+  }
+}
+
+rs_get_result <- function(self, private) {
+  if (private$state != "ready") private$update_state()
+
+  get_my_result <- function() {
+    ## This is artificial...
+    out <- list(
+      status = 0,
+      stdout = "",
+      stderr = "",
+      timeout = FALSE
+    )
+    res <- get_result(out, private$options)
+    private$state <- "idle"
+    unlink(private$options$tmp_files, recursive = TRUE)
+    private$options$tmp_files <- NULL
+    res
+  }
+
+  switch(
+    private$state,
+    "finished" = stop("R session already finished"),
+    "idle" = stop("R session is idle"),
+    "busy" = stop("R session still busy"),
+    "starting" = stop("R session still starting"),
+    "ready" = get_my_result()
+  )
+}
+
+rs_get_running_time <- function(self, private) {
+  now <- Sys.time()
+  c(total = now - private$started_at,
+    current = now - private$fun_started_at)
+}
+
+rs_get_state <- function(self, private) {
+  private$update_state()
+  private$state
+}
+
+rs_finish <- function(self, private, grace) {
+  close(self$get_input_connection())
+  self$poll_io(grace)
+  self$kill()
+  private$state <- "finished"
+  private$fun_started_at <- as.POSIXct(NA)
+}
+
+#' @importFrom processx conn_read_lines
+
+rs__update_state <- function(self, private) {
+  self$wait(timeout = 0)
+}
+
+rs__report_back <- function(self, private, code, text) {
+  cmd <- paste0(deparse(rs__status_expr(code, text, fd = 3)), "\n")
+  private$write_for_sure(cmd)
+}
+
+rs__write_for_sure <- function(self, private, text) {
+  while (1) {
+    text <- self$write_input(text)
+    if (!length(text)) break;
+    Sys.sleep(.1)
+  }
+}
+
+#' @importFrom processx conn_create_fd conn_write
+
+rs__status_expr <- function(code, text = "", fd = 3) {
+  substitute(
+    {
+      code_ <- code; fd_ <- fd; text_ <- text
+      con <- processx::conn_create_fd(fd_, close = FALSE)
+      data <- paste0(code_, " ", text_, "\n")
+      while (1) {
+        data <- processx::conn_write(con, data)
+        if (!length(data)) break;
+        Sys.sleep(.1)
+      }
+    },
+    list(code = code, fd = fd, text = text)
+  )
+}
+
+#' @export
+
+r_session_options <- function(...) {
+  r_process_options(...)
+}

@@ -1,4 +1,6 @@
 
+`%||%` <- function(l, r) if (is.null(l)) r else l
+
 is.named <- function(x) {
   length(names(x)) == length(x) && all(names(x) != "")
 }

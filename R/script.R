@@ -1,5 +1,5 @@
 
-make_vanilla_script <- function(expr_file, res, error) {
+make_vanilla_script_expr <- function(expr_file, res, error) {
 
   ## Code to handle errors in the child
   ## This will inserted into the main script
@@ -37,7 +37,7 @@ make_vanilla_script <- function(expr_file, res, error) {
   ##
   ## It is important that we do not create any temporary variables,
   ## the function is called from an empty global environment.
-  script <- substitute(
+  substitute(
     {
       withCallingHandlers(              # nocov start
         {
@@ -56,8 +56,11 @@ make_vanilla_script <- function(expr_file, res, error) {
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res)
   )
+}
 
-  script <- deparse(script)
+make_vanilla_script_file <- function(expr_file, res, error) {
+  expr <- make_vanilla_script_expr(expr_file, res, error)
+  script <- deparse(expr)
 
   tmp <- tempfile()
   cat(script, file = tmp, sep = "\n")
