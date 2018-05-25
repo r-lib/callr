@@ -28,3 +28,15 @@ test_that("regular use", {
   rs$finish()
   expect_equal(rs$get_state(), "finished")
 })
+
+test_that("run", {
+  opt <- r_session_options()
+  rs <- r_session$new(opt)
+
+  ## Wait until ready, but max 3s
+  r_session_wait_or_kill(rs, "idle")
+
+  expect_equal(rs$run(function() 42), 42)
+  expect_equal(rs$run(function() 42), 42)
+  expect_equal(rs$run(function(x, y) x + y, list(x = 42, y = 42)), 84)
+})
