@@ -4,6 +4,7 @@ context("r_session")
 test_that("regular use", {
   opt <- r_session_options()
   rs <- r_session$new(opt)
+  on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
   r_session_wait_or_kill(rs, "idle")
@@ -27,11 +28,13 @@ test_that("regular use", {
   ## Finish
   rs$finish()
   expect_equal(rs$get_state(), "finished")
+  expect_false(rs$is_alive())
 })
 
 test_that("run", {
   opt <- r_session_options()
   rs <- r_session$new(opt)
+  on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
   r_session_wait_or_kill(rs, "idle")
@@ -39,4 +42,9 @@ test_that("run", {
   expect_equal(rs$run(function() 42), 42)
   expect_equal(rs$run(function() 42), 42)
   expect_equal(rs$run(function(x, y) x + y, list(x = 42, y = 42)), 84)
+
+  ## Finish
+  rs$finish()
+  expect_equal(rs$get_state(), "finished")
+  expect_false(rs$is_alive())
 })
