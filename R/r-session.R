@@ -13,8 +13,8 @@ r_session <- R6Class(
       rs_run(self, private, func, args, timeout),
     call = function(func, args = list())
       rs_call(self, private, func, args),
-    wait = function(timeout = -1)
-      rs_wait(self, private, timeout),
+    wait_for_call = function(timeout = -1)
+      rs_wait_for_call(self, private, timeout),
     get_result = function()
       rs_get_result(self, private),
     get_running_time = function()
@@ -74,7 +74,7 @@ rs_init <- function(self, private, super, options) {
 
 rs_run <- function(self, private, func, args, timeout) {
   self$call(func, args)
-  self$wait(timeout)
+  self$wait_for_call(timeout)
   self$get_result()
 }
 
@@ -107,7 +107,7 @@ rs_call <- function(self, private, func, args) {
   private$state <- "busy"
 }
 
-rs_wait <- function(self, private, timeout) {
+rs_wait_for_call <- function(self, private, timeout) {
   if (private$state %in% c("finished", "ready", "idle")) return()
 
   pr <- poll(list(private$pipe[[1]]), timeout)[[1]]
@@ -173,7 +173,7 @@ rs_finish <- function(self, private, grace) {
 #' @importFrom processx conn_read_lines
 
 rs__update_state <- function(self, private) {
-  self$wait(timeout = 0)
+  self$wait_for_call(timeout = 0)
 }
 
 rs__report_back <- function(self, private, code, text) {

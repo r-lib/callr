@@ -9,7 +9,7 @@ try_silently <- function(expr) {
 }
 
 r_session_wait_or_kill <- function(x, state = "ready") {
-  x$wait(3000)
+  x$wait_for_call(3000)
   if (x$get_state() != state) {
     x$kill()
     stop("R session not ready...")
