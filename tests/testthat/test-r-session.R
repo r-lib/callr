@@ -48,3 +48,37 @@ test_that("run", {
   expect_equal(rs$get_state(), "finished")
   expect_false(rs$is_alive())
 })
+
+test_that("get stdout", {
+  opt <- r_session_options()
+  rs <- r_session$new(opt)
+  on.exit(rs$kill())
+
+  ## Wait until ready, but max 3s
+  r_session_wait_or_kill(rs, "idle")
+
+  rs$call(function(x) cat("foobar\n"))
+  r_session_wait_or_kill(rs, "ready")
+
+  expect_null(rs$get_result())
+  expect_equal(rs$read_output_lines(), "foobar")
+
+  rs$finish()
+})
+
+test_that("get stderr", {
+  opt <- r_session_options()
+  rs <- r_session$new(opt)
+  on.exit(rs$kill())
+
+  ## Wait until ready, but max 3s
+  r_session_wait_or_kill(rs, "idle")
+
+  rs$call(function(x) message("message me!"))
+  r_session_wait_or_kill(rs, "ready")
+
+  expect_null(rs$get_result())
+  expect_equal(rs$read_error_lines(), "message me!")
+
+  rs$finish()
+})
