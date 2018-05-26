@@ -7,11 +7,11 @@ test_that("regular use", {
   on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
-  r_session_wait_or_kill(rs, "idle")
+  r_session_wait_or_kill(rs)
 
   ## Start a command
   rs$call(function() 42)
-  r_session_wait_or_kill(rs, "ready")
+  r_session_wait_or_kill(rs)
 
   ## Get result
   expect_equal(rs$get_result(), 42)
@@ -19,7 +19,7 @@ test_that("regular use", {
 
   ## Run another command, with arguments
   rs$call(function(x, y)  x + y, list(x = 42, y = 42))
-  r_session_wait_or_kill(rs, "ready")
+  r_session_wait_or_kill(rs)
 
   ## Get result
   expect_equal(rs$get_result(), 84)
@@ -37,7 +37,7 @@ test_that("run", {
   on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
-  r_session_wait_or_kill(rs, "idle")
+  r_session_wait_or_kill(rs)
 
   expect_equal(rs$run(function() 42), 42)
   expect_equal(rs$run(function() 42), 42)
@@ -55,10 +55,10 @@ test_that("get stdout", {
   on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
-  r_session_wait_or_kill(rs, "idle")
+  r_session_wait_or_kill(rs)
 
   rs$call(function(x) cat("foobar\n"))
-  r_session_wait_or_kill(rs, "ready")
+  r_session_wait_or_kill(rs)
 
   expect_null(rs$get_result())
   expect_equal(rs$read_output_lines(), "foobar")
@@ -72,10 +72,10 @@ test_that("get stderr", {
   on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
-  r_session_wait_or_kill(rs, "idle")
+  r_session_wait_or_kill(rs)
 
   rs$call(function(x) message("message me!"))
-  r_session_wait_or_kill(rs, "ready")
+  r_session_wait_or_kill(rs)
 
   expect_null(rs$get_result())
   expect_equal(rs$read_error_lines(), "message me!")

@@ -12,7 +12,6 @@
 #' rs <- r_session$new(options)
 #' rs$run(func, args = list())
 #' rs$call(func, args = list())
-#' rs$wait_for_call(timeout = -1)
 #' rs$get_result()
 #' rs$get_running_time()
 #' rs$get_state()
@@ -29,7 +28,7 @@
 #' @section Details:
 #' `r_session$new()` creates a new R background process. It returns
 #' immediately, i.e. before the process is actually ready to run. You may
-#' call `wait_for_call()` to make sure it is ready.
+#' call `poll_io()` to make sure it is ready.
 #'
 #' `rs$run()` is similar to [r()], but runs the function in the `rs` R
 #' session. Note that if a timeout happens, the session and the background
@@ -39,12 +38,8 @@
 #'
 #' `rs$call()` starts running a function in the background R session, and
 #' returns immediately. To check if the function is done, call the
-#' `wait_for_call()` method. To get the result call the `get_result()`
+#' `poll_io()` method. To get the result call the `get_result()`
 #' method.
-#'
-#' `rs$wait_for_call()` waits for an `rs$call()` computation, or the R
-#' session startup to finish. This is essentially a poll operation.
-#' If there is no computation running, it returns immediately.
 #'
 #' `rs$get_result()` returns the result of the last `rs$call()`
 #' computation. (Or the result of the last `rs$run()`, if it was
@@ -62,7 +57,7 @@
 #' * `"ready"`: computation finished, result can be read out,
 #' * `"finished"`: the R process has finished.
 #' `rs$get_state()` automatically updates the state, i.e. it performs a
-#' quick `wait_for_call()`, if needed.
+#' quick `poll_io()`, if needed.
 #'
 #' `r$finish()` terminates the current computation and the R process.
 #' The session object will be in `"finished"` state after this.
@@ -77,7 +72,7 @@
 #'
 #' rs$call(function() Sys.sleep(1))
 #' rs$get_state()
-#' rs$wait_for_call()
+#' rs$poll_io(-1)
 #'
 #' rs$get_result()
 #' }
@@ -98,8 +93,6 @@ r_session <- R6Class(
       rs_run(self, private, func, args, timeout),
     call = function(func, args = list())
       rs_call(self, private, func, args),
-    wait_for_call = function(timeout = -1)
-      rs_wait_for_call(self, private, timeout),
     get_result = function()
       rs_get_result(self, private),
     get_running_time = function()
@@ -115,11 +108,13 @@ r_session <- R6Class(
     state = NULL,
     started_at = NULL,
     fun_started_at = as.POSIXct(NA),
-    pipe = NULL,                   # Two connections, for me and child
+    pipe = NULL,
 
     func_file = NULL,
     res_file = NULL,
 
+    wait_for_call = function(timeout = -1)
+      rs__wait_for_call(self, private, timeout),
     update_state = function()
       rs__update_state(self, private),
     report_back = function(code, text = "")
@@ -141,14 +136,15 @@ rs_init <- function(self, private, super, options) {
 
   private$options <- options
 
-  private$pipe <- conn_create_pipepair()
-
   with_envvar(
     options$env,
     super$initialize(options$bin, options$real_cmdargs, stdin = "|",
                      stdout = options$stdout, stderr = options$stderr,
-                     connections = list(private$pipe[[2]]))
+                     poll_connection = TRUE)
   )
+
+  private$pipe <- self$get_poll_connection()
+
   private$started_at <- Sys.time()
   private$state <- "starting"
 
@@ -160,7 +156,7 @@ rs_init <- function(self, private, super, options) {
 
 rs_run <- function(self, private, func, args, timeout) {
   self$call(func, args)
-  self$wait_for_call(timeout)
+  self$poll_io(timeout)
   self$get_result()
 }
 
@@ -193,17 +189,17 @@ rs_call <- function(self, private, func, args) {
   private$state <- "busy"
 }
 
-rs_wait_for_call <- function(self, private, timeout) {
+rs__wait_for_call <- function(self, private, timeout) {
   if (private$state %in% c("finished", "ready", "idle")) return()
 
-  pr <- poll(list(private$pipe[[1]]), timeout)[[1]]
-  if (pr == "ready") {
+  pr <- self$poll_io(timeout)
+  if (pr[["process"]] == "ready") {
     if (private$state == "starting") {
       private$state <- "idle"
     } else {
       private$state <- "ready"
     }
-    invisible(conn_read_lines(private$pipe[[1]], 1))
+    invisible(conn_read_lines(private$pipe, 1))
   } else {
     invisible()
   }
@@ -259,7 +255,7 @@ rs_finish <- function(self, private, grace) {
 #' @importFrom processx conn_read_lines
 
 rs__update_state <- function(self, private) {
-  self$wait_for_call(timeout = 0)
+  private$wait_for_call(timeout = 0)
 }
 
 rs__report_back <- function(self, private, code, text) {

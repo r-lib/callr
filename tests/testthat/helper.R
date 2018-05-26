@@ -8,9 +8,9 @@ try_silently <- function(expr) {
   )
 }
 
-r_session_wait_or_kill <- function(x, state = "ready") {
-  x$wait_for_call(3000)
-  if (x$get_state() != state) {
+r_session_wait_or_kill <- function(x) {
+  pr <- poll(list(x$get_poll_connection()), 3000)[[1]]
+  if (pr != "ready") {
     x$kill()
     stop("R session not ready...")
   }
