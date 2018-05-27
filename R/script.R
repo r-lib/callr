@@ -38,19 +38,24 @@ make_vanilla_script_expr <- function(expr_file, res, error) {
   ## It is important that we do not create any temporary variables,
   ## the function is called from an empty global environment.
   substitute(
-    {
-      withCallingHandlers(              # nocov start
-        {
-          saveRDS(
-            do.call(
-              do.call,
-              c(readRDS(`__expr_file__`), list(envir = .GlobalEnv)),
-              envir = .GlobalEnv
-            ),
-            file = `__res__`
-          )
-        },
-        error = function(e) { `__error__`; stop(e) }
+     {
+      tryCatch(                         # nocov start
+        withCallingHandlers(
+          {
+             saveRDS(
+             do.call(
+                do.call,
+                c(readRDS(`__expr_file__`), list(envir = .GlobalEnv)),
+                envir = .GlobalEnv
+              ),
+              file = `__res__`
+            )
+          },
+          error = function(e) { `__error__` },
+          interrupt = function(e) { `__error__` }
+        ),
+        error = function(e) e,
+        interrupt = function(e) e
       )                                 # nocov end
     },
 
