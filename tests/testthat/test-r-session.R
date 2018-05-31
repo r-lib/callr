@@ -39,9 +39,11 @@ test_that("run", {
   ## Wait until ready, but max 3s
   r_session_wait_or_kill(rs)
 
-  expect_equal(rs$run(function() 42), 42)
-  expect_equal(rs$run(function() 42), 42)
-  expect_equal(rs$run(function(x, y) x + y, list(x = 42, y = 42)), 84)
+  expect_equal(rs$run(function() 42)$result, 42)
+  expect_equal(rs$run(function() 42)$result, 42)
+  expect_equal(
+    rs$run(function(x, y) x + y, list(x = 42, y = 42))$result,
+    84)
 
   ## Finish
   rs$finish()
@@ -49,36 +51,19 @@ test_that("run", {
   expect_false(rs$is_alive())
 })
 
-test_that("get stdout", {
-  opt <- r_session_options()
-  rs <- r_session$new(opt)
+
+test_that("get stdout/stderr from file", {
+  rs <- r_session$new()
   on.exit(rs$kill())
 
   ## Wait until ready, but max 3s
   r_session_wait_or_kill(rs)
 
-  rs$call(function(x) cat("foobar\n"))
-  r_session_wait_or_kill(rs)
+  for (i in 1:10) {
+    res <- rs$run(function() { cat("foo\n"); message("bar"); 42 })
+    expect_equal(res, list(result = 42, output = "foo\n", error = "bar\n"))
 
-  expect_null(rs$get_result())
-  expect_equal(rs$read_output_lines(), "foobar")
-
-  rs$finish()
-})
-
-test_that("get stderr", {
-  opt <- r_session_options()
-  rs <- r_session$new(opt)
-  on.exit(rs$kill())
-
-  ## Wait until ready, but max 3s
-  r_session_wait_or_kill(rs)
-
-  rs$call(function(x) message("message me!"))
-  r_session_wait_or_kill(rs)
-
-  expect_null(rs$get_result())
-  expect_equal(rs$read_error_lines(), "message me!")
-
-  rs$finish()
+    res <- rs$run(function() { cat("bar\n"); message("foo"); 43 })
+    expect_equal(res, list(result = 43, output = "bar\n", error = "foo\n"))
+  }
 })

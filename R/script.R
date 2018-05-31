@@ -1,5 +1,6 @@
 
-make_vanilla_script_expr <- function(expr_file, res, error) {
+make_vanilla_script_expr <- function(expr_file, res, error,
+                                     re_stdout = NULL, re_stderr = NULL) {
 
   ## Code to handle errors in the child
   ## This will inserted into the main script
@@ -27,6 +28,37 @@ make_vanilla_script_expr <- function(expr_file, res, error) {
     stop("Unknown `error` argument: `", error, "`")
   }
 
+  ## stdout / stderr redirection
+  if (!is.null(re_stdout)) {
+    xstdout <- substitute(
+      processx::conn_set_stdout(
+        .__ocon__ <- processx::conn_create_file(`__fn__`, write = TRUE)),
+      list(`__fn__` = re_stdout)
+    )
+    xstdout2 <- substitute({
+      processx::conn_set_stdout(
+        processx::conn_create_file(tempfile(), write = TRUE))
+      close(.__ocon__);
+    })
+  } else {
+    xstdout <- xstdout2 <- substitute(invisible())
+  }
+
+  if (!is.null(re_stderr)) {
+    xstderr <- substitute(
+      processx::conn_set_stderr(
+        .__econ__ <- processx::conn_create_file(`__fn__`, write = TRUE)),
+      list(`__fn__` = re_stderr)
+    )
+    xstderr2 <- substitute({
+      processx::conn_set_stderr(
+        processx::conn_create_file(tempfile(), write = TRUE))
+      close(.__econ__);
+    })
+  } else {
+    xstderr <- xstderr2 <- substitute(invisible())
+ }
+
   ## The function to run and its arguments are saved as a list:
   ## list(fun, args). args itself is a list.
   ## So the first do.call will create the call: do.call(fun, args)
@@ -42,14 +74,20 @@ make_vanilla_script_expr <- function(expr_file, res, error) {
       tryCatch(                         # nocov start
         withCallingHandlers(
           {
-             saveRDS(
-             do.call(
+            `__stdout__`
+            `__stderr__`
+            saveRDS(
+              do.call(
                 do.call,
                 c(readRDS(`__expr_file__`), list(envir = .GlobalEnv)),
                 envir = .GlobalEnv
               ),
               file = `__res__`
             )
+            flush(stdout())
+            flush(stderr())
+            `__stdout2__`
+            `__stderr2__`
           },
           error = function(e) { `__error__` },
           interrupt = function(e) { `__error__` }
@@ -59,7 +97,9 @@ make_vanilla_script_expr <- function(expr_file, res, error) {
       )                                 # nocov end
     },
 
-    list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res)
+    list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res,
+         `__stdout__` = xstdout, `__stderr__` = xstderr,
+         `__stdout2__` = xstdout2, `__stderr2__` = xstderr2)
   )
 }
 

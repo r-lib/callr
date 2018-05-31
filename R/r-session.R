@@ -13,6 +13,7 @@
 #' rs$run(func, args = list())
 #' rs$call(func, args = list())
 #' rs$get_result()
+#' rs$get_result_and_output()
 #' rs$get_running_time()
 #' rs$get_state()
 #' rs$finish()
@@ -23,7 +24,6 @@
 #' * `func`: Function object to call in the background R process.
 #' *   Please read the notes for the similar argument of [r()]
 #' * `args`: Arguments to pass to the function. Must be a list.
-#' * `timeout`: Timeout in milliseconds.
 #'
 #' @section Details:
 #' `r_session$new()` creates a new R background process. It returns
@@ -87,7 +87,7 @@ r_session <- R6Class(
   inherit = process,
 
   public = list(
-    initialize = function(options)
+    initialize = function(options = r_session_options())
       rs_init(self, private, super, options),
     run = function(func, args = list(), timeout = -1)
       rs_run(self, private, func, args, timeout),
@@ -95,12 +95,19 @@ r_session <- R6Class(
       rs_call(self, private, func, args),
     get_result = function()
       rs_get_result(self, private),
+    get_result_and_output = function()
+      rs_get_result_and_output(self, private),
     get_running_time = function()
       rs_get_running_time(self, private),
     get_state = function()
       rs_get_state(self, private),
     finish = function(grace = 200)
-      rs_finish(self, private, grace)
+      rs_finish(self, private, grace),
+    finalize = function() {
+      unlink(private$tmp_output_file)
+      unlink(private$tmp_error_file)
+      if ("finalize" %in% ls(super)) super$finalize()
+    }
   ),
 
   private = list(
@@ -109,6 +116,9 @@ r_session <- R6Class(
     started_at = NULL,
     fun_started_at = as.POSIXct(NA),
     pipe = NULL,
+
+    tmp_output_file = character(),
+    tmp_error_file = character(),
 
     func_file = NULL,
     res_file = NULL,
@@ -130,6 +140,7 @@ rs_init <- function(self, private, super, options) {
 
   options$func <- options$func %||% function() { }
   options$args <- list()
+
   options <- convert_and_check_my_args(options)
   options <- setup_context(options)
   options <- setup_r_binary_and_args(options, script_file = FALSE)
@@ -143,13 +154,20 @@ rs_init <- function(self, private, super, options) {
                      poll_connection = TRUE)
   )
 
+  ## Make child report back when ready
+  private$report_back(200, "ready to go")
+
   private$pipe <- self$get_poll_connection()
 
   private$started_at <- Sys.time()
   private$state <- "starting"
 
-  ## Make child report back when ready
-  private$report_back(200, "ready to go")
+  if (!is.null(f <- self$get_output_file()) && f != "|") {
+    private$stdout_file_con <- file(f, open = "rb", blocking = TRUE)
+  }
+  if (!is.null(f <- self$get_error_file()) && f != "|") {
+    private$stderr_file_con <- file(f, open = "rb", blocking = TRUE)
+  }
 
   invisible(self)
 }
@@ -157,7 +175,7 @@ rs_init <- function(self, private, super, options) {
 rs_run <- function(self, private, func, args, timeout) {
   self$call(func, args)
   self$poll_io(timeout)
-  self$get_result()
+  self$get_result_and_output()
 }
 
 rs_call <- function(self, private, func, args) {
@@ -173,10 +191,20 @@ rs_call <- function(self, private, func, args) {
     c(private$options$tmp_files, private$options$func_file,
       private$options$result_file)
 
+  ## Maybe we need to redirect stdout / stderr
+  re_stdout  <-  if (is.null(private$options$stdout)) {
+    private$tmp_output_file <- tempfile()
+  }
+  re_stderr <- if (is.null(private$options$stderr)) {
+    private$tmp_error_file <- tempfile()
+  }
+
   ## Run an expr that loads it, in the child process, with error handlers
   expr <- make_vanilla_script_expr(private$options$func_file,
                                    private$options$result_file,
-                                   private$options$error)
+                                   private$options$error,
+                                   re_stdout = re_stdout,
+                                   re_stderr = re_stderr)
   cmd <- paste0(deparse(expr), "\n")
 
   ## Write this to stdin
@@ -206,21 +234,33 @@ rs__wait_for_call <- function(self, private, timeout) {
 }
 
 rs_get_result <- function(self, private) {
+  rs_get_result_and_output(self, private)$result
+}
+
+rs_get_result_and_output <- function(self, private) {
   if (private$state != "ready") private$update_state()
 
   get_my_result <- function() {
-    ## This is artificial...
-    out <- list(
+    out <- if (!is.null(private$tmp_output_file)) {
+      read_all(private$tmp_output_file)
+    }
+    err <- if (!is.null(private$tmp_error_file)) {
+      read_all(private$tmp_error_file)
+    }
+    unlink(c(private$tmp_output_file, private$tmp_error_file))
+    private$tmp_output_file <- private$tmp_error_file <- NULL
+    outp <- list(
       status = 0,
-      stdout = "",
-      stderr = "",
+      stdout = out %||% "",
+      stderr = err %||% "",
       timeout = FALSE
     )
-    res <- get_result(out, private$options)
+    res <- get_result(outp, private$options)
     private$state <- "idle"
     unlink(private$options$tmp_files, recursive = TRUE)
     private$options$tmp_files <- NULL
-    res
+
+    list(result = res, output = out, error = err)
   }
 
   switch(
@@ -296,7 +336,23 @@ rs__status_expr <- function(code, text = "", fd = 3) {
 #' @export
 
 r_session_options <- function(...) {
-  opt <-  r_process_options(...)
-  opt$func <- opt$args <- NULL
-  opt
+  update_options(r_session_options_default(), ...)
+}
+
+r_session_options_default <- function() {
+  list(
+    func = NULL,
+    args = NULL,
+    libpath = .libPaths(),
+    repos = c(getOption("repos"), CRAN = "https://cloud.r-project.org"),
+    stdout = NULL,
+    stderr = NULL,
+    error = getOption("callr.error", "error"),
+    cmdargs = c("--no-site-file", "--slave",
+      "--no-save", "--no-restore"),
+    system_profile = FALSE,
+    user_profile = FALSE,
+    env = character(),
+    supervise = FALSE
+  )
 }
