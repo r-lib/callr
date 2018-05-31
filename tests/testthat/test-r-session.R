@@ -67,3 +67,18 @@ test_that("get stdout/stderr from file", {
     expect_equal(res, list(result = 43, output = "bar\n", error = "foo\n"))
   }
 })
+
+test_that("interrupt", {
+  rs <- r_session$new()
+  on.exit(rs$kill())
+
+  ## Wait until ready, but max 3s
+  r_session_wait_or_kill(rs)
+
+  rs$call(function() Sys.sleep(5))
+  Sys.sleep(0.5)
+  rs$interrupt()
+  rs$poll_io(1000)
+  err <- tryCatch(rs$get_result(), interrupt = function(e) e)
+  expect_s3_class(err, "interrupt")
+})

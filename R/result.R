@@ -65,6 +65,7 @@ get_result <- function(output, options) {
   )
 
   if (err[[1]] == "error") {
+    err[[2]]$message <- err[[2]]$message %||% "interrupt"
     stop(err[[2]])
 
   } else if (err[[1]] == "stack") {
