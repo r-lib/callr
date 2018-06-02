@@ -26,5 +26,5 @@ Suggests:
     testthat,
     withr
 Remotes:
-    r-lib/processx@feature/set-std
+    r-lib/processx
 Encoding: UTF-8
