@@ -162,13 +162,6 @@ rs_init <- function(self, private, super, options) {
   private$started_at <- Sys.time()
   private$state <- "starting"
 
-  if (!is.null(f <- self$get_output_file()) && f != "|") {
-    private$stdout_file_con <- file(f, open = "rb", blocking = TRUE)
-  }
-  if (!is.null(f <- self$get_error_file()) && f != "|") {
-    private$stderr_file_con <- file(f, open = "rb", blocking = TRUE)
-  }
-
   invisible(self)
 }
 
