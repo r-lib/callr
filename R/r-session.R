@@ -200,6 +200,8 @@ rs_run <- function(self, private, func, args, timeout) {
 
 rs_call <- function(self, private, func, args) {
   private$update_state()
+  if (private$state == "finished") stop("R session finished")
+  if (private$state == "ready") stop("Need to read out R session result")
   if (private$state != "idle") stop("R session busy")
 
   ## Save the function in a file
@@ -288,7 +290,7 @@ rs_get_result_and_output <- function(self, private) {
   switch(
     private$state,
     "finished" = stop("R session already finished"),
-    "idle" = stop("R session is idle"),
+    "idle" = stop("No result in R session"),
     "busy" = stop("R session still busy"),
     "starting" = stop("R session still starting"),
     "ready" = get_my_result()
