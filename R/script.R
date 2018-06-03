@@ -92,8 +92,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
           error = function(e) { `__error__` },
           interrupt = function(e) { `__error__` }
         ),
-        error = function(e) e,
-        interrupt = function(e) e
+        error = function(e) { `__stdout2__`; `__stderr2__`; e },
+        interrupt = function(e) {  `__stdout2__`; `__stderr2__`; e }
       )                                 # nocov end
     },
 

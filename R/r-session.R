@@ -241,10 +241,12 @@ rs_get_result_and_output <- function(self, private) {
   if (private$state != "ready") private$update_state()
 
   get_my_result <- function() {
-    out <- if (!is.null(private$tmp_output_file)) {
+    out <- if (!is.null(private$tmp_output_file) &&
+               file.exists(private$tmp_output_file)) {
       read_all(private$tmp_output_file)
     }
-    err <- if (!is.null(private$tmp_error_file)) {
+    err <- if (!is.null(private$tmp_error_file) &&
+               file.exists(private$tmp_error_file)) {
       read_all(private$tmp_error_file)
     }
     unlink(c(private$tmp_output_file, private$tmp_error_file))
