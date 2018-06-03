@@ -321,7 +321,11 @@ rs_finish <- function(self, private, grace) {
 #' @importFrom processx conn_read_lines
 
 rs__update_state <- function(self, private) {
-  private$wait_for_call(timeout = 0)
+  if (!self$is_alive()) {
+    self$finish()
+  } else {
+    private$wait_for_call(timeout = 0)
+  }
 }
 
 rs__report_back <- function(self, private, code, text) {
