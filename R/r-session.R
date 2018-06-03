@@ -290,6 +290,8 @@ rs_finish <- function(self, private, grace) {
   close(self$get_input_connection())
   self$poll_io(grace)
   self$kill()
+  self$wait(1000)
+  if (self$is_alive()) stop("Could not kill background R session")
   private$state <- "finished"
   private$fun_started_at <- as.POSIXct(NA)
 }
