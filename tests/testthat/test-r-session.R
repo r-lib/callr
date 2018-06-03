@@ -68,6 +68,25 @@ test_that("get stdout/stderr from file", {
   }
 })
 
+test_that("stdout/stderr from pipe", {
+  opt <- r_session_options(stdout = "|", stderr = "|")
+  rs <- r_session$new(opt)
+  on.exit(rs$kill())
+
+  ## Wait until ready, but max 3s
+  r_session_wait_or_kill(rs)
+
+  res <- rs$run(function() { cat("foo\n"); message("bar"); 42 })
+  expect_equal(res, list(result = 42, output = NULL, error = NULL))
+
+  res <- rs$run(function() { cat("bar\n"); message("foo"); 43 })
+  expect_equal(res, list(result = 43, output = NULL, error = NULL))
+
+  rs$finish()
+  expect_equal(rs$read_all_output_lines(), c("foo", "bar"))
+  expect_equal(rs$read_all_error_lines(), c("bar", "foo"))
+})
+
 test_that("interrupt", {
   rs <- r_session$new()
   on.exit(rs$kill())

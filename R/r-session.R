@@ -117,8 +117,8 @@ r_session <- R6Class(
     fun_started_at = as.POSIXct(NA),
     pipe = NULL,
 
-    tmp_output_file = character(),
-    tmp_error_file = character(),
+    tmp_output_file = NULL,
+    tmp_error_file = NULL,
 
     func_file = NULL,
     res_file = NULL,
@@ -174,7 +174,7 @@ rs_init <- function(self, private, super, options) {
 
 rs_run <- function(self, private, func, args, timeout) {
   self$call(func, args)
-  self$poll_io(timeout)
+  poll(list(private$pipe), timeout)
   self$get_result_and_output()
 }
 
