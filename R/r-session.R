@@ -107,6 +107,15 @@ r_session <- R6Class(
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
       if ("finalize" %in% ls(super)) super$finalize()
+    },
+    print = function(...) {
+      cat(
+        sep = "",
+        "R SESSION, ",
+        if (self$is_alive()) "alive, ",
+        self$get_state(), ", ",
+        "pid ", self$get_pid(), ".")
+      invisible(self)
     }
   ),
 
