@@ -167,8 +167,26 @@ rs_init <- function(self, private, super, options) {
 
 rs_run <- function(self, private, func, args, timeout) {
   self$call(func, args)
-  poll(list(private$pipe), timeout)
-  self$get_result_and_output()
+
+  tryCatch(
+    {
+      poll(list(private$pipe), timeout)
+      self$get_result_and_output()
+    },
+    interrupt = function(e) {
+      self$interrupt()
+      ## The R process will catch the interrupt, and then save the
+      ## error object to a file, but this might still take some time,
+      ## so we need to poll here. If the bg process ignores
+      ## interrupts, then we throw an error.
+      ps <- poll(list(private$pipe), 1000)[[1]]
+      if (ps == "timeout") {
+        stop("Background process ignores interrupt, still running")
+      } else {
+        self$get_result_and_output()
+      }
+    }
+  )
 }
 
 rs_call <- function(self, private, func, args) {
