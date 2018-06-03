@@ -250,8 +250,8 @@ rs_get_result_and_output <- function(self, private) {
       stderr = err %||% "",
       timeout = FALSE
     )
-    res <- get_result(outp, private$options)
     private$state <- "idle"
+    res <- get_result(outp, private$options)
     unlink(private$options$tmp_files, recursive = TRUE)
     private$options$tmp_files <- NULL
 
