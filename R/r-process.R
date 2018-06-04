@@ -2,7 +2,8 @@
 #' External R Process
 #'
 #' An R process that runs in the background. This is an R6 class that
-#' extends the [process] class.
+#' extends the [processx::process] class. The process starts in the
+#' background, evaluates an R function call, and then quits.
 #'
 #' @section Usage:
 #' ```

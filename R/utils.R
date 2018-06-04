@@ -1,4 +1,6 @@
 
+`%||%` <- function(l, r) if (is.null(l)) r else l
+
 is.named <- function(x) {
   length(names(x)) == length(x) && all(names(x) != "")
 }
@@ -54,4 +56,14 @@ is_string <- function(x) {
   is.character(x) &&
   length(x) == 1 &&
   !is.na(x)
+}
+
+read_all <- function(filename) {
+  con <- file(filename, open = "rb")
+  on.exit(close(con), add = TRUE)
+  res <- raw(0)
+  while (length(more <- readBin(con, what = "raw", 10000)) && length(more)) {
+    res <- c(res, more)
+  }
+  rawToChar(res)
 }

@@ -65,6 +65,7 @@ get_result <- function(output, options) {
   )
 
   if (err[[1]] == "error") {
+    err[[2]]$message <- err[[2]]$message %||% "interrupt"
     stop(err[[2]])
 
   } else if (err[[1]] == "stack") {
@@ -89,12 +90,9 @@ get_result <- function(output, options) {
 #' @importFrom utils head tail
 
 clean_stack <- function(stack) {
-  ## We remove the first 4 calls (withCallingHandlers,
-  ## saveRDS, do.call and do.call) and the last two
-  ## (.handleSimpleError and h(simpleerror).
   att <- attributes(stack)
-  att$names <- head(tail(att$names, -4), -2)
-  res <- head(tail(stack, -4), -2)
+  att$names <- head(tail(att$names, -11), -2)
+  res <- head(tail(stack, -11), -2)
   attributes(res) <- att
 
   res
