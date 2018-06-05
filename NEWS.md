@@ -1,4 +1,9 @@
 
+# callr 2.0.4.9000
+
+* Ignore build and check environment files, i.e. `R_CHECK_ENVIRON` and
+  `R_BUILD_ENVIRON`,  by default.
+
 # callr 2.0.4
 
 * pkgdown web site at https://callr.r-lib.org  (#52, #53).
