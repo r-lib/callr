@@ -34,8 +34,6 @@ setup_context <- function(options) {
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- empty
     if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- empty
     if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- empty
-    if (is.na(env["R_CHECK_ENVIRON"])) env["R_CHECK_ENVIRON"] <- empty
-    if (is.na(env["R_BUILD_ENVIRON"]))  env["R_BUILD_ENVIRON"] <- empty
     if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profile
   })
 }
