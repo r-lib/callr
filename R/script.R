@@ -57,7 +57,19 @@ make_vanilla_script_expr <- function(expr_file, res, error,
     })
   } else {
     xstderr <- xstderr2 <- substitute(invisible())
- }
+  }
+
+  message <- function() {
+    substitute({
+      data <- paste(e$code, e$message, "\n")
+      con <- processx::conn_create_fd(3, close = FALSE)
+      while (1) {
+        data <- processx::conn_write(con, data)
+        if (!length(data)) break;
+        Sys.sleep(.1)
+      }
+    })
+  }
 
   ## The function to run and its arguments are saved as a list:
   ## list(fun, args). args itself is a list.
@@ -90,7 +102,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
             `__stderr2__`
           },
           error = function(e) { `__error__` },
-          interrupt = function(e) { `__error__` }
+          interrupt = function(e) { `__error__` },
+          callr_message = function(e) { `__message__` }
         ),
         error = function(e) { `__stdout2__`; `__stderr2__`; e },
         interrupt = function(e) {  `__stdout2__`; `__stderr2__`; e }
@@ -99,7 +112,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res,
          `__stdout__` = xstdout, `__stderr__` = xstderr,
-         `__stdout2__` = xstdout2, `__stderr2__` = xstderr2)
+         `__stdout2__` = xstdout2, `__stderr2__` = xstderr2,
+         `__message__` = message())
   )
 }
 
