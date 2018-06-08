@@ -12,14 +12,18 @@ The process is started at the creation of the object, and then it can
 be used to evaluate R function calls, one at a time.
 }
 \section{Usage}{
-\preformatted{rs <- r_session$new(options)
-rs$run(func, args = list())
+\preformatted{rs <- r_session$new(options = r_session_options(), wait = TRUE,
+                     wait_timeout = 3000)
+
+rs$run(func, args = list(), message_callback = NULL)
+rs$run_with_output(func, args = list(), message_callback = NULL)
 rs$call(func, args = list())
-rs$wait_for_call(timeout = -1)
-rs$get_result()
-rs$get_running_time()
+
 rs$get_state()
-rs$finish()
+rs$get_running_time()
+
+rs$read()
+rs$close()
 }
 }
 
@@ -27,69 +31,69 @@ rs$finish()
 
 \itemize{
 \item \code{options}: A list of options created via \code{\link[=r_session_options]{r_session_options()}}.
+\item \code{wait}: Whether to wait for the R process to start and be ready
+for running commands.
+\item \code{wait_timeout}: Timeout for waiting for the R process to start,
+in milliseconds.
 \item \code{func}: Function object to call in the background R process.
-\item Please read the notes for the similar argument of \code{\link[=r]{r()}}
+Please read the notes for the similar argument of \code{\link[=r]{r()}}
 \item \code{args}: Arguments to pass to the function. Must be a list.
-\item \code{timeout}: Timeout in milliseconds.
+\item \code{message_callback}: If not \code{NULL} then it must be a function with
+a single argument. It will be called for each progess message received
+from the child process.
 }
 }
 
 \section{Details}{
 
-\code{r_session$new()} creates a new R background process. It returns
-immediately, i.e. before the process is actually ready to run. You may
-call \code{wait_for_call()} to make sure it is ready.
+\code{r_session$new()} creates a new R background process. It can wait for the
+process to start up (\code{wait = TRUE}), or return immediately, i.e. before
+the process is actually ready to run. In the latter case you may call
+\code{rs$poll_io()} to make sure it is ready.
 
 \code{rs$run()} is similar to \code{\link[=r]{r()}}, but runs the function in the \code{rs} R
-session. Note that if a timeout happens, the session and the background
-computation is not terminated. You can call \code{rs$finish()} to terminate
-the R process. There is currently no way to terminate the computation
-without terminating the background R process.
+session. It throws an error if the function call generated an error in
+the child process.
+
+\code{rs$run_with_output()} is similar to \code{$run()}, but returns the standard
+output and error of the child process as well. It does not throw on
+errors, but returns a non-zero \code{error} member in the result list.
 
 \code{rs$call()} starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
-\code{wait_for_call()} method. To get the result call the \code{get_result()}
-method.
-
-\code{rs$wait_for_call()} waits for an \code{rs$call()} computation, or the R
-session startup to finish. This is essentially a poll operation.
-If there is no computation running, it returns immediately.
-
-\code{rs$get_result()} returns the result of the last \code{rs$call()}
-computation. (Or the result of the last \code{rs$run()}, if it was
-interrupted.) If there is no result to return, because the computation
-has not finished yet, or some other reason, it throws an error.
-
-\code{rs$get_running_time()} returns the elapsed time since the R process
-has started, and the elapsed time since the current computation has
-started. The latter is NA if there is no active computation.
+\code{poll_io()} method.
 
 \code{rs$get_state()} return the state of the R session. Possible values:
 \itemize{
 \item \code{"starting"}: starting up,
 \item \code{"idle"}: ready to compute,
 \item \code{"busy"}: computing right now,
-\item \code{"ready"}: computation finished, result can be read out,
 \item \code{"finished"}: the R process has finished.
-\code{rs$get_state()} automatically updates the state, i.e. it performs a
-quick \code{wait_for_call()}, if needed.
 }
 
-\code{r$finish()} terminates the current computation and the R process.
+\code{rs$get_running_time()} returns the elapsed time since the R process
+has started, and the elapsed time since the current computation has
+started. The latter is NA if there is no active computation.
+
+\code{rs$read()} reads an event from the child process, if there is one
+available. Events might signal that the function call has finished,
+or they can be progress report events.
+
+\code{r$close()} terminates the current computation and the R process.
 The session object will be in \code{"finished"} state after this.
 }
 
 \examples{
 \dontrun{
-opt <- r_session_options()
-rs <- r_ression$new(opt)
+rs <- r_ression$new()
 
 rs$run(function() 1 + 2)
 
 rs$call(function() Sys.sleep(1))
 rs$get_state()
-rs$wait_for_call()
 
-rs$get_result()
+rs$poll_io(-1)
+rs$get_state()
+rs$read()
 }
 }

@@ -8,10 +8,11 @@ try_silently <- function(expr) {
   )
 }
 
-r_session_wait_or_kill <- function(x) {
-  pr <- poll(list(x$get_poll_connection()), 3000)[[1]]
-  if (pr != "ready") {
-    x$kill()
-    stop("R session not ready...")
+read_next <- function(x, timeout = 3000) {
+  pr <- x$poll_io(timeout)
+  if (any(pr == "ready")) {
+    x$read()
+  } else {
+    stop("R session is not ready, timed out...")
   }
 }
