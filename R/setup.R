@@ -30,9 +30,12 @@ setup_context <- function(options) {
     empty <- tempfile()
     cat("", file =  empty)
     tmp_files  <- c(tmp_files, empty)
+
+    r_libs_site <- paste(base::.Library.site, collapse = ":")
+
     if (is.na(env["R_LIBS"])) env["R_LIBS"] <- empty
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- empty
-    if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- empty
+    if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- r_libs_site
     if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- empty
     if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profile
   })
