@@ -31,7 +31,7 @@ setup_context <- function(options) {
     cat("", file =  empty)
     tmp_files  <- c(tmp_files, empty)
 
-    r_libs_site <- paste(base::.Library.site, collapse = ":")
+    r_libs_site <- paste(base::.Library.site, collapse = .Platform$path.sep)
 
     if (is.na(env["R_LIBS"])) env["R_LIBS"] <- empty
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- empty
