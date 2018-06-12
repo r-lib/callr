@@ -24,8 +24,9 @@ Imports:
     utils
 Suggests:
     covr,
+    crayon,
     testthat,
     withr
 Remotes:
-    r-lib/processx
+    r-lib/processx@feature/restore-std
 Encoding: UTF-8

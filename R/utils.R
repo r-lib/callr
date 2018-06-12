@@ -67,3 +67,15 @@ read_all <- function(filename) {
   }
   rawToChar(res)
 }
+
+is_complete_expression <- function(x) {
+  err <- NULL
+  tryCatch(parse(text = x), error = function(e) err <<- e)
+  is.null(err) || ! grepl("unexpected end of input", conditionMessage(err))
+}
+
+bold <- function(x) {
+  tryCatch(
+    utils::getFromNamespace("bold", "crayon")(x),
+    error = function(e) x)
+}

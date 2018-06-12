@@ -120,6 +120,9 @@ r_session <- R6Class(
     poll_process = function(timeout)
       rs_poll_process(self, private, timeout),
 
+    attach = function()
+      rs_attach(self, private),
+
     finalize = function() {
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
@@ -156,7 +159,9 @@ r_session <- R6Class(
     write_for_sure = function(text)
       rs__write_for_sure(self, private, text),
     parse_msg = function(msg)
-      rs__parse_msg(self, private, msg)
+      rs__parse_msg(self, private, msg),
+    attach_wait = function()
+      rs__attach_wait(self, private)
   )
 )
 
@@ -321,7 +326,52 @@ rs_poll_process <- function(self, private, timeout) {
   poll(list(self$get_poll_connection()), timeout)[[1]]
 }
 
+rs_attach <- function(self, private) {
+  out <- self$get_output_connection()
+  err <- self$get_error_connection()
+  while (nchar(x <- conn_read_chars(out))) cat(x)
+  while (nchar(x <- conn_read_chars(err))) cat(bold(x))
+  tryCatch({
+    while (TRUE) {
+      cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
+      private$write_for_sure(paste0(cmd, "\n"))
+      private$report_back(202, "done")
+      private$attach_wait()
+    } },
+    interrupt = function(e) { self$interrupt(); invisible() }
+  )
+}
+
 ## Internal functions ----------------------------------------------------
+
+rs__attach_get_input <- function(prompt) {
+  cmd <- readline(prompt = prompt)
+  while (! is_complete_expression(cmd)) {
+    cmd <- paste0(cmd, sep = "\n", readline(prompt = "+ "))
+  }
+  cmd
+}
+
+#' @importFrom processx conn_read_chars
+
+rs__attach_wait <- function(self, private) {
+  out <- self$get_output_connection()
+  err <- self$get_error_connection()
+  pro <- private$pipe
+  while (TRUE) {
+    pr <- poll(list(out, err, pro), -1)
+    if (pr[[1]] == "ready") {
+      if (nchar(x <- conn_read_chars(out))) cat(x)
+    }
+    if (pr[[2]] == "ready") {
+      if (nchar(x <- conn_read_chars(err))) cat(bold(x))
+    }
+    if (pr[[3]] == "ready") {
+      msg <- self$read()
+      if (msg$code == 202) break;
+    }
+  }
+}
 
 rs__report_back <- function(self, private, code, text) {
   cmd <- paste0(deparse(rs__status_expr(code, text, fd = 3)), "\n")
@@ -368,6 +418,11 @@ rs__parse_msg_funcs[["201"]] <- function(self, private, code, message) {
   if (private$state != "starting") {
     stop("Session already started, invalid `starting` message")
   }
+  private$state <- "idle"
+  list(code = code, message = message)
+}
+
+rs__parse_msg_funcs[["202"]] <- function(self, private, code, message) {
   private$state <- "idle"
   list(code = code, message = message)
 }
@@ -479,10 +534,10 @@ r_session_options_default <- function() {
     stderr = NULL,
     error = getOption("callr.error", "error"),
     cmdargs = c("--no-site-file", "--slave",
-      "--no-save", "--no-restore"),
+      "--no-save", "--no-restore", "--interactive"),
     system_profile = FALSE,
     user_profile = FALSE,
-    env = character(),
+    env = c(TERM = "dumb"),
     supervise = FALSE
   )
 }
