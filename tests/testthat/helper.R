@@ -9,7 +9,7 @@ try_silently <- function(expr) {
 }
 
 read_next <- function(x, timeout = 3000) {
-  pr <- x$poll_io(timeout)
+  pr <- x$poll_process(timeout)
   if (any(pr == "ready")) {
     x$read()
   } else {

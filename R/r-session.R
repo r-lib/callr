@@ -40,7 +40,7 @@
 #' `r_session$new()` creates a new R background process. It can wait for the
 #' process to start up (`wait = TRUE`), or return immediately, i.e. before
 #' the process is actually ready to run. In the latter case you may call
-#' `rs$poll_io()` to make sure it is ready.
+#' `rs$poll_process()` to make sure it is ready.
 #'
 #' `rs$run()` is similar to [r()], but runs the function in the `rs` R
 #' session. It throws an error if the function call generated an error in
@@ -52,7 +52,7 @@
 #'
 #' `rs$call()` starts running a function in the background R session, and
 #' returns immediately. To check if the function is done, call the
-#' `poll_io()` method.
+#' `poll_process()` method.
 #'
 #' `rs$get_state()` return the state of the R session. Possible values:
 #' * `"starting"`: starting up,
@@ -81,7 +81,7 @@
 #' rs$call(function() Sys.sleep(1))
 #' rs$get_state()
 #'
-#' rs$poll_io(-1)
+#' rs$poll_process(-1)
 #' rs$get_state()
 #' rs$read()
 #' }
@@ -116,6 +116,9 @@ r_session <- R6Class(
       rs_get_state(self, private),
     get_running_time = function()
       rs_get_running_time(self, private),
+
+    poll_process = function(timeout)
+      rs_poll_process(self, private, timeout),
 
     finalize = function() {
       unlink(private$tmp_output_file)
@@ -173,8 +176,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   with_envvar(
     options$env,
     super$initialize(options$bin, options$real_cmdargs, stdin = "|",
-                     stdout = options$stdout, stderr = options$stderr,
-                     poll_connection = TRUE)
+                     stdout = "|", stderr = "|", poll_connection = TRUE)
   )
 
   ## Make child report back when ready
@@ -186,8 +188,8 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
-    pr <- self$poll_io(wait_timeout)
-    if (pr['process'] == "ready") {
+    pr <- self$poll_process(wait_timeout)
+    if (pr == "ready") {
       self$read()
     } else {
       stop("Could not start R session, timed out")
@@ -206,7 +208,7 @@ rs_read <- function(self, private) {
 
 rs_close <- function(self, private, grace) {
   close(self$get_input_connection())
-  self$poll_io(grace)
+  self$poll_process(grace)
   self$kill()
   self$wait(1000)
   if (self$is_alive()) stop("Could not kill background R session")
@@ -233,7 +235,7 @@ rs_call <- function(self, private, func, args) {
       private$options$result_file)
 
   ## Maybe we need to redirect stdout / stderr
-  re_stdout  <-  if (is.null(private$options$stdout)) {
+  re_stdout <- if (is.null(private$options$stdout)) {
     private$tmp_output_file <- tempfile()
   }
   re_stderr <- if (is.null(private$options$stderr)) {
@@ -311,6 +313,10 @@ rs_get_running_time <- function(self, private) {
   finished <- private$state == "finished"
   c(total = if (finished) now - private$started_at else as.POSIXct(NA),
     current = now - private$fun_started_at)
+}
+
+rs_poll_process <- function(self, private, timeout) {
+  poll(list(self$get_poll_connection()), timeout)[[1]]
 }
 
 ## Internal functions ----------------------------------------------------

@@ -96,7 +96,7 @@ test_that("interrupt", {
   rs$call(function() Sys.sleep(5))
   Sys.sleep(0.5)
   rs$interrupt()
-  rs$poll_io(1000)
+  rs$poll_process(1000)
   res <- rs$read()
   expect_s3_class(res$error, "interrupt")
 })
@@ -146,9 +146,9 @@ test_that("messages with R objects", {
   expect_equal(msg, list(code = 301, message = obj))
 
   rs$call(f, args = list(obj))
-  rs$poll_io(2000)
+  rs$poll_process(2000)
   expect_equal(rs$read(), list(code = 301, message = obj))
-  rs$poll_io(2000)
+  rs$poll_process(2000)
   expect_equal(rs$read()$result, 22)
 })
 
