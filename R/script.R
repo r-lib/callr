@@ -1,6 +1,6 @@
 
 make_vanilla_script_expr <- function(expr_file, res, error,
-                                     re_stdout = NULL, re_stderr = NULL) {
+                                     pre_hook = NULL, post_hook = NULL) {
 
   ## Code to handle errors in the child
   ## This will inserted into the main script
@@ -26,37 +26,6 @@ make_vanilla_script_expr <- function(expr_file, res, error,
     )
   } else {
     stop("Unknown `error` argument: `", error, "`")
-  }
-
-  ## stdout / stderr redirection
-  if (!is.null(re_stdout)) {
-    xstdout <- substitute(
-      processx::conn_set_stdout(
-        .__ocon__ <- processx::conn_create_file(`__fn__`, write = TRUE)),
-      list(`__fn__` = re_stdout)
-    )
-    xstdout2 <- substitute({
-      processx::conn_set_stdout(
-        processx::conn_create_file(tempfile(), write = TRUE))
-      close(.__ocon__);
-    })
-  } else {
-    xstdout <- xstdout2 <- substitute(invisible())
-  }
-
-  if (!is.null(re_stderr)) {
-    xstderr <- substitute(
-      processx::conn_set_stderr(
-        .__econ__ <- processx::conn_create_file(`__fn__`, write = TRUE)),
-      list(`__fn__` = re_stderr)
-    )
-    xstderr2 <- substitute({
-      processx::conn_set_stderr(
-        processx::conn_create_file(tempfile(), write = TRUE))
-      close(.__econ__);
-    })
-  } else {
-    xstderr <- xstderr2 <- substitute(invisible())
   }
 
   message <- function() {
@@ -86,8 +55,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       tryCatch(                         # nocov start
         withCallingHandlers(
           {
-            `__stdout__`
-            `__stderr__`
+            `__pre_hook__`
             saveRDS(
               do.call(
                 do.call,
@@ -98,21 +66,20 @@ make_vanilla_script_expr <- function(expr_file, res, error,
             )
             flush(stdout())
             flush(stderr())
-            `__stdout2__`
-            `__stderr2__`
+            `__post_hook__`
+            invisible()
           },
           error = function(e) { `__error__` },
           interrupt = function(e) { `__error__` },
           callr_message = function(e) { `__message__` }
         ),
-        error = function(e) { `__stdout2__`; `__stderr2__`; e },
-        interrupt = function(e) {  `__stdout2__`; `__stderr2__`; e }
+        error = function(e) { `__post_hook__`; e },
+        interrupt = function(e) {  `__post_hook__`; e }
       )                                 # nocov end
     },
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res,
-         `__stdout__` = xstdout, `__stderr__` = xstderr,
-         `__stdout2__` = xstdout2, `__stderr2__` = xstderr2,
+         `__pre_hook__` = pre_hook, `__post_hook__` = post_hook,
          `__message__` = message())
   )
 }

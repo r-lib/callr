@@ -242,12 +242,14 @@ rs_call <- function(self, private, func, args) {
     private$tmp_error_file <- tempfile()
   }
 
+  pre <- rs_prehook(re_stdout, re_stderr)
+  post <- rs_posthook(re_stdout, re_stderr)
+
   ## Run an expr that loads it, in the child process, with error handlers
   expr <- make_vanilla_script_expr(private$options$func_file,
                                    private$options$result_file,
                                    private$options$error,
-                                   re_stdout = re_stdout,
-                                   re_stderr = re_stderr)
+                                   pre_hook = pre, post_hook = post)
   cmd <- paste0(deparse(expr), "\n")
 
   ## Write this to stdin
@@ -392,6 +394,35 @@ rs__status_expr <- function(code, text = "", fd = 3) {
     list(code = code, fd = fd, text = text)
   )
 }
+
+rs_prehook <- function(stdout, stderr) {
+  oexpr <- if (!is.null(stdout)) substitute({
+    processx::conn_set_stdout(
+      .__ocon__ <- processx::conn_create_file(`__fn__`, write = TRUE))
+  }, list(`__fn__` = stdout))
+  eexpr <- if (!is.null(stderr)) substitute({
+    processx::conn_set_stderr(
+      .__econ__ <- processx::conn_create_file(`__fn__`, write = TRUE))
+  }, list(`__fn__` = stderr))
+
+  substitute({ o; e }, list(o = oexpr, e = eexpr))
+}
+
+rs_posthook <- function(stdout, stderr) {
+  oexpr <- if (!is.null(stdout)) substitute({
+      processx::conn_set_stdout(
+        processx::conn_create_file(tempfile(), write = TRUE))
+      close(.__ocon__);
+  })
+  eexpr <- if (!is.null(stderr)) substitute({
+      processx::conn_set_stderr(
+        processx::conn_create_file(tempfile(), write = TRUE))
+      close(.__econ__);
+  })
+
+  substitute({ o; e }, list(o = oexpr, e = eexpr))
+}
+
 
 rs__get_result_and_output <- function(self, private) {
 
