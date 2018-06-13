@@ -132,9 +132,12 @@ r_session <- R6Class(
       cat(
         sep = "",
         "R SESSION, ",
-        if (self$is_alive()) "alive, ",
-        self$get_state(), ", ",
-        "pid ", self$get_pid(), ".")
+        if (self$is_alive()) {
+          paste0("alive, ", self$get_state(), ", ")
+        } else {
+          "finished, "
+        },
+        "pid ", self$get_pid(), ".\n")
       invisible(self)
     }
   ),
