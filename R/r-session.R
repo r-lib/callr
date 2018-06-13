@@ -197,6 +197,10 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     if (pr == "ready") {
       self$read()
     } else {
+      cat("stdout:\n")
+      while (nchar(x <- self$read_output())) cat(x)
+      cat("stderr:\n")
+      while (nchar(x <- self$read_error())) cat(x)
       stop("Could not start R session, timed out")
     }
   }
