@@ -196,14 +196,24 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
-    pr <- self$poll_process(wait_timeout)
-    if (pr == "ready") {
+    timeout <- wait_timeout
+    have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
+    pr <- self$poll_io(timeout)
+    out <- ""
+    err <- ""
+    while (any(pr == "ready")) {
+      if (pr["output"] == "ready") out <- paste0(out, self$read_output())
+      if (pr["error"] == "ready") err <- paste0(err, self$read_error())
+      if (pr["process"] == "ready") break
+      timeout <- as.double(have_until - Sys.time(), units = "secs") * 1000
+      pr <- self$poll_io(as.integer(timeout))
+    }
+
+    if (pr["process"] == "ready") {
       self$read()
-    } else {
-      cat("stdout:\n")
-      while (nchar(x <- self$read_output())) cat(x)
-      cat("stderr:\n")
-      while (nchar(x <- self$read_error())) cat(x)
+    } else if (pr["process"] != "ready") {
+      cat("stdout:]\n", out, "\n")
+      cat("stderr:]\n", err, "\n")
       stop("Could not start R session, timed out")
     }
   }
@@ -523,7 +533,7 @@ rs__get_result_and_output <- function(self, private) {
 
 #' Create options for an [r_session] object
 #'
-#' @param  ... Options to override, named arguments.
+#' @param ... Options to override, named arguments.
 #'
 #' @export
 
