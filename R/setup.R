@@ -19,11 +19,12 @@ save_function_to_temp <- function(options) {
 setup_context <- function(options) {
 
   ## Avoid R CMD check warning...
-  repos <- libpath <- system_profile <- user_profile <- NULL
+  repos <- libpath <- system_profile <- user_profile <- load_hook <- NULL
 
   within(options, {
     ## profiles
-    profile <- make_profile(system_profile, user_profile, repos, libpath)
+    profile <- make_profile(system_profile, user_profile, repos, libpath,
+                            load_hook)
     tmp_files <- c(tmp_files, profile)
 
     ## Lib path is set in the profile
@@ -49,7 +50,7 @@ setup_context <- function(options) {
 ## We set  lib path here as well, in case it was set in .Renviron, etc.,
 ## because the supplied libpath should take precedence over .Renviron.
 
-make_profile <- function(system, user, repos, libpath) {
+make_profile <- function(system, user, repos, libpath, load_hook) {
   profile <- tempfile()
 
   ## Create file
@@ -78,6 +79,10 @@ make_profile <- function(system, user, repos, libpath) {
   if (!is.null(libpath)) {
     cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = profile,
         append = TRUE)
+  }
+
+  if (!is.null(load_hook)) {
+    cat(load_hook, sep = "",  file = profile, append = TRUE)
   }
 
   profile

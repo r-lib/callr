@@ -157,3 +157,68 @@ test_that("run throws", {
   on.exit(rs$kill())
   expect_error(rs$run(function() stop("foobar")), "foobar")
 })
+
+test_that("exit", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  res <- rs$run(function() q())
+  expect_null(res)
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  res <- rs$run_with_output(function() { cat("o\n"); message("e"); q() })
+  expect_null(res$result)
+  expect_equal(res$stdout, "o\n")
+  expect_equal(res$stderr, "e\n")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+})
+
+test_that("closing the process channel", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+
+  expect_error(
+    rs$run(function() close(processx::conn_create_fd(3))),
+    "R session closed the process connection")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  res <- rs$run_with_output(function() {
+    cat("o\n"); message("e");
+    close(processx::conn_create_fd(3))
+  })
+  expect_null(res$result)
+  expect_s3_class(res$error, "error")
+  expect_equal(res$stdout, "o\n")
+  expect_equal(res$stderr, "e\n")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+})
+
+test_that("crash", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  expect_error(
+    rs$run(function() getFromNamespace("crash", "callr")()),
+    "crashed with exit code")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  res <- rs$run_with_output(function() {
+    cat("o\n"); message("e");
+    getFromNamespace("crash", "callr")()
+  })
+  expect_null(res$result)
+  expect_s3_class(res$error, "error")
+  expect_equal(res$stdout, "o\n")
+  expect_equal(substr(res$stderr, 1, 2), "e\n")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+})

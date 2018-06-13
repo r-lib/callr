@@ -225,6 +225,17 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
 rs_read <- function(self, private) {
   out <- conn_read_lines(private$pipe, 1)
+  if (!length(out)) {
+    if (conn_is_incomplete(private$pipe)) return()
+    if (self$is_alive()) {
+      self$kill()
+      out <- "502 R session closed the process connection, killed"
+    } else if (identical(es <- self$get_exit_status(), 0L)) {
+      out <- "500 R session finished cleanly"
+    } else {
+      out <- paste0("501 R session crashed with exit code ", es)
+    }
+  }
   if (length(out)) private$parse_msg(out)
 }
 
@@ -285,6 +296,8 @@ rs_call <- function(self, private, func, args) {
   private$state <- "busy"
 }
 
+#' @importFrom processx conn_is_incomplete
+
 rs_run_with_output <- function(self, private, func, args, message_callback) {
   self$call(func, args)
 
@@ -296,7 +309,9 @@ rs_run_with_output <- function(self, private, func, args, message_callback) {
       { poll(list(private$pipe), -1)
         msg <- self$read()
         if (is.null(msg)) next
-        if (msg$code == 200) return(msg)
+        if (msg$code == 200 || (msg$code >= 500 && msg$code < 600)) {
+          return(msg)
+        }
         if (msg$code == 301 && !is.null(message_callback)) {
           message_callback(msg)
         }
@@ -449,6 +464,24 @@ rs__parse_msg_funcs[["301"]] <- function(self, private, code, message) {
   list(code = code, message = message)
 }
 
+rs__parse_msg_funcs[["500"]] <- function(self, private, code, message) {
+  private$state <- "finished"
+  res <- private$get_result_and_output()
+  c(list(code = code, message = message), res)
+}
+
+rs__parse_msg_funcs[["501"]] <- function(self, private, code, message) {
+  private$state <- "finished"
+  err <- structure(
+    list(message = message),
+    class = c("error", "condition"))
+  res <- private$get_result_and_output()
+  res$error <- err
+  c(list(code = code, message = message), res)
+}
+
+rs__parse_msg_funcs[["502"]] <- rs__parse_msg_funcs[["501"]]
+
 #' @importFrom processx conn_create_fd conn_write
 
 rs__status_expr <- function(code, text = "", fd = 3) {
@@ -529,6 +562,16 @@ rs__get_result_and_output <- function(self, private) {
   list(result = res, stdout = stdout, stderr = stderr, error = err)
 }
 
+rs__session_load_hook <- function() {
+  expr <- substitute({
+    utils::getFromNamespace("conn_disable_inheritance", "processx")()
+    if (interactive()) {
+      utils::getFromNamespace("disable_crash_dialog", "processx")()
+    }
+  })
+  paste0(deparse(expr), "\n")
+}
+
 ## Helper functions ------------------------------------------------------
 
 #' Create options for an [r_session] object
@@ -556,6 +599,7 @@ r_session_options_default <- function() {
     system_profile = FALSE,
     user_profile = FALSE,
     env = c(TERM = "dumb"),
-    supervise = FALSE
+    supervise = FALSE,
+    load_hook = rs__session_load_hook()
   )
 }

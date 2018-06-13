@@ -54,7 +54,8 @@ r_process_options_default <- function() {
     system_profile = FALSE,
     user_profile = FALSE,
     env = character(),
-    supervise = FALSE
+    supervise = FALSE,
+    load_hook = NULL
   )
 }
 

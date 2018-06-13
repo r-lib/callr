@@ -28,5 +28,5 @@ Suggests:
     testthat,
     withr
 Remotes:
-    r-lib/processx@feature/restore-std
+    r-lib/processx@feature/disable-crash-dialog
 Encoding: UTF-8
