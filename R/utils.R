@@ -71,7 +71,11 @@ read_all <- function(filename) {
 is_complete_expression <- function(x) {
   err <- NULL
   tryCatch(parse(text = x), error = function(e) err <<- e)
-  is.null(err) || ! grepl("unexpected end of input", conditionMessage(err))
+  if (is.null(err)) return(TRUE)
+  exp <- tryCatch(parse(text = "1+"), error = function(e) e$message)
+  exp1 <- strsplit(exp, "\n")[[1]][[1]]
+  msg <- sub("^.*:\\s*([^:]+)$",  "\\1", exp1, perl = TRUE)
+  ! grepl(msg, conditionMessage(err), fixed = TRUE)
 }
 
 bold <- function(x) {
