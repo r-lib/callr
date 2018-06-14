@@ -152,7 +152,7 @@ test_that("messages with R objects", {
   expect_equal(rs$read()$result, 22)
 })
 
-test_that("run thows", {
+test_that("run throws", {
   rs <- r_session$new()
   on.exit(rs$kill())
   expect_error(rs$run(function() stop("foobar")), "foobar")
