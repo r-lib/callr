@@ -24,7 +24,9 @@ convert_and_check_my_args <- function(options) {
   ## Conversions
   options <- within(options, {
     if (has("libpath")) libpath <- as.character(libpath)
-    if (has("repos")) repos <- as.character(repos)
+    if (has("repos")) {
+      repos <- stats::setNames(as.character(repos), names(repos))
+    }
     if (has("stdout") && !is.null(stdout)) {
       stdout <- as.character(stdout)
     }

@@ -19,7 +19,7 @@ test_that("r", {
 test_that("r_vanilla", {
   expect_equal(
     r_vanilla(function() getOption("repos"), libpath = .libPaths()),
-    "@CRAN@"
+    c(CRAN = "@CRAN@")
   )
 })
 
