@@ -48,3 +48,13 @@ test_that("R_LIBS_SITE is set properly", {
 
   expect_true(lib %in% res)
 })
+
+## https://github.com/r-lib/callr/issues/66
+test_that("names of getOption('repos') are preserved", {
+  repos <- withr::with_options(
+    list(repos = c(foo = "bar")),
+    callr::r(function() getOption("repos"))
+  )
+  expect_false(is.null(names(repos)))
+  expect_identical("foo", names(repos)[[1]])
+})
