@@ -19,7 +19,7 @@ RoxygenNote: 6.0.1.9000
 Roxygen: list(markdown = TRUE)
 Imports:
     base64enc,
-    processx (>= 3.1.0.9004),
+    processx (>= 3.1.0.9005),
     R6,
     utils
 Suggests:
@@ -28,5 +28,5 @@ Suggests:
     testthat,
     withr
 Remotes:
-    r-lib/processx@feature/disable-crash-dialog
+    r-lib/processx
 Encoding: UTF-8
