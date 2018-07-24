@@ -67,3 +67,19 @@ read_all <- function(filename) {
   }
   rawToChar(res)
 }
+
+is_complete_expression <- function(x) {
+  err <- NULL
+  tryCatch(parse(text = x), error = function(e) err <<- e)
+  if (is.null(err)) return(TRUE)
+  exp <- tryCatch(parse(text = "1+"), error = function(e) e$message)
+  exp1 <- strsplit(exp, "\n")[[1]][[1]]
+  msg <- sub("^.*:\\s*([^:]+)$",  "\\1", exp1, perl = TRUE)
+  ! grepl(msg, conditionMessage(err), fixed = TRUE)
+}
+
+bold <- function(x) {
+  tryCatch(
+    utils::getFromNamespace("bold", "crayon")(x),
+    error = function(e) x)
+}

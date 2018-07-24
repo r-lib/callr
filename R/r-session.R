@@ -40,7 +40,7 @@
 #' `r_session$new()` creates a new R background process. It can wait for the
 #' process to start up (`wait = TRUE`), or return immediately, i.e. before
 #' the process is actually ready to run. In the latter case you may call
-#' `rs$poll_io()` to make sure it is ready.
+#' `rs$poll_process()` to make sure it is ready.
 #'
 #' `rs$run()` is similar to [r()], but runs the function in the `rs` R
 #' session. It throws an error if the function call generated an error in
@@ -52,7 +52,7 @@
 #'
 #' `rs$call()` starts running a function in the background R session, and
 #' returns immediately. To check if the function is done, call the
-#' `poll_io()` method.
+#' `poll_process()` method.
 #'
 #' `rs$get_state()` return the state of the R session. Possible values:
 #' * `"starting"`: starting up,
@@ -81,7 +81,7 @@
 #' rs$call(function() Sys.sleep(1))
 #' rs$get_state()
 #'
-#' rs$poll_io(-1)
+#' rs$poll_process(-1)
 #' rs$get_state()
 #' rs$read()
 #' }
@@ -117,6 +117,12 @@ r_session <- R6Class(
     get_running_time = function()
       rs_get_running_time(self, private),
 
+    poll_process = function(timeout)
+      rs_poll_process(self, private, timeout),
+
+    attach = function()
+      rs_attach(self, private),
+
     finalize = function() {
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
@@ -126,9 +132,12 @@ r_session <- R6Class(
       cat(
         sep = "",
         "R SESSION, ",
-        if (self$is_alive()) "alive, ",
-        self$get_state(), ", ",
-        "pid ", self$get_pid(), ".")
+        if (self$is_alive()) {
+          paste0("alive, ", self$get_state(), ", ")
+        } else {
+          "finished, "
+        },
+        "pid ", self$get_pid(), ".\n")
       invisible(self)
     }
   ),
@@ -153,7 +162,9 @@ r_session <- R6Class(
     write_for_sure = function(text)
       rs__write_for_sure(self, private, text),
     parse_msg = function(msg)
-      rs__parse_msg(self, private, msg)
+      rs__parse_msg(self, private, msg),
+    attach_wait = function()
+      rs__attach_wait(self, private)
   )
 )
 
@@ -173,8 +184,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   with_envvar(
     options$env,
     super$initialize(options$bin, options$real_cmdargs, stdin = "|",
-                     stdout = options$stdout, stderr = options$stderr,
-                     poll_connection = TRUE)
+                     stdout = "|", stderr = "|", poll_connection = TRUE)
   )
 
   ## Make child report back when ready
@@ -186,10 +196,24 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
-    pr <- self$poll_io(wait_timeout)
-    if (pr['process'] == "ready") {
+    timeout <- wait_timeout
+    have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
+    pr <- self$poll_io(timeout)
+    out <- ""
+    err <- ""
+    while (any(pr == "ready")) {
+      if (pr["output"] == "ready") out <- paste0(out, self$read_output())
+      if (pr["error"] == "ready") err <- paste0(err, self$read_error())
+      if (pr["process"] == "ready") break
+      timeout <- as.double(have_until - Sys.time(), units = "secs") * 1000
+      pr <- self$poll_io(as.integer(timeout))
+    }
+
+    if (pr["process"] == "ready") {
       self$read()
-    } else {
+    } else if (pr["process"] != "ready") {
+      cat("stdout:]\n", out, "\n")
+      cat("stderr:]\n", err, "\n")
       stop("Could not start R session, timed out")
     }
   }
@@ -206,7 +230,7 @@ rs_read <- function(self, private) {
 
 rs_close <- function(self, private, grace) {
   close(self$get_input_connection())
-  self$poll_io(grace)
+  self$poll_process(grace)
   self$kill()
   self$wait(1000)
   if (self$is_alive()) stop("Could not kill background R session")
@@ -233,19 +257,21 @@ rs_call <- function(self, private, func, args) {
       private$options$result_file)
 
   ## Maybe we need to redirect stdout / stderr
-  re_stdout  <-  if (is.null(private$options$stdout)) {
+  re_stdout <- if (is.null(private$options$stdout)) {
     private$tmp_output_file <- tempfile()
   }
   re_stderr <- if (is.null(private$options$stderr)) {
     private$tmp_error_file <- tempfile()
   }
 
+  pre <- rs__prehook(re_stdout, re_stderr)
+  post <- rs__posthook(re_stdout, re_stderr)
+
   ## Run an expr that loads it, in the child process, with error handlers
   expr <- make_vanilla_script_expr(private$options$func_file,
                                    private$options$result_file,
                                    private$options$error,
-                                   re_stdout = re_stdout,
-                                   re_stderr = re_stderr)
+                                   pre_hook = pre, post_hook = post)
   cmd <- paste0(deparse(expr), "\n")
 
   ## Write this to stdin
@@ -313,7 +339,56 @@ rs_get_running_time <- function(self, private) {
     current = now - private$fun_started_at)
 }
 
+rs_poll_process <- function(self, private, timeout) {
+  poll(list(self$get_poll_connection()), timeout)[[1]]
+}
+
+rs_attach <- function(self, private) {
+  out <- self$get_output_connection()
+  err <- self$get_error_connection()
+  while (nchar(x <- conn_read_chars(out))) cat(x)
+  while (nchar(x <- conn_read_chars(err))) cat(bold(x))
+  tryCatch({
+    while (TRUE) {
+      cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
+      private$write_for_sure(paste0(cmd, "\n"))
+      private$report_back(202, "done")
+      private$attach_wait()
+    } },
+    interrupt = function(e) { self$interrupt(); invisible() }
+  )
+}
+
 ## Internal functions ----------------------------------------------------
+
+rs__attach_get_input <- function(prompt) {
+  cmd <- readline(prompt = prompt)
+  while (! is_complete_expression(cmd)) {
+    cmd <- paste0(cmd, sep = "\n", readline(prompt = "+ "))
+  }
+  cmd
+}
+
+#' @importFrom processx conn_read_chars
+
+rs__attach_wait <- function(self, private) {
+  out <- self$get_output_connection()
+  err <- self$get_error_connection()
+  pro <- private$pipe
+  while (TRUE) {
+    pr <- poll(list(out, err, pro), -1)
+    if (pr[[1]] == "ready") {
+      if (nchar(x <- conn_read_chars(out))) cat(x)
+    }
+    if (pr[[2]] == "ready") {
+      if (nchar(x <- conn_read_chars(err))) cat(bold(x))
+    }
+    if (pr[[3]] == "ready") {
+      msg <- self$read()
+      if (msg$code == 202) break;
+    }
+  }
+}
 
 rs__report_back <- function(self, private, code, text) {
   cmd <- paste0(deparse(rs__status_expr(code, text, fd = 3)), "\n")
@@ -364,6 +439,11 @@ rs__parse_msg_funcs[["201"]] <- function(self, private, code, message) {
   list(code = code, message = message)
 }
 
+rs__parse_msg_funcs[["202"]] <- function(self, private, code, message) {
+  private$state <- "idle"
+  list(code = code, message = message)
+}
+
 rs__parse_msg_funcs[["301"]] <- function(self, private, code, message) {
   ## TODO: progress bar update, what to do here?
   list(code = code, message = message)
@@ -385,6 +465,34 @@ rs__status_expr <- function(code, text = "", fd = 3) {
     }),
     list(code = code, fd = fd, text = text)
   )
+}
+
+rs__prehook <- function(stdout, stderr) {
+  oexpr <- if (!is.null(stdout)) substitute({
+    .__stdout__ <- processx::conn_set_stdout(
+      drop = FALSE,
+      .__ocon__ <- processx::conn_create_file(`__fn__`, write = TRUE))
+  }, list(`__fn__` = stdout))
+  eexpr <- if (!is.null(stderr)) substitute({
+    .__stderr__ <- processx::conn_set_stderr(
+      drop = FALSE,
+      .__econ__ <- processx::conn_create_file(`__fn__`, write = TRUE))
+  }, list(`__fn__` = stderr))
+
+  substitute({ o; e }, list(o = oexpr, e = eexpr))
+}
+
+rs__posthook <- function(stdout, stderr) {
+  oexpr <- if (!is.null(stdout)) substitute({
+      processx::conn_set_stdout(.__stdout__)
+      close(.__ocon__);
+  })
+  eexpr <- if (!is.null(stderr)) substitute({
+      processx::conn_set_stderr(.__stderr__)
+      close(.__econ__);
+  })
+
+  substitute({ o; e }, list(o = oexpr, e = eexpr))
 }
 
 rs__get_result_and_output <- function(self, private) {
@@ -425,7 +533,7 @@ rs__get_result_and_output <- function(self, private) {
 
 #' Create options for an [r_session] object
 #'
-#' @param  ... Options to override, named arguments.
+#' @param ... Options to override, named arguments.
 #'
 #' @export
 
@@ -442,11 +550,12 @@ r_session_options_default <- function() {
     stdout = NULL,
     stderr = NULL,
     error = getOption("callr.error", "error"),
-    cmdargs = c("--no-site-file", "--slave",
-      "--no-save", "--no-restore"),
+    cmdargs = c(
+      "--no-site-file", "--slave", "--no-save", "--no-restore",
+      if (interactive()) "--interactive"),
     system_profile = FALSE,
     user_profile = FALSE,
-    env = character(),
+    env = c(TERM = "dumb"),
     supervise = FALSE
   )
 }

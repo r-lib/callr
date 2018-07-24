@@ -49,7 +49,7 @@ from the child process.
 \code{r_session$new()} creates a new R background process. It can wait for the
 process to start up (\code{wait = TRUE}), or return immediately, i.e. before
 the process is actually ready to run. In the latter case you may call
-\code{rs$poll_io()} to make sure it is ready.
+\code{rs$poll_process()} to make sure it is ready.
 
 \code{rs$run()} is similar to \code{\link[=r]{r()}}, but runs the function in the \code{rs} R
 session. It throws an error if the function call generated an error in
@@ -61,7 +61,7 @@ errors, but returns a non-zero \code{error} member in the result list.
 
 \code{rs$call()} starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
-\code{poll_io()} method.
+\code{poll_process()} method.
 
 \code{rs$get_state()} return the state of the R session. Possible values:
 \itemize{
@@ -92,7 +92,7 @@ rs$run(function() 1 + 2)
 rs$call(function() Sys.sleep(1))
 rs$get_state()
 
-rs$poll_io(-1)
+rs$poll_process(-1)
 rs$get_state()
 rs$read()
 }
