@@ -204,7 +204,7 @@ test_that("crash", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
   expect_error(
-    rs$run(function() getFromNamespace("crash", "callr")()),
+    rs$run(function() get("crash", asNamespace("callr"))()),
     "crashed with exit code")
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
@@ -213,7 +213,7 @@ test_that("crash", {
   on.exit(rs$kill(), add = TRUE)
   res <- rs$run_with_output(function() {
     cat("o\n"); message("e");
-    getFromNamespace("crash", "callr")()
+    get("crash", asNamespace("callr"))()
   })
   expect_null(res$result)
   expect_s3_class(res$error, "error")

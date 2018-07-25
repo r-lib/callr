@@ -80,6 +80,6 @@ is_complete_expression <- function(x) {
 
 bold <- function(x) {
   tryCatch(
-    utils::getFromNamespace("bold", "crayon")(x),
+    get("bold", asNamespace("crayon"))(x),
     error = function(e) x)
 }

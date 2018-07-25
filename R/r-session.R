@@ -564,9 +564,9 @@ rs__get_result_and_output <- function(self, private) {
 
 rs__session_load_hook <- function() {
   expr <- substitute({
-    utils::getFromNamespace("conn_disable_inheritance", "processx")()
+    get("conn_disable_inheritance", asNamespace("processx"))()
     if (interactive()) {
-      utils::getFromNamespace("disable_crash_dialog", "processx")()
+      get("disable_crash_dialog", asNamespace("processx"))()
     }
   })
   paste0(deparse(expr), "\n")
