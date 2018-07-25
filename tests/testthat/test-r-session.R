@@ -180,9 +180,12 @@ test_that("closing the process channel", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 
-  expect_error(
+  err <- tryCatch(
     rs$run(function() close(processx::conn_create_fd(3))),
-    "R session closed the process connection")
+    error = function(e) e)
+  expect_true(
+    grepl("crashed with exit code", conditionMessage(err)) ||
+    grepl("R session closed the process connection", conditionMessage(err)))
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
 
@@ -203,9 +206,12 @@ test_that("closing the process channel", {
 test_that("crash", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
-  expect_error(
+  err <- tryCatch(
     rs$run(function() get("crash", asNamespace("callr"))()),
-    "crashed with exit code")
+    error = function(e) e)
+  expect_true(
+    grepl("crashed with exit code", conditionMessage(err)) ||
+    grepl("R session closed the process connection", conditionMessage(err)))
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
 
