@@ -161,7 +161,9 @@ test_that("run throws", {
 test_that("exit", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
-  res <- rs$run(function() q())
+  err <- tryCatch(
+    res <- rs$run(function() q()),
+    error = function(x) x)
 
   deadline <- Sys.time() + 3
   while (rs$is_alive() && Sys.time() < deadline) Sys.sleep(0.05)
