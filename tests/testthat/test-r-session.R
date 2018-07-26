@@ -162,6 +162,11 @@ test_that("exit", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
   res <- rs$run(function() q())
+
+  deadline <- Sys.time() + 3
+  while (rs$is_alive() && Sys.time() < deadline) Sys.sleep(0.05)
+  expect_true(Sys.time() < deadline)
+
   expect_null(res)
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
