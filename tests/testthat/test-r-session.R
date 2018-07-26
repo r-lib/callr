@@ -169,16 +169,6 @@ test_that("exit", {
   while (rs$is_alive() && Sys.time() < deadline) Sys.sleep(0.05)
   expect_true(Sys.time() < deadline)
 
-  expect_null(res)
-  expect_false(rs$is_alive())
-  expect_equal(rs$get_state(), "finished")
-
-  rs <- r_session$new()
-  on.exit(rs$kill(), add = TRUE)
-  res <- rs$run_with_output(function() { cat("o\n"); message("e"); q() })
-  expect_null(res$result)
-  expect_equal(res$stdout, "o\n")
-  expect_equal(res$stderr, "e\n")
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
 })
