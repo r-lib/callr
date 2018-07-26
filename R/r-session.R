@@ -533,11 +533,13 @@ rs__get_result_and_output <- function(self, private) {
   ## Get stdout and stderr
   stdout <- if (!is.null(private$tmp_output_file) &&
              file.exists(private$tmp_output_file)) {
-    read_all(private$tmp_output_file)
+    tryCatch(suppressWarnings(read_all(private$tmp_output_file)),
+             error = function(e) "")
   }
   stderr <- if (!is.null(private$tmp_error_file) &&
              file.exists(private$tmp_error_file)) {
-    read_all(private$tmp_error_file)
+    tryCatch(suppressWarnings(read_all(private$tmp_error_file)),
+             error = function(e) "")
   }
   unlink(c(private$tmp_output_file, private$tmp_error_file))
   private$tmp_output_file <- private$tmp_error_file <- NULL
