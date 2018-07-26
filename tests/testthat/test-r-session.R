@@ -157,3 +157,71 @@ test_that("run throws", {
   on.exit(rs$kill())
   expect_error(rs$run(function() stop("foobar")), "foobar")
 })
+
+test_that("exit", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  err <- tryCatch(
+    res <- rs$run(function() q()),
+    error = function(x) x)
+
+  deadline <- Sys.time() + 3
+  while (rs$is_alive() && Sys.time() < deadline) Sys.sleep(0.05)
+  expect_true(Sys.time() < deadline)
+
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+})
+
+test_that("closing the process channel", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+
+  err <- tryCatch(
+    rs$run(function() close(processx::conn_create_fd(3))),
+    error = function(e) e)
+  expect_true(
+    grepl("crashed with exit code", conditionMessage(err)) ||
+    grepl("R session closed the process connection", conditionMessage(err)))
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  res <- rs$run_with_output(function() {
+    cat("o\n"); message("e");
+    close(processx::conn_create_fd(3))
+  })
+  expect_null(res$result)
+  expect_s3_class(res$error, "error")
+  expect_equal(res$stdout, "o\n")
+  expect_equal(res$stderr, "e\n")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+})
+
+test_that("crash", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  err <- tryCatch(
+    rs$run(function() get("crash", asNamespace("callr"))()),
+    error = function(e) e)
+  expect_true(
+    grepl("crashed with exit code", conditionMessage(err)) ||
+    grepl("R session closed the process connection", conditionMessage(err)))
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  res <- rs$run_with_output(function() {
+    cat("o\n"); message("e");
+    get("crash", asNamespace("callr"))()
+  })
+  expect_null(res$result)
+  expect_s3_class(res$error, "error")
+  expect_equal(res$stdout, "o\n")
+  expect_equal(substr(res$stderr, 1, 2), "e\n")
+  expect_false(rs$is_alive())
+  expect_equal(rs$get_state(), "finished")
+})
