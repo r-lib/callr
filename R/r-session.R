@@ -567,9 +567,7 @@ rs__get_result_and_output <- function(self, private) {
 rs__session_load_hook <- function() {
   expr <- substitute({
     get("conn_disable_inheritance", asNamespace("processx"))()
-    if (interactive()) {
-      options(error = function() invokeRestart("abort"))
-    }
+    options(error = function() invokeRestart("abort"))
   })
   paste0(deparse(expr), "\n")
 }
@@ -595,8 +593,8 @@ r_session_options_default <- function() {
     stdout = NULL,
     stderr = NULL,
     error = getOption("callr.error", "error"),
-    cmdargs = c(
-      "--no-site-file", "--slave", "--no-save", "--no-restore"),
+    cmdargs = c("--no-readline", "--no-site-file", "--slave",
+                "--no-save", "--no-restore"),
     system_profile = FALSE,
     user_profile = FALSE,
     env = c(TERM = "dumb"),
