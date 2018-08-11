@@ -84,9 +84,9 @@ test_that("stdout/stderr from pipe", {
     res[c("result", "stdout", "stderr")],
     list(result = 43, stdout = NULL, stderr = NULL))
 
+  expect_equal(rs$read_output_lines(), c("foo", "bar"))
+  expect_equal(rs$read_error_lines(), c("bar", "foo"))
   rs$close()
-  expect_equal(rs$read_all_output_lines(), c("foo", "bar"))
-  expect_equal(rs$read_all_error_lines(), c("bar", "foo"))
 })
 
 test_that("interrupt", {
