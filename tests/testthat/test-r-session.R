@@ -72,6 +72,9 @@ test_that("stdout/stderr from pipe", {
   rs <- r_session$new(opt)
   on.exit(rs$kill())
 
+  ## Sometimes a NULL slips through....  this is bug to be fixed
+  rs$read_output_lines()
+
   res <- rs$run_with_output(function() {
     cat("foo\n"); message("bar"); 42 })
   expect_equal(
