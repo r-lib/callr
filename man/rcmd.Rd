@@ -8,16 +8,18 @@
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
   stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show && interactive(),
-  system_profile = FALSE, user_profile = FALSE, env = rcmd_safe_env(),
-  timeout = Inf, wd = ".", fail_on_status = FALSE)
+  callback = NULL, block_callback = NULL, spinner = show &&
+  interactive(), system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf, wd = ".",
+  fail_on_status = FALSE)
 
 rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
   stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show && interactive(),
-  system_profile = FALSE, user_profile = FALSE, env = rcmd_safe_env(),
-  timeout = Inf, wd = ".", fail_on_status = FALSE)
+  callback = NULL, block_callback = NULL, spinner = show &&
+  interactive(), system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf, wd = ".",
+  fail_on_status = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -102,3 +104,4 @@ rcmd("config", "CC")
 Other R CMD commands: \code{\link{rcmd_bg}},
   \code{\link{rcmd_copycat}}
 }
+\concept{R CMD commands}

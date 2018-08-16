@@ -4,9 +4,7 @@
 \name{reexports}
 \alias{reexports}
 \alias{run}
-\alias{reexports}
 \alias{process}
-\alias{reexports}
 \alias{poll}
 \title{Objects exported from other packages}
 \keyword{internal}

@@ -4,8 +4,8 @@
 \alias{r_vanilla}
 \title{Run an R child process, with no configuration}
 \usage{
-r_vanilla(func, args = list(), libpath = character(), repos = c(CRAN =
-  "@CRAN@"), cmdargs = "--slave", system_profile = FALSE,
+r_vanilla(func, args = list(), libpath = character(), repos = c(CRAN
+  = "@CRAN@"), cmdargs = "--slave", system_profile = FALSE,
   user_profile = FALSE, env = character(), ...)
 }
 \arguments{
@@ -69,3 +69,4 @@ r_vanilla(function() getOption("repos"))
 Other callr functions: \code{\link{r_copycat}},
   \code{\link{r}}
 }
+\concept{callr functions}
