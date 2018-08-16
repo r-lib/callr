@@ -79,6 +79,10 @@ make_profile <- function(system, user, repos, libpath, load_hook) {
   if (!is.null(libpath)) {
     cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = profile,
         append = TRUE)
+
+    libpath_env <- encodeString(paste(libpath, collapse = .Platform$path.sep), quote = '"')
+    cat("Sys.setenv(R_LIBS_USER = ", libpath_env, ")\n", sep = "", file = profile,
+        append = TRUE)
   }
 
   if (!is.null(load_hook)) {
