@@ -26,7 +26,7 @@ test_that(".libPaths()", {
     })
   )
 
-  expect_true(normalizePath(tmp) %in% lp)
+  expect_true(normalizePath(tmp) %in% normalizePath(lp))
 })
 
 test_that("if .Renviron overrides R_PROFILE", {
@@ -52,6 +52,6 @@ test_that("if .Renviron overrides R_PROFILE", {
     )
   )
 
-  expect_true(normalizePath(tmp_lib) %in% lp[[1]])
+  expect_true(normalizePath(tmp_lib) %in% normalizePath(lp[[1]]))
   expect_equal(lp[[2]], "bar")
 })
