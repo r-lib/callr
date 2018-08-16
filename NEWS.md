@@ -1,4 +1,13 @@
 
+# callr 3.0.0
+
+* New `r_session` class: a background R session you can send commands to
+  (#56).
+
+* Rewrote passing the library path to the subprocess (#73, #75)
+
+* Retain names of the `repos` option (#67, @jennybc)
+
 # callr 2.0.4
 
 * pkgdown web site at https://callr.r-lib.org  (#52, #53).

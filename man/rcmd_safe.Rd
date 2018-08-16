@@ -27,13 +27,9 @@ be used from unit tests.
 \item \code{R_BROWSER="false"}: typically we don't want to start up a browser
 from the child R process.
 \item \code{R_PDFVIEWER="false"}: similarly for the PDF viewer.
-\item \code{R_ENVIRON_USER=tempfile()}: this prevents R from loading the user
-\code{.Renviron}.
 }
 }
 \details{
-Note that \code{callr} also sets the \code{R_LIBS}, \code{R_LIBS_USER},
-\code{R_LIBS_SITE}, \code{R_PROFILE} and \code{R_PROFILE_USER} environment variables
-appropriately, unless these are set by the user in the \code{env} argument
-of the \code{r}, etc. calls.
+Note that \code{callr} also sets the \code{R_ENVIRON}, \code{R_ENVIRON_USER},
+\code{R_PROFILE and}R_PROFILE_USER\code{environment variables appropriately, unless these are set by the user in the}env\code{argument of the}r`, etc. calls.
 }
