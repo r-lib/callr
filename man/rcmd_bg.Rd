@@ -4,8 +4,8 @@
 \alias{rcmd_bg}
 \title{Run an R CMD command in the background}
 \usage{
-rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(), stdout = "|",
-  stderr = "|", repos = c(getOption("repos"), c(CRAN =
+rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(),
+  stdout = "|", stderr = "|", repos = c(getOption("repos"), c(CRAN =
   "https://cloud.r-project.org")), system_profile = FALSE,
   user_profile = FALSE, env = rcmd_safe_env(), wd = ".",
   supervise = FALSE)
@@ -54,3 +54,4 @@ return immediately.
 Other R CMD commands: \code{\link{rcmd_copycat}},
   \code{\link{rcmd}}
 }
+\concept{R CMD commands}

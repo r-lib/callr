@@ -78,11 +78,9 @@ rcmd_safe <- rcmd
 #' * `R_BROWSER="false"`: typically we don't want to start up a browser
 #'   from the child R process.
 #' * `R_PDFVIEWER="false"`: similarly for the PDF viewer.
-#' * `R_ENVIRON_USER=tempfile()`: this prevents R from loading the user
-#'   `.Renviron`.
 #'
-#' Note that `callr` also sets the `R_LIBS`, `R_LIBS_USER`,
-#' `R_LIBS_SITE`, `R_PROFILE` and `R_PROFILE_USER` environment variables
+#' Note that `callr` also sets the `R_ENVIRON`, `R_ENVIRON_USER`,
+#' `R_PROFILE and `R_PROFILE_USER` environment variables
 #' appropriately, unless these are set by the user in the `env` argument
 #' of the `r`, etc. calls.
 #'
