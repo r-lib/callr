@@ -23,45 +23,36 @@ setup_context <- function(options) {
 
   within(options, {
     ## profiles
-    profile <- make_profile(system_profile, user_profile, repos, libpath,
-                            load_hook)
-    tmp_files <- c(tmp_files, profile)
+    profiles <- make_profiles(system_profile, user_profile, repos, libpath,
+                             load_hook)
+    tmp_files <- c(tmp_files, profiles)
 
-    ## Lib path is set in the profile
-    empty <- tempfile()
-    cat("", file =  empty)
-    tmp_files  <- c(tmp_files, empty)
-
-    r_libs_site <- paste(base::.Library.site, collapse = .Platform$path.sep)
-
-    if (is.na(env["R_LIBS"])) env["R_LIBS"] <- empty
-    if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- empty
-    if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- r_libs_site
-    if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- empty
-    if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profile
+    ## environment files
+    envs <- make_environ(profiles)
+    tmp_files <- c(tmp_files, envs)
+    
+    if (is.na(env["R_ENVIRON"])) env["R_ENVIRON"] <- envs[[1]]
+    if (is.na(env["R_ENVIRON_USER"])) env["R_ENVIRON_USER"] <- envs[[2]]
+    if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- profiles[[1]]
+    if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profiles[[2]]
   })
 }
 
+make_profiles <- function(system, user, repos, libpath, load_hook) {
 
-## We need to combine all profiles into a single one. The combined profile
-## might include the system and user profile, depending on options.
-## It always includes the `repos` and `.libPaths()` settingd.
-##
-## We set  lib path here as well, in case it was set in .Renviron, etc.,
-## because the supplied libpath should take precedence over .Renviron.
+  profile_system <- tempfile()
+  profile_user <- tempfile()
 
-make_profile <- function(system, user, repos, libpath, load_hook) {
-  profile <- tempfile()
-
-  ## Create file
-  cat("", file = profile)
+  ## Create file2
+  cat("", file = profile_system)
+  cat("", file = profile_user)
 
   ## Add profiles
   if (system) {
     sys <- Sys.getenv("R_PROFILE",
                       file.path(R.home("etc"), "Rprofile.site"))
     sys <- path.expand(sys)
-    if (file.exists(sys)) file.append(profile, sys)
+    if (file.exists(sys)) file.append(profile_system, sys)
   }
 
   if (user) {
@@ -70,22 +61,56 @@ make_profile <- function(system, user, repos, libpath, load_hook) {
     home  <- path.expand("~/.Rprofile")
     if (is.na(user) && file.exists(local)) user <- local
     if (is.na(user) && file.exists(home)) user <- home
-    if (!is.na(user) && file.exists(user)) file.append(profile, user)
+    if (!is.na(user) && file.exists(user)) file.append(profile_user, user)
   }
 
-  ## Override repos and library path, as requested
-  cat("options(repos=", deparse(repos), ")\n", sep = "", file = profile,
-      append  = TRUE)
-  if (!is.null(libpath)) {
-    cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = profile,
+  ## Override repos, as requested
+  for (p in c(profile_system, profile_user)) {
+    cat("options(repos=", deparse(repos), ")\n", sep = "", file = p,
+        append = TRUE)
+  }
+
+  ## Set .Library.site
+  cat(".Library.site <- ", deparse(.Library.site),
+      "\n.libPaths(.libPaths())\n", file = profile_system, append = TRUE)
+
+  ## Set .libPaths()
+  for (p in c(profile_system, profile_user))  {
+    cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = p,
         append = TRUE)
   }
 
   if (!is.null(load_hook)) {
-    cat(load_hook, sep = "",  file = profile, append = TRUE)
+    cat(load_hook, sep = "",  file = profile_user, append = TRUE)
   }
 
-  profile
+  c(profile_system, profile_user)
+}
+
+make_environ <- function(profiles) {
+
+  env_sys <- tempfile()
+  env_user <- tempfile()
+
+  sys <- Sys.getenv("R_ENVIRON", NA_character_)
+  if (is.na(sys)) sys <- file.path(R.home("etc"), "Renviron.site")
+  if (!is.na(sys) && file.exists(sys)) file.append(env_sys, sys)
+
+  user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
+  local <- ".Renviron"
+  home <- "~/.Renviron"
+  if (is.na(user) && file.exists(local)) user <- local
+  if (is.na(user) && file.exists(home)) user <- home
+  if (!is.na(user) && file.exists(user))  file.append(env_user, user)
+
+  for (ef in c(env_sys, env_user)) {
+    cat("R_PROFILE=\"", profiles[[1]], "\"\n", file = ef,
+        append = TRUE, sep = "")
+    cat("R_PROFILE_USER=\"", profiles[[2]], "\"\n", file = ef,
+        append = TRUE, sep = "")
+  }
+
+  c(env_sys, env_user)
 }
 
 setup_callbacks <- function(options) {
