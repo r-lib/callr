@@ -19,7 +19,7 @@ RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
 Imports:
     base64enc,
-    processx (>= 3.1.0.9005),
+    processx (>= 3.2.0),
     R6,
     utils
 Suggests:
@@ -27,6 +27,4 @@ Suggests:
     crayon,
     testthat,
     withr
-Remotes:
-    r-lib/processx
 Encoding: UTF-8
