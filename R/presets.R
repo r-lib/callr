@@ -39,7 +39,7 @@ r_safe <- r
 #' Run an R process that mimics the current R process
 #'
 #' Differences to [r()]:
-#' * No extra repoditories are set up.
+#' * No extra repositories are set up.
 #' * The `--no-save`, `--no-restore`
 #'   command line arguments are not used. (But `--slave` still is.)
 #' * The system profile and the user profile are loaded.
