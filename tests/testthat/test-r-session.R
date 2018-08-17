@@ -65,6 +65,7 @@ test_that("get stdout/stderr from file", {
       res[c("result", "stdout", "stderr")],
       list(result = 43, stdout = "bar\n", stderr = "foo\n"))
   }
+  rs$close()
 })
 
 test_that("stdout/stderr from pipe", {
@@ -104,6 +105,7 @@ test_that("interrupt", {
   rs$poll_process(1000)
   res <- rs$read()
   expect_s3_class(res$error, "interrupt")
+  rs$close()
 })
 
 test_that("messages", {
@@ -124,6 +126,7 @@ test_that("messages", {
   expect_silent(res <- rs$run_with_output(f, message_callback = cb))
   expect_equal(res$result, 22)
   expect_equal(msg, list(code = 301, message = "ahoj"))
+  rs$close()
 })
 
 test_that("messages with R objects", {
@@ -155,12 +158,14 @@ test_that("messages with R objects", {
   expect_equal(rs$read(), list(code = 301, message = obj))
   rs$poll_process(2000)
   expect_equal(rs$read()$result, 22)
+  rs$close()
 })
 
 test_that("run throws", {
   rs <- r_session$new()
   on.exit(rs$kill())
   expect_error(rs$run(function() stop("foobar")), "foobar")
+  rs$close()
 })
 
 test_that("exit", {
@@ -176,6 +181,7 @@ test_that("exit", {
 
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
+  rs$close()
 })
 
 test_that("crash", {
@@ -189,6 +195,7 @@ test_that("crash", {
     grepl("R session closed the process connection", conditionMessage(err)))
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
+  rs$close()
 
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
@@ -205,4 +212,5 @@ test_that("crash", {
   if (os_platform() != "windows") expect_equal(substr(res$stderr, 1, 2), "e\n")
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
+  rs$close()
 })

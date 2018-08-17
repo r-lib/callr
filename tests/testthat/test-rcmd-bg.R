@@ -8,6 +8,8 @@ test_that("rcmd_bg runs", {
   out2 <- x$read_output_lines()
   expect_equal(out1, out2)
   expect_equal(x$get_exit_status(), 0)
+  rm(x)
+  gc()
 })
 
 test_that("r_cmd can be killed", {
@@ -19,10 +21,14 @@ test_that("r_cmd can be killed", {
 
   x$kill()
   expect_false(x$is_alive())
+  rm(x)
+  gc()
 })
 
 test_that("r_cmd errors", {
   x <- rcmd_bg("config", "axaxaxaxax")
   x$wait()
   expect_equal(x$get_exit_status(), 1)
+  rm(x)
+  gc()
 })

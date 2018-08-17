@@ -11,4 +11,5 @@ test_that("r with timeout", {
 
   expect_true("callr_timeout_error" %in% class(e))
   expect_true(tac - tic < as.difftime(4, units = "secs"))
+  gc()
 })

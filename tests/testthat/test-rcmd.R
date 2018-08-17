@@ -4,18 +4,22 @@ context("rcmd")
 test_that("rcmd works", {
   expect_equal(rcmd("config", "CC")$status, 0)
   expect_match(rcmd("config", "CC")$stdout, ".")
+  gc()
 })
 
 test_that("rcmd show works", {
   expect_output(rcmd("config", "CC", show = TRUE), ".")
+  gc()
 })
 
 test_that("rcmd echo works", {
   expect_output(rcmd("config", "CC", echo = TRUE), "config\\s+CC")
+  gc()
 })
 
 test_that("rcmd_safe", {
   expect_equal(rcmd_safe("config", "CC")$status, 0)
+  gc()
 })
 
 test_that("wd argument", {
@@ -32,6 +36,7 @@ test_that("wd argument", {
     paste(readLines(tmpout), collapse = "\n"),
     basename(tempdir())
   )
+  gc()
 })
 
 test_that("fail_on_status", {
@@ -42,10 +47,12 @@ test_that("fail_on_status", {
   )
   expect_silent(out <- rcmd("BATCH", rand, fail_on_status = FALSE))
   expect_true(out$status != 0)
+  gc()
 })
 
 test_that("command is included in result", {
   res <- rcmd_safe("config", "CC")
   expect_false(is.null(res$command))
   expect_true(is.character(res$command))
+  gc()
 })

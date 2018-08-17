@@ -4,10 +4,12 @@ context("r")
 test_that("basic r", {
   expect_equal(r(function() 1 + 1), 2)
   expect_equal(r(function(x) 1 + x, list(5)), 6)
+  gc()
 })
 
 test_that("the same R version is called", {
   expect_equal(r(function() R.version), R.version)
+  gc()
 })
 
 test_that("standard output", {
@@ -15,6 +17,7 @@ test_that("standard output", {
   on.exit(unlink(tmp), add = TRUE)
   r(function() cat("hello\n"), stdout = tmp)
   expect_equal(readLines(tmp), "hello")
+  gc()
 })
 
 test_that("standard error", {
@@ -22,6 +25,7 @@ test_that("standard error", {
   on.exit(unlink(tmp), add = TRUE)
   r(function() message("hello"), stderr = tmp)
   expect_equal(readLines(tmp), "hello")
+  gc()
 })
 
 test_that("standard output and standard error", {
@@ -34,6 +38,7 @@ test_that("standard output and standard error", {
   )
   expect_equal(readLines(tmp_out), "hello world!")
   expect_equal(readLines(tmp_err), "hello again!")
+  gc()
 })
 
 test_that("cmdargs argument", {
@@ -45,6 +50,7 @@ test_that("cmdargs argument", {
   r(function() ls(), stdout = o2, cmdargs = character())
 
   expect_true(length(readLines(o2)) > length(readLines(o1)))
+  gc()
 })
 
 test_that("env", {
@@ -55,6 +61,7 @@ test_that("env", {
       ),
     "indeed"
   )
+  gc()
 })
 
 test_that("stdout and stderr in the same file", {
@@ -73,6 +80,7 @@ test_that("stdout and stderr in the same file", {
   )
 
   expect_equal(readLines(tmp), paste0("hello", 1:3))
+  gc()
 })
 
 test_that("profiles are used as requested", {
@@ -104,6 +112,7 @@ test_that("profiles are used as requested", {
   ## Both
   res <- do(TRUE, TRUE)
   expect_equal(res, c("bar", "doh"))
+  gc()
 })
 
 test_that(".Renviron is used, but lib path is set over it", {
@@ -129,4 +138,5 @@ test_that(".Renviron is used, but lib path is set over it", {
 
   expect_equal(basename(res[[1]][1]), "yes")
   expect_equal(res[[2]], "bar")
+  gc()
 })

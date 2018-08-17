@@ -6,6 +6,7 @@ test_that("error is propagated", {
     r(function() 1 + "A", error = "error"),
     "non-numeric argument to binary operator"
   )
+  gc()
 })
 
 test_that("error object is passed", {
@@ -16,6 +17,7 @@ test_that("error object is passed", {
   )
   expect_true("call" %in% names(err))
   expect_true(inherits(err, "error"))
+  gc()
 })
 
 test_that("error stack is passed", {
@@ -36,6 +38,7 @@ test_that("error stack is passed", {
   expect_true(inherits(err, "error"))
   expect_true(inherits(err, "callr_error"))
   expect_equal(length(err$stack), 3)
+  gc()
 })
 
 test_that("error behavior can be set using option", {
@@ -67,4 +70,5 @@ test_that("error behavior can be set using option", {
   expect_true(inherits(err, "error"))
   expect_true(inherits(err, "callr_error"))
   expect_equal(length(err$stack), 3)
+  gc()
 })

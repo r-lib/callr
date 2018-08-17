@@ -6,4 +6,6 @@ test_that("create and run r_process", {
   x <- r_process$new(options)
   x$wait()
   expect_equal(x$get_result(), 2)
+  rm(x)
+  gc()
 })

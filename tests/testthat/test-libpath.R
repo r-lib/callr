@@ -6,6 +6,7 @@ test_that(".Library", {
     .Library,
     r(function() .Library)
   )
+  gc()
 })
 
 test_that(".Library.site", {
@@ -13,6 +14,7 @@ test_that(".Library.site", {
     .Library.site,
     r(function() .Library.site)
   )
+  gc()
 })
 
 test_that(".libPaths()", {
@@ -27,6 +29,7 @@ test_that(".libPaths()", {
   )
 
   expect_true(normalizePath(tmp) %in% normalizePath(lp))
+  gc()
 })
 
 test_that("if .Renviron overrides R_PROFILE", {
@@ -54,4 +57,5 @@ test_that("if .Renviron overrides R_PROFILE", {
 
   expect_true(normalizePath(tmp_lib) %in% normalizePath(lp[[1]]))
   expect_equal(lp[[2]], "bar")
+  gc()
 })
