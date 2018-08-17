@@ -247,6 +247,9 @@ rs_close <- function(self, private, grace) {
   if (self$is_alive()) stop("Could not kill background R session")
   private$state <- "finished"
   private$fun_started_at <- as.POSIXct(NA)
+  close(private$pipe)
+  close(self$get_output_connection())
+  close(self$get_error_connection())
 }
 
 rs_call <- function(self, private, func, args) {
