@@ -25,6 +25,7 @@ Imports:
 Suggests:
     covr,
     crayon,
+    ps,
     testthat,
     withr
 Encoding: UTF-8
