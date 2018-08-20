@@ -141,7 +141,7 @@ test_that("messages with R objects", {
   f <- function(obj) {
     x <- structure(
       c(list(code = 301), obj),
-      class = c("callr_message", "condition"))
+      class = c("foobar_class", "callr_message", "condition"))
     signalCondition(x)
     22
   }
@@ -154,11 +154,11 @@ test_that("messages with R objects", {
 
   withCallingHandlers(
     expect_silent(res <- rs$run_with_output(f, args = list(obj))),
-    callr_message = function(e) msg <<- e
+    foobar_class = function(e) msg <<- e
   )
   expect_equal(res$result, 22)
   exp <- structure(list(code = 301, a = 1, b = 2),
-                   class = c("callr_message", "condition"))
+                   class = c("foobar_class", "callr_message", "condition"))
   expect_equal(msg, exp)
   rs$call(f, args = list(obj))
   rs$poll_process(2000)
