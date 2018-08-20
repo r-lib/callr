@@ -12,8 +12,8 @@
 #' rs <- r_session$new(options = r_session_options(), wait = TRUE,
 #'                      wait_timeout = 3000)
 #'
-#' rs$run(func, args = list(), message_callback = NULL)
-#' rs$run_with_output(func, args = list(), message_callback = NULL)
+#' rs$run(func, args = list())
+#' rs$run_with_output(func, args = list())
 #' rs$call(func, args = list())
 #'
 #' rs$get_state()
@@ -32,9 +32,6 @@
 #' * `func`: Function object to call in the background R process.
 #'   Please read the notes for the similar argument of [r()]
 #' * `args`: Arguments to pass to the function. Must be a list.
-#' * `message_callback`: If not `NULL` then it must be a function with
-#'   a single argument. It will be called for each progess message received
-#'   from the child process.
 #'
 #' @section Details:
 #' `r_session$new()` creates a new R background process. It can wait for the
@@ -107,10 +104,10 @@ r_session <- R6Class(
 
     call = function(func, args = list())
       rs_call(self, private, func, args),
-    run_with_output = function(func, args = list(), message_callback = NULL)
-      rs_run_with_output(self, private, func, args, message_callback),
-    run = function(func, args = list(), message_callback = NULL)
-      rs_run(self, private, func, args, message_callback),
+    run_with_output = function(func, args = list())
+      rs_run_with_output(self, private, func, args),
+    run = function(func, args = list())
+      rs_run(self, private, func, args),
 
     get_state = function()
       rs_get_state(self, private),
@@ -301,7 +298,7 @@ rs_call <- function(self, private, func, args) {
 
 #' @importFrom processx conn_is_incomplete
 
-rs_run_with_output <- function(self, private, func, args, message_callback) {
+rs_run_with_output <- function(self, private, func, args) {
   self$call(func, args)
 
   go <- TRUE
@@ -315,8 +312,8 @@ rs_run_with_output <- function(self, private, func, args, message_callback) {
         if (msg$code == 200 || (msg$code >= 500 && msg$code < 600)) {
           return(msg)
         }
-        if (msg$code == 301 && !is.null(message_callback)) {
-          message_callback(msg)
+        if (msg$code == 301) {
+          signalCondition(msg$message)
         }
       },
       interrupt = function(e) {
@@ -337,8 +334,8 @@ rs_run_with_output <- function(self, private, func, args, message_callback) {
   res
 }
 
-rs_run <- function(self, private, func, args, message_callback) {
-  res <- rs_run_with_output(self, private, func, args, message_callback)
+rs_run <- function(self, private, func, args) {
+  res <- rs_run_with_output(self, private, func, args)
   if (is.null(res$error)) {
     res$result
   } else{

@@ -30,7 +30,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
 
   message <- function() {
     substitute({
-      data <- paste(e$code, e$message, "\n")
+      msg <- paste0("base64::", base64enc::base64encode(serialize(e, NULL)))
+      data <- paste(e$code, msg, "\n")
       con <- processx::conn_create_fd(3, close = FALSE)
       while (1) {
         data <- processx::conn_write(con, data)

@@ -50,7 +50,7 @@ supplied function and some error handling code.}
 \description{
 Differences to \code{\link[=r]{r()}}:
 \itemize{
-\item No extra repoditories are set up.
+\item No extra repositories are set up.
 \item The \code{--no-save}, \code{--no-restore}
 command line arguments are not used. (But \code{--slave} still is.)
 \item The system profile and the user profile are loaded.

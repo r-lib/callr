@@ -15,8 +15,8 @@ be used to evaluate R function calls, one at a time.
 \preformatted{rs <- r_session$new(options = r_session_options(), wait = TRUE,
                      wait_timeout = 3000)
 
-rs$run(func, args = list(), message_callback = NULL)
-rs$run_with_output(func, args = list(), message_callback = NULL)
+rs$run(func, args = list())
+rs$run_with_output(func, args = list())
 rs$call(func, args = list())
 
 rs$get_state()
@@ -38,9 +38,6 @@ in milliseconds.
 \item \code{func}: Function object to call in the background R process.
 Please read the notes for the similar argument of \code{\link[=r]{r()}}
 \item \code{args}: Arguments to pass to the function. Must be a list.
-\item \code{message_callback}: If not \code{NULL} then it must be a function with
-a single argument. It will be called for each progess message received
-from the child process.
 }
 }
 

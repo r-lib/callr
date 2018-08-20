@@ -123,20 +123,24 @@ test_that("messages", {
   rs <- r_session$new()
   on.exit(rs$kill())
 
-  expect_silent(res <- rs$run_with_output(f, message_callback = cb))
+  withCallingHandlers(
+    expect_silent(res <- rs$run_with_output(f)),
+    callr_message = function(e) msg <<- e
+  )
   expect_equal(res$result, 22)
-  expect_equal(msg, list(code = 301, message = "ahoj"))
+  expect_equal(
+    msg,
+    structure(
+      list(code = 301, message = "ahoj"),
+      class = c("callr_message", "condition")))
   rs$close()
 })
 
 test_that("messages with R objects", {
   obj <- list(a = 1, b = 2)
   f <- function(obj) {
-    msg <- paste0(
-      "base64::",
-      base64enc::base64encode(serialize(obj, NULL, ascii = TRUE)))
     x <- structure(
-      list(code = 301, message = msg),
+      c(list(code = 301), obj),
       class = c("callr_message", "condition"))
     signalCondition(x)
     22
@@ -148,14 +152,17 @@ test_that("messages with R objects", {
   rs <- r_session$new()
   on.exit(rs$kill())
 
-  expect_silent(res <- rs$run_with_output(f, args = list(obj),
-                                          message_callback = cb))
+  withCallingHandlers(
+    expect_silent(res <- rs$run_with_output(f, args = list(obj))),
+    callr_message = function(e) msg <<- e
+  )
   expect_equal(res$result, 22)
-  expect_equal(msg, list(code = 301, message = obj))
-
+  exp <- structure(list(code = 301, a = 1, b = 2),
+                   class = c("callr_message", "condition"))
+  expect_equal(msg, exp)
   rs$call(f, args = list(obj))
   rs$poll_process(2000)
-  expect_equal(rs$read(), list(code = 301, message = obj))
+  expect_equal(rs$read(), list(code = 301, message = exp))
   rs$poll_process(2000)
   expect_equal(rs$read()$result, 22)
   rs$close()
