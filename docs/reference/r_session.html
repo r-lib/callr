@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External R Process — r_process • callr</title>
+<title>External R Session — r_session • callr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,11 +30,10 @@
 
 
 
-<meta property="og:title" content="External R Process — r_process" />
+<meta property="og:title" content="External R Session — r_session" />
 
-<meta property="og:description" content="An R process that runs in the background. This is an R6 class that
-extends the processx::process class. The process starts in the
-background, evaluates an R function call, and then quits." />
+<meta property="og:description" content="A permanent R session that runs in the background. This is an R6 class
+that extends the processx::process class." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,61 +101,103 @@ background, evaluates an R function call, and then quits." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>External R Process</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/r-process.R'><code>R/r-process.R</code></a></small>
-    <div class="hidden name"><code>r_process.Rd</code></div>
+    <h1>External R Session</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/r-session.R'><code>R/r-session.R</code></a></small>
+    <div class="hidden name"><code>r_session.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>An R process that runs in the background. This is an R6 class that
-extends the <a href='http://www.rdocumentation.org/packages/processx/topics/process'>processx::process</a> class. The process starts in the
-background, evaluates an R function call, and then quits.</p>
+    <p>A permanent R session that runs in the background. This is an R6 class
+that extends the <a href='http://www.rdocumentation.org/packages/processx/topics/process'>processx::process</a> class.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The process is started at the creation of the object, and then it can
+be used to evaluate R function calls, one at a time.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>rp &lt;- r_process$new(options)
-rp$get_result()
+    <pre>rs &lt;- r_session$new(options = r_session_options(), wait = TRUE,
+                     wait_timeout = 3000)
+    rs$run(func, args = list())
+rs$run_with_output(func, args = list())
+rs$call(func, args = list())
+    rs$get_state()
+rs$get_running_time()
+    rs$read()
+rs$close()
 </pre>
-    <p>See <a href='http://www.rdocumentation.org/packages/processx/topics/process'>process</a> for the inherited methods.</p>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <ul>
-<li><p><code>options</code> A list of options created via <code><a href='r_process_options.html'>r_process_options()</a></code>.</p></li>
+<li><p><code>options</code>: A list of options created via <code><a href='r_session_options.html'>r_session_options()</a></code>.</p></li>
+<li><p><code>wait</code>: Whether to wait for the R process to start and be ready
+for running commands.</p></li>
+<li><p><code>wait_timeout</code>: Timeout for waiting for the R process to start,
+in milliseconds.</p></li>
+<li><p><code>func</code>: Function object to call in the background R process.
+Please read the notes for the similar argument of <code><a href='r.html'>r()</a></code></p></li>
+<li><p><code>args</code>: Arguments to pass to the function. Must be a list.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-    <p><code>r_process$new</code> creates a new instance. Its <code>options</code> argument is best
-created by the <code><a href='r_process_options.html'>r_process_options()</a></code> function.</p>
-<p><code>rp$get_result()</code> returns the result, an R object, from a finished
-background R process. If the process has not finished yet, it throws an
-error. (You can use <code>rp$wait()</code> to wait for the process to finish,
-optionally with a timeout.)</p>
+    <p><code>r_session$new()</code> creates a new R background process. It can wait for the
+process to start up (<code>wait = TRUE</code>), or return immediately, i.e. before
+the process is actually ready to run. In the latter case you may call
+<code>rs$poll_process()</code> to make sure it is ready.</p>
+<p><code>rs$run()</code> is similar to <code><a href='r.html'>r()</a></code>, but runs the function in the <code>rs</code> R
+session. It throws an error if the function call generated an error in
+the child process.</p>
+<p><code>rs$run_with_output()</code> is similar to <code>$run()</code>, but returns the standard
+output and error of the child process as well. It does not throw on
+errors, but returns a non-zero <code>error</code> member in the result list.</p>
+<p><code>rs$call()</code> starts running a function in the background R session, and
+returns immediately. To check if the function is done, call the
+<code>poll_process()</code> method.</p>
+<p><code>rs$get_state()</code> return the state of the R session. Possible values:</p><ul>
+<li><p><code>"starting"</code>: starting up,</p></li>
+<li><p><code>"idle"</code>: ready to compute,</p></li>
+<li><p><code>"busy"</code>: computing right now,</p></li>
+<li><p><code>"finished"</code>: the R process has finished.</p></li>
+</ul>
+    <p><code>rs$get_running_time()</code> returns the elapsed time since the R process
+has started, and the elapsed time since the current computation has
+started. The latter is NA if there is no active computation.</p>
+<p><code>rs$read()</code> reads an event from the child process, if there is one
+available. Events might signal that the function call has finished,
+or they can be progress report events.</p>
+<p><code>r$close()</code> terminates the current computation and the R process.
+The session object will be in <code>"finished"</code> state after this.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'>## List all options and their default values:</span>
-<span class='fu'><a href='r_process_options.html'>r_process_options</a></span>()
+<span class='no'>rs</span> <span class='kw'>&lt;-</span> <span class='no'>r_ression</span>$<span class='fu'>new</span>()
 
-<span class='co'>## Start an R process in the background, wait for it, get result</span>
-<span class='no'>opts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='r_process_options.html'>r_process_options</a></span>(<span class='kw'>func</span> <span class='kw'>=</span> <span class='kw'>function</span>() <span class='fl'>1</span> + <span class='fl'>1</span>)
-<span class='no'>rp</span> <span class='kw'>&lt;-</span> <span class='no'>r_process</span>$<span class='fu'>new</span>(<span class='no'>opts</span>)
-<span class='no'>rp</span>$<span class='fu'>wait</span>()
-<span class='no'>rp</span>$<span class='fu'><a href='get_result.html'>get_result</a></span>()
+<span class='no'>rs</span>$<span class='fu'><a href='http://www.rdocumentation.org/packages/processx/topics/run'>run</a></span>(<span class='kw'>function</span>() <span class='fl'>1</span> + <span class='fl'>2</span>)
+
+<span class='no'>rs</span>$<span class='fu'>call</span>(<span class='kw'>function</span>() <span class='fu'>Sys.sleep</span>(<span class='fl'>1</span>))
+<span class='no'>rs</span>$<span class='fu'>get_state</span>()
+
+<span class='no'>rs</span>$<span class='fu'>poll_process</span>(-<span class='fl'>1</span>)
+<span class='no'>rs</span>$<span class='fu'>get_state</span>()
+<span class='no'>rs</span>$<span class='fu'>read</span>()
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>

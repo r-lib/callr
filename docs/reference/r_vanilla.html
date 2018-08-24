@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -36,6 +38,7 @@ No CRAN(-like) repository is set.
 The system and user profiles are not run.
 " />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -62,7 +65,7 @@ The system and user profiles are not run.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.0.0</span>
       </span>
     </div>
 
@@ -84,7 +87,7 @@ The system and user profiles are not run.
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/callr#readme">
+  <a href="https://github.com/r-lib/callr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -102,7 +105,7 @@ The system and user profiles are not run.
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run an R child process, with no configuration</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr#readme/blob/master/R/presets.R'><code>R/presets.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/presets.R'><code>R/presets.R</code></a></small>
     <div class="hidden name"><code>r_vanilla.Rd</code></div>
     </div>
 
@@ -116,8 +119,8 @@ The system and user profiles are not run.
     
     </div>
 
-    <pre class="usage"><span class='fu'>r_vanilla</span>(<span class='no'>func</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span>
-  <span class='st'>"@CRAN@"</span>), <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='st'>"--slave"</span>, <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>r_vanilla</span>(<span class='no'>func</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='kw'>CRAN</span>
+  <span class='kw'>=</span> <span class='st'>"@CRAN@"</span>), <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='st'>"--slave"</span>, <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -212,7 +215,7 @@ supplied function and some error handling code.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='http://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
+  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">

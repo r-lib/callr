@@ -21,14 +21,17 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Changelog" />
+
 
 
 <!-- mathjax -->
@@ -55,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.0.0</span>
       </span>
     </div>
 
@@ -77,7 +80,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/callr#readme">
+  <a href="https://github.com/r-lib/callr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -95,16 +98,26 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/r-lib/callr#readme/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <small>Source: <a href='https://github.com/r-lib/callr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="callr-2-0-4" class="section level1">
+    <div id="callr-3-0-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-2-0-4" class="anchor"></a>callr 2.0.4<small> Unreleased </small>
+<a href="#callr-3-0-0" class="anchor"></a>callr 3.0.0<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>pkgdown web site at <a href="https://callr.r-lib.org" class="uri">https://callr.r-lib.org</a> (<a href='https://github.com/r-lib/callr#readme/issues/52'>#52</a>, <a href='https://github.com/r-lib/callr#readme/issues/53'>#53</a>).</p></li>
-<li><p>callr users <code>.Renviron</code> files now (and <code>R_ENVIRON_USER</code> as well), but overrides the library path, as requested in <code><a href="../reference/r.html">r()</a></code>, etc. (<a href='https://github.com/r-lib/callr#readme/issues/30'>#30</a>).</p></li>
+<li><p>New <code>r_session</code> class: a background R session you can send commands to (<a href='https://github.com/r-lib/callr/issues/56'>#56</a>).</p></li>
+<li><p>Rewrote passing the library path to the subprocess (<a href='https://github.com/r-lib/callr/issues/73'>#73</a>, <a href='https://github.com/r-lib/callr/issues/75'>#75</a>)</p></li>
+<li><p>Retain names of the <code>repos</code> option (<a href='https://github.com/r-lib/callr/issues/67'>#67</a>, <a href='http://github.com/jennybc'>@jennybc</a>)</p></li>
+</ul>
+</div>
+    <div id="callr-2-0-4" class="section level1">
+<h1 class="page-header">
+<a href="#callr-2-0-4" class="anchor"></a>callr 2.0.4<small> 2018-05-15 </small>
+</h1>
+<ul>
+<li><p>pkgdown web site at <a href="https://callr.r-lib.org" class="uri">https://callr.r-lib.org</a> (<a href='https://github.com/r-lib/callr/issues/52'>#52</a>, <a href='https://github.com/r-lib/callr/issues/53'>#53</a>).</p></li>
+<li><p>callr users <code>.Renviron</code> files now (and <code>R_ENVIRON_USER</code> as well), but overrides the library path, as requested in <code><a href="../reference/r.html">r()</a></code>, etc. (<a href='https://github.com/r-lib/callr/issues/30'>#30</a>).</p></li>
 <li><p>callr now handles the case when the subprocess calls <code>quit()</code>.</p></li>
 <li><p>callr now uses the processx package, instead of embedded code, to create and control processes.</p></li>
 </ul>
@@ -115,8 +128,8 @@
 </h1>
 <ul>
 <li><p>The default behavior on error can be set now with the <code>callr.error</code> option.</p></li>
-<li><p>Better error message if the child R process crashes or gets killed. (<a href='https://github.com/r-lib/callr#readme/issues/41'>#41</a>)</p></li>
-<li><p><code>r_bg</code> and <code>rcmd_bg</code> now have the <code>supervise</code> option (<a href='https://github.com/r-lib/callr#readme/issues/45'>#45</a>).</p></li>
+<li><p>Better error message if the child R process crashes or gets killed. (<a href='https://github.com/r-lib/callr/issues/41'>#41</a>)</p></li>
+<li><p><code>r_bg</code> and <code>rcmd_bg</code> now have the <code>supervise</code> option (<a href='https://github.com/r-lib/callr/issues/45'>#45</a>).</p></li>
 </ul>
 </div>
     <div id="callr-2-0-2" class="section level1">
@@ -125,7 +138,7 @@
 </h1>
 <ul>
 <li>Fix a bug with R-devel, caused by the change on 2018-02-08: <a href="https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5" class="uri">https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5</a>
-<p><a href='https://github.com/r-lib/callr#readme/issues/37'>#37</a>, <a href='https://github.com/r-lib/callr#readme/issues/38'>#38</a></p>
+<p><a href='https://github.com/r-lib/callr/issues/37'>#37</a>, <a href='https://github.com/r-lib/callr/issues/38'>#38</a></p>
 </li>
 <li><p>Fix a race condition on Windows, when creating named pipes for stdout or stderr. The client sometimes didn’t wait for the server, and callr failed with ERROR_PIPE_BUSY (231, All pipe instances are busy).</p></li>
 </ul>
@@ -153,7 +166,7 @@
 <li><p>Fix bug when stdout and stderr are redirected to the same file</p></li>
 <li><p><code><a href="../reference/rcmd_safe.html">rcmd_safe_env()</a></code> to allow extending the environment variables set in safe mode</p></li>
 <li><p><code><a href="../reference/rcmd.html">rcmd()</a></code> gets a <code>fail_on_status</code> argument</p></li>
-<li><p><code><a href="../reference/rcmd.html">rcmd()</a></code> gets an <code>echo</code> argument to potentially show the command to be run on the screen (<a href='https://github.com/r-lib/callr#readme/issues/15'>#15</a>)</p></li>
+<li><p><code><a href="../reference/rcmd.html">rcmd()</a></code> gets an <code>echo</code> argument to potentially show the command to be run on the screen (<a href='https://github.com/r-lib/callr/issues/15'>#15</a>)</p></li>
 <li><p><code><a href="../reference/rcmd.html">rcmd()</a></code> gets a <code>wd</code> argument to set the working directory</p></li>
 </ul>
 </div>
@@ -169,6 +182,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#callr-3-0-0">3.0.0</a></li>
         <li><a href="#callr-2-0-4">2.0.4</a></li>
         <li><a href="#callr-2-0-3">2.0.3</a></li>
         <li><a href="#callr-2-0-2">2.0.2</a></li>
@@ -183,7 +197,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='http://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
+  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">

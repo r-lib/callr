@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -33,6 +35,7 @@
 <meta property="og:description" content="Run an R CMD command form within R. This will usually start
 another R process, from a shell script." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -59,7 +62,7 @@ another R process, from a shell script." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.0.0</span>
       </span>
     </div>
 
@@ -81,7 +84,7 @@ another R process, from a shell script." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/callr#readme">
+  <a href="https://github.com/r-lib/callr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -99,7 +102,7 @@ another R process, from a shell script." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run an R CMD command</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr#readme/blob/master/R/rcmd.R'><code>R/rcmd.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rcmd.R'><code>R/rcmd.R</code></a></small>
     <div class="hidden name"><code>rcmd.Rd</code></div>
     </div>
 
@@ -113,16 +116,18 @@ another R process, from a shell script.</p>
     <pre class="usage"><span class='fu'>rcmd</span>(<span class='no'>cmd</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
   <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>getOption</span>(<span class='st'>"repos"</span>), <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span> <span class='st'>"https://cloud.r-project.org"</span>)),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span> <span class='fu'>interactive</span>(),
-  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(),
-  <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span>
+  <span class='fu'>interactive</span>(), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>rcmd_safe</span>(<span class='no'>cmd</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
   <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>getOption</span>(<span class='st'>"repos"</span>), <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span> <span class='st'>"https://cloud.r-project.org"</span>)),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span> <span class='fu'>interactive</span>(),
-  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(),
-  <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span>
+  <span class='fu'>interactive</span>(), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -264,7 +269,7 @@ defaults.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='http://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
+  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">

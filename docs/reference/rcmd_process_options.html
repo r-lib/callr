@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -32,6 +34,7 @@
 
 <meta property="og:description" content="Create options for an rcmd_process object" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -58,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.0.0</span>
       </span>
     </div>
 
@@ -80,7 +83,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/callr#readme">
+  <a href="https://github.com/r-lib/callr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -98,7 +101,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr#readme/blob/master/R/options.R'><code>R/options.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/options.R'><code>R/options.R</code></a></small>
     <div class="hidden name"><code>rcmd_process_options.Rd</code></div>
     </div>
 
@@ -140,7 +143,8 @@ be specified, to select the <code>R CMD</code> subcommand to run. Typically
 #&gt; 
 #&gt; $libpath
 #&gt; [1] "/Users/gaborcsardi/r_pkgs"                                     
-#&gt; [2] "/Library/Frameworks/R.framework/Versions/3.4/Resources/library"
+#&gt; [2] "/Users/gaborcsardi/Library/R/3.5/library"                      
+#&gt; [3] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library"
 #&gt; 
 #&gt; $stdout
 #&gt; [1] "|"
@@ -151,6 +155,8 @@ be specified, to select the <code>R CMD</code> subcommand to run. Typically
 #&gt; $repos
 #&gt;                          CRAN                          CRAN 
 #&gt; "https://cloud.r-project.org" "https://cloud.r-project.org" 
+#&gt;                          CRAN 
+#&gt; "https://cloud.r-project.org" 
 #&gt; 
 #&gt; $system_profile
 #&gt; [1] FALSE
@@ -184,7 +190,7 @@ be specified, to select the <code>R CMD</code> subcommand to run. Typically
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='http://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
+  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">

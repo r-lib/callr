@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -33,6 +35,7 @@
 <meta property="og:description" content="The child process is started in the background, and the function
 return immediately." />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -59,7 +62,7 @@ return immediately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">2.0.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">3.0.0</span>
       </span>
     </div>
 
@@ -81,7 +84,7 @@ return immediately." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/callr#readme">
+  <a href="https://github.com/r-lib/callr">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -99,7 +102,7 @@ return immediately." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run an R CMD command in the background</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr#readme/blob/master/R/rcmd-bg.R'><code>R/rcmd-bg.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rcmd-bg.R'><code>R/rcmd-bg.R</code></a></small>
     <div class="hidden name"><code>rcmd_bg.Rd</code></div>
     </div>
 
@@ -110,8 +113,8 @@ return immediately.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rcmd_bg</span>(<span class='no'>cmd</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(), <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='st'>"|"</span>,
-  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='st'>"|"</span>, <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>getOption</span>(<span class='st'>"repos"</span>), <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span>
+    <pre class="usage"><span class='fu'>rcmd_bg</span>(<span class='no'>cmd</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='st'>"|"</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='st'>"|"</span>, <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>getOption</span>(<span class='st'>"repos"</span>), <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span>
   <span class='st'>"https://cloud.r-project.org"</span>)), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
   <span class='kw'>supervise</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -201,7 +204,7 @@ exits.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='http://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
+  <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">
