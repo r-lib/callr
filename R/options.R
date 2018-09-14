@@ -40,6 +40,26 @@ rcmd_process_options <- function(...) {
   update_options(rcmd_process_options_default(), ...)
 }
 
+#' Create options for an [rscript_process] object
+#'
+#' @param ... Options to override, named arguments.
+#' @return A list of options.
+#'
+#' `rscript_process_options()` creates a set of options to initialize a new
+#' object from the `rscript_process` class. Its arguments must be named,
+#' the names are used as option names. The options correspond to (some of)
+#' the arguments of the [rscript()] function. At least the `script` option
+#' must be specified, the script file to run.
+#'
+#' @export
+#' @examples
+#' ## List all options and their default values:
+#' rscript_process_options()
+
+rscript_process_options <- function(...) {
+  update_options(rscript_process_options_default(), ...)
+}
+
 r_process_options_default <- function() {
   list(
     func = NULL,
@@ -71,6 +91,22 @@ rcmd_process_options_default <- function() {
     env = rcmd_safe_env(),
     wd = ".",
     supervise = FALSE
+  )
+}
+
+rscript_process_options_default <- function() {
+  list(
+    script = NULL,
+    cmdargs = character(),
+    libpath = .libPaths(),
+    stdout = "|",
+    stderr = "|",
+    repos = c(getOption("repos"), CRAN = "https://cloud.r-project.org"),
+    system_profile = FALSE,
+    user_profile = FALSE,
+    env = rcmd_safe_env(),
+    wd = ".",
+    color = FALSE
   )
 }
 

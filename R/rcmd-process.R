@@ -14,7 +14,7 @@
 #'
 #' @section Details:
 #' `rcmd_process$new` creates a new instance. Its `options` argument is
-#' best created by the [r_process_options()] function.
+#' best created by the [rcmd_process_options()] function.
 #'
 #' @name rcmd_process
 #' @examples
