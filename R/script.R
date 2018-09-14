@@ -74,7 +74,14 @@ make_vanilla_script_expr <- function(expr_file, res, error,
           interrupt = function(e) { `__error__` },
           callr_message = function(e) { `__message__` }
         ),
-        error = function(e) { `__post_hook__`; stop(e) },
+
+        ## We need to `stop()` here again, otherwise the error message
+        ## is not printed to stderr. See
+        ## https://github.com/r-lib/callr/issues/80
+        ## However, on R 3.1 and R 3.2 throwing an error here
+        ## will crash the R process. With `try()` the error is still
+        ## printed to stderr, but no real error is thrown.
+        error = function(e) { `__post_hook__`; try(stop(e)) },
         interrupt = function(e) {  `__post_hook__`; e }
       )                                 # nocov end
     },
