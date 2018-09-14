@@ -155,4 +155,5 @@ test_that("errors are printed on stderr", {
 
   expect_false(any(grepl("send to stderr", readLines(out))))
   expect_true(any(grepl("send to stderr 2", readLines(err))))
+  rm(r);  gc()
 })
