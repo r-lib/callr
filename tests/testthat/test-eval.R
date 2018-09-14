@@ -140,3 +140,19 @@ test_that(".Renviron is used, but lib path is set over it", {
   expect_equal(res[[2]], "bar")
   gc()
 })
+
+test_that("errors are printed on stderr", {
+  ## See https://github.com/r-lib/callr/issues/80
+  f <- function() {
+    print("send to stdout")
+    message("send to stderr")
+    stop("send to stderr 2")
+  }
+
+  expect_error(
+    r(f, stdout = out <- tempfile(), stderr = err <- tempfile()))
+  on.exit(unlink(c(out, err), recursive = TRUE), add = TRUE)
+
+  expect_false(any(grepl("send to stderr", readLines(out))))
+  expect_true(any(grepl("send to stderr 2", readLines(err))))
+})

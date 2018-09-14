@@ -74,7 +74,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
           interrupt = function(e) { `__error__` },
           callr_message = function(e) { `__message__` }
         ),
-        error = function(e) { `__post_hook__`; e },
+        error = function(e) { `__post_hook__`; stop(e) },
         interrupt = function(e) {  `__post_hook__`; e }
       )                                 # nocov end
     },
