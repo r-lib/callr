@@ -10,7 +10,7 @@ rscript(script, cmdargs = character(), libpath = .libPaths(),
   callback = NULL, block_callback = NULL, spinner = FALSE,
   system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
-  fail_on_status = FALSE, color = TRUE)
+  fail_on_status = TRUE, color = TRUE)
 }
 \arguments{
 \item{script}{Path of the script to run.}
