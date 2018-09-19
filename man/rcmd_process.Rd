@@ -22,7 +22,7 @@ that extends the \link{process} class.
 \section{Details}{
 
 \code{rcmd_process$new} creates a new instance. Its \code{options} argument is
-best created by the \code{\link[=r_process_options]{r_process_options()}} function.
+best created by the \code{\link[=rcmd_process_options]{rcmd_process_options()}} function.
 }
 
 \examples{

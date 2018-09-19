@@ -30,7 +30,7 @@ setup_context <- function(options) {
     ## environment files
     envs <- make_environ(profiles)
     tmp_files <- c(tmp_files, envs)
-    
+
     if (is.na(env["R_ENVIRON"])) env["R_ENVIRON"] <- envs[[1]]
     if (is.na(env["R_ENVIRON_USER"])) env["R_ENVIRON_USER"] <- envs[[2]]
     if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- profiles[[1]]
@@ -172,5 +172,18 @@ setup_rcmd_binary_and_args <- function(options) {
     options$real_cmdargs <- c("CMD", options$cmd, options$cmdargs)
   }
 
+  options
+}
+
+setup_rscript_binary_and_args <- function(options) {
+
+  if(os_platform() == "windows") {
+    options$bin <- file.path(R.home("bin"), "Rscript.exe")
+
+  } else {
+    options$bin <- file.path(R.home("bin"), "Rscript")
+  }
+
+  options$real_cmdargs <- c(options$script, options$cmdargs)
   options
 }

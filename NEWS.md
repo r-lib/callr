@@ -1,4 +1,9 @@
 
+# devel
+
+* New `rscript()` function and  `rscript_process` class to execute
+  R scripts via `Rscript` (#40, #81).
+
 # callr 3.0.0
 
 * New `r_session` class: a background R session you can send commands to
