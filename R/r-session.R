@@ -305,7 +305,8 @@ rs_run_with_output <- function(self, private, func, args) {
   res <- NULL
 
   while (go) {
-    ret <- tryCatch(
+    ## TODO: why is this in a tryCatch?
+    res <- tryCatch(
       { poll(list(private$pipe), -1)
         msg <- self$read()
         if (is.null(msg)) next
