@@ -5,10 +5,10 @@
 \title{Run an R CMD command in the background}
 \usage{
 rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(),
-  stdout = "|", stderr = "|", repos = c(getOption("repos"), c(CRAN =
-  "https://cloud.r-project.org")), system_profile = FALSE,
-  user_profile = FALSE, env = rcmd_safe_env(), wd = ".",
-  supervise = FALSE)
+  stdout = "|", stderr = "|", poll_connection = TRUE,
+  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
+  system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), wd = ".", supervise = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -24,6 +24,10 @@ javareconf, rtags.}
 \item{stdout}{Optionally a file name to send the standard output to.}
 
 \item{stderr}{Optionally a file name to send the standard error to.}
+
+\item{poll_connection}{Whether to have a control connection to
+the process. This is used to transmit messages from the subprocess
+to the parent.}
 
 \item{repos}{The \emph{repos} option. If \code{NULL}, then no
 \emph{repos} option is set. This options is only used if

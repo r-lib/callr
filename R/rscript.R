@@ -14,7 +14,8 @@
 rscript <- function(script, cmdargs = character(), libpath = .libPaths(),
                     repos = c(getOption("repos"),
                               c(CRAN = "https://cloud.r-project.org")),
-                    stdout = NULL, stderr = NULL, echo = FALSE, show = TRUE,
+                    stdout = NULL, stderr = NULL,
+                    poll_connection = TRUE, echo = FALSE, show = TRUE,
                     callback = NULL, block_callback = NULL, spinner = FALSE,
                     system_profile = FALSE, user_profile = FALSE,
                     env = rcmd_safe_env(), timeout = Inf, wd = ".",
@@ -107,7 +108,8 @@ rscript_init <- function(self, private, super, options) {
   with_envvar(
     options$env,
     super$initialize(options$bin, options$real_cmdargs,
-                     stdout = options$stdout, stderr = options$stderr)
+                     stdout = options$stdout, stderr = options$stderr,
+                     poll_connection = options$poll_connection)
   )
 
   invisible(self)

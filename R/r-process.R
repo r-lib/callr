@@ -71,6 +71,7 @@ rp_init <- function(self, private, super, options) {
     options$env,
     super$initialize(options$bin, options$real_cmdargs,
                      stdout = options$stdout, stderr = options$stderr,
+                     poll_connection = options$poll_connection,
                      supervise = options$supervise)
   )
 

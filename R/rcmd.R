@@ -16,6 +16,9 @@
 #' @param cmdargs Command line arguments.
 #' @param stdout Optionally a file name to send the standard output to.
 #' @param stderr Optionally a file name to send the standard error to.
+#' @param poll_connection Whether to have a control connection to
+#'   the process. This is used to transmit messages from the subprocess
+#'   to the parent.
 #' @param echo Whether to echo the complete command run by `rcmd`.
 #' @param wd Working directory to use for running the command. Defaults
 #'   to the current working directory.
@@ -38,9 +41,9 @@
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = c(getOption("repos"),
                    c(CRAN = "https://cloud.r-project.org")),
-                 stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
-                 callback = NULL, block_callback = NULL,
-                 spinner = show && interactive(),
+                 stdout = NULL, stderr = NULL, poll_connection = TRUE,
+                 echo = FALSE, show = FALSE, callback = NULL,
+                 block_callback = NULL, spinner = show && interactive(),
                  system_profile = FALSE, user_profile = FALSE,
                  env = rcmd_safe_env(), timeout = Inf, wd = ".",
                  fail_on_status = FALSE) {

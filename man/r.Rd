@@ -7,19 +7,21 @@
 \usage{
 r(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, error = getOption("callr.error",
-  "error"), cmdargs = c("--slave", "--no-save", "--no-restore"),
-  show = FALSE, callback = NULL, block_callback = NULL,
-  spinner = show && interactive(), system_profile = FALSE,
-  user_profile = FALSE, env = rcmd_safe_env(), timeout = Inf)
+  stdout = NULL, stderr = NULL, poll_connection = TRUE,
+  error = getOption("callr.error", "error"), cmdargs = c("--slave",
+  "--no-save", "--no-restore"), show = FALSE, callback = NULL,
+  block_callback = NULL, spinner = show && interactive(),
+  system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf)
 
 r_safe(func, args = list(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, error = getOption("callr.error",
-  "error"), cmdargs = c("--slave", "--no-save", "--no-restore"),
-  show = FALSE, callback = NULL, block_callback = NULL,
-  spinner = show && interactive(), system_profile = FALSE,
-  user_profile = FALSE, env = rcmd_safe_env(), timeout = Inf)
+  stdout = NULL, stderr = NULL, poll_connection = TRUE,
+  error = getOption("callr.error", "error"), cmdargs = c("--slave",
+  "--no-save", "--no-restore"), show = FALSE, callback = NULL,
+  block_callback = NULL, spinner = show && interactive(),
+  system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -61,6 +63,10 @@ error. If nothing was sent to the standard error, then this file
 will be empty. This can be the same file as \code{stderr}, although there
 is no guarantee that the lines will be in the correct chronological
 order.}
+
+\item{poll_connection}{Whether to have a control connection to
+the process. This is used to transmit messages from the subprocess
+to the parent.}
 
 \item{error}{What to do if the remote process throws an error.
 See details below.}

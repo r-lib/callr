@@ -53,6 +53,9 @@
 #'   order.
 #' @param error What to do if the remote process throws an error.
 #'   See details below.
+#' @param poll_connection Whether to have a control connection to
+#'   the process. This is used to transmit messages from the subprocess
+#'   to the parent.
 #' @param cmdargs Command line arguments to pass to the R process.
 #'   Note that `c("-f", rscript)` is appended to this, `rscript`
 #'   is the name of the script file to run. This contains a call to the
@@ -120,6 +123,7 @@ r <- function(func, args = list(), libpath = .libPaths(),
               repos = c(getOption("repos"),
                 c(CRAN = "https://cloud.r-project.org")),
               stdout = NULL, stderr = NULL,
+              poll_connection = TRUE,
               error = getOption("callr.error", "error"),
               cmdargs = c("--slave", "--no-save", "--no-restore"),
               show = FALSE, callback = NULL,

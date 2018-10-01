@@ -7,17 +7,19 @@
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show &&
-  interactive(), system_profile = FALSE, user_profile = FALSE,
+  stdout = NULL, stderr = NULL, poll_connection = TRUE,
+  echo = FALSE, show = FALSE, callback = NULL,
+  block_callback = NULL, spinner = show && interactive(),
+  system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
   fail_on_status = FALSE)
 
 rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, echo = FALSE, show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show &&
-  interactive(), system_profile = FALSE, user_profile = FALSE,
+  stdout = NULL, stderr = NULL, poll_connection = TRUE,
+  echo = FALSE, show = FALSE, callback = NULL,
+  block_callback = NULL, spinner = show && interactive(),
+  system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
   fail_on_status = FALSE)
 }
@@ -40,6 +42,10 @@ as it is set using the system or the user profile.}
 \item{stdout}{Optionally a file name to send the standard output to.}
 
 \item{stderr}{Optionally a file name to send the standard error to.}
+
+\item{poll_connection}{Whether to have a control connection to
+the process. This is used to transmit messages from the subprocess
+to the parent.}
 
 \item{echo}{Whether to echo the complete command run by \code{rcmd}.}
 
