@@ -340,6 +340,8 @@ rs_run <- function(self, private, func, args) {
   if (is.null(res$error)) {
     res$result
   } else{
+    res$stdout <- paste0(res$stdout, self$read_output())
+    res$stderr <- paste0(res$stderr, self$read_error())
     stop(res$error)
   }
 }
