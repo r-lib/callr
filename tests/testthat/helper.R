@@ -40,7 +40,7 @@ test_paths <- function(drop, keep) {
   }
   
   expect_equal(
-    callr::r(function() .libPaths(), libpath = keep),
+    callr::r(function() normalizePath(.libPaths()), libpath = keep),
     normalizePath(c(keep, .Library)))
 
   out <- callr::r(f1, list(rbin = rbin), libpath = keep)
