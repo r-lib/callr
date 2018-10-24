@@ -73,6 +73,9 @@ test_that("libpath in system(), empty .Renviron", {
   withr::local_libpaths(tmpdrop, action = "prefix")
 
   test_paths(tmpdrop, tmpkeep)
+
+  ## To close FDs
+  gc()
 })
 
 test_that("libpath in system, R_LIBS in .Renviron", {
@@ -88,6 +91,9 @@ test_that("libpath in system, R_LIBS in .Renviron", {
   withr::local_libpaths(tmpdrop, action = "prefix")
 
   test_paths(tmpdrop, tmpkeep)
+
+  ## To close FDs
+  gc()
 })
 
 test_that("libpath in system, R_LIBS", {
@@ -102,6 +108,9 @@ test_that("libpath in system, R_LIBS", {
   withr::local_libpaths(tmpdrop, action = "prefix")
 
   test_paths(tmpdrop, tmpkeep)
+
+  ## To close FDs
+  gc()
 })
 
 test_that("libpath in system, R_LIBS and .Renviron", {
@@ -116,4 +125,7 @@ test_that("libpath in system, R_LIBS and .Renviron", {
   withr::local_libpaths(tmpdrop, action = "prefix")
 
   test_paths(tmpdrop, tmpkeep)
+
+  ## To close FDs
+  gc()
 })
