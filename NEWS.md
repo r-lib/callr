@@ -7,6 +7,9 @@
 * Library paths are now correctly set set up for `system()` (and similar)
   calls from the callr subprocesses (#83, #84).
 
+* Pass `opions("repos")` to the child process as is, without checking.
+  Closes #82.
+
 # callr 3.0.0
 
 * New `r_session` class: a background R session you can send commands to
