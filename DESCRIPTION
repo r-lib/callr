@@ -25,6 +25,7 @@ Imports:
 Suggests:
     covr,
     crayon,
+    pingr,
     ps,
     testthat,
     withr

@@ -50,7 +50,6 @@ convert_and_check_my_args <- function(options) {
     no("func") || is.function(func),
     no("func") || is.list(args),
     is.character(libpath),
-    is.character(repos),
     no("stdout") || is.null(stdout) || is_string(stdout),
     no("stderr") || is.null(stderr) || is_string(stderr),
     no("error") || is_string(error),

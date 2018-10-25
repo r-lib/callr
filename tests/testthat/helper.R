@@ -51,3 +51,13 @@ test_paths <- function(drop, keep) {
   expect_true(any(grepl(basename(normalizePath(keep)), outvanilla)))
   expect_false(any(grepl(basename(normalizePath(drop)), outvanilla)))
 }
+
+skip_if_offline <- function(host = "httpbin.org", port = 80) {
+
+  res <- tryCatch(
+    pingr::ping_port(host, count = 1L, port = port),
+    error = function(e) NA
+  )
+
+  if (is.na(res)) skip("No internet connection")
+}
