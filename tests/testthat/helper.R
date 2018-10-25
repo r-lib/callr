@@ -26,3 +26,28 @@ has_locale <- function(l) {
   )
   has
 }
+
+test_paths <- function(drop, keep) {
+  rbin <- setup_r_binary_and_args(list())$bin
+  rbin <- shQuote(rbin)
+
+  f1 <- function(rbin) {
+    system(paste(rbin, "-q -e \".libPaths()\""), intern = TRUE)
+  }
+
+  fvanilla <- function(rbin) {
+    system(paste(rbin, "--vanilla -q -e \".libPaths()\""), intern = TRUE)
+  }
+  
+  expect_equal(
+    callr::r(function() normalizePath(.libPaths()), libpath = keep),
+    normalizePath(c(keep, .Library)))
+
+  out <- callr::r(f1, list(rbin = rbin), libpath = keep)
+  expect_true(any(grepl(basename(normalizePath(keep)), out)))
+  expect_false(any(grepl(basename(normalizePath(drop)), out)))
+
+  outvanilla <- callr::r(fvanilla, list(rbin = rbin), libpath = keep)
+  expect_true(any(grepl(basename(normalizePath(keep)), outvanilla)))
+  expect_false(any(grepl(basename(normalizePath(drop)), outvanilla)))
+}

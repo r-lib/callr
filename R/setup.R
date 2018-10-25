@@ -28,7 +28,7 @@ setup_context <- function(options) {
     tmp_files <- c(tmp_files, profiles)
 
     ## environment files
-    envs <- make_environ(profiles)
+    envs <- make_environ(profiles, libpath)
     tmp_files <- c(tmp_files, envs)
 
     if (is.na(env["R_ENVIRON"])) env["R_ENVIRON"] <- envs[[1]]
@@ -87,7 +87,7 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
   c(profile_system, profile_user)
 }
 
-make_environ <- function(profiles) {
+make_environ <- function(profiles, libpath) {
 
   env_sys <- tempfile()
   env_user <- tempfile()
@@ -108,6 +108,16 @@ make_environ <- function(profiles) {
         append = TRUE, sep = "")
     cat("R_PROFILE_USER=\"", profiles[[2]], "\"\n", file = ef,
         append = TRUE, sep = "")
+    cat("R_LIBS_SITE=\"",
+        paste(.Library.site, collapse = .Platform$path.sep), "\"\n",
+        file = ef, append = TRUE, sep = "")
+    cat("R_LIBS=\"",
+        paste(libpath, collapse = .Platform$path.sep), "\"\n",
+        file = ef, append = TRUE, sep = "")
+    if (!file.exists(rlu <- Sys.getenv("R_LIBS_USER")) ||
+        ! normalizePath(rlu) %in% libpath) {
+      cat("R_LIBS_USER=\"\"\n", file = ef, append = TRUE, sep = "")
+    }
   }
 
   c(env_sys, env_user)
