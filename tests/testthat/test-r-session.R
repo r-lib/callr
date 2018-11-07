@@ -162,7 +162,11 @@ test_that("messages with R objects", {
   expect_equal(msg, exp)
   rs$call(f, args = list(obj))
   rs$poll_process(2000)
-  expect_equal(rs$read(), list(code = 301, message = exp))
+  expect_equal(
+    rs$read(),
+    structure(
+      list(code = 301, message = exp),
+      class = "callr_session_result"))
   rs$poll_process(2000)
   expect_equal(rs$read()$result, 22)
   rs$close()

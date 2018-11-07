@@ -10,6 +10,9 @@
 * Pass `opions("repos")` to the child process as is, without checking.
   Closes #82.
 
+* `r_session$run_with_output()` now returns an S3 object with class
+  `callr_session_result`.
+
 # callr 3.0.0
 
 * New `r_session` class: a background R session you can send commands to

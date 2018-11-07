@@ -435,7 +435,9 @@ rs__parse_msg <- function(self, private, msg) {
   if (! s[1] %in% names(rs__parse_msg_funcs)) {
     stop("Unknown message code: `", s[1], "`")
   }
-  rs__parse_msg_funcs[[ s[1] ]](self, private, code, message)
+  structure(
+    rs__parse_msg_funcs[[ s[1] ]](self, private, code, message),
+    class = "callr_session_result")
 }
 
 rs__parse_msg_funcs <- list()
