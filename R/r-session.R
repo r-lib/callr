@@ -322,14 +322,20 @@ rs_run_with_output <- function(self, private, func, args) {
         ## The R process will catch the interrupt, and then save the
         ## error object to a file, but this might still take some time,
         ## so we need to poll here. If the bg process ignores
-        ## interrupts, then we throw an error.
+        ## interrupts, then we kill it.
         ps <- poll(list(private$pipe), 1000)[[1]]
         if (ps == "timeout") {
-          stop("Background process ignores interrupt, still running")
+          self$kill()
         } else {
           res <<- self$read()
           go <<- FALSE
         }
+        iconn <- structure(
+          list(message = "Interrupted"),
+          class = c("interrupt", "condition"))
+        signalCondition(iconn)
+        cat("\n")
+        invokeRestart("abort")
     })
   }
   res

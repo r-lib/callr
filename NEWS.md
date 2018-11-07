@@ -13,6 +13,11 @@
 * `r_session$run_with_output()` now returns an S3 object with class
   `callr_session_result`.
 
+* `r_session$run*()` handle interrupt properly. It tries to interrupt
+  the background process fist, kills it if it is not interruptable,
+  and then re-throws the interrupt condition, going back to the top level
+  prompt if the re-thrown condition is un-caught.
+
 # callr 3.0.0
 
 * New `r_session` class: a background R session you can send commands to
