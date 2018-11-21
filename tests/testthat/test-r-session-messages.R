@@ -34,3 +34,25 @@ test_that("callr_message, then error", {
 
   rs$close()
 })
+
+test_that("message handlers", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+
+  do <- function() {
+    msg <- structure(list(message = "hi"),
+                     class = c("myclass", "callr_message", "condition"))
+    signalCondition(msg)
+  }
+
+  cond <- NULL
+  withr::with_options(
+    list(callr.condition_handler_myclass = function(x) {
+      cond <<- x
+    }),
+    rs$run(do)
+  )
+
+  expect_s3_class(cond, "myclass")
+  expect_equal(cond$message, "hi")
+})

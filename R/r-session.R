@@ -314,7 +314,7 @@ rs_run_with_output <- function(self, private, func, args) {
           return(msg)
         }
         if (msg$code == 301) {
-          signalCondition(msg$message)
+          rs__handle_condition(msg$message)
         }
       },
       interrupt = function(e) {
@@ -581,6 +581,27 @@ rs__session_load_hook <- function() {
     options(error = function() invokeRestart("abort"))
   })
   paste0(deparse(expr), "\n")
+}
+
+rs__handle_condition <- function(cond) {
+
+  default_handler <- function(x) {
+    classes <- class(x)
+    for (cl in classes) {
+      opt <- paste0("callr.condition_handler_", cl)
+      if (!is.null(val <- getOption(opt)) && is.function(val)) {
+        val(x)
+        break
+      }
+    }
+  }
+
+  withRestarts({
+    signalCondition(cond)
+    default_handler(cond)
+  }, muffleMessage = function() NULL)
+
+  invisible()
 }
 
 ## Helper functions ------------------------------------------------------
