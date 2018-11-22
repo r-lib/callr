@@ -129,3 +129,22 @@ test_that("libpath in system, R_LIBS and .Renviron", {
   ## To close FDs
   gc()
 })
+
+test_that("libpath in system, if subprocess changes R_LIBS", {
+  dir.create(tmpkeep <- tempfile("keep"))
+  on.exit(unlink(tmpkeep, recursive = TRUE), add  = TRUE)
+
+  rbin <- setup_r_binary_and_args(list())$bin
+  rbin <- shQuote(rbin)
+
+  f <- function(rbin, new) {
+    Sys.setenv(R_LIBS = new)
+    Sys.setenv(R_ENVIRON_USER = "no_such_file")
+    system(paste(
+      rbin, "--no-site-file --no-init-file --no-save --no-restore --slave",
+      "-e \".libPaths()\""), intern = TRUE)
+  }
+
+  out <- callr::r(f, list(rbin = rbin, new = tmpkeep))
+  expect_true(any(grepl(basename(normalizePath(tmpkeep)), out)))
+})

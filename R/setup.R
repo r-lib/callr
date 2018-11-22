@@ -21,6 +21,8 @@ setup_context <- function(options) {
   ## Avoid R CMD check warning...
   repos <- libpath <- system_profile <- user_profile <- load_hook <- NULL
 
+  make_path <- function(x) paste(x, collapse = .Platform$path.sep)
+
   within(options, {
     ## profiles
     profiles <- make_profiles(system_profile, user_profile, repos, libpath,
@@ -35,6 +37,9 @@ setup_context <- function(options) {
     if (is.na(env["R_ENVIRON_USER"])) env["R_ENVIRON_USER"] <- envs[[2]]
     if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- profiles[[1]]
     if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profiles[[2]]
+
+    ## environment variables
+    if (is.na(env["R_LIBS"])) env["R_LIBS"] <- make_path(libpath)
   })
 }
 
@@ -92,6 +97,10 @@ make_environ <- function(profiles, libpath) {
   env_sys <- tempfile()
   env_user <- tempfile()
 
+  for (ef in c(env_sys, env_user)) {
+    cat("CALLR_CHILD_R_LIBS=\"${R_LIBS}\"\n", file = ef, append = TRUE)
+  }
+
   sys <- Sys.getenv("R_ENVIRON", NA_character_)
   if (is.na(sys)) sys <- file.path(R.home("etc"), "Renviron.site")
   if (!is.na(sys) && file.exists(sys)) file.append(env_sys, sys)
@@ -101,7 +110,7 @@ make_environ <- function(profiles, libpath) {
   home <- "~/.Renviron"
   if (is.na(user) && file.exists(local)) user <- local
   if (is.na(user) && file.exists(home)) user <- home
-  if (!is.na(user) && file.exists(user))  file.append(env_user, user)
+  if (!is.na(user) && file.exists(user)) file.append(env_user, user)
 
   for (ef in c(env_sys, env_user)) {
     cat("R_PROFILE=\"", profiles[[1]], "\"\n", file = ef,
@@ -111,12 +120,12 @@ make_environ <- function(profiles, libpath) {
     cat("R_LIBS_SITE=\"",
         paste(.Library.site, collapse = .Platform$path.sep), "\"\n",
         file = ef, append = TRUE, sep = "")
-    cat("R_LIBS=\"",
-        paste(libpath, collapse = .Platform$path.sep), "\"\n",
+    cat("R_LIBS=\"${CALLR_CHILD_R_LIBS:-",
+        paste(libpath, collapse = .Platform$path.sep), "}\"\n",
         file = ef, append = TRUE, sep = "")
     if (!file.exists(rlu <- Sys.getenv("R_LIBS_USER")) ||
         ! normalizePath(rlu) %in% libpath) {
-      cat("R_LIBS_USER=\"\"\n", file = ef, append = TRUE, sep = "")
+      cat("R_LIBS_USER=\"${R_LIBS_USER}\"\n", file = ef, append = TRUE, sep = "")
     }
   }
 
