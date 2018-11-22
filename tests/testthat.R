@@ -11,5 +11,3 @@ if (ps::ps_is_supported()) {
 }
 
 test_check("callr", reporter = reporter)
-
-print(1:10000)
