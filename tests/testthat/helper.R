@@ -38,10 +38,10 @@ test_paths <- function(drop, keep) {
   fvanilla <- function(rbin) {
     system(paste(rbin, "--vanilla -q -e \".libPaths()\""), intern = TRUE)
   }
-  
+
   expect_equal(
     callr::r(function() normalizePath(.libPaths()), libpath = keep),
-    normalizePath(c(keep, .Library)))
+    unique(normalizePath(c(keep, .Library.site, .Library))))
 
   out <- callr::r(f1, list(rbin = rbin), libpath = keep)
   expect_true(any(grepl(basename(normalizePath(keep)), out)))
