@@ -10,4 +10,6 @@ test_that("repos is a list, #82", {
       list(repos = list(CRAN = "https://cloud.r-project.org")),
       callr::r(function() utils::available.packages()))
   )
+
+  gc()
 })

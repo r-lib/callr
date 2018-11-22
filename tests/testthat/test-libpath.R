@@ -147,4 +147,7 @@ test_that("libpath in system, if subprocess changes R_LIBS", {
 
   out <- callr::r(f, list(rbin = rbin, new = tmpkeep))
   expect_true(any(grepl(basename(normalizePath(tmpkeep)), out)))
+
+  ## Close FDs
+  gc()
 })

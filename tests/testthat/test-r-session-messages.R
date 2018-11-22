@@ -55,4 +55,6 @@ test_that("message handlers", {
 
   expect_s3_class(cond, "myclass")
   expect_equal(cond$message, "hi")
+
+  rs$close()
 })

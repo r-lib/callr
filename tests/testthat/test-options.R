@@ -12,4 +12,6 @@ test_that("error for unknown options", {
     r_process_options(func = function() {}, foo = "bar", bar = "foo"),
     "Unknown options"
   )
+
+  gc()
 })
