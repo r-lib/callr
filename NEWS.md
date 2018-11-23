@@ -1,19 +1,19 @@
 
 # devel
 
-* New `rscript()` function and  `rscript_process` class to execute
+* New `rscript()` function and `rscript_process` class to execute
   R scripts via `Rscript` (#40, #81).
 
-* Library paths are now correctly set set up for `system()` (and similar)
+* Library paths are now correctly set up for `system()` (and similar)
   calls from the callr subprocesses (#83, #84).
 
-* Pass `opions("repos")` to the child process as is, without checking.
+* Pass `options("repos")` to the child process as is, without checking.
   Closes #82.
 
 * `r_session$run_with_output()` now returns an S3 object with class
   `callr_session_result`.
 
-* `r_session$run*()` handle interrupt properly. It tries to interrupt
+* `r_session$run*()` handle interrupts properly. It tries to interrupt
   the background process fist, kills it if it is not interruptable,
   and then re-throws the interrupt condition, going back to the top level
   prompt if the re-thrown condition is un-caught.
