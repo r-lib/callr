@@ -39,6 +39,9 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         if (!length(data)) break;
         Sys.sleep(.1)
       }
+      if (!is.null(findRestart("muffleMessage"))) {
+        invokeRestart("muffleMessage")
+      }
     })
   }
 
