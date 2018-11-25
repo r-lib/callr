@@ -236,4 +236,5 @@ test_that("custom load hook", {
   expect_identical(res$result, "baz")
   expect_equal(res$stdout, "")
   expect_equal(res$stderr, "")
+  rs$close()
 })
