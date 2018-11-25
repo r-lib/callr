@@ -225,3 +225,15 @@ test_that("crash", {
   expect_equal(rs$get_state(), "finished")
   rs$close()
 })
+
+test_that("custom load hook", {
+  opts <- r_session_options(load_hook = quote(options(foobar = "baz")))
+  rs <- r_session$new(opts)
+  on.exit(rs$kill(), add = TRUE)
+
+  res <- rs$run_with_output(function() getOption("foobar"))
+  expect_null(res$error)
+  expect_identical(res$result, "baz")
+  expect_equal(res$stdout, "")
+  expect_equal(res$stderr, "")
+})
