@@ -31,5 +31,7 @@ from the child R process.
 }
 \details{
 Note that \code{callr} also sets the \code{R_ENVIRON}, \code{R_ENVIRON_USER},
-\code{R_PROFILE and}R_PROFILE_USER\code{environment variables appropriately, unless these are set by the user in the}env\code{argument of the}r`, etc. calls.
+\code{R_PROFILE} and \code{R_PROFILE_USER} environment variables
+appropriately, unless these are set by the user in the \code{env} argument
+of the \code{r}, etc. calls.
 }

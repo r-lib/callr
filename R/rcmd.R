@@ -83,7 +83,7 @@ rcmd_safe <- rcmd
 #' * `R_PDFVIEWER="false"`: similarly for the PDF viewer.
 #'
 #' Note that `callr` also sets the `R_ENVIRON`, `R_ENVIRON_USER`,
-#' `R_PROFILE and `R_PROFILE_USER` environment variables
+#' `R_PROFILE` and `R_PROFILE_USER` environment variables
 #' appropriately, unless these are set by the user in the `env` argument
 #' of the `r`, etc. calls.
 #'
