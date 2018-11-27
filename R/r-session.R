@@ -425,7 +425,7 @@ rs__parse_msg <- function(self, private, msg) {
   message <- paste(s[-1], collapse = " ")
   if (substr(message, 1, 8) == "base64::") {
     message <- substr(message, 9, nchar(message))
-    message <- unserialize(base64enc::base64decode(message))
+    message <- unserialize(processx::base64_decode(message))
   }
 
   if (! s[1] %in% names(rs__parse_msg_funcs)) {
