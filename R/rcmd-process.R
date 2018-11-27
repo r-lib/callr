@@ -26,10 +26,9 @@
 #' }
 NULL
 
-#' @importFrom R6 R6Class
 #' @export
 
-rcmd_process <- R6Class(
+rcmd_process <- R6::R6Class(
   "rcmd_process",
   inherit = process,
   public = list(

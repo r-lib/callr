@@ -14,7 +14,6 @@
 #'   we handle the error.
 #'
 #' @keywords internal
-#' @importFrom utils debugger
 
 get_result <- function(output, options) {
 
@@ -80,19 +79,17 @@ get_result <- function(output, options) {
     stop(myerr)
 
   } else if (err[[1]] == "debugger") {
-    debugger(clean_stack(err[[3]]))
+    utils::debugger(clean_stack(err[[3]]))
 
   } else {
     stop("Unknown callr error strategy: ", err[[1]]) # nocov
   }
 }
 
-#' @importFrom utils head tail
-
 clean_stack <- function(stack) {
   att <- attributes(stack)
-  att$names <- head(tail(att$names, -11), -2)
-  res <- head(tail(stack, -11), -2)
+  att$names <- utils::head(utils::tail(att$names, -11), -2)
+  res <- utils::head(utils::tail(stack, -11), -2)
   attributes(res) <- att
 
   res

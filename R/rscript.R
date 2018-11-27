@@ -77,10 +77,9 @@ rscript_load_hook_color <- function(color) {
 #' }
 NULL
 
-#' @importFrom R6 R6Class
 #' @export
 
-rscript_process <- R6Class(
+rscript_process <- R6::R6Class(
   "rscript_proces",
   inherit = process,
   public=  list(

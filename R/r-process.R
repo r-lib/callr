@@ -39,10 +39,9 @@
 #' }
 NULL
 
-#' @importFrom R6 R6Class
 #' @export
 
-r_process <- R6Class(
+r_process <- R6::R6Class(
   "r_process",
   inherit = process,
   public = list(

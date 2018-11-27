@@ -113,13 +113,11 @@ rscript_process_options_default <- function() {
   )
 }
 
-#' @importFrom utils modifyList
-
 update_options <- function(old_opts, ...) {
   new_opts <- list(...)
   stopifnot(is.named(new_opts))
   check_for_option_names(old_opts, new_opts)
-  modifyList(old_opts, new_opts)
+  utils::modifyList(old_opts, new_opts)
 }
 
 check_for_option_names <- function(old, new) {

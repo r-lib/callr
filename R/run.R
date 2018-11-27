@@ -1,6 +1,4 @@
 
-#' @importFrom processx run
-
 run_r <- function(options) {
 
   oldwd <- getwd()
@@ -11,7 +9,7 @@ run_r <- function(options) {
     options,
     with_envvar(
       env,
-      run(
+      processx::run(
         bin, args = real_cmdargs,
         stdout_line_callback = real_callback(stdout),
         stderr_line_callback = real_callback(stderr),

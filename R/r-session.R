@@ -85,10 +85,9 @@
 NULL
 
 
-#' @importFrom R6 R6Class
 #' @export
 
-r_session <- R6Class(
+r_session <- R6::R6Class(
   "r_session",
   inherit = process,
 
@@ -165,8 +164,6 @@ r_session <- R6Class(
   )
 )
 
-#' @importFrom processx conn_create_pipepair
-
 rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
   options$func <- options$func %||% function() { }
@@ -219,12 +216,10 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   invisible(self)
 }
 
-#' @importFrom processx conn_read_lines
-
 rs_read <- function(self, private) {
-  out <- conn_read_lines(private$pipe, 1)
+  out <- processx::conn_read_lines(private$pipe, 1)
   if (!length(out)) {
-    if (conn_is_incomplete(private$pipe)) return()
+    if (processx::conn_is_incomplete(private$pipe)) return()
     if (self$is_alive()) {
       self$kill()
       out <- "502 R session closed the process connection, killed"
@@ -296,8 +291,6 @@ rs_call <- function(self, private, func, args) {
 
   private$state <- "busy"
 }
-
-#' @importFrom processx conn_is_incomplete
 
 rs_run_with_output <- function(self, private, func, args) {
   self$call(func, args)
@@ -371,8 +364,8 @@ rs_poll_process <- function(self, private, timeout) {
 rs_attach <- function(self, private) {
   out <- self$get_output_connection()
   err <- self$get_error_connection()
-  while (nchar(x <- conn_read_chars(out))) cat(x)
-  while (nchar(x <- conn_read_chars(err))) cat(bold(x))
+  while (nchar(x <- processx::conn_read_chars(out))) cat(x)
+  while (nchar(x <- processx::conn_read_chars(err))) cat(bold(x))
   tryCatch({
     while (TRUE) {
       cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
@@ -394,8 +387,6 @@ rs__attach_get_input <- function(prompt) {
   cmd
 }
 
-#' @importFrom processx conn_read_chars
-
 rs__attach_wait <- function(self, private) {
   out <- self$get_output_connection()
   err <- self$get_error_connection()
@@ -403,10 +394,10 @@ rs__attach_wait <- function(self, private) {
   while (TRUE) {
     pr <- poll(list(out, err, pro), -1)
     if (pr[[1]] == "ready") {
-      if (nchar(x <- conn_read_chars(out))) cat(x)
+      if (nchar(x <- processx::conn_read_chars(out))) cat(x)
     }
     if (pr[[2]] == "ready") {
-      if (nchar(x <- conn_read_chars(err))) cat(bold(x))
+      if (nchar(x <- processx::conn_read_chars(err))) cat(bold(x))
     }
     if (pr[[3]] == "ready") {
       msg <- self$read()
@@ -427,8 +418,6 @@ rs__write_for_sure <- function(self, private, text) {
     Sys.sleep(.1)
   }
 }
-
-#' @importFrom base64enc base64decode
 
 rs__parse_msg <- function(self, private, msg) {
   s <- strsplit(msg, " ", fixed = TRUE)[[1]]
@@ -493,8 +482,6 @@ rs__parse_msg_funcs[["501"]] <- function(self, private, code, message) {
 }
 
 rs__parse_msg_funcs[["502"]] <- rs__parse_msg_funcs[["501"]]
-
-#' @importFrom processx conn_create_fd conn_write
 
 rs__status_expr <- function(code, text = "", fd = 3) {
   substitute(

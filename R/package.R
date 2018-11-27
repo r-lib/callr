@@ -8,3 +8,6 @@
 #' @docType package
 #' @name callr
 NULL
+
+## R CMD check workaround
+dummy_r6 <- function() R6::R6Class
