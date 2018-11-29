@@ -89,7 +89,7 @@ NULL
 
 r_session <- R6::R6Class(
   "r_session",
-  inherit = process,
+  inherit = processx::process,
 
   public = list(
     initialize = function(options = r_session_options(), wait = TRUE,
@@ -217,9 +217,9 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 }
 
 rs_read <- function(self, private) {
-  out <- processx::conn_read_lines(private$pipe, 1)
+  out <- processx::processx_conn_read_lines(private$pipe, 1)
   if (!length(out)) {
-    if (processx::conn_is_incomplete(private$pipe)) return()
+    if (processx::processx_conn_is_incomplete(private$pipe)) return()
     if (self$is_alive()) {
       self$kill()
       out <- "502 R session closed the process connection, killed"
@@ -233,16 +233,16 @@ rs_read <- function(self, private) {
 }
 
 rs_close <- function(self, private, grace) {
-  close(self$get_input_connection())
+  processx::processx_conn_close(self$get_input_connection())
   self$poll_process(grace)
   self$kill()
   self$wait(1000)
   if (self$is_alive()) stop("Could not kill background R session")
   private$state <- "finished"
   private$fun_started_at <- as.POSIXct(NA)
-  close(private$pipe)
-  close(self$get_output_connection())
-  close(self$get_error_connection())
+  processx::processx_conn_close(private$pipe)
+  processx::processx_conn_close(self$get_output_connection())
+  processx::processx_conn_close(self$get_error_connection())
 }
 
 rs_call <- function(self, private, func, args) {
@@ -301,7 +301,7 @@ rs_run_with_output <- function(self, private, func, args) {
   while (go) {
     ## TODO: why is this in a tryCatch?
     res <- tryCatch(
-      { poll(list(private$pipe), -1)
+      { processx::poll(list(private$pipe), -1)
         msg <- self$read()
         if (is.null(msg)) next
         if (msg$code == 200 || (msg$code >= 500 && msg$code < 600)) {
@@ -317,7 +317,7 @@ rs_run_with_output <- function(self, private, func, args) {
         ## error object to a file, but this might still take some time,
         ## so we need to poll here. If the bg process ignores
         ## interrupts, then we kill it.
-        ps <- poll(list(private$pipe), 1000)[[1]]
+        ps <- processx::poll(list(private$pipe), 1000)[[1]]
         if (ps == "timeout") {
           self$kill()
         } else {
@@ -358,14 +358,14 @@ rs_get_running_time <- function(self, private) {
 }
 
 rs_poll_process <- function(self, private, timeout) {
-  poll(list(self$get_poll_connection()), timeout)[[1]]
+  processx::poll(list(self$get_poll_connection()), timeout)[[1]]
 }
 
 rs_attach <- function(self, private) {
   out <- self$get_output_connection()
   err <- self$get_error_connection()
-  while (nchar(x <- processx::conn_read_chars(out))) cat(x)
-  while (nchar(x <- processx::conn_read_chars(err))) cat(bold(x))
+  while (nchar(x <- processx::processx_conn_read_chars(out))) cat(x)
+  while (nchar(x <- processx::processx_conn_read_chars(err))) cat(bold(x))
   tryCatch({
     while (TRUE) {
       cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
@@ -392,12 +392,12 @@ rs__attach_wait <- function(self, private) {
   err <- self$get_error_connection()
   pro <- private$pipe
   while (TRUE) {
-    pr <- poll(list(out, err, pro), -1)
+    pr <- processx::poll(list(out, err, pro), -1)
     if (pr[[1]] == "ready") {
-      if (nchar(x <- processx::conn_read_chars(out))) cat(x)
+      if (nchar(x <- processx::processx_conn_read_chars(out))) cat(x)
     }
     if (pr[[2]] == "ready") {
-      if (nchar(x <- processx::conn_read_chars(err))) cat(bold(x))
+      if (nchar(x <- processx::processx_conn_read_chars(err))) cat(bold(x))
     }
     if (pr[[3]] == "ready") {
       msg <- self$read()

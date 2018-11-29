@@ -43,7 +43,7 @@ NULL
 
 r_process <- R6::R6Class(
   "r_process",
-  inherit = process,
+  inherit = processx::process,
   public = list(
     initialize = function(options)
       rp_init(self, private, super, options),

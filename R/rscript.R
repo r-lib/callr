@@ -80,9 +80,9 @@ NULL
 #' @export
 
 rscript_process <- R6::R6Class(
-  "rscript_proces",
-  inherit = process,
-  public=  list(
+  "rscript_process",
+  inherit = processx::process,
+  public = list(
     initialize = function(options)
       rscript_init(self, private, super, options)
   ),

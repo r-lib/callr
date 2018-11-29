@@ -30,7 +30,7 @@ NULL
 
 rcmd_process <- R6::R6Class(
   "rcmd_process",
-  inherit = process,
+  inherit = processx::process,
   public = list(
     initialize = function(options)
       rcmdp_init(self, private, super, options)
