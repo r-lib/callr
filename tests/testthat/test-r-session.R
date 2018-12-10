@@ -88,9 +88,13 @@ test_that("stdout/stderr from pipe", {
     res[c("result", "stdout", "stderr")],
     list(result = 43, stdout = NULL, stderr = NULL))
 
+  processx::poll(list(rs$get_output_connection()), 1000)
   expect_equal(rs$read_output_lines(n = 1), "foo")
+  processx::poll(list(rs$get_output_connection()), 1000)
   expect_equal(rs$read_output_lines(n = 1), "bar")
+  processx::poll(list(rs$get_error_connection()), 1000)
   expect_equal(rs$read_error_lines(n = 1), "bar")
+  processx::poll(list(rs$get_error_connection()), 1000)
   expect_equal(rs$read_error_lines(n = 1), "foo")
   rs$close()
 })
