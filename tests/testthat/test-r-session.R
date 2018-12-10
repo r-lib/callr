@@ -69,6 +69,7 @@ test_that("get stdout/stderr from file", {
 })
 
 test_that("stdout/stderr from pipe", {
+  skip_on_cran()
   opt <- r_session_options(stdout = "|", stderr = "|")
   rs <- r_session$new(opt)
   on.exit(rs$kill())
