@@ -60,4 +60,13 @@
   <url>
     <loc>http://processx.r-lib.org/reference/reexports.html</loc>
   </url>
+  <url>
+    <loc>http://processx.r-lib.org/reference/rscript.html</loc>
+  </url>
+  <url>
+    <loc>http://processx.r-lib.org/reference/rscript_process.html</loc>
+  </url>
+  <url>
+    <loc>http://processx.r-lib.org/reference/rscript_process_options.html</loc>
+  </url>
 </urlset>

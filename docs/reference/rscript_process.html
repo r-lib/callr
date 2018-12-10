@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object — rcmd_process_options • callr</title>
+<title>External Rscript process — rscript_process • callr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="Create options for an <a href='rcmd_process.html'>rcmd_process</a> object — rcmd_process_options" />
+<meta property="og:title" content="External Rscript process — rscript_process" />
 
-<meta property="og:description" content="Create options for an rcmd_process object" />
+<meta property="og:description" content="An Rscript script.R command that runs in the background. This is an
+R6 class that extends the process class." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -101,89 +102,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/options.R'><code>R/options.R</code></a></small>
-    <div class="hidden name"><code>rcmd_process_options.Rd</code></div>
+    <h1>External Rscript process</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rscript.R'><code>R/rscript.R</code></a></small>
+    <div class="hidden name"><code>rscript_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</p>
+    <p>An <code>Rscript script.R</code> command that runs in the background. This is an
+R6 class that extends the <a href='http://www.rdocumentation.org/packages/processx/topics/process'>process</a> class.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rcmd_process_options</span>(<span class='no'>...</span>)</pre>
+        
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+
+    <pre>rp &lt;- rscript_process$new(options)
+</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>Options to override, named arguments.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of options.</p>
-<p><code>rcmd_process_options()</code> creates a set of options to initialize a new
-object from the <code>rcmd_process</code> class. Its arguments must be named, the
-names are used as option names. The options correspond to (some of)
-the arguments of the <code><a href='rcmd.html'>rcmd()</a></code> function. At least the <code>cmd</code> option must
-be specified, to select the <code>R CMD</code> subcommand to run. Typically
-<code>cmdargs</code> is specified as well, to supply more arguments to <code>R CMD</code>.</p>
+    
+    <ul>
+<li><p><code>options</code> A list of options created via <code><a href='rscript_process_options.html'>rscript_process_options()</a></code>.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+    <p><code>rscript_process$new</code> creates a new instance. Its <code>options</code> argument is
+best created by the <code><a href='rscript_process_options.html'>rscript_process_options()</a></code> function.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## List all options and their default values:</span>
-<span class='fu'>rcmd_process_options</span>()</div><div class='output co'>#&gt; $cmd
-#&gt; NULL
-#&gt; 
-#&gt; $cmdargs
-#&gt; character(0)
-#&gt; 
-#&gt; $libpath
-#&gt; [1] "/Users/gaborcsardi/R"                                          
-#&gt; [2] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library"
-#&gt; 
-#&gt; $stdout
-#&gt; [1] "|"
-#&gt; 
-#&gt; $stderr
-#&gt; [1] "|"
-#&gt; 
-#&gt; $poll_connection
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $repos
-#&gt;                          CRAN                          CRAN 
-#&gt; "https://cloud.r-project.org" "https://cloud.r-project.org" 
-#&gt;                          CRAN 
-#&gt; "https://cloud.r-project.org" 
-#&gt; 
-#&gt; $system_profile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $user_profile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $env
-#&gt;             CYGWIN            R_TESTS          R_BROWSER        R_PDFVIEWER 
-#&gt; "nodosfilewarning"                 ""            "false"            "false" 
-#&gt; 
-#&gt; $wd
-#&gt; [1] "."
-#&gt; 
-#&gt; $supervise
-#&gt; [1] FALSE
-#&gt; </div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>options</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rscript_process_options.html'>rscript_process_options</a></span>(<span class='kw'>script</span> <span class='kw'>=</span> <span class='st'>"script.R"</span>)
+<span class='no'>rp</span> <span class='kw'>&lt;-</span> <span class='no'>rscript_process</span>$<span class='fu'>new</span>(<span class='no'>options</span>)
+<span class='no'>rp</span>$<span class='fu'>wait</span>()
+<span class='no'>rp</span>$<span class='fu'>read_output_lines</span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#arguments">Arguments</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

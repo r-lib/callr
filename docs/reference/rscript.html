@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run an R CMD command in the background — rcmd_bg • callr</title>
+<title>Run an R script — rscript • callr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Run an R CMD command in the background — rcmd_bg" />
+<meta property="og:title" content="Run an R script — rscript" />
 
-<meta property="og:description" content="The child process is started in the background, and the function
-return immediately." />
+<meta property="og:description" content="It uses the Rscript program corresponding to the current R vesion,
+to run the script. It streams stdout and stderr of the process." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,34 +102,32 @@ return immediately." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run an R CMD command in the background</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rcmd-bg.R'><code>R/rcmd-bg.R</code></a></small>
-    <div class="hidden name"><code>rcmd_bg.Rd</code></div>
+    <h1>Run an R script</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rscript.R'><code>R/rscript.R</code></a></small>
+    <div class="hidden name"><code>rscript.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The child process is started in the background, and the function
-return immediately.</p>
+    <p>It uses the <code>Rscript</code> program corresponding to the current R vesion,
+to run the script. It streams stdout and stderr of the process.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rcmd_bg</span>(<span class='no'>cmd</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
-  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='st'>"|"</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='st'>"|"</span>, <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre class="usage"><span class='fu'>rscript</span>(<span class='no'>script</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
   <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>getOption</span>(<span class='st'>"repos"</span>), <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span> <span class='st'>"https://cloud.r-project.org"</span>)),
-  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>supervise</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cmd</th>
-      <td><p>Command to run. See <code>R --help</code> from the command
-line for the various commands. In the current version of R (3.2.4)
-these are: BATCH, COMPILE, SHLIB, INSTALL, REMOVE, build, check,
-LINK, Rprof, Rdconv, Rd2pdf, Rd2txt, Stangle, Sweave, Rdiff, config,
-javareconf, rtags.</p></td>
+      <th>script</th>
+      <td><p>Path of the script to run.</p></td>
     </tr>
     <tr>
       <th>cmdargs</th>
@@ -138,6 +136,13 @@ javareconf, rtags.</p></td>
     <tr>
       <th>libpath</th>
       <td><p>The library path.</p></td>
+    </tr>
+    <tr>
+      <th>repos</th>
+      <td><p>The <em>repos</em> option. If <code>NULL</code>, then no
+<em>repos</em> option is set. This options is only used if
+<code>user_profile</code> or <code>system_profile</code> is set <code>FALSE</code>,
+as it is set using the system or the user profile.</p></td>
     </tr>
     <tr>
       <th>stdout</th>
@@ -154,11 +159,35 @@ the process. This is used to transmit messages from the subprocess
 to the parent.</p></td>
     </tr>
     <tr>
-      <th>repos</th>
-      <td><p>The <em>repos</em> option. If <code>NULL</code>, then no
-<em>repos</em> option is set. This options is only used if
-<code>user_profile</code> or <code>system_profile</code> is set <code>FALSE</code>,
-as it is set using the system or the user profile.</p></td>
+      <th>echo</th>
+      <td><p>Whether to echo the complete command run by <code>rcmd</code>.</p></td>
+    </tr>
+    <tr>
+      <th>show</th>
+      <td><p>Logical, whether to show the standard output on the screen
+while the child process is running. Note that this is independent
+of the <code>stdout</code> and <code>stderr</code> arguments. The standard
+error is not shown currently.</p></td>
+    </tr>
+    <tr>
+      <th>callback</th>
+      <td><p>A function to call for each line of the standard
+output and standard error from the child process. It works together
+with the <code>show</code> option; i.e. if <code>show = TRUE</code>, and a
+callback is provided, then the output is shown of the screen, and the
+callback is also called.</p></td>
+    </tr>
+    <tr>
+      <th>block_callback</th>
+      <td><p>A function to call for each block of the standard
+output and standard error. This callback is not line oriented, i.e.
+multiple lines or half a line can be passed to the callback.</p></td>
+    </tr>
+    <tr>
+      <th>spinner</th>
+      <td><p>Whether to show a calming spinner on the screen while
+the child R session is running. By default it is shown if
+<code>show = TRUE</code> and the R session is interactive.</p></td>
     </tr>
     <tr>
       <th>system_profile</th>
@@ -173,26 +202,29 @@ as it is set using the system or the user profile.</p></td>
       <td><p>Environment variables to set for the child process.</p></td>
     </tr>
     <tr>
+      <th>timeout</th>
+      <td><p>Timeout for the function call to finish. It can be a
+<a href='http://www.rdocumentation.org/packages/base/topics/difftime'>base::difftime</a> object, or a real number, meaning seconds.
+If the process does not finish before the timeout period expires,
+then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
+means no timeout.</p></td>
+    </tr>
+    <tr>
       <th>wd</th>
       <td><p>Working directory to use for running the command. Defaults
 to the current working directory.</p></td>
     </tr>
     <tr>
-      <th>supervise</th>
-      <td><p>Whether to register the process with a supervisor. If <code>TRUE</code>,
-the supervisor will ensure that the process is killed when the R process
-exits.</p></td>
+      <th>fail_on_status</th>
+      <td><p>Whether to throw an R error if the command returns
+with a non-zero status code. By default no error is thrown.</p></td>
+    </tr>
+    <tr>
+      <th>color</th>
+      <td><p>Whether to use terminal colors in the child process,
+assuming they are active in the parent process.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>It returns a <a href='http://www.rdocumentation.org/packages/processx/topics/process'>process</a> object.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other R CMD commands: <code><a href='rcmd_copycat.html'>rcmd_copycat</a></code>,
-  <code><a href='rcmd.html'>rcmd</a></code></p></div>
     
 
   </div>
@@ -200,11 +232,7 @@ exits.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
