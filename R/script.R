@@ -76,7 +76,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
           },
           error = function(e) { `__error__` },
           interrupt = function(e) { `__error__` },
-          callr_message = function(e) { `__message__` }
+          callr_message = function(e) { try(`__message__`) }
         ),
 
         ## We need to `stop()` here again, otherwise the error message
