@@ -22,6 +22,7 @@ Imports:
     R6,
     utils
 Suggests:
+    cliapp,
     covr,
     crayon,
     pingr,
