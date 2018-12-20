@@ -4,6 +4,10 @@
 * `r()`, `r_bg()`, etc. now handle messages from the cliapp package
   properly. They used to make the R session exit.
 
+* Better default for the `repos` option in callr subprocesses. callr no
+  longer creates duplicate "CRAN" entries. By default the new
+  `default_repos()` function is used to set `repos` in the subprocess.
+
 # callr 3.1.0
 
 * New `rscript()` function and `rscript_process` class to execute

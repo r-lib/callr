@@ -1,4 +1,25 @@
 
+#' Default value for the `repos` option in callr subprocesses
+#'
+#' callr sets the `repos` option in subprocesses, to make sure that
+#' a CRAN mirror is set up. This is because the subprocess cannot bring
+#' up the menu of CRAN mirrors for the user to choose from.
+#'
+#' @return Named character vector, the default value of the `repos`
+#' option in callr subprocesses.
+#'
+#' @export
+#' @examples
+#' default_repos()
+
+default_repos <- function() {
+  opt <- getOption("repos")
+  if (! "CRAN" %in% names(opt) || opt[["CRAN"]] == "@CRAN@") {
+    opt[["CRAN"]] <- "https://cloud.r-project.org"
+  }
+  opt
+}
+
 `%||%` <- function(l, r) if (is.null(l)) r else l
 
 is.named <- function(x) {

@@ -6,20 +6,18 @@
 \title{Run an R CMD command}
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, poll_connection = TRUE,
-  echo = FALSE, show = FALSE, callback = NULL,
-  block_callback = NULL, spinner = show && interactive(),
-  system_profile = FALSE, user_profile = FALSE,
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, echo = FALSE, show = FALSE,
+  callback = NULL, block_callback = NULL, spinner = show &&
+  interactive(), system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
   fail_on_status = FALSE)
 
 rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, poll_connection = TRUE,
-  echo = FALSE, show = FALSE, callback = NULL,
-  block_callback = NULL, spinner = show && interactive(),
-  system_profile = FALSE, user_profile = FALSE,
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, echo = FALSE, show = FALSE,
+  callback = NULL, block_callback = NULL, spinner = show &&
+  interactive(), system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
   fail_on_status = FALSE)
 }

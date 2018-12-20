@@ -39,8 +39,7 @@
 #' }
 
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
-                 repos = c(getOption("repos"),
-                   c(CRAN = "https://cloud.r-project.org")),
+                 repos = default_repos(),
                  stdout = NULL, stderr = NULL, poll_connection = TRUE,
                  echo = FALSE, show = FALSE, callback = NULL,
                  block_callback = NULL, spinner = show && interactive(),

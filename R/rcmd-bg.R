@@ -16,8 +16,7 @@
 rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     stdout = "|", stderr = "|",
                     poll_connection = TRUE,
-                    repos = c(getOption("repos"),
-                      c(CRAN = "https://cloud.r-project.org")),
+                    repos = default_repos(),
                     system_profile = FALSE, user_profile = FALSE,
                     env = rcmd_safe_env(), wd = ".",
                     supervise = FALSE) {

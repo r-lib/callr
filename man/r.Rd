@@ -6,21 +6,19 @@
 \title{Evaluate an expression in another R session}
 \usage{
 r(func, args = list(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, poll_connection = TRUE,
-  error = getOption("callr.error", "error"), cmdargs = c("--slave",
-  "--no-save", "--no-restore"), show = FALSE, callback = NULL,
-  block_callback = NULL, spinner = show && interactive(),
-  system_profile = FALSE, user_profile = FALSE,
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
+  callback = NULL, block_callback = NULL, spinner = show &&
+  interactive(), system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf)
 
 r_safe(func, args = list(), libpath = .libPaths(),
-  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  stdout = NULL, stderr = NULL, poll_connection = TRUE,
-  error = getOption("callr.error", "error"), cmdargs = c("--slave",
-  "--no-save", "--no-restore"), show = FALSE, callback = NULL,
-  block_callback = NULL, spinner = show && interactive(),
-  system_profile = FALSE, user_profile = FALSE,
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
+  callback = NULL, block_callback = NULL, spinner = show &&
+  interactive(), system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf)
 }
 \arguments{

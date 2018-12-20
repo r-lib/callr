@@ -24,8 +24,7 @@
 #' }
 
 r_bg <- function(func, args = list(), libpath = .libPaths(),
-                 repos = c(getOption("repos"),
-                   c(CRAN = "https://cloud.r-project.org")),
+                 repos = default_repos(),
                  stdout = "|", stderr = "|",
                  poll_connection = TRUE,
                  error = getOption("callr.error", "error"),

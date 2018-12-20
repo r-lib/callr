@@ -6,9 +6,9 @@
 \usage{
 rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(),
   stdout = "|", stderr = "|", poll_connection = TRUE,
-  repos = c(getOption("repos"), c(CRAN = "https://cloud.r-project.org")),
-  system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env(), wd = ".", supervise = FALSE)
+  repos = default_repos(), system_profile = FALSE,
+  user_profile = FALSE, env = rcmd_safe_env(), wd = ".",
+  supervise = FALSE)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command

@@ -120,8 +120,7 @@
 #' @export
 
 r <- function(func, args = list(), libpath = .libPaths(),
-              repos = c(getOption("repos"),
-                c(CRAN = "https://cloud.r-project.org")),
+              repos = default_repos(),
               stdout = NULL, stderr = NULL,
               poll_connection = TRUE,
               error = getOption("callr.error", "error"),

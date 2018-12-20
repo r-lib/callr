@@ -616,7 +616,7 @@ r_session_options_default <- function() {
     func = NULL,
     args = NULL,
     libpath = .libPaths(),
-    repos = c(getOption("repos"), CRAN = "https://cloud.r-project.org"),
+    repos = default_repos(),
     stdout = NULL,
     stderr = NULL,
     error = getOption("callr.error", "error"),
