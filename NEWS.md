@@ -1,5 +1,5 @@
 
-# dev
+# 3.1.1
 
 * `r()`, `r_bg()`, etc. now handle messages from the cliapp package
   properly. They used to make the R session exit.
