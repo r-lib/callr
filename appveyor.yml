@@ -47,3 +47,4 @@ environment:
   global:
     NOT_CRAN: yes
     USE_RTOOLS: true
+    R_VERSION: release
