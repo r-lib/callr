@@ -63,7 +63,7 @@ to run the script. It streams stdout and stderr of the process." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.1</span>
       </span>
     </div>
 
@@ -115,12 +115,12 @@ to run the script. It streams stdout and stderr of the process.</p>
     </div>
 
     <pre class="usage"><span class='fu'>rscript</span>(<span class='no'>script</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
-  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fu'>getOption</span>(<span class='st'>"repos"</span>), <span class='fu'>c</span>(<span class='kw'>CRAN</span> <span class='kw'>=</span> <span class='st'>"https://cloud.r-project.org"</span>)),
-  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(), <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

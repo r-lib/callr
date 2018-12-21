@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read the result object from the output file, or the error — get_result • callr</title>
+<title>Default value for the <code>repos</code> option in callr subprocesses — default_repos • callr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,12 +30,11 @@
 
 
 
-<meta property="og:title" content="Read the result object from the output file, or the error — get_result" />
+<meta property="og:title" content="Default value for the <code>repos</code> option in callr subprocesses — default_repos" />
 
-<meta property="og:description" content="Even if an error happens, the ouput file might still exist,
-because saveRDS creates the file before evaluating its object
-argument. So we need to check for the error file to decide
-if an error happened." />
+<meta property="og:description" content="callr sets the repos option in subprocesses, to make sure that
+a CRAN mirror is set up. This is because the subprocess cannot bring
+up the menu of CRAN mirrors for the user to choose from." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -104,51 +103,39 @@ if an error happened." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read the result object from the output file, or the error</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/result.R'><code>R/result.R</code></a></small>
-    <div class="hidden name"><code>get_result.Rd</code></div>
+    <h1>Default value for the <code>repos</code> option in callr subprocesses</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>default_repos.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Even if an error happens, the ouput file might still exist,
-because saveRDS creates the file before evaluating its object
-argument. So we need to check for the error file to decide
-if an error happened.</p>
+    <p>callr sets the <code>repos</code> option in subprocesses, to make sure that
+a CRAN mirror is set up. This is because the subprocess cannot bring
+up the menu of CRAN mirrors for the user to choose from.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_result</span>(<span class='no'>output</span>, <span class='no'>options</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>options</th>
-      <td><p>The context, including all parameters.</p></td>
-    </tr>
-    <tr>
-      <th>out</th>
-      <td><p>List of the output object from <code><a href='http://www.rdocumentation.org/packages/processx/topics/run'>run()</a></code> and
-the name of the result file to read. For the error file,
-<code>.error</code> is appended to this.</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>default_repos</span>()</pre>
+        
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If no error happened, the result is returned. Otherwise
-we handle the error.</p>
+    <p>Named character vector, the default value of the <code>repos</code>
+option in callr subprocesses.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>default_repos</span>()</div><div class='output co'>#&gt;                          CRAN 
+#&gt; "https://cloud.r-project.org" </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
