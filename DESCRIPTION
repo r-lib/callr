@@ -1,6 +1,6 @@
 Package: callr
 Title: Call R from R
-Version: 3.1.1
+Version: 3.1.1.9000
 Authors@R: c(
     person("Gábor", "Csárdi", role = c("aut", "cre", "cph"),
            email = "csardi.gabor@gmail.com",
