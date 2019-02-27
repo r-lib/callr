@@ -157,7 +157,7 @@ setup_callbacks <- function(options) {
     force(stream)
 
     ## In case there is no output, we create an empty file here
-    if (!is.null(stream)) cat("", file = stream)
+    if (!is.null(stream) && stream != "2>&1") cat("", file = stream)
 
     if (!is.null(cb)) {
       function(x, proc) {

@@ -157,3 +157,21 @@ test_that("errors are printed on stderr", {
   expect_true(any(grepl("send to stderr 2", readLines(err))))
   gc()
 })
+
+test_that("stdout and stderr are interleaved correctly", {
+  f <- function() {
+    cat("stdout", file = stdout())
+    cat("stderr", file = stderr())
+    cat("stdout2\n", file = stdout())
+  }
+
+  on.exit(unlink(out, recursive = TRUE), add = TRUE)
+
+  r(f, stdout = out <- tempfile(), stderr = "2>&1")
+  expect_equal(readLines(out), "stdoutstderrstdout2")
+  unlink(out)
+
+  r(f, stdout = out, stderr = out)
+  expect_equal(readLines(out), "stdoutstderrstdout2")
+  gc()
+})

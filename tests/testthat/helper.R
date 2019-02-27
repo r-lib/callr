@@ -61,3 +61,27 @@ skip_if_offline <- function(host = "httpbin.org", port = 80) {
 
   if (is.na(res)) skip("No internet connection")
 }
+
+test_temp_file <- function(fileext = "", pattern = "test-file-",
+                           envir = parent.frame(), create = TRUE) {
+  tmp <- tempfile(pattern = pattern, fileext = fileext)
+  if (identical(envir, .GlobalEnv)) {
+    message("Temporary files will _not_ be cleaned up")
+  } else {
+    withr::defer(
+      try(unlink(tmp, recursive = TRUE, force = TRUE), silent = TRUE),
+      envir = envir)
+  }
+  if (create) {
+    cat("", file = tmp)
+    normalizePath(tmp)
+  } else {
+    tmp
+  }
+}
+
+test_temp_dir <- function(pattern = "test-dir-", envir = parent.frame()) {
+  tmp <- test_temp_file(pattern = pattern, envir = envir, create = FALSE)
+  dir.create(tmp, recursive = TRUE, showWarnings = FALSE)
+  normalizePath(tmp)
+}

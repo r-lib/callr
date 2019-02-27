@@ -39,7 +39,11 @@ as it is set using the system or the user profile.}
 
 \item{stdout}{Optionally a file name to send the standard output to.}
 
-\item{stderr}{Optionally a file name to send the standard error to.}
+\item{stderr}{Optionally a file name to send the standard error to.
+It may be the same as \code{stdout}, in which case standard error is
+redirected to standard output. It can also be the special string
+\code{"2>&1"}, in which case standard error will be redirected to standard
+output.}
 
 \item{poll_connection}{Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess

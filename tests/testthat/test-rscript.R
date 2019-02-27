@@ -24,3 +24,19 @@ test_that("rscript_process", {
   expect_equal(px$read_error_lines(), "stderr")
   rm(px); gc()
 })
+
+test_that("stderr -> stdout", {
+  out <- rscript("fixtures/script2.R", show = FALSE, stderr = "2>&1")
+  exp <- if (os_platform() == "windows") {
+    "out1err1out2err2\r\n"
+  } else {
+    "out1err1out2err2\n"
+  }
+  expect_equal(out$stdout, exp)
+  expect_equal(out$stderr, "")
+
+  out2 <- test_temp_file(create = FALSE)
+  rscript("fixtures/script2.R", show = FALSE, stdout = out2, stderr = out2)
+  expect_equal(readLines(out2), "out1err1out2err2")
+  gc()
+})

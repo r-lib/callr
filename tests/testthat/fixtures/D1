@@ -1,0 +1,14 @@
+Package: Foobar
+Title: Foo Foo Bar Bar
+Version: 1.0.1
+Authors@R: c(
+    person("Gábor", "Csárdi", role = c("aut", "cre", "cph"),
+           email = "csardi.gabor@gmail.com",
+	   comment = c(ORCID = "0000-0001-7098-9676")))
+Description: Enim laborum enim non aliquip tempor voluptate consectetur
+    reprehenderit pariatur velit laborum sit culpa cillum. Tempor ullamco
+    tempor aliqua aliquip commodo non cupidatat non culpa. Dolor fugiat
+    aute et consectetur in.
+License: MIT + file LICENSE
+LazyData: true
+Encoding: UTF-8
