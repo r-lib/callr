@@ -173,4 +173,5 @@ test_that("stdout and stderr are interleaved correctly", {
 
   r(f, stdout = out, stderr = out)
   expect_equal(readLines(out), "stdoutstderrstdout2")
+  gc()
 })

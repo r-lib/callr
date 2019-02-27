@@ -77,4 +77,5 @@ test_that("stderr -> stdout", {
   expect_match(
     readChar(out3, nchars = file.info(out3)$size),
     "installing.*No man pages found.*testing if installed package")
+  gc()
 })

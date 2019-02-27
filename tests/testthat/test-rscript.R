@@ -38,4 +38,5 @@ test_that("stderr -> stdout", {
   out2 <- test_temp_file(create = FALSE)
   rscript("fixtures/script2.R", show = FALSE, stdout = out2, stderr = out2)
   expect_equal(readLines(out2), "out1err1out2err2")
+  gc()
 })
