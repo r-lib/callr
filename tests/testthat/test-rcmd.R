@@ -40,12 +40,18 @@ test_that("wd argument", {
 })
 
 test_that("fail_on_status", {
-  rand <- basename(tempfile())
+  rand <- tempfile()
   expect_error(
-    rcmd("BATCH", rand, fail_on_status = TRUE),
+    withr::with_dir(
+      tempdir(),
+      rcmd("BATCH", rand, fail_on_status = TRUE)),
     "System command error"
   )
-  expect_silent(out <- rcmd("BATCH", rand, fail_on_status = FALSE))
+  expect_silent(
+    out <- withr::with_dir(
+      tempdir(),
+      rcmd("BATCH", rand, fail_on_status = FALSE))
+  )
   expect_true(out$status != 0)
   gc()
 })
