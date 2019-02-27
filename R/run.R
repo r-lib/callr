@@ -5,6 +5,15 @@ run_r <- function(options) {
   setwd(options$wd)
   on.exit(setwd(oldwd), add = TRUE)
 
+  ## We redirect stderr to stdout if either of these are true:
+  ## - stderr is the string "2>&1"
+  ## - both stdout and stderr are non-null, and they are the same
+  stderr_to_stdout <- with(
+    options,
+    (!is.null(stderr) && stderr == "2>&1") ||
+    (!is.null(stdout) && !is.null(stderr) && stdout == stderr)
+  )
+
   res <- with(
     options,
     with_envvar(
@@ -14,9 +23,10 @@ run_r <- function(options) {
         stdout_line_callback = real_callback(stdout),
         stderr_line_callback = real_callback(stderr),
         stdout_callback = real_block_callback,
-        stderr_callback = real_block_callback, echo_cmd = echo,
-        echo = show, spinner = spinner, error_on_status = fail_on_status,
-        timeout = timeout
+        stderr_callback = real_block_callback,
+        stderr_to_stdout = stderr_to_stdout,
+        echo_cmd = echo, echo = show, spinner = spinner,
+        error_on_status = fail_on_status, timeout = timeout
       )
     )
   )

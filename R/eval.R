@@ -48,9 +48,9 @@
 #'   the child R process will be written to.
 #'   In particular `message()` sends output to the standard
 #'   error. If nothing was sent to the standard error, then this file
-#'   will be empty. This can be the same file as `stderr`, although there
-#'   is no guarantee that the lines will be in the correct chronological
-#'   order.
+#'   will be empty. This argument can be the same file as `stdout`,
+#'   in which case they will be correctly interleaved. If this is the
+#'   string `"2>&1"`, then standard error is redictd to standard output.
 #' @param error What to do if the remote process throws an error.
 #'   See details below.
 #' @param poll_connection Whether to have a control connection to

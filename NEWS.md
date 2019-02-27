@@ -1,6 +1,12 @@
 
 # dev
 
+* `r()`, `rcmd()` and `rscript()` can now redirect the standard error of
+  the subprocess its standard output. This allows to keep them correctly
+  interleaved. For this, you need to either set the `stderr` argument to
+  the special string `"2>&1"`, or to the same output file as specified
+  for `stdout`.
+
 # 3.1.1
 
 * `r()`, `r_bg()`, etc. now handle messages from the cliapp package

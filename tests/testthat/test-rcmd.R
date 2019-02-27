@@ -56,3 +56,25 @@ test_that("command is included in result", {
   expect_true(is.character(res$command))
   gc()
 })
+
+test_that("stderr -> stdout", {
+  lib <- test_temp_dir()
+  pkg <- test_temp_dir()
+  file.copy("fixtures/D1", file.path(pkg, "DESCRIPTION"))
+  out <- rcmd("INSTALL", c("-l", lib, pkg))
+  expect_match(out$stdout, "No man pages found")
+  expect_match(out$stderr, "installing help indices")
+
+  out2 <- rcmd("INSTALL", c("-l", lib, pkg), stderr = "2>&1")
+  expect_equal(out2$status, 0L)
+  expect_match(
+    out2$stdout,
+    "installing.*No man pages found.*testing if installed package")
+  expect_equal(out2$stderr, "")
+
+  out3 <- test_temp_file(create = FALSE)
+  rcmd("INSTALL", c("-l", lib, pkg), stdout = out3, stderr = out3)
+  expect_match(
+    readChar(out3, nchars = file.info(out3)$size),
+    "installing.*No man pages found.*testing if installed package")
+})

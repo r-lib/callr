@@ -48,9 +48,9 @@ explicitly to show the output of the command(s).}
 the child R process will be written to.
 In particular \code{message()} sends output to the standard
 error. If nothing was sent to the standard error, then this file
-will be empty. This can be the same file as \code{stderr}, although there
-is no guarantee that the lines will be in the correct chronological
-order.}
+will be empty. This argument can be the same file as \code{stdout},
+in which case they will be correctly interleaved. If this is the
+string \code{"2>&1"}, then standard error is redictd to standard output.}
 
 \item{poll_connection}{Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess
