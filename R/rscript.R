@@ -18,11 +18,12 @@ rscript <- function(script, cmdargs = character(), libpath = .libPaths(),
                     callback = NULL, block_callback = NULL, spinner = FALSE,
                     system_profile = FALSE, user_profile = FALSE,
                     env = rcmd_safe_env(), timeout = Inf, wd = ".",
-                    fail_on_status = TRUE, color = TRUE) {
+                    fail_on_status = TRUE, color = TRUE, ...) {
 
   load_hook <- rscript_load_hook_color(color)
 
   options <- convert_and_check_my_args(as.list(environment()))
+  options$extra <- list(...)
 
   options <- setup_context(options)
   options <- setup_callbacks(options)
@@ -105,9 +106,10 @@ rscript_init <- function(self, private, super, options) {
 
   with_envvar(
     options$env,
-    super$initialize(options$bin, options$real_cmdargs,
-                     stdout = options$stdout, stderr = options$stderr,
-                     poll_connection = options$poll_connection)
+    do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
+      stdout = options$stdout, stderr = options$stderr,
+      poll_connection = options$poll_connection),
+      options$extra))
   )
 
   invisible(self)

@@ -10,7 +10,7 @@ rscript(script, cmdargs = character(), libpath = .libPaths(),
   callback = NULL, block_callback = NULL, spinner = FALSE,
   system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
-  fail_on_status = TRUE, color = TRUE)
+  fail_on_status = TRUE, color = TRUE, ...)
 }
 \arguments{
 \item{script}{Path of the script to run.}
@@ -77,6 +77,8 @@ with a non-zero status code. By default no error is thrown.}
 
 \item{color}{Whether to use terminal colors in the child process,
 assuming they are active in the parent process.}
+
+\item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }
 \description{
 It uses the \code{Rscript} program corresponding to the current R vesion,

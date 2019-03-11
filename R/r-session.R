@@ -178,8 +178,9 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
   with_envvar(
     options$env,
-    super$initialize(options$bin, options$real_cmdargs, stdin = "|",
-                     stdout = "|", stderr = "|", poll_connection = TRUE)
+    do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
+      stdin = "|", stdout = "|", stderr = "|", poll_connection = TRUE),
+      options$extra))
   )
 
   ## Make child report back when ready
@@ -625,6 +626,7 @@ r_session_options_default <- function() {
     user_profile = FALSE,
     env = c(TERM = "dumb"),
     supervise = FALSE,
-    load_hook = NULL
+    load_hook = NULL,
+    extra = list()
   )
 }

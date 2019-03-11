@@ -49,10 +49,11 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  block_callback = NULL, spinner = show && interactive(),
                  system_profile = FALSE, user_profile = FALSE,
                  env = rcmd_safe_env(), timeout = Inf, wd = ".",
-                 fail_on_status = FALSE) {
+                 fail_on_status = FALSE, ...) {
 
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))
+  options$extra <- list(...)
 
   options <- setup_context(options)
   options <- setup_callbacks(options)
@@ -124,5 +125,6 @@ rcmd_copycat <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                          repos = getOption("repos"), env = character(),
                          ...) {
 
-  rcmd(cmd, cmdargs = cmdargs, libpath = libpath, repos = repos, env = env)
+  rcmd(cmd, cmdargs = cmdargs, libpath = libpath, repos = repos, env = env,
+       ...)
 }

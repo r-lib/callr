@@ -8,7 +8,7 @@ rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(),
   stdout = "|", stderr = "|", poll_connection = TRUE,
   repos = default_repos(), system_profile = FALSE,
   user_profile = FALSE, env = rcmd_safe_env(), wd = ".",
-  supervise = FALSE)
+  supervise = FALSE, ...)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -50,6 +50,9 @@ to the current working directory.}
 \item{supervise}{Whether to register the process with a supervisor. If \code{TRUE},
 the supervisor will ensure that the process is killed when the R process
 exits.}
+
+\item{...}{Extra arguments are passed to the \link[processx:process]{processx::process}
+constructor.}
 }
 \value{
 It returns a \link{process} object.

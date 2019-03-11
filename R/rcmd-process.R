@@ -56,9 +56,10 @@ rcmdp_init <- function(self, private, super, options) {
 
   with_envvar(
     options$env,
-    super$initialize(options$bin, options$real_cmdargs,
-                     stdout = options$stdout, stderr = options$stderr,
-                     poll_connection = options$poll_connection)
+    do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
+      stdout = options$stdout, stderr = options$stderr,
+      poll_connection = options$poll_connection),
+      options$extra))
   )
 
   invisible(self)

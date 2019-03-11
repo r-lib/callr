@@ -9,7 +9,7 @@ r_bg(func, args = list(), libpath = .libPaths(),
   poll_connection = TRUE, error = getOption("callr.error", "error"),
   cmdargs = c("--slave", "--no-save", "--no-restore"),
   system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env(), supervise = FALSE)
+  env = rcmd_safe_env(), supervise = FALSE, ...)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -73,6 +73,9 @@ supplied function and some error handling code.}
 \item{supervise}{Whether to register the process with a supervisor. If \code{TRUE},
 the supervisor will ensure that the process is killed when the R process
 exits.}
+
+\item{...}{Extra arguments are passed to the \link[processx:process]{processx::process}
+constructor.}
 }
 \value{
 An \code{r_process} object, which inherits from \link{process},

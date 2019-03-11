@@ -8,6 +8,8 @@
 #' @param supervise Whether to register the process with a supervisor. If \code{TRUE},
 #'   the supervisor will ensure that the process is killed when the R process
 #'   exits.
+#' @param ... Extra arguments are passed to the [processx::process]
+#'   constructor.
 #' @return An `r_process` object, which inherits from [process],
 #'   so all `process` methods can be called on it, and in addition it also
 #'   has a `get_result()` method to collect the result.
@@ -30,7 +32,9 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                  error = getOption("callr.error", "error"),
                  cmdargs = c("--slave", "--no-save", "--no-restore"),
                  system_profile = FALSE, user_profile = FALSE,
-                 env = rcmd_safe_env(), supervise = FALSE) {
+                 env = rcmd_safe_env(), supervise = FALSE, ...) {
 
-  r_process$new(options = as.list(environment()))
+  options <- as.list(environment())
+  options$extra  <- list(...)
+  r_process$new(options = options)
 }

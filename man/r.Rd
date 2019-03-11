@@ -11,7 +11,7 @@ r(func, args = list(), libpath = .libPaths(),
   cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
   callback = NULL, block_callback = NULL, spinner = show &&
   interactive(), system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env(), timeout = Inf)
+  env = rcmd_safe_env(), timeout = Inf, ...)
 
 r_safe(func, args = list(), libpath = .libPaths(),
   repos = default_repos(), stdout = NULL, stderr = NULL,
@@ -19,7 +19,7 @@ r_safe(func, args = list(), libpath = .libPaths(),
   cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
   callback = NULL, block_callback = NULL, spinner = show &&
   interactive(), system_profile = FALSE, user_profile = FALSE,
-  env = rcmd_safe_env(), timeout = Inf)
+  env = rcmd_safe_env(), timeout = Inf, ...)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -104,6 +104,8 @@ the child R session is running. By default it is shown if
 If the process does not finish before the timeout period expires,
 then a \code{system_command_timeout_error} error is thrown. \code{Inf}
 means no timeout.}
+
+\item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }
 \value{
 Value of the evaluated expression.

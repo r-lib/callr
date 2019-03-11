@@ -18,7 +18,7 @@ run_r <- function(options) {
     options,
     with_envvar(
       env,
-      processx::run(
+      do.call(processx::run, c(list(
         bin, args = real_cmdargs,
         stdout_line_callback = real_callback(stdout),
         stderr_line_callback = real_callback(stderr),
@@ -26,7 +26,8 @@ run_r <- function(options) {
         stderr_callback = real_block_callback,
         stderr_to_stdout = stderr_to_stdout,
         echo_cmd = echo, echo = show, spinner = spinner,
-        error_on_status = fail_on_status, timeout = timeout
+        error_on_status = fail_on_status, timeout = timeout),
+        extra)
       )
     )
   )

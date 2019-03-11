@@ -11,7 +11,7 @@ rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   callback = NULL, block_callback = NULL, spinner = show &&
   interactive(), system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
-  fail_on_status = FALSE)
+  fail_on_status = FALSE, ...)
 
 rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = default_repos(), stdout = NULL, stderr = NULL,
@@ -19,7 +19,7 @@ rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
   callback = NULL, block_callback = NULL, spinner = show &&
   interactive(), system_profile = FALSE, user_profile = FALSE,
   env = rcmd_safe_env(), timeout = Inf, wd = ".",
-  fail_on_status = FALSE)
+  fail_on_status = FALSE, ...)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -87,6 +87,8 @@ to the current working directory.}
 
 \item{fail_on_status}{Whether to throw an R error if the command returns
 with a non-zero status code. By default no error is thrown.}
+
+\item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }
 \value{
 A list with the command line \code{$command}),

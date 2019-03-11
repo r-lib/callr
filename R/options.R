@@ -75,7 +75,8 @@ r_process_options_default <- function() {
     user_profile = FALSE,
     env = character(),
     supervise = FALSE,
-    load_hook = NULL
+    load_hook = NULL,
+    extra = list()
   )
 }
 
@@ -92,7 +93,8 @@ rcmd_process_options_default <- function() {
     user_profile = FALSE,
     env = rcmd_safe_env(),
     wd = ".",
-    supervise = FALSE
+    supervise = FALSE,
+    extra = list()
   )
 }
 
@@ -109,7 +111,8 @@ rscript_process_options_default <- function() {
     user_profile = FALSE,
     env = rcmd_safe_env(),
     wd = ".",
-    color = FALSE
+    color = FALSE,
+    extra = list()
   )
 }
 
