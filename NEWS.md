@@ -1,5 +1,5 @@
 
-# dev
+# callr 3.2.0
 
 * `r()`, `rcmd()` and `rscript()` can now redirect the standard error of
   the subprocess its standard output. This allows to keep them correctly
@@ -13,7 +13,7 @@
   and `rscript_process` extra arguments can be specified as `options$extra`,
   these are also passed to the `processx::process` constructor (#100).
 
-# 3.1.1
+# callr 3.1.1
 
 * `r()`, `r_bg()`, etc. now handle messages from the cliapp package
   properly. They used to make the R session exit.
