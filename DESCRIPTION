@@ -22,10 +22,12 @@ Imports:
     R6,
     utils
 Suggests:
+    cli,
     cliapp,
     covr,
     crayon,
     pingr,
+    prettyunits,
     ps,
     testthat,
     withr

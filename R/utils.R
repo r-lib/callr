@@ -99,8 +99,48 @@ is_complete_expression <- function(x) {
   ! grepl(msg, conditionMessage(err), fixed = TRUE)
 }
 
-bold <- function(x) {
+pretty_dtx <- function(dt, ...) {
   tryCatch(
-    get("bold", asNamespace("crayon"))(x),
-    error = function(e) x)
+    get("pretty_dt", asNamespace("prettyunits"))(dt, ...),
+    error = function(e) format(as.difftime(dt, units = "secs"), digits = 2))
+}
+
+pmt_symbol <- list(
+  tick = "v",
+  line = "-"
+) 
+
+symbolx <- function(x) {
+  tryCatch(
+    get("symbol", asNamespace("cli"))[[x]],
+    error = function(e) pmt_symbol[[x]])
+}
+
+wrap_crayon <- function(name) {
+  name
+  function(x, ...) {
+    tryCatch(
+      get(name, asNamespace("crayon"))(x, ...),
+      error = function(e) x
+    )
+  }
+}
+
+boldx <- wrap_crayon("bold")
+
+greenx <- wrap_crayon("green")
+
+redx <- wrap_crayon("red")
+
+make_stylex <- wrap_crayon("make_style")
+
+combine_stylesx <- wrap_crayon("combine_styles")
+
+cat0 <- function (..., sep = "") {
+  cat(..., sep = "")
+}
+
+last_char <- function (x) {
+  l <- nchar(x)
+  substr(x, l, l)
 }

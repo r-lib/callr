@@ -29,7 +29,7 @@
 #' @param fail_on_status Whether to throw an R error if the command returns
 #'   with a non-zero status code. By default no error is thrown.
 #' @inheritParams r
-#' @return A list with the command line `$command`),
+#' @return A list with the command line (`$command`),
 #'   standard output (`$stdout`), standard error (`stderr`),
 #'   exit status (`$status`) of the external `R CMD` command, and
 #'   whether a timeout was reached (`$timeout`).
