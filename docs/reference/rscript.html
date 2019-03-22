@@ -63,7 +63,7 @@ to run the script. It streams stdout and stderr of the process." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@ to run the script. It streams stdout and stderr of the process.</p>
   <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
-  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,7 +150,11 @@ as it is set using the system or the user profile.</p></td>
     </tr>
     <tr>
       <th>stderr</th>
-      <td><p>Optionally a file name to send the standard error to.</p></td>
+      <td><p>Optionally a file name to send the standard error to.
+It may be the same as <code>stdout</code>, in which case standard error is
+redirected to standard output. It can also be the special string
+<code>"2&gt;&amp;1"</code>, in which case standard error will be redirected to standard
+output.</p></td>
     </tr>
     <tr>
       <th>poll_connection</th>
@@ -223,6 +227,10 @@ with a non-zero status code. By default no error is thrown.</p></td>
       <th>color</th>
       <td><p>Whether to use terminal colors in the child process,
 assuming they are active in the parent process.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra arguments are passed to <code><a href='http://www.rdocumentation.org/packages/processx/topics/run'>processx::run()</a></code>.</p></td>
     </tr>
     </table>
     

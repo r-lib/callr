@@ -63,7 +63,7 @@ returns immediately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@ returns immediately.</p>
   <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>error</span> <span class='kw'>=</span> <span class='fu'>getOption</span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
   <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>),
   <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>supervise</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>supervise</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,9 +172,9 @@ explicitly to show the output of the command(s).</p></td>
 the child R process will be written to.
 In particular <code>message()</code> sends output to the standard
 error. If nothing was sent to the standard error, then this file
-will be empty. This can be the same file as <code>stderr</code>, although there
-is no guarantee that the lines will be in the correct chronological
-order.</p></td>
+will be empty. This argument can be the same file as <code>stdout</code>,
+in which case they will be correctly interleaved. If this is the
+string <code>"2&gt;&amp;1"</code>, then standard error is redictd to standard output.</p></td>
     </tr>
     <tr>
       <th>poll_connection</th>
@@ -211,6 +211,11 @@ supplied function and some error handling code.</p></td>
       <td><p>Whether to register the process with a supervisor. If <code>TRUE</code>,
 the supervisor will ensure that the process is killed when the R process
 exits.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra arguments are passed to the <a href='http://www.rdocumentation.org/packages/processx/topics/process'>processx::process</a>
+constructor.</p></td>
     </tr>
     </table>
     

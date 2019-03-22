@@ -73,7 +73,7 @@ See rcmd_safe_env().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@ See <code><a href='rcmd_safe.html'>rcmd_safe_env()</a></code>.</p></li>
   <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>), <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span>
   <span class='fu'>interactive</span>(), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='no'>...</span>)
 
 <span class='fu'>r_safe</span>(<span class='no'>func</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'>.libPaths</span>(),
   <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(), <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -148,7 +148,7 @@ See <code><a href='rcmd_safe.html'>rcmd_safe_env()</a></code>.</p></li>
   <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>), <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span>
   <span class='fu'>interactive</span>(), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>)</pre>
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -201,9 +201,9 @@ explicitly to show the output of the command(s).</p></td>
 the child R process will be written to.
 In particular <code>message()</code> sends output to the standard
 error. If nothing was sent to the standard error, then this file
-will be empty. This can be the same file as <code>stderr</code>, although there
-is no guarantee that the lines will be in the correct chronological
-order.</p></td>
+will be empty. This argument can be the same file as <code>stdout</code>,
+in which case they will be correctly interleaved. If this is the
+string <code>"2&gt;&amp;1"</code>, then standard error is redictd to standard output.</p></td>
     </tr>
     <tr>
       <th>poll_connection</th>
@@ -269,6 +269,10 @@ the child R session is running. By default it is shown if
 If the process does not finish before the timeout period expires,
 then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
 means no timeout.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra arguments are passed to <code><a href='http://www.rdocumentation.org/packages/processx/topics/run'>processx::run()</a></code>.</p></td>
     </tr>
     </table>
     
