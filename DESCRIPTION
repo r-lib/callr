@@ -29,4 +29,6 @@ Suggests:
     ps,
     testthat,
     withr
+Remotes:
+    r-lib/processx@feature/unix-pty
 Encoding: UTF-8
