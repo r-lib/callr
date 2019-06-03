@@ -5,7 +5,9 @@ test_that("quit() in the function", {
   x <- r(function() quit())
   expect_null(x)
 
-  expect_error(r(function() quit(status = 2)), "non-zero status")
+  expect_error(
+    r(function() quit(status = 2)), "non-zero status",
+    class = "callr_status_error")
   gc()
 })
 
@@ -21,7 +23,8 @@ test_that("quit() in bg process", {
   p2 <- r_bg(function() quit(status = 2))
   on.exit(p2$kill(), add = TRUE)
   p2$wait()
-  expect_error(p2$get_result(), "non-zero status")
+  expect_error(
+    p2$get_result(), "non-zero status", class = "callr_status_error")
 
   close(p2$get_output_connection())
   close(p2$get_error_connection())
