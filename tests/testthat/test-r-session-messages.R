@@ -30,7 +30,6 @@ test_that("callr_message, then error", {
 
   expect_true(rs$is_alive())
   expect_equal(rs$get_state(), "idle")
-  expect_identical(rs$read_error_lines(), character())
 
   rs$close()
 })

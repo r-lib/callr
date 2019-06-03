@@ -70,6 +70,7 @@ test_that("get stdout/stderr from file", {
 
 test_that("stdout/stderr from pipe", {
   skip_on_cran()
+  skip("TODO")
   opt <- r_session_options(stdout = "|", stderr = "|")
   rs <- r_session$new(opt)
   on.exit(rs$kill())
@@ -201,6 +202,7 @@ test_that("exit", {
 })
 
 test_that("crash", {
+  skip("TODO")
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
   err <- tryCatch(

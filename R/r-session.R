@@ -178,9 +178,11 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
   with_envvar(
     options$env,
-    do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
-      stdin = "|", stdout = "|", stderr = "|", poll_connection = TRUE),
-      options$extra))
+    do.call(
+      super$initialize,
+      c(list(options$bin, options$real_cmdargs, pty = TRUE,
+             pty_options = list(echo = FALSE), poll_connection = TRUE),
+        options$extra))
   )
 
   ## Make child report back when ready
@@ -196,10 +198,8 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
     pr <- self$poll_io(timeout)
     out <- ""
-    err <- ""
     while (any(pr == "ready")) {
       if (pr["output"] == "ready") out <- paste0(out, self$read_output())
-      if (pr["error"] == "ready") err <- paste0(err, self$read_error())
       if (pr["process"] == "ready") break
       timeout <- as.double(have_until - Sys.time(), units = "secs") * 1000
       pr <- self$poll_io(as.integer(timeout))
@@ -208,8 +208,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     if (pr["process"] == "ready") {
       self$read()
     } else if (pr["process"] != "ready") {
-      cat("stdout:]\n", out, "\n")
-      cat("stderr:]\n", err, "\n")
+      cat("stdout/stderr:]\n", out, "\n")
       stop("Could not start R session, timed out")
     }
   }
@@ -243,7 +242,6 @@ rs_close <- function(self, private, grace) {
   private$fun_started_at <- as.POSIXct(NA)
   processx::processx_conn_close(private$pipe)
   processx::processx_conn_close(self$get_output_connection())
-  processx::processx_conn_close(self$get_error_connection())
 }
 
 rs_call <- function(self, private, func, args) {
@@ -342,7 +340,6 @@ rs_run <- function(self, private, func, args) {
     res$result
   } else{
     res$stdout <- paste0(res$stdout, self$read_output())
-    res$stderr <- paste0(res$stderr, self$read_error())
     stop(res$error)
   }
 }
