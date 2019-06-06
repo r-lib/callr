@@ -1,6 +1,9 @@
 
 # dev
 
+* New `$traceback()` method for `r_session`, to run `traceback()` in the
+  subprocess, after an error.
+
 # callr 3.2.0
 
 * `r()`, `rcmd()` and `rscript()` can now redirect the standard error of

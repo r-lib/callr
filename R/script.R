@@ -5,14 +5,16 @@ make_vanilla_script_expr <- function(expr_file, res, error,
   ## Code to handle errors in the child
   ## This will inserted into the main script
   err <- if (error == "error") {
-    substitute(
-      saveRDS(list("error", e), file = paste0(`__res__`, ".error")),
+    substitute({
+      assign(".Traceback", traceback(4), envir = baseenv())
+      saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
     )
 
   } else if (error %in% c("stack", "debugger")) {
     substitute(
       {
+        assign(".Traceback", traceback(4), envir = baseenv())
         dump.frames("__dump__")         # nocov start
         saveRDS(
           list(`__type__`, e, .GlobalEnv$`__dump__`),

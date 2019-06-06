@@ -243,3 +243,18 @@ test_that("custom load hook", {
   expect_equal(res$stderr, "")
   rs$close()
 })
+
+test_that("traceback", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+
+  do <- function() {
+    f <- function() g()
+    g <- function() stop("oops")
+    f()
+  }
+
+  expect_error(rs$run(do), "oops")
+  expect_output(tb <- rs$traceback(), "1: f() at ", fixed = TRUE)
+  expect_equal(c(tb[[4]]), "f()")
+})

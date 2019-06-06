@@ -21,6 +21,8 @@
 #'
 #' rs$read()
 #' rs$close()
+#'
+#' rs$traceback()
 #' ```
 #'
 #' @section Arguments:
@@ -65,8 +67,12 @@
 #' available. Events might signal that the function call has finished,
 #' or they can be progress report events.
 #'
-#' `r$close()` terminates the current computation and the R process.
+#' `rs$close()` terminates the current computation and the R process.
 #' The session object will be in `"finished"` state after this.
+#'
+#' `rs$traceback() can be used after an error in the R subprocess. It is
+#' equivalent to the [traceback()] call, but it is performed in the
+#' subprocess.
 #'
 #' @name r_session
 #' @examples
@@ -115,6 +121,9 @@ r_session <- R6::R6Class(
 
     poll_process = function(timeout)
       rs_poll_process(self, private, timeout),
+
+    traceback = function()
+      rs_traceback(self, private),
 
     attach = function()
       rs_attach(self, private),
@@ -360,6 +369,10 @@ rs_get_running_time <- function(self, private) {
 
 rs_poll_process <- function(self, private, timeout) {
   processx::poll(list(self$get_poll_connection()), timeout)[[1]]
+}
+
+rs_traceback <- function(self, private) {
+  traceback(head(self$run(function() traceback()), -12))
 }
 
 rs_attach <- function(self, private) {

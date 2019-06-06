@@ -24,6 +24,8 @@ rs$get_running_time()
 
 rs$read()
 rs$close()
+
+rs$traceback()
 }
 }
 
@@ -76,8 +78,12 @@ started. The latter is NA if there is no active computation.
 available. Events might signal that the function call has finished,
 or they can be progress report events.
 
-\code{r$close()} terminates the current computation and the R process.
+\code{rs$close()} terminates the current computation and the R process.
 The session object will be in \code{"finished"} state after this.
+
+`rs$traceback() can be used after an error in the R subprocess. It is
+equivalent to the \code{\link[=traceback]{traceback()}} call, but it is performed in the
+subprocess.
 }
 
 \examples{
