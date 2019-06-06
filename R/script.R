@@ -6,7 +6,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
   ## This will inserted into the main script
   err <- if (error == "error") {
     substitute({
-      assign(".Traceback", traceback(4), envir = baseenv())
+      # TODO: get rid of magic number 9
+      capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
       saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
     )
@@ -14,7 +15,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
   } else if (error %in% c("stack", "debugger")) {
     substitute(
       {
-        assign(".Traceback", traceback(4), envir = baseenv())
+        capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
         dump.frames("__dump__")         # nocov start
         saveRDS(
           list(`__type__`, e, .GlobalEnv$`__dump__`),
