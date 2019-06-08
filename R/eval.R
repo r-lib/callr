@@ -83,6 +83,13 @@
 #'   If the process does not finish before the timeout period expires,
 #'   then a `system_command_timeout_error` error is thrown. `Inf`
 #'   means no timeout.
+#' @param transfer How to transfer the data to the subprocess:
+#'   * `"default"`: use the default method, this is currently `"copy"`, but
+#'     it might change in the future.
+#'   * `"copy"`: serialize and copy via a temporary file,
+#'   * `"mmap"`: use shared memory as much as possible. This is currently
+#'     only supported on Unix systems.
+#'   Defaults to the value of the `callr.transfer` option.
 #' @param ... Extra arguments are passed to [processx::run()].
 #' @return Value of the evaluated expression.
 #'
@@ -129,7 +136,9 @@ r <- function(func, args = list(), libpath = .libPaths(),
               show = FALSE, callback = NULL,
               block_callback = NULL, spinner = show && interactive(),
               system_profile = FALSE, user_profile = FALSE,
-              env = rcmd_safe_env(), timeout = Inf, ...) {
+              env = rcmd_safe_env(), timeout = Inf,
+              transfer = getOption("callr.transfer",
+                c("default", "copy", "mmap")[1]), ...) {
 
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))

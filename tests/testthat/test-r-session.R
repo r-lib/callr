@@ -265,5 +265,5 @@ test_that("traceback", {
 
   expect_error(rs$run(do), "oops")
   expect_output(tb <- rs$traceback(), "1: f() at ", fixed = TRUE)
-  if (getRversion() >= "3.3.0") expect_equal(c(tb[[4]]), "f()")
+  if (getRversion() >= "3.3.0") expect_equal(c(tb[[3]]), "f()")
 })

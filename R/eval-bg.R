@@ -32,7 +32,9 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                  error = getOption("callr.error", "error"),
                  cmdargs = c("--slave", "--no-save", "--no-restore"),
                  system_profile = FALSE, user_profile = FALSE,
-                 env = rcmd_safe_env(), supervise = FALSE, ...) {
+                 env = rcmd_safe_env(), supervise = FALSE,
+                 transfer = getOption("callr.transfer",
+                   c("default", "copy", "mmap")[1]), ...) {
 
   options <- as.list(environment())
   options$extra  <- list(...)

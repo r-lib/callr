@@ -1,5 +1,14 @@
 
+setup_mmap <- function(options) {
+  map <- processx:::conn_create_mmap(options$args)
+  options$connections <- list(map)
+  fd <- if (options$poll_connection) 3L else 3L # TODO???
+  options$args <- c(fd, attr(map, "size"))
+  options
+}
+
 setup_script_files <- function(options) {
+  if (options$transfer == "mmap") options <- setup_mmap(options)
   within(options, {
     func_file   <- save_function_to_temp(options)
     result_file <- tempfile()
@@ -86,6 +95,11 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
     cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = p,
         append = TRUE)
   }
+
+  cat(
+    default_load_hook(),
+    file = profile_user,
+    append = TRUE)
 
   if (!is.null(load_hook)) {
     cat(load_hook, sep = "",  file = profile_user, append = TRUE)

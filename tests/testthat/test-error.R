@@ -36,7 +36,7 @@ test_that("error stack is passed", {
   expect_true("call" %in% names(err))
   expect_true(inherits(err, "error"))
   expect_true(inherits(err, "callr_error"))
-  expect_equal(length(err$stack), 3)
+  expect_equal(length(err$stack), 2)
   gc()
 })
 
@@ -67,7 +67,7 @@ test_that("error behavior can be set using option", {
   expect_true("call" %in% names(err))
   expect_true(inherits(err, "error"))
   expect_true(inherits(err, "callr_error"))
-  expect_equal(length(err$stack), 3)
+  expect_equal(length(err$stack), 2)
   gc()
 })
 

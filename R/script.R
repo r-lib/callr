@@ -17,16 +17,15 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       rm("__callr_dump__", envir = .GlobalEnv)
 
       # To find the frame of the evaluated function, we search for
-      # do.call in the stack, and then skip one more frame, the other
-      # do.call. This method only must change if the eval code changes,
-      # obviously. Also, it might fail if the pre-hook has do.call() at
-      # the top level.
+      # do.call in the stack. This method only must change if the eval
+      # code changes, obviously. Also, it might fail if the pre-hook has
+      # do.call() at the top level.
       calls <- sys.calls()
       dcframe <- which(vapply(
         calls,
         function(x) length(x) >= 1 && identical(x[[1]], quote(do.call)),
         logical(1)))[1]
-      if (!is.na(dcframe)) e$`_ignore` <- list(c(1, dcframe + 1L))
+      if (!is.na(dcframe)) e$`_ignore` <- list(c(1, dcframe))
       e$`_pid` <- Sys.getpid()
       e$`_timestamp` <- Sys.time()
       e <- err$add_trace_back(e)
@@ -82,14 +81,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         withCallingHandlers(
           {
             `__pre_hook__`
-            saveRDS(
-              do.call(
-                do.call,
-                c(readRDS(`__expr_file__`), list(envir = .GlobalEnv)),
-                envir = .GlobalEnv
-              ),
-              file = `__res__`
-            )
+            as.environment("tools:callr")$`__callr_data__`$run(`__expr_file__`, `__res__`)
             flush(stdout())
             flush(stderr())
             `__post_hook__`

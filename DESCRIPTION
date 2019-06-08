@@ -34,6 +34,8 @@ Suggests:
     testthat,
     tibble,
     withr
+Remotes:
+    r-lib/processx@feature/mmap
 Encoding: UTF-8
 VignetteBuilder: knitr
 Language: en-US

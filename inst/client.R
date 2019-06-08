@@ -676,3 +676,13 @@ load_client_lib <- function(sofile = NULL) {
   on.exit(NULL)
   env
 }
+
+run <- function(expr_file, res_file) {
+  task <- readRDS(expr_file)
+  data <- task[[2]]
+  if (!is.list(task[[2]])) {
+    data <- processx:::conn_unpack_mmap(data[[1]])
+  }
+  res <- do.call(task[[1]], data, envir = .GlobalEnv)
+  saveRDS(res, file = res_file)
+}
