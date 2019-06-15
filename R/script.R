@@ -28,7 +28,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       )
     )
   } else {
-    stop("Unknown `error` argument: `", error, "`")
+    throw(new_error("Unknown `error` argument: `", error, "`"))
   }
 
   message <- function() {

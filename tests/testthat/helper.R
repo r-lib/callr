@@ -85,3 +85,7 @@ test_temp_dir <- function(pattern = "test-dir-", envir = parent.frame()) {
   dir.create(tmp, recursive = TRUE, showWarnings = FALSE)
   normalizePath(tmp)
 }
+
+expect_error <- function(..., class = "error") {
+  testthat::expect_error(..., class = class)
+}

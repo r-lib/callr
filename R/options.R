@@ -125,7 +125,7 @@ update_options <- function(old_opts, ...) {
 
 check_for_option_names <- function(old, new) {
   if (length(miss <- setdiff(names(new), names(old)))) {
-    stop("Unknown option", if (length(miss) > 1) "s", ":",
-         enumerate(sQuote(miss)))
+    throw(new_error("Unknown option", if (length(miss) > 1) "s", ":",
+                    enumerate(sQuote(miss))))
   }
 }

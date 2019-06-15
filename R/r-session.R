@@ -219,7 +219,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     } else if (pr["process"] != "ready") {
       cat("stdout:]\n", out, "\n")
       cat("stderr:]\n", err, "\n")
-      stop("Could not start R session, timed out")
+      throw(new_error("Could not start R session, timed out"))
     }
   }
 
@@ -247,7 +247,7 @@ rs_close <- function(self, private, grace) {
   self$poll_process(grace)
   self$kill()
   self$wait(1000)
-  if (self$is_alive()) stop("Could not kill background R session")
+  if (self$is_alive()) throw(new_error("Could not kill background R session"))
   private$state <- "finished"
   private$fun_started_at <- as.POSIXct(NA)
   processx::processx_conn_close(private$pipe)
@@ -260,9 +260,9 @@ rs_call <- function(self, private, func, args) {
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
   ## TODO: do we need a state at all?
-  if (private$state == "starting") stop("R session not ready yet")
-  if (private$state == "finished") stop("R session finished")
-  if (private$state == "busy") stop("R session busy")
+  if (private$state == "starting") throw(new_error("R session not ready yet"))
+  if (private$state == "finished") throw(new_error("R session finished"))
+  if (private$state == "busy") throw(new_error("R session busy"))
 
   ## Save the function in a file
   private$options$func <- func
@@ -352,7 +352,7 @@ rs_run <- function(self, private, func, args) {
   } else{
     res$stdout <- paste0(res$stdout, self$read_output())
     res$stderr <- paste0(res$stderr, self$read_error())
-    stop(res$error)
+    throw(res$error)
   }
 }
 
@@ -443,7 +443,7 @@ rs__parse_msg <- function(self, private, msg) {
   }
 
   if (! s[1] %in% names(rs__parse_msg_funcs)) {
-    stop("Unknown message code: `", s[1], "`")
+    throw(new_error("Unknown message code: `", s[1], "`"))
   }
   structure(
     rs__parse_msg_funcs[[ s[1] ]](self, private, code, message),
@@ -453,7 +453,7 @@ rs__parse_msg <- function(self, private, msg) {
 rs__parse_msg_funcs <- list()
 rs__parse_msg_funcs[["200"]] <- function(self, private, code, message) {
   if (private$state != "busy") {
-    stop("Got `done` message when session is not busy")
+    throw(new_error("Got `done` message when session is not busy"))
   }
   private$state <- "idle"
 
@@ -463,7 +463,7 @@ rs__parse_msg_funcs[["200"]] <- function(self, private, code, message) {
 
 rs__parse_msg_funcs[["201"]] <- function(self, private, code, message) {
   if (private$state != "starting") {
-    stop("Session already started, invalid `starting` message")
+    throw(new_error("Session already started, invalid `starting` message"))
   }
   private$state <- "idle"
   list(code = code, message = message)

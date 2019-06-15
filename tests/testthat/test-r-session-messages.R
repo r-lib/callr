@@ -26,7 +26,7 @@ test_that("callr_message, then error", {
   expect_equal(conditionMessage(msg[[2]]), "hi")
 
   expect_s3_class(err, "error")
-  expect_equal(conditionMessage(err), "nah-ah")
+  expect_match(conditionMessage(err), "nah-ah")
 
   expect_true(rs$is_alive())
   expect_equal(rs$get_state(), "idle")

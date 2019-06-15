@@ -10,7 +10,7 @@
 #' @param msg An extra message to add to the error message.
 #' @keywords internal
 
-make_error <- function(out, msg = NULL) {
+new_callr_error <- function(out, msg = NULL) {
   error_class <- c(
     if (out$timeout) "callr_timeout_error" else "callr_status_error",
     "callr_error", "error", "condition"
