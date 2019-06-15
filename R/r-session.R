@@ -177,7 +177,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
   options$func <- options$func %||% function() { }
   options$args <- list()
-  options$load_hook <- rs__make_load_hook(options$load_hook)
+  options$load_hook <- session_load_hook(options$load_hook)
 
   options <- convert_and_check_my_args(options)
   options <- setup_context(options)
@@ -577,13 +577,6 @@ rs__get_result_and_output <- function(self, private) {
   list(result = res, stdout = stdout, stderr = stderr, error = err)
 }
 
-rs__session_load_hook <- function() {
-  expr <- substitute({
-    get("conn_disable_inheritance", asNamespace("processx"))()
-    options(error = function() invokeRestart("abort"))
-  })
-}
-
 rs__handle_condition <- function(cond) {
 
   default_handler <- function(x) {
@@ -603,14 +596,6 @@ rs__handle_condition <- function(cond) {
   }, muffleMessage = function() NULL)
 
   invisible()
-}
-
-rs__make_load_hook <- function(user_hook) {
-  hook <- rs__session_load_hook()
-  if (!is.null(user_hook)) {
-    hook <- substitute({ d; u }, list(d = hook, u = user_hook))
-  }
-  paste0(deparse(hook), "\n")
 }
 
 ## Helper functions ------------------------------------------------------

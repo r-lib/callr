@@ -134,6 +134,7 @@ r <- function(func, args = list(), libpath = .libPaths(),
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))
   options$extra <- list(...)
+  options$load_hook <- default_load_hook()
 
   ## This cleans up everything...
   on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
