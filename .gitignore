@@ -12,3 +12,4 @@
 /src/tools/px.exe
 /src/tools/px.dSYM
 /src/callr.so
+/inst/env.rds

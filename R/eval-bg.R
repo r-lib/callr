@@ -36,5 +36,6 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
 
   options <- as.list(environment())
   options$extra  <- list(...)
+  options$load_hook <- default_load_hook()
   r_process$new(options = options)
 }

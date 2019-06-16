@@ -15,8 +15,7 @@ test_that("error object is passed", {
     r(function() 1 + "A", error = "error"),
     error = function(e) err <<- e
   )
-  expect_true("call" %in% names(err))
-  expect_true(inherits(err, "error"))
+  expect_true(inherits(err, "rlib_error"))
   gc()
 })
 
@@ -49,8 +48,7 @@ test_that("error behavior can be set using option", {
       error = function(e) err <<- e
     )
   })
-  expect_true("call" %in% names(err))
-  expect_true(inherits(err, "error"))
+  expect_true(inherits(err, "rlib_error"))
 
   err <- NULL
   withr::with_options(c(callr.error = "stack"), {

@@ -8,6 +8,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
     substitute({
       # TODO: get rid of magic number 9
       capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+      err <- as.environment("tools:callr")$`__callr_data__`$err
+      e <- err$add_trace_back(e)
       saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
     )

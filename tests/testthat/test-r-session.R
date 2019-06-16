@@ -109,7 +109,8 @@ test_that("interrupt", {
   rs$interrupt()
   rs$poll_process(1000)
   res <- rs$read()
-  expect_s3_class(res$error, "interrupt")
+  expect_s3_class(res$error, "rlib_error")
+  expect_s3_class(res$error$parent, "interrupt")
   rs$close()
 })
 
