@@ -372,7 +372,7 @@ rs_poll_process <- function(self, private, timeout) {
 }
 
 rs_traceback <- function(self, private) {
-  traceback(head(self$run(function() traceback()), -12))
+  traceback(utils::head(self$run(function() traceback()), -12))
 }
 
 rs_attach <- function(self, private) {
