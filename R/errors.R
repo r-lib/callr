@@ -33,13 +33,10 @@
 #
 # ## Roadmap:
 # - better printing of the error
-# - better programmatic trace API (so we can capture it in the subprocess,
-#   copy it back to the main process, and create a nice error object).
-# - print source references in the errors
-# - print source references in the trace
+# - better printinf of the trace
 #
 # ## NEWS:
-# - date of first release will be here
+# - 2019-06-17: first release
 
 err <- local({
 
@@ -109,7 +106,7 @@ err <- local({
     # When a child condition is created, the child will use the parent
     # error object to make note of its own nframe. Here we copy that back
     # to the parent.
-    if (is.null(cond$nframe)) cond$nframe <- sys.parent()
+    if (is.null(cond$nframe)) cond$nframe <- sys.nframe()
     if (!is.null(parent)) {
       cond$parent <- parent
       cond$call <- cond$parent$childcall
@@ -187,7 +184,7 @@ err <- local({
 
   catch_rethrow <- function(expr, ...) {
     realcall <- sys.call(-1)
-    realframe <- sys.parent()
+    realframe <- sys.nframe()
     parent <- parent.frame()
 
     cl <- match.call()
@@ -218,7 +215,7 @@ err <- local({
 
   rethrow <- function(expr, cond) {
     realcall <- sys.call(-1)
-    realframe <- sys.parent()
+    realframe <- sys.nframe()
     withCallingHandlers(
       expr,
       error = function(e) {
@@ -352,6 +349,7 @@ err <- local({
   print_rlib_error <- function(x, ...) {
     ## TODO: better printing
     NextMethod("print")
+    print_srcref(x$call)
     if (!is.null(x$parent)) {
       cat("-->\n")
       print(x$parent)
@@ -363,6 +361,7 @@ err <- local({
     callstr <- vapply(x$calls, format_call, character(1))
     callstr[x$nframes] <-
       paste0(callstr[x$nframes], "\n--> ERROR: ", x$messages, "\n")
+    callstr <- enumerate(callstr)
 
     # Drop the machinery to create parent errors. For both catch_rethrow()
     # and rethrow() we need to drop until the next withCallingHandlers call.
@@ -384,18 +383,49 @@ err <- local({
     }
     if (length(drop)) callstr <- callstr[-drop]
 
-    cat(enumerate(callstr), sep = "\n")
+    cat(callstr, sep = "\n")
     invisible(x)
+  }
+
+  print_srcref <- function(call) {
+    src <- format_srcref(call)
+    if (length(src)) cat(sep = "", "   ", src, "\n")
+  }
+
+  `%||%` <- function(l, r) if (is.null(l)) r else l
+
+  format_srcref <- function(call) {
+    if (is.null(call)) return(NULL)
+    file <- getSrcFilename(call)
+    if (!length(file)) return(NULL)
+    dir <- getSrcDirectory(call)
+    if (length(dir) && nzchar(dir) && nzchar(file)) {
+      srcfile <- attr(getSrcref(call), "srcfile")
+      if (isTRUE(srcfile$isFile)) {
+        file <- file.path(dir, file)
+      } else {
+        pkg <- basename(srcfile$original$filename)
+        file <- file.path(paste0(pkg, "::R"), file)
+      }
+    } else {
+      file <- "??"
+    }
+    line <- getSrcLocation(call) %||% "??"
+    col <- getSrcLocation(call, which = "column") %||% "??"
+    paste0(file, ":", line, ":", col)
   }
 
   format_call <- function(call) {
     width <- getOption("width")
     str <- format(call)
-    if (length(str) > 1 || nchar(str[1]) > width) {
+    callstr <- if (length(str) > 1 || nchar(str[1]) > width) {
       paste0(substr(str[1], 1, width - 5), " ...")
     } else {
       str[1]
     }
+    src <- format_srcref(call)
+    if (length(src)) callstr <- paste0(callstr, "\n   ", src)
+    callstr
   }
 
   enumerate <- function(x) paste0(seq_along(x), ". ", x)
