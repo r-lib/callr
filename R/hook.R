@@ -5,7 +5,7 @@ common_hook <- function() {
     # This should not happen in a new R session, but just to be safe
     while ("tools:callr" %in% search()) detach("tools:callr")
     env <- readRDS(`__envfile__`)
-    attach(env, pos = length(search()), name = "tools:callr")
+    do.call("attach", list(env, pos = length(search()), name = "tools:callr"))
     options(error = function() invokeRestart("abort"))
   }, list("__envfile__" = envfile))
 }
