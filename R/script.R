@@ -8,6 +8,18 @@ make_vanilla_script_expr <- function(expr_file, res, error,
     substitute({
       # TODO: get rid of magic number 9
       capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+
+      # To find the frame of the evaluated function, we search for
+      # do.call in the stack, and then skip one more frame, the other
+      # do.call. This method only must change if the eval code changes,
+      # obviously. Also, it might fail if the pre-hook has do.call() at
+      # the top level.
+      calls <- sys.calls()
+      dcframe <- which(vapply(
+        calls,
+        function(x) length(x) >= 1 && identical(x[[1]], quote(do.call)),
+        logical(1)))[1]
+      if (!is.na(dcframe)) e$ignore <- list(c(1, dcframe + 1L))
       err <- as.environment("tools:callr")$`__callr_data__`$err
       e <- err$add_trace_back(e)
       saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
