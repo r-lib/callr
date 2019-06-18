@@ -32,11 +32,10 @@
 # ```
 #
 # ## Roadmap:
-# - better printing of the error
-# - better printinf of the trace
+# - better printing of anonymous function in the trace
 #
 # ## NEWS:
-# - 2019-06-17: first release
+# - 2019-06-18: first release
 
 err <- local({
 
@@ -100,21 +99,20 @@ err <- local({
       throw(new_error("Parent condition must be a condition object"))
     }
 
-    if (is.null(cond$call) || isTRUE(cond$call)) cond$call <- sys.call(-1)
+    if (is.null(cond$call) || isTRUE(cond$call)) {
+      cond$call <- sys.call(-1) %||% sys.call()
+    }
 
     # Eventually the nframe numbers will help us print a better trace
     # When a child condition is created, the child will use the parent
     # error object to make note of its own nframe. Here we copy that back
     # to the parent.
-    if (is.null(cond$nframe)) cond$nframe <- sys.nframe()
+    if (is.null(cond$`_nframe`)) cond$`_nframe` <- sys.nframe()
     if (!is.null(parent)) {
       cond$parent <- parent
-      cond$call <- cond$parent$childcall
-      cond$parent$childcall <- NULL
-      cond$nframe <- cond$parent$childframe
-      cond$parent$childframe <- NULL
-      cond$ignore <- cond$parent$childignore
-      cond$parent$childignore <- NULL
+      cond$call <- cond$parent$`_childcall`
+      cond$`_nframe` <- cond$parent$`_childframe`
+      cond$`_ignore` <- cond$parent$`_childignore`
     }
 
     signalCondition(cond)
@@ -122,6 +120,9 @@ err <- local({
     # If this is not an error, then we'll just return here. This allows
     # throwing interrupt conditions for example, with the same UI.
     if (! inherits(cond, "error")) return(invisible())
+
+    if (is.null(cond$`_pid`)) cond$`_pid` <- Sys.getpid()
+    if (is.null(cond$`_timestamp`)) cond$`_timestamp` <- Sys.time()
 
     # If we get here that means that the condition was not caught by
     # an exiting handler. That means that we need to create a trace.
@@ -185,7 +186,7 @@ err <- local({
   #' }
 
   catch_rethrow <- function(expr, ...) {
-    realcall <- sys.call(-1)
+    realcall <- sys.call(-1) %||% sys.call()
     realframe <- sys.nframe()
     parent <- parent.frame()
 
@@ -195,12 +196,12 @@ err <- local({
     for (h in names(handlers)) {
       cl[[h]] <- function(e) {
         # This will be NULL if the error is not throw()-n
-        if (is.null(e$nframe)) e$nframe <- sys.parent()
-        e$childcall <- realcall
-        e$childframe <- realframe
+        if (is.null(e$`_nframe`)) e$`_nframe` <- sys.parent()
+        e$`_childcall` <- realcall
+        e$`_childframe` <- realframe
         # We drop after realframe, until the first withCallingHandlers
         wch <- find_call(sys.calls(), quote(withCallingHandlers))
-        if (!is.na(wch)) e$childignore <- list(c(realframe + 1L, wch))
+        if (!is.na(wch)) e$`_childignore` <- list(c(realframe + 1L, wch))
         handlers[[h]](e)
       }
     }
@@ -225,19 +226,19 @@ err <- local({
   #'   [withCallingHandlers()].
 
   rethrow <- function(expr, cond) {
-    realcall <- sys.call(-1)
+    realcall <- sys.call(-1) %||% sys.call()
     realframe <- sys.nframe()
     withCallingHandlers(
       expr,
       error = function(e) {
         # This will be NULL if the error is not throw()-n
-        if (is.null(e$nframe)) e$nframe <- sys.parent()
-        e$childcall <- realcall
-        e$childframe <- realframe
+        if (is.null(e$`_nframe`)) e$`_nframe` <- sys.parent()
+        e$`_childcall` <- realcall
+        e$`_childframe` <- realframe
         # We just ignore the withCallingHandlers call, and the tail
-        e$childignore <- list(
+        e$`_childignore` <- list(
           c(realframe + 1L, realframe + 1L),
-          c(e$nframe + 1L, sys.nframe() + 1L))
+          c(e$`_nframe` + 1L, sys.nframe() + 1L))
         throw(cond, parent = e)
       }
     )
@@ -261,12 +262,12 @@ err <- local({
       # do.call to work around an R CMD check issue
       do.call(".Call", list(.NAME, ...)),
       error = function(e) {
-        e$nframe <- nframe
+        e$`_nframe` <- nframe
         e$call <- call
         if (inherits(e, "simpleError")) {
           class(e) <- c("c_error", "rlib_error", "error", "condition")
         }
-        e$ignore <- list(c(nframe + 1L, sys.nframe() + 1L))
+        e$`_ignore` <- list(c(nframe + 1L, sys.nframe() + 1L))
         throw(e)
       }
     )
@@ -290,9 +291,14 @@ err <- local({
     parents <- sys.parents()[idx]
     calls <- as.list(sys.calls()[idx])
     envs <- lapply(frames, env_label)
-    nframes <- if (!is.null(cond$nframe)) cond$nframe else sys.parent()
+    topenvs <- lapply(
+      seq_along(frames),
+      function(i) env_label(topenv(environment(sys.function(i)))))
+    nframes <- if (!is.null(cond$`_nframe`)) cond$`_nframe` else sys.parent()
     messages <- list(conditionMessage(cond))
-    ignore <- cond$ignore
+    ignore <- cond$`_ignore`
+    classes <- class(cond)
+    pids <- rep(cond$`_pid` %||% Sys.getpid(), length(calls))
 
     if (is.null(cond$parent)) {
       # Nothing to do, no parent
@@ -302,9 +308,9 @@ err <- local({
       # the same trace as us.
       parent <- cond
       while (!is.null(parent <- parent$parent)) {
-        nframes <- c(nframes, parent$nframe)
+        nframes <- c(nframes, parent$`_nframe`)
         messages <- c(messages, list(conditionMessage(parent)))
-        ignore <- c(ignore, parent$ignore)
+        ignore <- c(ignore, parent$`_ignore`)
       }
 
     } else {
@@ -316,23 +322,26 @@ err <- local({
       nframes <- c(nframes, pt$nframes + length(calls))
       ignore <- c(ignore, lapply(pt$ignore, function(x) x + length(calls)))
       envs <- c(envs, pt$envs)
+      topenvs <- c(topenvs, pt$topenvs)
       calls <- c(calls, pt$calls)
       messages <- c(messages, pt$messages)
+      pids <- c(pids, pt$pids)
     }
 
     cond$trace <- new_trace(
-      calls, parents, envs, nframes, messages,
-      ignore)
+      calls, parents, envs, topenvs, nframes, messages, ignore, classes,
+      pids)
 
     cond
   }
 
-  new_trace <- function (calls, parents, envs, nframes, messages, ignore) {
+  new_trace <- function (calls, parents, envs, topenvs, nframes, messages,
+                         ignore, classes, pids) {
     indices <- seq_along(calls)
     structure(
-      list(calls = calls, parents = parents, envs = envs,
+      list(calls = calls, parents = parents, envs = envs, topenvs = topenvs,
            indices = indices, nframes = nframes, messages = messages,
-           ignore = ignore),
+           ignore = ignore, classes = classes, pids = pids),
       class = "rlib_trace")
   }
 
@@ -355,7 +364,7 @@ err <- local({
       return("global")
     }
     if (identical(env, baseenv())) {
-      return("package:base")
+      return("namespace:base")
     }
     if (identical(env, emptyenv())) {
       return("empty")
@@ -370,20 +379,38 @@ err <- local({
   # -- printing ---------------------------------------------------------
 
   print_rlib_error <- function(x, ...) {
-    ## TODO: better printing
-    NextMethod("print")
+
+    msg <- conditionMessage(x)
+    call <- conditionCall(x)
+    cl <- class(x)[1L]
+    if (!is.null(call)) {
+      cat("<", cl, " in ", format_call(call), ":\n ", msg, ">\n", sep = "")
+    } else {
+      cat("<", cl, ": ", msg, ">\n", sep = "")
+    }
+
     print_srcref(x$call)
+
+    if (!identical(x$`_pid`, Sys.getpid())) {
+      cat(" in process", x$`_pid`, "\n")
+    }
+
     if (!is.null(x$parent)) {
       cat("-->\n")
       print(x$parent)
     }
+
     invisible(x)
   }
 
   print_rlib_trace <- function(x, ...) {
-    callstr <- vapply(x$calls, format_call, character(1))
+    cl <- setdiff(x$classes, c("error", "condition"))
+    cl <- paste0(" ERROR TRACE for ", paste(cl, collapse = ", "), "")
+    cat(sep = "", "\n", style_trace_title(cl), "\n\n")
+    calls <- map2(x$calls, x$topenv, namespace_calls)
+    callstr <- vapply(calls, format_call_src, character(1))
     callstr[x$nframes] <-
-      paste0(callstr[x$nframes], "\n--> ERROR: ", x$messages, "\n")
+      paste0(callstr[x$nframes], "\n", style_error(x$messages), "\n")
     callstr <- enumerate(callstr)
 
     # Ignore what we were told to ignore
@@ -400,15 +427,33 @@ err <- local({
       ign <- c(ign, (last_err_frame+1):length(callstr))
     }
 
-    if (length(ign)) callstr <- callstr[-unique(ign)]
+    ign <- unique(ign)
+    if (length(ign)) callstr <- callstr[-ign]
+
+    # Add markers for subprocesses
+    if (length(unique(x$pids)) >= 2) {
+      pids <- x$pids[-ign]
+      pid_add <- which(!duplicated(pids))
+      pid_str <- style_process(paste0("Process ", pids[pid_add], ":"))
+      callstr[pid_add] <- paste0(" ", pid_str, "\n", callstr[pid_add])
+    }
 
     cat(callstr, sep = "\n")
     invisible(x)
   }
 
+  namespace_calls <- function(call, env) {
+    if (length(call) < 1) return(call)
+    if (typeof(call[[1]]) != "symbol") return(call)
+    pkg <- strsplit(env, "^namespace:")[[1]][2]
+    if (is.na(pkg)) return(call)
+    call[[1]] <- substitute(p:::f, list(p = as.symbol(pkg), f = call[[1]]))
+    call
+  }
+
   print_srcref <- function(call) {
     src <- format_srcref(call)
-    if (length(src)) cat(sep = "", "   ", src, "\n")
+    if (length(src)) cat(sep = "", " ", src, "\n")
   }
 
   `%||%` <- function(l, r) if (is.null(l)) r else l
@@ -423,15 +468,14 @@ err <- local({
       if (isTRUE(srcfile$isFile)) {
         file <- file.path(dir, file)
       } else {
-        pkg <- basename(srcfile$original$filename)
-        file <- file.path(paste0(pkg, "::R"), file)
+        file <- file.path("R", file)
       }
     } else {
       file <- "??"
     }
     line <- getSrcLocation(call) %||% "??"
     col <- getSrcLocation(call, which = "column") %||% "??"
-    paste0(file, ":", line, ":", col)
+    style_srcref(paste0(file, ":", line, ":", col))
   }
 
   format_call <- function(call) {
@@ -442,12 +486,57 @@ err <- local({
     } else {
       str[1]
     }
+    style_call(callstr)
+  }
+
+  format_call_src <- function(call) {
+    callstr <- format_call(call)
     src <- format_srcref(call)
-    if (length(src)) callstr <- paste0(callstr, "\n   ", src)
+    if (length(src)) callstr <- paste0(callstr, "\n    ", src)
     callstr
   }
 
-  enumerate <- function(x) paste0(seq_along(x), ". ", x)
+  enumerate <- function(x) {
+    paste0(style_numbers(paste0(" ", seq_along(x), ". ")), x)
+  }
+
+  map2 <- function (.x, .y, .f, ...) {
+    mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE,
+           USE.NAMES = FALSE)
+  }
+
+  # -- printing, styles -------------------------------------------------
+
+  has_crayon <- function() "crayon" %in% loadedNamespaces()
+
+  style_numbers <- function(x) {
+    if (has_crayon()) crayon::silver(x) else x
+  }
+
+  style_srcref <- function(x) {
+    if (has_crayon()) crayon::italic(crayon::cyan(x))
+  }
+
+  style_error <- function(x) {
+    sx <- paste0("\n x ", x, " ")
+    if (has_crayon()) crayon::bold(crayon::red(sx)) else sx
+  }
+
+  style_trace_title <- function(x) {
+    if (has_crayon()) crayon::bold(x) else x
+  }
+
+  style_process <- function(x) {
+    if (has_crayon()) crayon::bold(x) else x
+  }
+
+  style_call <- function(x) {
+    if (!has_crayon()) return(x)
+    call <- sub("^([^(]+)[(].*$", "\\1", x)
+    rest <- sub("^[^(]+([(].*)$", "\\1", x)
+    if (call == x || rest == x) return(x)
+    paste0(crayon::yellow(call), rest)
+  }
 
   structure(
     list(

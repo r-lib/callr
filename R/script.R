@@ -19,7 +19,9 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         calls,
         function(x) length(x) >= 1 && identical(x[[1]], quote(do.call)),
         logical(1)))[1]
-      if (!is.na(dcframe)) e$ignore <- list(c(1, dcframe + 1L))
+      if (!is.na(dcframe)) e$`_ignore` <- list(c(1, dcframe + 1L))
+      e$`_pid` <- Sys.getpid()
+      e$`_timestamp` <- Sys.time()
       err <- as.environment("tools:callr")$`__callr_data__`$err
       e <- err$add_trace_back(e)
       saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
