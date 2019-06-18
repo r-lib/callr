@@ -18,9 +18,16 @@
 #   more meaningful for the users, while also keeping the lower level
 #   details in the error object. (So in `.Last.error` as well.)
 # - `.Last.error` always includes a stack trace. (The stack trace is
-#   common for the whole error hierarchy.)
+#   common for the whole error hierarchy.) The trace is accessible within
+#   the error, e.g. `.Last.error$trace`. The trace of the last error is
+#   also at `.Last.error.trace`.
+# - Can merge errors and traces across multiple processes.
+# - Pretty-print errors and traces, if the crayon package is loaded.
+# - Automatically hides uninformative parts of the stack trace when
+#   printing.
 #
 # ## API
+#
 # ```
 # new_cond(..., call. = TRUE, domain = NULL)
 # new_error(..., call. = TRUE, domain = NULL)
