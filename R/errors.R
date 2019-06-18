@@ -234,8 +234,10 @@ err <- local({
         if (is.null(e$nframe)) e$nframe <- sys.parent()
         e$childcall <- realcall
         e$childframe <- realframe
-        # We just ignore the withCallingHandlers call
-        e$childignore <- list(c(realframe + 1L, realframe + 1L))
+        # We just ignore the withCallingHandlers call, and the tail
+        e$childignore <- list(
+          c(realframe + 1L, realframe + 1L),
+          c(e$nframe + 1L, sys.nframe() + 1L))
         throw(cond, parent = e)
       }
     )
@@ -264,6 +266,7 @@ err <- local({
         if (inherits(e, "simpleError")) {
           class(e) <- c("c_error", "rlib_error", "error", "condition")
         }
+        e$ignore <- list(c(nframe + 1L, sys.nframe() + 1L))
         throw(e)
       }
     )
@@ -383,11 +386,20 @@ err <- local({
       paste0(callstr[x$nframes], "\n--> ERROR: ", x$messages, "\n")
     callstr <- enumerate(callstr)
 
+    # Ignore what we were told to ignore
     ign <- integer()
     for (iv in x$ignore) {
       if (iv[2] == Inf) iv[2] <- length(callstr)
       ign <- c(ign, iv[1]:iv[2])
     }
+
+    # Plus always ignore the tail. This is not always good for
+    # catch_rethrow(), but should be good otherwise
+    last_err_frame <- x$nframes[length(x$nframes)]
+    if (!is.na(last_err_frame) && last_err_frame < length(callstr)) {
+      ign <- c(ign, (last_err_frame+1):length(callstr))
+    }
+
     if (length(ign)) callstr <- callstr[-unique(ign)]
 
     cat(callstr, sep = "\n")
