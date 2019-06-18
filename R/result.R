@@ -65,7 +65,8 @@ get_result <- function(output, options) {
 
   if (err[[1]] == "error") {
     err[[2]]$message <- err[[2]]$message %||% "interrupt"
-    throw(err[[2]])
+    msg <- paste0("callr subprocess failed: ", conditionMessage(err[[2]]))
+    throw(new_error(msg), parent = err[[2]])
 
   } else if (err[[1]] == "stack") {
     myerr <- structure(
