@@ -113,6 +113,8 @@ err <- local({
       cond$parent$childcall <- NULL
       cond$nframe <- cond$parent$childframe
       cond$parent$childframe <- NULL
+      cond$ignore <- cond$parent$childignore
+      cond$parent$childignore <- NULL
     }
 
     signalCondition(cond)
@@ -196,10 +198,19 @@ err <- local({
         if (is.null(e$nframe)) e$nframe <- sys.parent()
         e$childcall <- realcall
         e$childframe <- realframe
+        # We drop after realframe, until the first withCallingHandlers
+        wch <- find_call(sys.calls(), quote(withCallingHandlers))
+        if (!is.na(wch)) e$childignore <- list(c(realframe + 1L, wch))
         handlers[[h]](e)
       }
     }
     eval(cl, envir = parent)
+  }
+
+  find_call <- function(calls, call) {
+    which(vapply(
+      calls, function(x) length(x) >= 1 && identical(x[[1]], call),
+      logical(1)))[1]
   }
 
   #' Catch and re-throw conditions
@@ -223,6 +234,8 @@ err <- local({
         if (is.null(e$nframe)) e$nframe <- sys.parent()
         e$childcall <- realcall
         e$childframe <- realframe
+        # We just ignore the withCallingHandlers call
+        e$childignore <- list(c(realframe + 1L, realframe + 1L))
         throw(cond, parent = e)
       }
     )
@@ -276,6 +289,7 @@ err <- local({
     envs <- lapply(frames, env_label)
     nframes <- if (!is.null(cond$nframe)) cond$nframe else sys.parent()
     messages <- list(conditionMessage(cond))
+    ignore <- cond$ignore
 
     if (is.null(cond$parent)) {
       # Nothing to do, no parent
@@ -287,6 +301,7 @@ err <- local({
       while (!is.null(parent <- parent$parent)) {
         nframes <- c(nframes, parent$nframe)
         messages <- c(messages, list(conditionMessage(parent)))
+        ignore <- c(ignore, parent$ignore)
       }
 
     } else {
@@ -296,20 +311,25 @@ err <- local({
       pt <- cond$parent$trace
       parents <- c(parents, pt$parents + length(calls))
       nframes <- c(nframes, pt$nframes + length(calls))
+      ignore <- c(ignore, lapply(pt$ignore, function(x) x + length(calls)))
       envs <- c(envs, pt$envs)
       calls <- c(calls, pt$calls)
       messages <- c(messages, pt$messages)
     }
 
-    cond$trace <- new_trace(calls, parents, envs, nframes, messages)
+    cond$trace <- new_trace(
+      calls, parents, envs, nframes, messages,
+      ignore)
+
     cond
   }
 
-  new_trace <- function (calls, parents, envs, nframes, messages) {
+  new_trace <- function (calls, parents, envs, nframes, messages, ignore) {
     indices <- seq_along(calls)
     structure(
       list(calls = calls, parents = parents, envs = envs,
-           indices = indices, nframes = nframes, messages = messages),
+           indices = indices, nframes = nframes, messages = messages,
+           ignore = ignore),
       class = "rlib_trace")
   }
 
@@ -363,25 +383,12 @@ err <- local({
       paste0(callstr[x$nframes], "\n--> ERROR: ", x$messages, "\n")
     callstr <- enumerate(callstr)
 
-    # Drop the machinery to create parent errors. For both catch_rethrow()
-    # and rethrow() we need to drop until the next withCallingHandlers call.
-    wch <- vapply(
-      x$calls,
-      function(x) identical(x[[1]], quote(withCallingHandlers)), logical(1))
-    wchidx <- which(wch)
-    drop_from <- x$nframes + 1L
-    drop_to <- vapply(x$nframes, function(x) wchidx[wchidx >= x][1], 1L)
-    drop_from <- drop_from[!is.na(drop_to)]
-    drop_to <- drop_to[!is.na(drop_to)]
-    drop <- unlist(mapply(FUN = seq, drop_from, drop_to, SIMPLIFY = FALSE))
-
-    # Drop the tail, that is usually not interesting (?), especially for
-    # parent errors
-    last_nframe <- x$nframes[length(x$nframes)]
-    if (length(callstr) > last_nframe) {
-      drop <- c(drop, seq(last_nframe + 1L, length(callstr)))
+    ign <- integer()
+    for (iv in x$ignore) {
+      if (iv[2] == Inf) iv[2] <- length(callstr)
+      ign <- c(ign, iv[1]:iv[2])
     }
-    if (length(drop)) callstr <- callstr[-drop]
+    if (length(ign)) callstr <- callstr[-unique(ign)]
 
     cat(callstr, sep = "\n")
     invisible(x)
