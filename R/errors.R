@@ -42,7 +42,14 @@
 # - better printing of anonymous function in the trace
 #
 # ## NEWS:
-# - 2019-06-18: first release
+#
+# ### 1.0.0 -- 2019-06-18
+#
+# * First release.
+#
+# ### 1.0.1 -- 2019-06-20
+#
+# * Add `rlib_error_always_trace` option to always
 
 err <- local({
 
@@ -122,7 +129,12 @@ err <- local({
       cond$`_ignore` <- cond$parent$`_childignore`
     }
 
-    signalCondition(cond)
+    # We can set an option to always add the trace to the thrown
+    # conditions. This is useful for example in context that always catch
+    # errors, e.g. in testthat tests or knitr. This options is usually not
+    # set and we signal the condition here
+    always_trace <- isTRUE(getOption("rlib_error_always_trace"))
+    if (!always_trace) signalCondition(cond)
 
     # If this is not an error, then we'll just return here. This allows
     # throwing interrupt conditions for example, with the same UI.
@@ -148,6 +160,9 @@ err <- local({
     env$print.rlib_trace <- print_rlib_trace
     env$.Last.error <- cond
     env$.Last.error.trace <- cond$trace
+
+    # If we always wanted a trace, then we signal the condition here
+    if (always_trace) signalCondition(cond)
 
     # Top-level handler, this is intended for testing only for now,
     # and its design might change.
