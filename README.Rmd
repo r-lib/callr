@@ -13,13 +13,15 @@ output:
 
 ```{r, setup, include = FALSE}
 knitr::opts_chunk$set(comment = "#>")
-options(crayon.enabled = TRUE)
-options(crayon.colors = 256)
-crayon::num_colors(forget = TRUE)
 ```
 
 ```{r, comment="", results="asis", echo = FALSE}
-old.hooks <- fansi::set_knit_hooks(knitr::knit_hooks)
+if (knitr::opts_knit$get("rmarkdown.pandoc.to") == "html") {
+  old.hooks <- fansi::set_knit_hooks(knitr::knit_hooks)
+  options(crayon.enabled = TRUE)
+  options(crayon.colors = 256)
+  invisible(crayon::num_colors(forget = TRUE))
+}
 ```
 
 ## Features

@@ -33,9 +33,6 @@ that.
 -   [Running `R CMD` commands](#running-r-cmd-commands)
 -   [License](#license)
 
-<STYLE type='text/css' scoped>
-PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
-</STYLE>
 Features
 --------
 
@@ -158,27 +155,27 @@ process and the subprocess:
 .Last.error.trace
 ```
 
-<PRE class="fansi fansi-output"><CODE>#&gt; 
-#&gt; <span style='font-weight: bold;'> ERROR TRACE for callr_status_error, callr_error, rlib_error</span><span>
-#&gt; 
-#&gt;  </span><span style='font-weight: bold;'>Process 92816:</span><span>
-#&gt; </span><span style='color: #555555;'> 38. </span><span style='color: #BBBB00;'>callr:::r</span><span>(function() 1 + "A")
-#&gt; </span><span style='color: #555555;'> 39. </span><span style='color: #BBBB00;'>callr:::get_result</span><span>(output = out, options)
-#&gt;     </span><span style='color: #00BBBB;font-style: italic;'>R/eval.R:149:3</span><span>
-#&gt; </span><span style='color: #555555;'> 40. </span><span style='color: #BBBB00;'>callr:::throw</span><span>(new_callr_error(output), parent = err[[2]])
-#&gt;     </span><span style='color: #00BBBB;font-style: italic;'>R/result.R:72:5</span><span>
-#&gt; </span><span style='color: #BB0000;font-weight: bold;'>
-#&gt;  x callr subprocess failed: Error in 1 + "A" : non-numeric argument to binary operator
-#&gt;  </span><span>
-#&gt; 
-#&gt;  </span><span style='font-weight: bold;'>Process 92920:</span><span>
-#&gt; </span><span style='color: #555555;'> 52. </span><span>(function ()  ...
-#&gt; </span><span style='color: #555555;'> 53. </span><span style='color: #BBBB00;'>base:::.handleSimpleError</span><span>(function (e)  ...
-#&gt;     </span><span style='color: #00BBBB;font-style: italic;'>R/&lt;text&gt;:1:3</span><span>
-#&gt; </span><span style='color: #555555;'> 54. </span><span style='color: #BBBB00;'>h</span><span>(simpleError(msg, call))
-#&gt; </span><span style='color: #BB0000;font-weight: bold;'>
-#&gt;  x non-numeric argument to binary operator </span><span>
-</span></CODE></PRE>
+    #> 
+    #>  ERROR TRACE for callr_status_error, callr_error, rlib_error
+    #> 
+    #>  Process 94122:
+    #>  38. callr:::r(function() 1 + "A")
+    #>  39. callr:::get_result(output = out, options)
+    #>     R/eval.R:149:3
+    #>  40. callr:::throw(new_callr_error(output), parent = err[[2]])
+    #>     R/result.R:72:5
+    #> 
+    #>  x callr subprocess failed: Error in 1 + "A" : non-numeric argument to binary operator
+    #>  
+    #> 
+    #>  Process 94220:
+    #>  52. (function ()  ...
+    #>  53. base:::.handleSimpleError(function (e)  ...
+    #>     R/<text>:1:3
+    #>  54. h(simpleError(msg, call))
+    #> 
+    #>  x non-numeric argument to binary operator
+
 The top part of the trace contains the frames in the main process, and
 the bottom part contains the frames in the subprocess. Frame 38. the
 anonymous function that is copied to the subprocess.
