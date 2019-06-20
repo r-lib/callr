@@ -65,12 +65,11 @@ get_result <- function(output, options) {
 
   if (err[[1]] == "error") {
     err[[2]]$message <- err[[2]]$message %||% "interrupt"
-    msg <- conditionMessage(err[[2]])
     class(err[[2]]) <- c("callr_remote_error", class(err[[2]]))
     if (!is.null(err[[2]]$trace)) {
       class(err[[2]]$trace) <- c("callr_remote_trace", class(err[[2]]$trace))
     }
-    throw(new_callr_error(output, msg), parent = err[[2]])
+    throw(new_callr_error(output), parent = err[[2]])
 
   } else if (err[[1]] == "stack") {
     myerr <- structure(
