@@ -12,3 +12,6 @@
 ^src/tools/px.exe$
 ^docs$
 ^_pkgdown\.yml$
+^README\.Rmd$
+^inst/header\.md$
+^README\.html$
