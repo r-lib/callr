@@ -281,7 +281,7 @@ timeout is in milliseconds.
 ``` r
 rp1 <- r_bg(function() { Sys.sleep(1/2); "1 done" })
 rp2 <- r_bg(function() { Sys.sleep(1/1000); "2 done" })
-processx::poll(list(rp1, rp2), 299)
+processx::poll(list(rp1, rp2), 1000)
 ```
 
     #> [[1]]
