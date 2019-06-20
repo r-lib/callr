@@ -25,8 +25,12 @@ Suggests:
     cliapp,
     covr,
     crayon,
+    knitr,
     pingr,
     ps,
+    rmarkdown,
     testthat,
+    tibble,
     withr
 Encoding: UTF-8
+VignetteBuilder: knitr

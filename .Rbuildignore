@@ -15,3 +15,5 @@
 ^README\.Rmd$
 ^inst/header\.md$
 ^README\.html$
+^doc$
+^Meta$
