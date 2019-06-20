@@ -11,21 +11,35 @@
 #' @keywords internal
 
 new_callr_error <- function(out, msg = NULL) {
-  error_class <- c(
-    if (out$timeout) "callr_timeout_error" else "callr_status_error",
-    "callr_error", "error", "condition"
-  )
   error_msg <- paste0(
-    if (out$timeout) "callr timed out" else "callr failed",
-    if (!is.null(msg)) paste0(", ", msg) else if (!out$timeout) ":"
+    if (out$timeout) "callr timed out" else "callr subprocess failed",
+    if (!is.null(msg)) paste0(": ", msg) else if (!out$timeout) ":"
   )
-  structure(
-    list(
-      message = paste(error_msg, out$stderr),
-      status = out$status,
-      stdout = out$stdout,
-      stderr = out$stderr
-    ),
-    class = error_class
-  )
+
+  cond <- new_error(paste(error_msg, out$stderr))
+
+  class(cond) <- c(
+    if (out$timeout) "callr_timeout_error" else "callr_status_error",
+    "callr_error",
+    class(cond))
+
+  cond$status <- out$status
+  cond$stdout <- out$stdout
+  cond$stderr <- out$stderr
+
+  cond
+}
+
+#' @export
+
+print.callr_error <- function(x, ...) {
+  err$.internal$print_rlib_error(x)
+  invisible(x)
+}
+
+#' @export
+
+print.callr_remote_trace <- function(x, ...) {
+  err$.internal$print_rlib_trace(x)
+  invisible(x)
 }
