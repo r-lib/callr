@@ -1,5 +1,5 @@
 
-#' External R CMD Process
+#' External `R CMD` Process
 #'
 #' An `R CMD *` command that runs in the background. This is an R6 class
 #' that extends the [process] class.

@@ -1,8 +1,8 @@
 
 #' Run an R script
 #'
-#' It uses the `Rscript` program corresponding to the current R vesion,
-#' to run the script. It streams stdout and stderr of the process.
+#' It uses the `Rscript` program corresponding to the current R version,
+#' to run the script. It streams `stdout` and `stderr` of the process.
 #'
 #' @inheritParams rcmd
 #' @param script Path of the script to run.
@@ -50,7 +50,7 @@ rscript_load_hook_color <- function(color) {
   paste0(deparse(expr), "\n")
 }
 
-#' External Rscript process
+#' External `Rscript` process
 #'
 #' An `Rscript script.R` command that runs in the background. This is an
 #' R6 class that extends the [process] class.

@@ -19,8 +19,8 @@ rscript(script, cmdargs = character(), libpath = .libPaths(),
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \emph{repos} option. If \code{NULL}, then no
-\emph{repos} option is set. This options is only used if
+\item{repos}{The \code{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
 \code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
@@ -81,6 +81,6 @@ assuming they are active in the parent process.}
 \item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }
 \description{
-It uses the \code{Rscript} program corresponding to the current R vesion,
-to run the script. It streams stdout and stderr of the process.
+It uses the \code{Rscript} program corresponding to the current R version,
+to run the script. It streams \code{stdout} and \code{stderr} of the process.
 }

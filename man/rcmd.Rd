@@ -3,7 +3,7 @@
 \name{rcmd}
 \alias{rcmd}
 \alias{rcmd_safe}
-\title{Run an R CMD command}
+\title{Run an \code{R CMD} command}
 \usage{
 rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
   repos = default_repos(), stdout = NULL, stderr = NULL,
@@ -24,16 +24,16 @@ rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
 line for the various commands. In the current version of R (3.2.4)
-these are: BATCH, COMPILE, SHLIB, INSTALL, REMOVE, build, check,
-LINK, Rprof, Rdconv, Rd2pdf, Rd2txt, Stangle, Sweave, Rdiff, config,
-javareconf, rtags.}
+these are: \code{BATCH}, \code{COMPILE}, \code{SHLIB}, \code{INSTALL}, \code{REMOVE}, \code{build},
+\code{check}, \code{LINK}, \code{Rprof}, \code{Rdconv}, \code{Rd2pdf}, \code{Rd2txt}, \code{Stangle},
+\code{Sweave}, \code{Rdiff}, \code{config}, \code{javareconf}, \code{rtags}.}
 
 \item{cmdargs}{Command line arguments.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \emph{repos} option. If \code{NULL}, then no
-\emph{repos} option is set. This options is only used if
+\item{repos}{The \code{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
 \code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
@@ -97,7 +97,7 @@ exit status (\code{$status}) of the external \code{R CMD} command, and
 whether a timeout was reached (\code{$timeout}).
 }
 \description{
-Run an R CMD command form within R. This will usually start
+Run an \code{R CMD} command form within R. This will usually start
 another R process, from a shell script.
 }
 \details{
@@ -111,7 +111,7 @@ rcmd("config", "CC")
 }
 }
 \seealso{
-Other R CMD commands: \code{\link{rcmd_bg}},
+Other \code{R CMD} commands: \code{\link{rcmd_bg}},
   \code{\link{rcmd_copycat}}
 }
-\concept{R CMD commands}
+\concept{\code{R CMD} commands}

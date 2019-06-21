@@ -29,8 +29,8 @@ works just fine.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \emph{repos} option. If \code{NULL}, then no
-\emph{repos} option is set. This options is only used if
+\item{repos}{The \code{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
 \code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 

@@ -29,7 +29,7 @@ a new R6 object, which represents the queue. Its `push()` method adds a
 task, which is a function and its arguments, similarly to `callr::r()`.
 The `pop()` method gets the results of the first task that has finished.
 `pop()` has a timeout argument, which lets you wait for a task to finish,
-if all pushed tasks are still running. It retuns `NULL` if no task has
+if all pushed tasks are still running. It returns `NULL` if no task has
 finished before the timeout was over. The timeout can be `0` or `Inf`,
 meaning no wait at all, or wait indefinitely. The default timeout is `0`.
 
@@ -349,11 +349,11 @@ at once. More precisely, I extract the _poll connections_ of the
 may have multiple pollable connections, one for its standard output
 stream, one for its standard error stream. These are not used by default
 in `r_session`s, and I only want to check on the poll connection, which
-signals if the R session has finished with the computation (or it errored
-while working on it). `processx::poll()` returns a list of character
-vectors, one entry for each (_running_) task. This is `"ready"` if the
-session is ready with the task. (Or it is `"silent"` if it is not ready,
-or `"timeout"` if the time limit expired and no workers are ready.)
+signals if the R session has finished with the computation (or encountered
+an error while working on it). `processx::poll()` returns a list of
+character vectors, one entry for each (_running_) task. This is `"ready"`
+if the session is ready with the task. (Or it is `"silent"` if it is not
+ready, or `"timeout"` if the time limit expired and no workers are ready.)
 
 All tasks that returned `"ready"` are indeed set to the _ready_ state.
 After this `poll()` calls `schedule()` to read out the results of the
@@ -428,7 +428,7 @@ Only the private `schedule()` method is missing now:
 `schedule()`'s job is to perform the _ready_ to _done_` and the
 _waiting_ to _running_ state transitions. The first involves reading
 out the results of the _ready_ tasks and the second involves starting
-new compuration on the workers.
+new computation on the workers.
 
 For every _ready_ task, `schedule()` perform three steps:
 

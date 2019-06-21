@@ -1,7 +1,7 @@
 
-#' Run an R CMD command
+#' Run an `R CMD` command
 #'
-#' Run an R CMD command form within R. This will usually start
+#' Run an `R CMD` command form within R. This will usually start
 #' another R process, from a shell script.
 #'
 #' Starting from `callr` 2.0.0, `rcmd()` has safer defaults, the same as
@@ -10,9 +10,9 @@
 #'
 #' @param cmd Command to run. See `R --help` from the command
 #'   line for the various commands. In the current version of R (3.2.4)
-#'   these are: BATCH, COMPILE, SHLIB, INSTALL, REMOVE, build, check,
-#'   LINK, Rprof, Rdconv, Rd2pdf, Rd2txt, Stangle, Sweave, Rdiff, config,
-#'   javareconf, rtags.
+#'   these are: `BATCH`, `COMPILE`, `SHLIB`, `INSTALL`, `REMOVE`, `build`,
+#'   `check`, `LINK`, `Rprof`, `Rdconv`, `Rd2pdf`, `Rd2txt`, `Stangle`,
+#'   `Sweave`, `Rdiff`, `config`, `javareconf`, `rtags`.
 #' @param cmdargs Command line arguments.
 #' @param stdout Optionally a file name to send the standard output to.
 #' @param stderr Optionally a file name to send the standard error to.
@@ -34,7 +34,7 @@
 #'   exit status (`$status`) of the external `R CMD` command, and
 #'   whether a timeout was reached (`$timeout`).
 #'
-#' @family R CMD commands
+#' @family \code{R CMD} commands
 #' @export
 #'
 #' @examples
@@ -77,7 +77,7 @@ rcmd_safe <- rcmd
 #'   style file names.
 #' * `R_TESTS=""` This variable is set by `R CMD check`, and makes the
 #'   child R process load a startup file at startup, from the current
-#'   working directory, that is assumed to be the `/test` dirctory
+#'   working directory, that is assumed to be the `/test` directory
 #'   of the package being checked. If the current working directory is
 #'   changed to something else (as it typically is by `testthat`, then R
 #'   cannot start. Setting it to the empty string ensures that `callr` can
@@ -108,7 +108,7 @@ rcmd_safe_env <- function() {
   vars
 }
 
-#' Call and R CMD command, while mimicking the current R session
+#' Call and `R CMD` command, while mimicking the current R session
 #'
 #' This function is similar to [rcmd()], but it has slightly different
 #' defaults:
@@ -118,7 +118,7 @@ rcmd_safe_env <- function() {
 #' @inheritParams rcmd
 #' @param ... Additional arguments are passed to [rcmd()].
 #'
-#' @family R CMD commands
+#' @family \code{R CMD} commands
 #' @export
 
 rcmd_copycat <- function(cmd, cmdargs = character(), libpath = .libPaths(),

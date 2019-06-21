@@ -2,7 +2,7 @@
 % Please edit documentation in R/rscript.R
 \name{rscript_process}
 \alias{rscript_process}
-\title{External Rscript process}
+\title{External \code{Rscript} process}
 \description{
 An \code{Rscript script.R} command that runs in the background. This is an
 R6 class that extends the \link{process} class.

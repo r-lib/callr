@@ -19,7 +19,7 @@ It currently has the following variables:
 style file names.
 \item \code{R_TESTS=""} This variable is set by \code{R CMD check}, and makes the
 child R process load a startup file at startup, from the current
-working directory, that is assumed to be the \code{/test} dirctory
+working directory, that is assumed to be the \code{/test} directory
 of the package being checked. If the current working directory is
 changed to something else (as it typically is by \code{testthat}, then R
 cannot start. Setting it to the empty string ensures that \code{callr} can
