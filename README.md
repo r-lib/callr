@@ -89,7 +89,7 @@ mycars <- cars
 r(function() summary(mycars))
 ```
 
-    #> Error: callr subprocess failed: Error in summary(mycars) : object 'mycars' not found
+    #> Error: callr subprocess failed: object 'mycars' not found
 
 But this does:
 
@@ -120,7 +120,7 @@ child, and calculates some metrics of it.
 r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-    #> [1] 10
+    #> [1] 11
 
 ### Error handling
 
@@ -130,7 +130,7 @@ callr\` copies errors from the child process back to the main R session:
 r(function() 1 + "A")
 ```
 
-    #> Error: callr subprocess failed: Error in 1 + "A" : non-numeric argument to binary operator
+    #> Error: callr subprocess failed: non-numeric argument to binary operator
 
 callr sets the `.Last.error` variable, and after an error you can
 inspect this for more details about the error, including stack traces
@@ -140,8 +140,7 @@ both from the main R process and the subprocess.
 .Last.error
 ```
 
-    #> <callr_status_error: callr subprocess failed: Error in 1 + "A" : non-numeric argument to binary operator
-    #> >
+    #> <callr_status_error: callr subprocess failed: non-numeric argument to binary operator>
     #> -->
     #> <callr_remote_error in 1 + "A": non-numeric argument to binary operator>
 
@@ -158,17 +157,16 @@ process and the subprocess:
     #> 
     #>  ERROR TRACE for callr_status_error, callr_error, rlib_error
     #> 
-    #>  Process 94122:
+    #>  Process 31908:
     #>  38. callr:::r(function() 1 + "A")
     #>  39. callr:::get_result(output = out, options)
     #>     R/eval.R:149:3
-    #>  40. callr:::throw(new_callr_error(output), parent = err[[2]])
-    #>     R/result.R:72:5
+    #>  40. callr:::throw(new_callr_error(output, msg), parent = err[[2]])
+    #>     R/result.R:73:5
     #> 
-    #>  x callr subprocess failed: Error in 1 + "A" : non-numeric argument to binary operator
-    #>  
+    #>  x callr subprocess failed: non-numeric argument to binary operator 
     #> 
-    #>  Process 94220:
+    #>  Process 32006:
     #>  52. (function ()  ...
     #>  53. base:::.handleSimpleError(function (e)  ...
     #>     R/<text>:1:3
@@ -177,8 +175,8 @@ process and the subprocess:
     #>  x non-numeric argument to binary operator
 
 The top part of the trace contains the frames in the main process, and
-the bottom part contains the frames in the subprocess. Frame 38. the
-anonymous function that is copied to the subprocess.
+the bottom part contains the frames in the subprocess, starting with the
+anonymous function.
 
 ### Standard output and error
 
@@ -218,7 +216,7 @@ rp <- r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-    #> PROCESS 'R', running, pid 92942.
+    #> PROCESS 'R', running, pid 32028.
 
 This is a list of all `r_process` methods:
 
@@ -323,7 +321,7 @@ rs <- r_session$new()
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 92975.
+    #> R SESSION, alive, idle, pid 32095.
 
 `r_session$run()` is a synchronous call, that works similarly to `r()`,
 but uses the persistent session. `r_session$call()` starts the function
@@ -340,15 +338,15 @@ method can read out the result.
 rs$run(function() runif(10))
 ```
 
-    #>  [1] 0.27842537 0.87814219 0.77185015 0.73345931 0.33758315 0.22041713
-    #>  [7] 0.65762088 0.41018795 0.86083733 0.06560727
+    #>  [1] 0.7896924 0.1770236 0.9931798 0.2850374 0.8582676 0.4489599 0.1556783
+    #>  [8] 0.4240582 0.4260408 0.5561292
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-    #> R SESSION, alive, busy, pid 92975.
+    #> R SESSION, alive, busy, pid 32095.
 
 ``` r
 rs$poll_process(2000)
@@ -364,11 +362,11 @@ rs$read()
     #> [1] 200
     #> 
     #> $message
-    #> [1] "done file16a902b17677e"
+    #> [1] "done file7ca436de78be"
     #> 
     #> $result
-    #>  [1] -0.71744931 -0.56413640 -1.30526891  0.06598245 -1.42297094
-    #>  [6] -1.31029646 -1.64808312 -0.29146468  0.47493757  0.05381596
+    #>  [1] -1.0339966 -0.7015408  1.2220644 -0.9691123 -0.6991386  1.2698753
+    #>  [7]  0.2595250  1.0871667  0.5148076  0.4015015
     #> 
     #> $stdout
     #> [1] ""

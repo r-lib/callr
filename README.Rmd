@@ -136,16 +136,13 @@ local({
 .Last.error.trace
 ```
 
-
-
-
 ```{r include = FALSE}
 options(rlib_error_always_trace = FALSE)
 ```
 
 The top part of the trace contains the frames in the main process, and the
-bottom part contains the frames in the subprocess. Frame 38. the
-anonymous function that is copied to the subprocess.
+bottom part contains the frames in the subprocess, starting with the
+anonymous function.
 
 ### Standard output and error
 
