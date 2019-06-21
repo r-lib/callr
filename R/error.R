@@ -16,7 +16,7 @@ new_callr_error <- function(out, msg = NULL) {
     if (!is.null(msg)) paste0(": ", msg) else if (!out$timeout) ":"
   )
 
-  cond <- new_error(paste(error_msg, out$stderr))
+  cond <- new_error(paste(error_msg))
 
   class(cond) <- c(
     if (out$timeout) "callr_timeout_error" else "callr_status_error",
