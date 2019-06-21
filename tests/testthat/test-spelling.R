@@ -2,6 +2,8 @@
 context("spelling")
 
 test_that("spell check", {
+  skip_on_cran()
+  skip_in_covr()
   pkg_dir <- test_package_root()
   results <- spelling::spell_check_package(pkg_dir)
 
