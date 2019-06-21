@@ -160,12 +160,12 @@ The columns are:
 
 The possible task states are: _waiting_, _running_, _ready_ and _done_.
 The first two are not very surprising. The distinction between the
-last two is somewhat technical. A task is _ready_ if the remote R session
-has finished running it. The queue hasn't read out its result yet, and
-the R session is still assigned to it. (I.e. the task's `worker` column is
-not `NULL`.) A task is _done_ if the queue has already read out the result
-of the function call, and has reassigned the R session to another task,
-so its `worker` column is `NULL`.
+last two is somewhat technical. A task is _ready_ if the background R
+session has finished running it. The queue hasn't read out its result yet,
+and the R session is still assigned to it. (I.e. the task's `worker` column
+is not `NULL`.) A task is _done_ if the queue has already read out the
+result of the function call, and has reassigned the R session to another
+task, so its `worker` column is `NULL`.
 
 Tasks that are _running_ and _ready_ always have an R session assigned to
 them. Since all R sessions are always assigned to tasks (dummy idle tasks,
@@ -180,8 +180,8 @@ _ready_ state, since the queue is immediately allowed to re-assign the
 worker, should a real task be _waiting_.
 
 However, when a worker is starting up, its idle task is _running_, until
-their remote R process has started up. After this initial _running_ state
-the idle tasks are always either _waiting_ or _ready_.
+their background R process has started up. After this initial _running_
+state the idle tasks are always either _waiting_ or _ready_.
 
 ## Implementation
 
@@ -241,7 +241,7 @@ If you are wondering about the indexing with `NULL` here, it is a simple
 way to list all possible task states in the code, in one place, as a note
 for the code reader.
 
-`callr::r_session$new()` starts a remote R process. The `wait = FALSE`
+`callr::r_session$new()` starts a background R process. The `wait = FALSE`
 argument tells callr _not_ to wait until the process is ready to run R
 code. This way the R processes start up in parallel, which is worth the
 trouble of making our dummy tasks a bit more complicated. The idle tasks
@@ -290,8 +290,8 @@ run if there is no other task waiting. So `push()` adds the new task right
 before the idle tasks.
 
 The `schedule()` private method is the core of the queue. It starts the
-tasks on the selected remote R workers, and it also reads out the results
-after they are done. I.e. it performs the _waiting_ to _running_ and
+tasks on the selected background R workers, and it also reads out the
+results after they are done. I.e. it performs the _waiting_ to _running_ and
 _ready_ to _done_ task state transitions. We will show it later.
 
 `push()` returns the id of the newly added task, this can be helpful
@@ -319,7 +319,7 @@ matching of tasks to results.
 `poll()` is the only method that checks on the running workers. This is
 important to remember, and unfortunately easy to forget. If the user does
 not call `poll()`, either directly or via `pop()`, the state of a _running_
-task cannot change, even if the remote R session itself has finished.
+task cannot change, even if the background R session itself has finished.
 In other words, one cannot check the status of the tasks by listing
 the task data frame with `list_tasks()` periodically. This will never
 change if `poll()` is not called.
@@ -443,7 +443,7 @@ performs three steps:
 
 1. Assigns a just removed worker to it.
 2. Sets state to _running_. (Or to _ready_ for idle tasks.)
-3. Calls `fun(args)` in the remote session.
+3. Calls `fun(args)` in the background session.
 
 When selecting the waiting tasks to run, the ordering of the task table
 makes sure that the oldest task is selected first, and that idle tasks
@@ -500,7 +500,7 @@ The important fields are:
 
 * `result`: the R object returned from the function. This is `NULL` on
   error.
-* `stdout`: the standard output of the remote session, while running the
+* `stdout`: the standard output of the background session, while running the
   function.
 * `stderr`: the standard error.
 * `error`: error object if the function failed. `NULL` otherwise.
@@ -515,14 +515,14 @@ res$error
 ```
 
 The error is two-part, the first refers to the main process, and the
-second is the original error, thrown in the remote process. To help with
-debugging, the error from the remote process includes a stack trace:
+second is the original error, thrown in the background process. To help with
+debugging, the error from the background process includes a stack trace:
 
 ```{r}
 res$error$parent$trace
 ```
 
-For this simple remote function that just calls `stop()` the trace is not
+For this simple function that just calls `stop()` the trace is not
 very exciting, but it can be very helpful in general.
 
 ## How about process cleanup?
@@ -552,7 +552,7 @@ robust and flexible.
    `r_session$kill()` methods.
 3. Make the queue interrupt-safe. All operations of the queue (e.g.
    `poll()`, `pop()`, etc.) are interruptible by the user, but they
-   don't always leave the task data frame and the remote sessions in a
+   don't always leave the task data frame and the background sessions in a
    consistent state. E.g. if `schedule()` is interrupted, if you are
    unlucky you might lose all worker processes. This is a very hard issue
    to solve, the relatively new `suspendInterrupts()` function probably
