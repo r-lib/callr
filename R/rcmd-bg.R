@@ -1,5 +1,5 @@
 
-#' Run an R CMD command in the background
+#' Run an `R CMD` command in the background
 #'
 #' The child process is started in the background, and the function
 #' return immediately.
@@ -12,7 +12,7 @@
 #'   constructor.
 #' @return It returns a [process] object.
 #'
-#' @family R CMD commands
+#' @family \code{R CMD} commands
 #' @export
 
 rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),

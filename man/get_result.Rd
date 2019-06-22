@@ -18,8 +18,8 @@ If no error happened, the result is returned. Otherwise
 we handle the error.
 }
 \description{
-Even if an error happens, the ouput file might still exist,
-because saveRDS creates the file before evaluating its object
+Even if an error happens, the output file might still exist,
+because \code{\link[=saveRDS]{saveRDS()}} creates the file before evaluating its object
 argument. So we need to check for the error file to decide
 if an error happened.
 }

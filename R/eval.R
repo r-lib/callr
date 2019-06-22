@@ -13,7 +13,7 @@
 #'   and `R_PDFVIEWER` to avoid starting a browser or a PDF viewer.
 #'   See [rcmd_safe_env()].
 #'
-#' The pre-2.0.0 `r()` function is called [r_copycat()] now.
+#' The `r()` function from before 2.0.0 is called [r_copycat()] now.
 #'
 #' @param func Function object to call in the new R process.
 #'   The function should be self-contained and only refer to
@@ -34,8 +34,8 @@
 #'   works just fine.
 #' @param args Arguments to pass to the function. Must be a list.
 #' @param libpath The library path.
-#' @param repos The *repos* option. If `NULL`, then no
-#'   *repos* option is set. This options is only used if
+#' @param repos The `repos` option. If `NULL`, then no
+#'   `repos` option is set. This options is only used if
 #'   `user_profile` or `system_profile` is set `FALSE`,
 #'   as it is set using the system or the user profile.
 #' @param stdout The name of the file the standard output of
@@ -50,7 +50,7 @@
 #'   error. If nothing was sent to the standard error, then this file
 #'   will be empty. This argument can be the same file as `stdout`,
 #'   in which case they will be correctly interleaved. If this is the
-#'   string `"2>&1"`, then standard error is redictd to standard output.
+#'   string `"2>&1"`, then standard error is redirected to standard output.
 #' @param error What to do if the remote process throws an error.
 #'   See details below.
 #' @param poll_connection Whether to have a control connection to

@@ -32,8 +32,8 @@ works just fine.}
 
 \item{libpath}{The library path.}
 
-\item{repos}{The \emph{repos} option. If \code{NULL}, then no
-\emph{repos} option is set. This options is only used if
+\item{repos}{The \code{repos} option. If \code{NULL}, then no
+\code{repos} option is set. This options is only used if
 \code{user_profile} or \code{system_profile} is set \code{FALSE},
 as it is set using the system or the user profile.}
 
@@ -50,7 +50,7 @@ In particular \code{message()} sends output to the standard
 error. If nothing was sent to the standard error, then this file
 will be empty. This argument can be the same file as \code{stdout},
 in which case they will be correctly interleaved. If this is the
-string \code{"2>&1"}, then standard error is redictd to standard output.}
+string \code{"2>&1"}, then standard error is redirected to standard output.}
 
 \item{poll_connection}{Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess

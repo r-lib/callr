@@ -1,8 +1,8 @@
 
 #' Read the result object from the output file, or the error
 #'
-#' Even if an error happens, the ouput file might still exist,
-#' because saveRDS creates the file before evaluating its object
+#' Even if an error happens, the output file might still exist,
+#' because [saveRDS()] creates the file before evaluating its object
 #' argument. So we need to check for the error file to decide
 #' if an error happened.
 #'

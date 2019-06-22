@@ -44,7 +44,7 @@ Features
 -   Shows and/or collects the standard output and standard error of the
     subprocess.
 -   Supports both one-off and persistent R subprocesses.
--   Calls the fucntion synchronously or asynchronously (in the
+-   Calls the function synchronously or asynchronously (in the
     background).
 -   Can call `R CMD` commands, synchronously or asynchronously.
 -   Can call R scripts, synchronously or asynchronously.
@@ -258,7 +258,7 @@ function call. Some of the handiest methods are:
 -   `get_exit_status()` to query the exit status of a finished process.
 -   `get_result()` to collect the return value of the R function call.
 -   `intertupt()` to send an interrupt to the process. This is
-    equivalent to a CTRL+C keypress, and the R process might ignore it.
+    equivalent to a `CTRL+C` key press, and the R process might ignore it.
 -   `is_alive()` to check if the process is alive.
 -   `kill()` to terminate the process.
 -   `poll_io()` to wait for any standard output, standard error, or the
