@@ -111,3 +111,7 @@ test_package_root <- function() {
 skip_in_covr <- function() {
   if (Sys.getenv("R_COVR") == "true") skip("In covr")
 }
+
+clean_envvars <- function() {
+  c(R_DEFAULT_PACKAGES = "NULL", R_ENABLE_JIT = "0")
+}
