@@ -33,6 +33,8 @@ run_r <- function(options) {
     )
   )
 
+  for (c in options$connections) try(close(c))
+
   res$command <- c(options$bin, options$real_cmdargs)
   res
 }
