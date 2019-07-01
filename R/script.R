@@ -49,15 +49,11 @@ make_vanilla_script_expr <- function(expr_file, res, error,
 
   message <- function() {
     substitute({
+      pxlib <- as.environment("tools:callr")$`__callr_data__`$pxlib
       if (is.null(e$code)) e$code <- "301"
-      msg <- paste0("base64::", processx::base64_encode(serialize(e, NULL)))
+      msg <- paste0("base64::", pxlib$base64_encode(serialize(e, NULL)))
       data <- paste(e$code, msg, "\n")
-      con <- processx::conn_create_fd(3, close = FALSE)
-      while (1) {
-        data <- processx::conn_write(con, data)
-        if (!length(data)) break;
-        Sys.sleep(.1)
-      }
+      pxlib$write_fd(3L, data)
       if (!is.null(findRestart("muffleMessage"))) {
         invokeRestart("muffleMessage")
       }
