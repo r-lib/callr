@@ -23,8 +23,16 @@ env_file <- NULL
   arch <- .Platform$r_arch
   ext <- .Platform$dynlib.ext
   sofile <- system.file(
-    paste0("libs", arch), paste0("client", ext),
+    "libs", arch, paste0("client", ext),
     package = "processx")
+
+  # Maybe not multi-arch build on a multi-arch system?
+  # Can this happent at all?
+  if (sofile == "") {
+    sofile <- system.file(
+      "libs", paste0("client", ext),
+      package = "processx")
+  }
 
   # Try this as well, this is for devtools/pkgload
   if (sofile == "") {
