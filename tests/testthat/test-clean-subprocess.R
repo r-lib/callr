@@ -2,6 +2,7 @@
 context("clean-subprocess")
 
 test_that("r() does not load anything", {
+  skip_in_covr()
   pkgs <- withr::with_envvar(
     clean_envvars(),
     r(function() loadedNamespaces()))
@@ -11,6 +12,7 @@ test_that("r() does not load anything", {
 })
 
 test_that("r_bg() does not load anything", {
+  skip_in_covr()
   p <- withr::with_envvar(
     clean_envvars(),
     r_bg(function() loadedNamespaces()))
@@ -23,6 +25,7 @@ test_that("r_bg() does not load anything", {
 })
 
 test_that("r_session does not load anything", {
+  skip_in_covr()
   rs <- withr::with_envvar(clean_envvars(), r_session$new())
   on.exit(rs$close(), add = TRUE)
   pkgs <- rs$run(function() loadedNamespaces())
