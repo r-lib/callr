@@ -7,6 +7,7 @@ common_hook <- function() {
     do.call("attach", list(env, pos = length(search()), name = "tools:callr"))
     data <- env$`__callr_data__`
     data$pxlib <- data$processx_loader()
+    data$pxlib$disable_fd_inheritance()
     options(error = function() invokeRestart("abort"))
   }, list("__envfile__" = env_file))
 }
@@ -21,14 +22,7 @@ default_load_hook <- function(user_hook = NULL) {
 }
 
 session_load_hook <- function(user_hook = NULL) {
-  chook <- common_hook()
-  ehook <- substitute({
-    data <- as.environment("tools:callr")$`__callr_data__`
-    data$pxlib$disable_fd_inheritance()
-  })
-
-  hook <- substitute({ c; e }, list(c = chook, e = ehook))
-
+  hook <- common_hook()
   if (!is.null(user_hook)) {
     hook <- substitute({ d; u }, list(d = hook, u = user_hook))
   }
