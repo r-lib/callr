@@ -52,18 +52,22 @@ test_that("get stdout/stderr from file", {
   rs <- r_session$new()
   on.exit(rs$kill())
 
+  eol <- function(x) {
+    paste0(x, if (.Platform$OS.type == "windows") "\r\n" else "\n")
+  }
+
   for (i in 1:10) {
     res <- rs$run_with_output(function() {
       cat("foo\n"); message("bar"); 42 })
     expect_equal(
       res[c("result", "stdout", "stderr")],
-      list(result = 42, stdout = "foo\n", stderr = "bar\n"))
+      list(result = 42, stdout = eol("foo"), stderr = eol("bar")))
 
     res <- rs$run_with_output(function() {
       cat("bar\n"); message("foo"); 43 })
     expect_equal(
       res[c("result", "stdout", "stderr")],
-      list(result = 43, stdout = "bar\n", stderr = "foo\n"))
+      list(result = 43, stdout = eol("bar"), stderr = eol("foo")))
   }
   rs$close()
 })
