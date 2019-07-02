@@ -22,7 +22,9 @@ test_that("r_bg() does not load anything", {
 
 test_that("r_session does not load anything", {
   rs <- withr::with_envvar(clean_envvars(), r_session$new())
+  on.exit(rs$close(), add = TRUE)
   pkgs <- rs$run(function() loadedNamespaces())
   if (length(pkgs) > 1) print(pkgs)
   expect_equal(pkgs, "base")
+  gc()
 })
