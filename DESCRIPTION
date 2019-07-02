@@ -18,7 +18,7 @@ BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports:
-    processx (>= 3.3.0),
+    processx (>= 3.4.0),
     R6,
     utils
 Suggests:
@@ -35,7 +35,7 @@ Suggests:
     tibble,
     withr
 Remotes:
-    r-lib/processx/feature/client-lib
+    r-lib/processx
 Encoding: UTF-8
 VignetteBuilder: knitr
 Language: en-US
