@@ -36,9 +36,14 @@ env_file <- NULL
   # stop() here and not throw(), because this function should be standalone
   if (sofile == "") stop("Cannot find client file")
 
-  env$`__callr_data__`$processx_so <- sofile
-  env$`__callr_data__`$processx_loader <-
-    asNamespace("processx")$load_client_lib
+  # not only creates a new default value, but drops the bytecode,
+  # which might have a reference to the processx package env, which we
+  # want to avoid
+  lcl <- asNamespace("processx")$load_client_lib
+  fml <- formals(lcl)
+  fml$sofile <- sofile
+  formals(lcl) <- fml
+  env$`__callr_data__`$processx_loader <- lcl
 
   env_file <<- tempfile()
   saveRDS(env, file = env_file, version = 2, compress = FALSE)
