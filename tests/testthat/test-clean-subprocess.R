@@ -6,7 +6,8 @@ test_that("r() does not load anything", {
     clean_envvars(),
     r(function() loadedNamespaces()))
   if (length(pkgs) > 1) print(pkgs)
-  expect_equal(pkgs, "base")
+  ## Some R versions still load compiler...
+  expect_true(all(pkgs %in% c("base", "compiler")))
 })
 
 test_that("r_bg() does not load anything", {
@@ -17,7 +18,8 @@ test_that("r_bg() does not load anything", {
   p$wait(3000)
   pkgs <- p$get_result()
   if (length(pkgs) > 1) print(pkgs)
-  expect_equal(pkgs, "base")
+  ## Some R versions still load compiler...
+  expect_true(all(pkgs %in% c("base", "compiler")))
 })
 
 test_that("r_session does not load anything", {
@@ -25,6 +27,7 @@ test_that("r_session does not load anything", {
   on.exit(rs$close(), add = TRUE)
   pkgs <- rs$run(function() loadedNamespaces())
   if (length(pkgs) > 1) print(pkgs)
-  expect_equal(pkgs, "base")
+  ## Some R versions still load compiler...
+  expect_true(all(pkgs %in% c("base", "compiler")))
   gc()
 })
