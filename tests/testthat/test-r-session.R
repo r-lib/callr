@@ -206,6 +206,7 @@ test_that("exit", {
 })
 
 test_that("crash", {
+  skip_on_cran()
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
   err <- tryCatch(
