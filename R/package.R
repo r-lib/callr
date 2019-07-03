@@ -48,10 +48,12 @@ env_file <- NULL
   # which might have a reference to the processx package env, which we
   # want to avoid
   lcl <- asNamespace("processx")$load_client_lib
+  attributes(body(lcl)) <- NULL
   fml <- formals(lcl)
   fml$sofile <- sofile
-  formals(lcl) <- fml
+  lcl <- as.function(c(fml, body(lcl)), envir = baseenv())
   env$`__callr_data__`$processx_loader <- lcl
+  rm(lcl, fml)
 
   env_file <<- tempfile()
   saveRDS(env, file = env_file, version = 2, compress = FALSE)
