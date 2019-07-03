@@ -34,8 +34,6 @@ Suggests:
     testthat,
     tibble,
     withr
-Remotes:
-    r-lib/processx
 Encoding: UTF-8
 VignetteBuilder: knitr
 Language: en-US
