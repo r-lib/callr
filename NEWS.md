@@ -1,8 +1,18 @@
 
 # development version
 
+* callr now sets the `.Last.error` variable for every un-caught callr
+  error to the error condition, and also sets `.Last.error.trace` to its
+  stack trace. If the error originates in the subprocess, then `.Last.error`
+  is a hierarchical error object, and `.Last.error.trace` merges the
+  traces from the two processes. See the README.md for an example.
+
 * New `$traceback()` method for `r_session`, to run `traceback()` in the
   subprocess, after an error.
+
+* A callr subprocess now does not load any R packages by default.
+
+* New vignette, that showcases `r_session`.
 
 # callr 3.2.0
 
