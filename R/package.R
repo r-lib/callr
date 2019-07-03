@@ -17,8 +17,17 @@ env_file <- NULL
 ## We save this as an RDS, so it can be loaded quickly
 .onLoad <- function(libname, pkgname) {
   env <- new.env(parent = emptyenv())
-  env$`__callr_data__` <- new.env(parent = emptyenv())
-  env$`__callr_data__`$err <- err
+  env$`__callr_data__` <- new.env(parent = baseenv())
+
+  # We need some R code in the subprocess, we parse it here, so the
+  # subprocess just needs to load it. This code will also load the
+  # shared lib of the compiled functions that we need.
+  client_file <- system.file("client.R", package = "callr")
+  if (client_file == "") stop("Cannot find client R file")
+
+  source(
+    client_file, local = env$`__callr_data__`,
+    keep.source = FALSE)
 
   arch <- .Platform$r_arch
   ext <- .Platform$dynlib.ext
@@ -44,14 +53,7 @@ env_file <- NULL
   # stop() here and not throw(), because this function should be standalone
   if (sofile == "") stop("Cannot find client file")
 
-  # not only creates a new default value, but drops the bytecode,
-  # which might have a reference to the processx package env, which we
-  # want to avoid
-  lcl <- asNamespace("processx")$load_client_lib
-  fml <- formals(lcl)
-  fml$sofile <- sofile
-  formals(lcl) <- fml
-  env$`__callr_data__`$processx_loader <- lcl
+  env$`__callr_data__`$sofile <- sofile
 
   env_file <<- tempfile()
   saveRDS(env, file = env_file, version = 2, compress = FALSE)
