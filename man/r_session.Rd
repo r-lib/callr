@@ -19,11 +19,13 @@ rs$run(func, args = list())
 rs$run_with_output(func, args = list())
 rs$call(func, args = list())
 
+rs$poll_process(timeout)
+
 rs$get_state()
 rs$get_running_time()
 
 rs$read()
-rs$close()
+rs$close(grace = 1000)
 
 rs$traceback()
 }
@@ -40,6 +42,10 @@ in milliseconds.
 \item \code{func}: Function object to call in the background R process.
 Please read the notes for the similar argument of \code{\link[=r]{r()}}
 \item \code{args}: Arguments to pass to the function. Must be a list.
+\item \code{timeout}: Timeout period in milliseconds.
+\item \code{grace}: Grace period in milliseconds, to wait for the subprocess to
+exit cleanly, after its standard input is closed. If the process is
+still running after this period, it will be killed.
 }
 }
 

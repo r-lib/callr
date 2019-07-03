@@ -16,11 +16,13 @@
 #' rs$run_with_output(func, args = list())
 #' rs$call(func, args = list())
 #'
+#' rs$poll_process(timeout)
+#'
 #' rs$get_state()
 #' rs$get_running_time()
 #'
 #' rs$read()
-#' rs$close()
+#' rs$close(grace = 1000)
 #'
 #' rs$traceback()
 #' ```
@@ -34,6 +36,10 @@
 #' * `func`: Function object to call in the background R process.
 #'   Please read the notes for the similar argument of [r()]
 #' * `args`: Arguments to pass to the function. Must be a list.
+#' * `timeout`: Timeout period in milliseconds.
+#' * `grace`: Grace period in milliseconds, to wait for the subprocess to
+#'   exit cleanly, after its standard input is closed. If the process is
+#'   still running after this period, it will be killed.
 #'
 #' @section Details:
 #' `r_session$new()` creates a new R background process. It can wait for the

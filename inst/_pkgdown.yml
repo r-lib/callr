@@ -24,6 +24,11 @@ reference:
   - r_process
   - r_process_options
 
+- title: Persistent background R session
+  contents:
+  - r_session
+  - r_session_options
+
 - title: Run R CMD
   contents:
   - rcmd
@@ -36,6 +41,19 @@ reference:
   - rcmd_bg
   - rcmd_process
   - rcmd_process_options
+
+- title: Run Rscript
+  contents:
+  - rscript
+
+- title: Run Rscript in the background
+  contents:
+  - rscript_process
+  - rscript_process_options
+
+- title: Miscellaneous utilities
+  contents:
+  - default_repos
 
 - title: Re-exported functions
   contents:
