@@ -59,6 +59,10 @@
 #' returns immediately. To check if the function is done, call the
 #' `poll_process()` method.
 #'
+#' `rs$poll_process()` polls the R session with a timeout. If the session
+#' has finished the computation, it returns with `"ready"`. If the timeout
+#' is reached, it returns with `"timeout"`.
+#'
 #' `rs$get_state()` return the state of the R session. Possible values:
 #' * `"starting"`: starting up,
 #' * `"idle"`: ready to compute,

@@ -34,7 +34,7 @@
 #'   exit status (`$status`) of the external `R CMD` command, and
 #'   whether a timeout was reached (`$timeout`).
 #'
-#' @family \code{R CMD} commands
+#' @family R CMD commands
 #' @export
 #'
 #' @examples
@@ -118,7 +118,7 @@ rcmd_safe_env <- function() {
 #' @inheritParams rcmd
 #' @param ... Additional arguments are passed to [rcmd()].
 #'
-#' @family \code{R CMD} commands
+#' @family R CMD commands
 #' @export
 
 rcmd_copycat <- function(cmd, cmdargs = character(), libpath = .libPaths(),

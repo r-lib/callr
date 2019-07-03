@@ -12,7 +12,7 @@
 #'   constructor.
 #' @return It returns a [process] object.
 #'
-#' @family \code{R CMD} commands
+#' @family R CMD commands
 #' @export
 
 rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),

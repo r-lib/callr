@@ -68,6 +68,10 @@ errors, but returns a non-zero \code{error} member in the result list.
 returns immediately. To check if the function is done, call the
 \code{poll_process()} method.
 
+\code{rs$poll_process()} polls the R session with a timeout. If the session
+has finished the computation, it returns with \code{"ready"}. If the timeout
+is reached, it returns with \code{"timeout"}.
+
 \code{rs$get_state()} return the state of the R session. Possible values:
 \itemize{
 \item \code{"starting"}: starting up,

@@ -36,7 +36,7 @@ defaults:
 }
 }
 \seealso{
-Other \code{R CMD} commands: \code{\link{rcmd_bg}},
+Other R CMD commands: \code{\link{rcmd_bg}},
   \code{\link{rcmd}}
 }
-\concept{\code{R CMD} commands}
+\concept{R CMD commands}

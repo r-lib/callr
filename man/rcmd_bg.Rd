@@ -62,7 +62,7 @@ The child process is started in the background, and the function
 return immediately.
 }
 \seealso{
-Other \code{R CMD} commands: \code{\link{rcmd_copycat}},
+Other R CMD commands: \code{\link{rcmd_copycat}},
   \code{\link{rcmd}}
 }
-\concept{\code{R CMD} commands}
+\concept{R CMD commands}
