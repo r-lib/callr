@@ -49,7 +49,11 @@
 #
 # ### 1.0.1 -- 2019-06-20
 #
-# * Add `rlib_error_always_trace` option to always
+# * Add `rlib_error_always_trace` option to always add a trace
+#
+# ### 1.0.2 -- 2019-06-27
+#
+# * Internal change: change topenv of the functions to baseenv()
 
 err <- local({
 
@@ -482,11 +486,11 @@ err <- local({
 
   format_srcref <- function(call) {
     if (is.null(call)) return(NULL)
-    file <- getSrcFilename(call)
+    file <- utils::getSrcFilename(call)
     if (!length(file)) return(NULL)
-    dir <- getSrcDirectory(call)
+    dir <- utils::getSrcDirectory(call)
     if (length(dir) && nzchar(dir) && nzchar(file)) {
-      srcfile <- attr(getSrcref(call), "srcfile")
+      srcfile <- attr(utils::getSrcref(call), "srcfile")
       if (isTRUE(srcfile$isFile)) {
         file <- file.path(dir, file)
       } else {
@@ -495,8 +499,8 @@ err <- local({
     } else {
       file <- "??"
     }
-    line <- getSrcLocation(call) %||% "??"
-    col <- getSrcLocation(call, which = "column") %||% "??"
+    line <- utils::getSrcLocation(call) %||% "??"
+    col <- utils::getSrcLocation(call, which = "column") %||% "??"
     style_srcref(paste0(file, ":", line, ":", col))
   }
 
@@ -560,9 +564,12 @@ err <- local({
     paste0(crayon::yellow(call), rest)
   }
 
+  env <- environment()
+  parent.env(env) <- baseenv()
+
   structure(
     list(
-      .internal      = environment(),
+      .internal      = env,
       new_cond       = new_cond,
       new_error      = new_error,
       throw          = throw,

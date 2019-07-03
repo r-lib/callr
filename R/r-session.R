@@ -497,17 +497,13 @@ rs__parse_msg_funcs[["501"]] <- function(self, private, code, message) {
 
 rs__parse_msg_funcs[["502"]] <- rs__parse_msg_funcs[["501"]]
 
-rs__status_expr <- function(code, text = "", fd = 3) {
+rs__status_expr <- function(code, text = "", fd = 3L) {
   substitute(
     local({
+      pxlib <- as.environment("tools:callr")$`__callr_data__`$pxlib
       code_ <- code; fd_ <- fd; text_ <- text
-      con <- processx::conn_create_fd(fd_, close = FALSE)
       data <- paste0(code_, " ", text_, "\n")
-      while (1) {
-        data <- processx::conn_write(con, data)
-        if (!length(data)) break;
-        Sys.sleep(.1)
-      }
+      pxlib$write_fd(as.integer(fd), data)
     }),
     list(code = code, fd = fd, text = text)
   )
@@ -515,14 +511,12 @@ rs__status_expr <- function(code, text = "", fd = 3) {
 
 rs__prehook <- function(stdout, stderr) {
   oexpr <- if (!is.null(stdout)) substitute({
-    .__stdout__ <- processx::conn_set_stdout(
-      drop = FALSE,
-      .__ocon__ <- processx::conn_create_file(`__fn__`, write = TRUE))
+    env <- as.environment("tools:callr")$`__callr_data__`
+    env$.__stdout__ <- env$pxlib$set_stdout_file(`__fn__`)
   }, list(`__fn__` = stdout))
   eexpr <- if (!is.null(stderr)) substitute({
-    .__stderr__ <- processx::conn_set_stderr(
-      drop = FALSE,
-      .__econ__ <- processx::conn_create_file(`__fn__`, write = TRUE))
+    env <- as.environment("tools:callr")$`__callr_data__`
+    env$.__stderr__ <- env$pxlib$set_stderr_file(`__fn__`)
   }, list(`__fn__` = stderr))
 
   substitute({ o; e }, list(o = oexpr, e = eexpr))
@@ -530,12 +524,12 @@ rs__prehook <- function(stdout, stderr) {
 
 rs__posthook <- function(stdout, stderr) {
   oexpr <- if (!is.null(stdout)) substitute({
-      processx::conn_set_stdout(.__stdout__)
-      close(.__ocon__);
+    env <- as.environment("tools:callr")$`__callr_data__`
+    env$pxlib$set_stdout(env$.__stdout__)
   })
   eexpr <- if (!is.null(stderr)) substitute({
-      processx::conn_set_stderr(.__stderr__)
-      close(.__econ__);
+    env <- as.environment("tools:callr")$`__callr_data__`
+    env$pxlib$set_stderr(env$.__stderr__)
   })
 
   substitute({ o; e }, list(o = oexpr, e = eexpr))
