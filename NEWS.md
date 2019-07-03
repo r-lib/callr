@@ -1,11 +1,11 @@
 
 # development version
 
-* callr now sets the `.Last.error` variable for every un-caught callr
+* callr now sets the `.Last.error` variable for every uncaught callr
   error to the error condition, and also sets `.Last.error.trace` to its
   stack trace. If the error originates in the subprocess, then `.Last.error`
   is a hierarchical error object, and `.Last.error.trace` merges the
-  traces from the two processes. See the README.md for an example.
+  traces from the two processes. See the `README.md` for an example.
 
 * New `$traceback()` method for `r_session`, to run `traceback()` in the
   subprocess, after an error.
