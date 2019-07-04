@@ -11,7 +11,7 @@ test_that("messages in callr::r_bg do not crash session", {
   skip_in_covr()  # TODO: what wrong with this on Windows?
 
   rx <- r_bg(function() { cliapp::cli_text("fooobar"); 1 + 1 })
-  rx$wait(2000)
+  rx$wait(5000)
   rx$kill()
   expect_equal(rx$get_exit_status(), 0)
 
