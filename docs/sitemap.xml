@@ -16,7 +16,7 @@
     <loc>http://callr.r-lib.org/reference/get_result.html</loc>
   </url>
   <url>
-    <loc>http://callr.r-lib.org/reference/make_error.html</loc>
+    <loc>http://callr.r-lib.org/reference/new_callr_error.html</loc>
   </url>
   <url>
     <loc>http://callr.r-lib.org/reference/r.html</loc>
@@ -71,5 +71,8 @@
   </url>
   <url>
     <loc>http://callr.r-lib.org/reference/rscript_process_options.html</loc>
+  </url>
+  <url>
+    <loc>http://callr.r-lib.org/articles/Task-queue-with-callr.html</loc>
   </url>
 </urlset>
