@@ -103,14 +103,14 @@
 <p>This <code>pop()</code> call returned <code>NULL</code>, as none of the tasks are done yet. Even though running <code><a href="https://www.rdocumentation.org/packages/base/topics/Sys.getpid">Sys.getpid()</a></code> is fast, the worker processes also need 200-500 ms time start up, when the queue is created. If you are willing to wait a bit, at least one task should be done in less than half a second, but usually not the second one yet:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">sec &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/difftime">as.difftime</a></span>(<span class="dv">1</span>, <span class="dt">units =</span> <span class="st">"secs"</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">q<span class="op">$</span><span class="kw">pop</span>(sec <span class="op">*</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span>)<span class="op">$</span>result</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [1] 996</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; [1] 41847</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">q<span class="op">$</span><span class="kw">pop</span>()</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; NULL</span></a></code></pre></div>
 <p>The <code><a href="http://processx.r-lib.org/reference/poll.html">poll()</a></code> method checks for finished tasks without removing their results from the queue. It also has a timeout parameter, which works the same way as <code>pop()</code>’s timeout. <code><a href="http://processx.r-lib.org/reference/poll.html">poll()</a></code> returns the identifiers of all tasks that are done.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">q<span class="op">$</span><span class="kw"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span>(<span class="ot">Inf</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [1] ".2"</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">q<span class="op">$</span><span class="kw">pop</span>()<span class="op">$</span>result</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [1] 997</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [1] 41850</span></a></code></pre></div>
 <p>If the queue is empty, i.e. not tasks are running and no tasks are waiting, then <code>pop()</code> always returns <code>NULL</code>, immediately, because there is nothing to wait for:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">q<span class="op">$</span><span class="kw">pop</span>()</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; NULL</span></a></code></pre></div>
@@ -349,14 +349,14 @@
 <a class="sourceLine" id="cb17-18" data-line-number="18"><span class="co">#&gt; 14 .idle-4 TRUE  running &lt;NULL&gt; &lt;NULL&gt;     &lt;r_sessin&gt; &lt;NULL&gt;</span></a></code></pre></div>
 <p>Probably no tasks are running just yet. The queue only has the chance to change its state when you <code>push()</code>, <code>pop()</code> or <code><a href="http://processx.r-lib.org/reference/poll.html">poll()</a></code>. When pushing the tasks to the queue, the workers were still starting up (i.e. the idle tasks <em>running</em>), so <code>push()</code> could not start any real tasks. Never mind, as soon as you try to <code>pop()</code> or <code><a href="http://processx.r-lib.org/reference/poll.html">poll()</a></code>, they’ll start running:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">q<span class="op">$</span><span class="kw"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span>(sec)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#&gt; [1] ".3"</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#&gt; [1] ".2"</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">q<span class="op">$</span><span class="kw">list_tasks</span>()</a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; # A tibble: 14 x 7</span></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt;    id      idle  state   fun    args       worker     result    </span></a>
 <a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">#&gt;    &lt;chr&gt;   &lt;lgl&gt; &lt;chr&gt;   &lt;list&gt; &lt;list&gt;     &lt;list&gt;     &lt;list&gt;    </span></a>
 <a class="sourceLine" id="cb18-7" data-line-number="7"><span class="co">#&gt;  1 .1      FALSE running &lt;fn&gt;   &lt;list [1]&gt; &lt;r_sessin&gt; &lt;NULL&gt;    </span></a>
-<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">#&gt;  2 .2      FALSE running &lt;fn&gt;   &lt;list [1]&gt; &lt;r_sessin&gt; &lt;NULL&gt;    </span></a>
-<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="co">#&gt;  3 .3      FALSE done    &lt;fn&gt;   &lt;list [1]&gt; &lt;NULL&gt;     &lt;cllr_ss_&gt;</span></a>
+<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">#&gt;  2 .2      FALSE done    &lt;fn&gt;   &lt;list [1]&gt; &lt;NULL&gt;     &lt;cllr_ss_&gt;</span></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="co">#&gt;  3 .3      FALSE running &lt;fn&gt;   &lt;list [1]&gt; &lt;r_sessin&gt; &lt;NULL&gt;    </span></a>
 <a class="sourceLine" id="cb18-10" data-line-number="10"><span class="co">#&gt;  4 .4      FALSE running &lt;fn&gt;   &lt;list [1]&gt; &lt;r_sessin&gt; &lt;NULL&gt;    </span></a>
 <a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">#&gt;  5 .5      FALSE running &lt;fn&gt;   &lt;list [1]&gt; &lt;r_sessin&gt; &lt;NULL&gt;    </span></a>
 <a class="sourceLine" id="cb18-12" data-line-number="12"><span class="co">#&gt;  6 .6      FALSE waiting &lt;fn&gt;   &lt;list [1]&gt; &lt;NULL&gt;     &lt;NULL&gt;    </span></a>
@@ -372,13 +372,13 @@
 <a class="sourceLine" id="cb19-2" data-line-number="2">  task_result &lt;-<span class="st"> </span>q<span class="op">$</span><span class="kw">pop</span>(<span class="ot">Inf</span>)</a>
 <a class="sourceLine" id="cb19-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(task_result<span class="op">$</span>result)</a>
 <a class="sourceLine" id="cb19-4" data-line-number="4">}</a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt; [1] "3 done"</span></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; [1] "2 done"</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co">#&gt; [1] "4 done"</span></a>
-<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co">#&gt; [1] "1 done"</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt; [1] "2 done"</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; [1] "3 done"</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co">#&gt; [1] "1 done"</span></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co">#&gt; [1] "4 done"</span></a>
 <a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">#&gt; [1] "5 done"</span></a>
-<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">#&gt; [1] "7 done"</span></a>
-<a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">#&gt; [1] "6 done"</span></a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">#&gt; [1] "6 done"</span></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">#&gt; [1] "7 done"</span></a>
 <a class="sourceLine" id="cb19-12" data-line-number="12"><span class="co">#&gt; [1] "8 done"</span></a>
 <a class="sourceLine" id="cb19-13" data-line-number="13"><span class="co">#&gt; [1] "9 done"</span></a>
 <a class="sourceLine" id="cb19-14" data-line-number="14"><span class="co">#&gt; [1] "10 done"</span></a></code></pre></div>
@@ -388,7 +388,7 @@
 <a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; [1] 200</span></a>
 <a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt; $message</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt; [1] "done file3d760888876"</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt; [1] "done filea36a121741e0"</span></a>
 <a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb20-8" data-line-number="8"><span class="co">#&gt; $result</span></a>
 <a class="sourceLine" id="cb20-9" data-line-number="9"><span class="co">#&gt; [1] "10 done"</span></a>

@@ -115,6 +115,17 @@
       <small>Source: <a href='https://github.com/r-lib/callr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="callr-3-3-0" class="section level1">
+<h1 class="page-header">
+<a href="#callr-3-3-0" class="anchor"></a>callr 3.3.0<small> 2019-07-04 </small>
+</h1>
+<ul>
+<li><p>callr now sets the <code>.Last.error</code> variable for every uncaught callr error to the error condition, and also sets <code>.Last.error.trace</code> to its stack trace. If the error originates in the subprocess, then <code>.Last.error</code> is a hierarchical error object, and <code>.Last.error.trace</code> merges the traces from the two processes. See the <code>README.md</code> for an example.</p></li>
+<li><p>New <code>$traceback()</code> method for <code>r_session</code>, to run <code><a href="https://www.rdocumentation.org/packages/base/topics/traceback">traceback()</a></code> in the subprocess, after an error.</p></li>
+<li><p>A callr subprocess now does not load any R packages by default.</p></li>
+<li><p>New vignette, that showcases <code>r_session</code>.</p></li>
+</ul>
+</div>
     <div id="callr-3-2-0" class="section level1">
 <h1 class="page-header">
 <a href="#callr-3-2-0" class="anchor"></a>callr 3.2.0<small> 2019-03-15 </small>
@@ -226,6 +237,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#callr-3-3-0">3.3.0</a></li>
         <li><a href="#callr-3-2-0">3.2.0</a></li>
         <li><a href="#callr-3-1-1">3.1.1</a></li>
         <li><a href="#callr-3-1-0">3.1.0</a></li>

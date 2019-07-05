@@ -1,7 +1,7 @@
 
 # dev version
 
-# 3.3.0
+# callr 3.3.0
 
 * callr now sets the `.Last.error` variable for every uncaught callr
   error to the error condition, and also sets `.Last.error.trace` to its
