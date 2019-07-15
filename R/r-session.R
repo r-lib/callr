@@ -393,6 +393,7 @@ rs_attach <- function(self, private) {
   tryCatch({
     while (TRUE) {
       cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
+      update_history(cmd)
       private$write_for_sure(paste0(cmd, "\n"))
       private$report_back(202, "done")
       private$attach_wait()
