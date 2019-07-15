@@ -28,6 +28,8 @@ rs$read()
 rs$close(grace = 1000)
 
 rs$traceback()
+rs$debug()
+rs$attach()
 }
 }
 
@@ -94,6 +96,12 @@ The session object will be in \code{"finished"} state after this.
 `rs$traceback() can be used after an error in the R subprocess. It is
 equivalent to the \code{\link[=traceback]{traceback()}} call, but it is performed in the
 subprocess.
+
+\code{rs$debug()} is an interactive debugger to inspect the dumped frames
+in the subprocess, after an error. See more at \link{r_session_debug}.
+
+\code{rs$attach()} is an experimental function that provides a REPL
+(Read-Eval-Print-Loop) to the subprocess.
 }
 
 \examples{

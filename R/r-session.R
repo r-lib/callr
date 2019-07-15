@@ -25,6 +25,8 @@
 #' rs$close(grace = 1000)
 #'
 #' rs$traceback()
+#' rs$debug()
+#' rs$attach()
 #' ```
 #'
 #' @section Arguments:
@@ -83,6 +85,12 @@
 #' `rs$traceback() can be used after an error in the R subprocess. It is
 #' equivalent to the [traceback()] call, but it is performed in the
 #' subprocess.
+#'
+#' `rs$debug()` is an interactive debugger to inspect the dumped frames
+#' in the subprocess, after an error. See more at [r_session_debug].
+#'
+#' `rs$attach()` is an experimental function that provides a REPL
+#' (Read-Eval-Print-Loop) to the subprocess.
 #'
 #' @name r_session
 #' @examples
@@ -710,3 +718,63 @@ r_session_options_default <- function() {
     extra = list()
   )
 }
+
+#' Interactive debugging of persistent R sessions
+#'
+#' The `r_session$debug()` method is an interactive debugger to inspect
+#' the stack of the background process after an error.
+#'
+#' `$debug()` starts a REPL (Read-Eval-Print-Loop), that evaluates R
+#' expressions in the subprocess. It is similar to [browser()] and
+#' [debugger()] and also has some extra commands:
+#'
+#' * `.help` prints a short help message.
+#' * `.where` prints the complete stack trace of the error. (The same as
+#'   the `$traceback()` method.
+#' * `.inspect <n>` switches the "focus" to frame `<n>`. Frame 0 is the
+#'   global environment, so `.inspect 0` will switch back to that.
+#'
+#' To exit the debugger, press the usual interrupt key, i.e. `CTRL+c` or
+#' `ESC` in some GUIs.
+#'
+#' Here is an example session that uses `$debug()` (some output is omitted
+#' for brevity):
+#'
+#' ```
+#' # ----------------------------------------------------------------------
+#' > rs <- r_session$new()
+#' > rs$run(function() knitr::knit("no-such-file"))
+#' Error in rs_run(self, private, func, args) :
+#'  callr subprocess failed: cannot open the connection
+#'
+#' > rs$debug()
+#' Debugging in process 87361, press CTRL+C (ESC) to quit. Commands:
+#'   .where       -- print stack trace
+#'   .inspect <n> -- inspect a frame, 0 resets to .GlobalEnv
+#'   .help        -- print this message
+#'   <cmd>        -- run <cmd> in frame or .GlobalEnv
+#'
+#' 3: file(con, "r")
+#' 2: readLines(input2, encoding = "UTF-8", warn = FALSE)
+#' 1: knitr::knit("no-such-file") at #1
+#'
+#' RS 87361 > .inspect 1
+#'
+#' RS 87361 (frame 1) > ls()
+#'  [1] "encoding"  "envir"     "ext"       "in.file"   "input"     "input.dir"
+#'  [7] "input2"    "ocode"     "oconc"     "oenvir"    "oopts"     "optc"
+#' [13] "optk"      "otangle"   "out.purl"  "output"    "quiet"     "tangle"
+#' [19] "text"
+#'
+#' RS 87361 (frame 1) > input
+#' [1] "no-such-file"
+#'
+#' RS 87361 (frame 1) > file.exists(input)
+#' [1] FALSE
+#'
+#' RS 87361 (frame 1) > # <CTRL + C>
+#' # ----------------------------------------------------------------------
+#' ```
+#'
+#' @name r_session_debug
+NULL

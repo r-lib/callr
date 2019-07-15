@@ -108,7 +108,7 @@ bold <- function(x) {
 update_history <- function(cmd) {
   tmp <- tempfile()
   on.exit(unlink(tmp, recursive = TRUE))
-  savehistory(tmp)
+  utils::savehistory(tmp)
   cat(cmd, "\n", sep = "", file = tmp, append = TRUE)
-  loadhistory(tmp)
+  utils::loadhistory(tmp)
 }
