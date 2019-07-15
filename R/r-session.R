@@ -521,12 +521,18 @@ rs__status_expr <- function(code, text = "", fd = 3L) {
 
 rs__prehook <- function(stdout, stderr) {
   oexpr <- if (!is.null(stdout)) substitute({
-    env <- as.environment("tools:callr")$`__callr_data__`
-    env$.__stdout__ <- env$pxlib$set_stdout_file(`__fn__`)
+    assign(
+      ".__stdout__",
+      as.environment("tools:callr")$`__callr_data__`$pxlib$
+                                   set_stdout_file(`__fn__`),
+      envir = as.environment("tools:callr")$`__callr_data__`)
   }, list(`__fn__` = stdout))
   eexpr <- if (!is.null(stderr)) substitute({
-    env <- as.environment("tools:callr")$`__callr_data__`
-    env$.__stderr__ <- env$pxlib$set_stderr_file(`__fn__`)
+    assign(
+      ".__stderr__",
+      as.environment("tools:callr")$`__callr_data__`$pxlib$
+                                   set_stderr_file(`__fn__`),
+      envir = as.environment("tools:callr")$`__callr_data__`)
   }, list(`__fn__` = stderr))
 
   substitute({ o; e }, list(o = oexpr, e = eexpr))
@@ -534,12 +540,14 @@ rs__prehook <- function(stdout, stderr) {
 
 rs__posthook <- function(stdout, stderr) {
   oexpr <- if (!is.null(stdout)) substitute({
-    env <- as.environment("tools:callr")$`__callr_data__`
-    env$pxlib$set_stdout(env$.__stdout__)
+    as.environment("tools:callr")$`__callr_data__`$
+      pxlib$set_stdout(as.environment("tools:callr")$`__callr_data__`$
+      .__stdout__)
   })
   eexpr <- if (!is.null(stderr)) substitute({
-    env <- as.environment("tools:callr")$`__callr_data__`
-    env$pxlib$set_stderr(env$.__stderr__)
+    as.environment("tools:callr")$`__callr_data__`$
+      pxlib$set_stderr(as.environment("tools:callr")$`__callr_data__`$
+      .__stderr__)
   })
 
   substitute({ o; e }, list(o = oexpr, e = eexpr))

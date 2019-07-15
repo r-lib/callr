@@ -8,6 +8,7 @@ common_hook <- function() {
     data <- env$`__callr_data__`
     data$pxlib <- data$load_client_lib(data$sofile)
     options(error = function() invokeRestart("abort"))
+    rm(list = c("data", "env"))
   }, list("__envfile__" = env_file))
 }
 
@@ -25,6 +26,7 @@ session_load_hook <- function(user_hook = NULL) {
   ehook <- substitute({
     data <- as.environment("tools:callr")$`__callr_data__`
     data$pxlib$disable_fd_inheritance()
+    rm(data)
   })
 
   hook <- substitute({ c; e }, list(c = chook, e = ehook))

@@ -1,6 +1,9 @@
 
 # development version
 
+* `r_session` now avoids creating `data` and `env` objects in the global
+  environment of the subprocess.
+
 # callr 3.3.0
 
 * callr now sets the `.Last.error` variable for every uncaught callr

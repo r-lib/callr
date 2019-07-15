@@ -7,6 +7,9 @@ test_that("regular use", {
 
   expect_equal(rs$get_state(), "idle")
 
+  ## Clean session
+  expect_identical(rs$run(function() ls(.GlobalEnv)), character())
+
   ## Start a command
   rs$call(function() 42)
 
