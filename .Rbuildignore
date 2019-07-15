@@ -17,3 +17,5 @@
 ^README\.html$
 ^doc$
 ^Meta$
+^r-packages$
+^\.Rprofile$
