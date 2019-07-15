@@ -104,3 +104,11 @@ bold <- function(x) {
     get("bold", asNamespace("crayon"))(x),
     error = function(e) x)
 }
+
+update_history <- function(cmd) {
+  tmp <- tempfile()
+  on.exit(unlink(tmp, recursive = TRUE))
+  utils::savehistory(tmp)
+  cat(cmd, "\n", sep = "", file = tmp, append = TRUE)
+  utils::loadhistory(tmp)
+}

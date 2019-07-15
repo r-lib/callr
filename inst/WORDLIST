@@ -1,5 +1,6 @@
 cliapp
 CMD
+Eval
 finalizer
 igraph
 interruptible
@@ -7,6 +8,7 @@ macOS
 pkgdown
 pollable
 processx
+REPL
 subcommand
 subprocess
 subprocesses

@@ -6,8 +6,15 @@ make_vanilla_script_expr <- function(expr_file, res, error,
   ## This will inserted into the main script
   err <- if (error == "error") {
     substitute({
+      callr_data <- as.environment("tools:callr")$`__callr_data__`
+      err <- callr_data$err
+
       # TODO: get rid of magic number 9
       capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+
+      dump.frames("__callr_dump__")
+      assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
+      rm("__callr_dump__", envir = .GlobalEnv)
 
       # To find the frame of the evaluated function, we search for
       # do.call in the stack, and then skip one more frame, the other
@@ -22,7 +29,6 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       if (!is.na(dcframe)) e$`_ignore` <- list(c(1, dcframe + 1L))
       e$`_pid` <- Sys.getpid()
       e$`_timestamp` <- Sys.time()
-      err <- as.environment("tools:callr")$`__callr_data__`$err
       e <- err$add_trace_back(e)
       saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
