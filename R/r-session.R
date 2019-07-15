@@ -134,6 +134,8 @@ r_session <- R6::R6Class(
 
     traceback = function()
       rs_traceback(self, private),
+    debug = function()
+      rs_debug(self, private),
 
     attach = function()
       rs_attach(self, private),
@@ -382,7 +384,74 @@ rs_poll_process <- function(self, private, timeout) {
 }
 
 rs_traceback <- function(self, private) {
+  ## TODO: get rid of magic number 12
   traceback(utils::head(self$run(function() traceback()), -12))
+}
+
+rs_debug <- function(self, private) {
+  hasdump <- self$run(function() {
+    ! is.null(as.environment("tools:callr")$`__callr_data__`$.Last.dump)
+  })
+  if (!hasdump) stop("Can't find dumped frames, nothing to debug")
+
+  help <- function() {
+    cat("Debugging in process ", self$get_pid(),
+        ", press CTRL+C (ESC) to quit. Commands:\n", sep = "")
+    cat("  .where       -- print stack trace\n",
+        "  .inspect <n> -- inspect a frame, 0 resets to .GlobalEnv\n",
+        "  .help        -- print this message\n",
+        "  <cmd>        -- run <cmd> in frame or .GlobalEnv\n\n", sep = "")
+  }
+
+  translate_cmd <- function(cmd) {
+    if (cmd == ".where") {
+      traceback(tb)
+      if (frame) cat("Inspecting frame", frame, "\n")
+      NULL
+
+    } else if (cmd == ".help") {
+      help()
+      NULL
+
+    } else if (grepl("^.inspect ", cmd)) {
+      newframe <- as.integer(strsplit(cmd, " ")[[1]][[2]])
+      if (is.na(newframe)) {
+        message("Cannot parse frame number")
+      } else {
+        frame <<- newframe
+      }
+      NULL
+
+    } else {
+      cmd
+    }
+  }
+
+  help()
+  tb <- self$traceback()
+  frame <- 0L
+
+  while (TRUE) {
+    prompt <- paste0(
+      "\nRS ", self$get_pid(),
+      if (frame) paste0(" (frame ", frame, ")"), " > ")
+    cmd <- rs__attach_get_input(prompt)
+    cmd2 <- translate_cmd(cmd)
+    if (is.null(cmd2)) next
+
+    update_history(cmd)
+
+    ret <- self$run_with_output(function(cmd, frame) {
+      dump <- as.environment("tools:callr")$`__callr_data__`$.Last.dump
+      envir <- if (!frame) .GlobalEnv else dump[[frame + 12L]]
+      eval(parse(text = cmd), envir = envir)
+    }, list(cmd = cmd, frame = frame))
+    cat(ret$stdout)
+    cat(ret$stderr)
+    if (!is.null(ret$error)) print(ret$error)
+    print(ret$result)
+  }
+  invisible()
 }
 
 rs_attach <- function(self, private) {

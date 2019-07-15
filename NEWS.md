@@ -4,6 +4,9 @@
 * `r_session` now avoids creating `data` and `env` objects in the global
   environment of the subprocess.
 
+* New `$debug()` method for `r_session` to inspect the dumped frames
+  in the subprocess, after an error.
+
 # callr 3.3.0
 
 * callr now sets the `.Last.error` variable for every uncaught callr
