@@ -440,8 +440,9 @@ rs_debug <- function(self, private) {
   frame <- 0L
 
   while (TRUE) {
+    cat("\n")
     prompt <- paste0(
-      "\nRS ", self$get_pid(),
+      "RS ", self$get_pid(),
       if (frame) paste0(" (frame ", frame, ")"), " > ")
     cmd <- rs__attach_get_input(prompt)
     cmd2 <- translate_cmd(cmd)
