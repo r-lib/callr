@@ -34,3 +34,25 @@ test_that("r_session does not load anything", {
   expect_true(all(pkgs %in% c("base", "compiler")))
   gc()
 })
+
+test_that("r() does not create objects in global env", {
+  vars <- r(function() ls(.GlobalEnv))
+  expect_identical(vars, character())
+})
+
+test_that("r_bg() does not create objects in global env", {
+  p <- r_bg(function() ls(.GlobalEnv))
+  on.exit(p$kill(), add = TRUE)
+  p$wait(3000)
+  vars <- p$get_result()
+  expect_identical(vars, character())
+})
+
+test_that("r_session does not create objects in global env", {
+  rs <- r_session$new()
+  on.exit(rs$close(), add = TRUE)
+  vars <- rs$run(function() ls(.GlobalEnv))
+  expect_identical(vars, character())
+  rs$close()
+  gc()
+})
