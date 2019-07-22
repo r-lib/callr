@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.1</span>
       </span>
     </div>
 
@@ -155,8 +155,9 @@ specified, this is the R function to run in the background.</p>
 #&gt; list()
 #&gt; 
 #&gt; $libpath
-#&gt; [1] "/Users/gaborcsardi/R"                                          
-#&gt; [2] "/Library/Frameworks/R.framework/Versions/3.6/Resources/library"
+#&gt; [1] "/Users/gaborcsardi/works/callr/r-packages"                     
+#&gt; [2] "/Users/gaborcsardi/R"                                          
+#&gt; [3] "/Library/Frameworks/R.framework/Versions/3.6/Resources/library"
 #&gt; 
 #&gt; $repos
 #&gt;                          CRAN 
@@ -190,14 +191,15 @@ specified, this is the R function to run in the background.</p>
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $load_hook
-#&gt; [1] "{\n"                                                                                                    
-#&gt; [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                                    
-#&gt; [3] "    env &lt;- readRDS(\"/var/folders/59/0gkmw1yj2w7bf2dfc3jznv5w0000gn/T//RtmpyfsMjH/filea2bb4ebfbcfe\")\n"
-#&gt; [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n"                   
-#&gt; [5] "    data &lt;- env$`__callr_data__`\n"                                                                     
-#&gt; [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile)\n"                                                  
-#&gt; [7] "    options(error = function() invokeRestart(\"abort\"))\n"                                             
-#&gt; [8] "}\n"                                                                                                    
+#&gt; [1] "{\n"                                                                                                     
+#&gt; [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                                     
+#&gt; [3] "    env &lt;- readRDS(\"/var/folders/59/0gkmw1yj2w7bf2dfc3jznv5w0000gn/T//RtmpnpdbWv/file146bb445c8cfd\")\n"
+#&gt; [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n"                    
+#&gt; [5] "    data &lt;- env$`__callr_data__`\n"                                                                      
+#&gt; [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile)\n"                                                   
+#&gt; [7] "    options(error = function() invokeRestart(\"abort\"))\n"                                              
+#&gt; [8] "    rm(list = c(\"data\", \"env\"))\n"                                                                   
+#&gt; [9] "}\n"                                                                                                     
 #&gt; 
 #&gt; $extra
 #&gt; list()

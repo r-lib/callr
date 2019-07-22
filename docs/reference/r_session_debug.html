@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External <code>Rscript</code> process — rscript_process • callr</title>
+<title>Interactive debugging of persistent R sessions — r_session_debug • callr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="External <code>Rscript</code> process — rscript_process" />
+<meta property="og:title" content="Interactive debugging of persistent R sessions — r_session_debug" />
 
-<meta property="og:description" content="An Rscript script.R command that runs in the background. This is an
-R6 class that extends the process class." />
+<meta property="og:description" content="The r_session$debug() method is an interactive debugger to inspect
+the stack of the background process after an error." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,58 +115,69 @@ R6 class that extends the process class." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>External <code>Rscript</code> process</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rscript.R'><code>R/rscript.R</code></a></small>
-    <div class="hidden name"><code>rscript_process.Rd</code></div>
+    <h1>Interactive debugging of persistent R sessions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/r-session.R'><code>R/r-session.R</code></a></small>
+    <div class="hidden name"><code>r_session_debug.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>An <code>Rscript script.R</code> command that runs in the background. This is an
-R6 class that extends the <a href='http://processx.r-lib.org/reference/process.html'>process</a> class.</p>
+    <p>The <code>r_session$debug()</code> method is an interactive debugger to inspect
+the stack of the background process after an error.</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    <pre>rp &lt;- rscript_process$new(options)
-</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-
-    
-    <ul>
-<li><p><code>options</code> A list of options created via <code><a href='rscript_process_options.html'>rscript_process_options()</a></code>.</p></li>
-</ul>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-    <p><code>rscript_process$new</code> creates a new instance. Its <code>options</code> argument is
-best created by the <code><a href='rscript_process_options.html'>rscript_process_options()</a></code> function.</p>
+    <p><code>$debug()</code> starts a REPL (Read-Eval-Print-Loop), that evaluates R
+expressions in the subprocess. It is similar to <code><a href='https://www.rdocumentation.org/packages/base/topics/browser'>browser()</a></code> and
+<code><a href='https://www.rdocumentation.org/packages/utils/topics/debugger'>debugger()</a></code> and also has some extra commands:</p><ul>
+<li><p><code>.help</code> prints a short help message.</p></li>
+<li><p><code>.where</code> prints the complete stack trace of the error. (The same as
+the <code>$traceback()</code> method.</p></li>
+<li><p><code>.inspect &lt;n&gt;</code> switches the "focus" to frame <code>&lt;n&gt;</code>. Frame 0 is the
+global environment, so <code>.inspect 0</code> will switch back to that.</p></li>
+</ul>
+    <p>To exit the debugger, press the usual interrupt key, i.e. <code>CTRL+c</code> or
+<code>ESC</code> in some GUIs.</p>
+<p>Here is an example session that uses <code>$debug()</code> (some output is omitted
+for brevity):</p><pre># ----------------------------------------------------------------------
+&gt; rs &lt;- r_session$new()
+&gt; rs$run(function() knitr::knit("no-such-file"))
+Error in rs_run(self, private, func, args) :
+ callr subprocess failed: cannot open the connection
+    &gt; rs$debug()
+Debugging in process 87361, press CTRL+C (ESC) to quit. Commands:
+  .where       -- print stack trace
+  .inspect &lt;n&gt; -- inspect a frame, 0 resets to .GlobalEnv
+  .help        -- print this message
+  &lt;cmd&gt;        -- run &lt;cmd&gt; in frame or .GlobalEnv
+    3: file(con, "r")
+2: readLines(input2, encoding = "UTF-8", warn = FALSE)
+1: knitr::knit("no-such-file") at #1
+    RS 87361 &gt; .inspect 1
+    RS 87361 (frame 1) &gt; ls()
+ [1] "encoding"  "envir"     "ext"       "in.file"   "input"     "input.dir"
+ [7] "input2"    "ocode"     "oconc"     "oenvir"    "oopts"     "optc"
+[13] "optk"      "otangle"   "out.purl"  "output"    "quiet"     "tangle"
+[19] "text"
+    RS 87361 (frame 1) &gt; input
+[1] "no-such-file"
+    RS 87361 (frame 1) &gt; file.exists(input)
+[1] FALSE
+    RS 87361 (frame 1) &gt; # &lt;CTRL + C&gt;
+# ----------------------------------------------------------------------
+</pre>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>options</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='rscript_process_options.html'>rscript_process_options</a></span>(<span class='kw'>script</span> <span class='kw'>=</span> <span class='st'>"script.R"</span>)
-<span class='no'>rp</span> <span class='kw'>&lt;-</span> <span class='no'>rscript_process</span>$<span class='fu'>new</span>(<span class='no'>options</span>)
-<span class='no'>rp</span>$<span class='fu'>wait</span>()
-<span class='no'>rp</span>$<span class='fu'>read_output_lines</span>()
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#usage">Usage</a></li>
-
-      <li><a href="#arguments">Arguments</a></li>
-
       <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

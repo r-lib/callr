@@ -37,6 +37,9 @@
     <loc>http://callr.r-lib.org/reference/r_session.html</loc>
   </url>
   <url>
+    <loc>http://callr.r-lib.org/reference/r_session_debug.html</loc>
+  </url>
+  <url>
     <loc>http://callr.r-lib.org/reference/r_session_options.html</loc>
   </url>
   <url>
