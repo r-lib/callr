@@ -7,16 +7,24 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+  collapse = TRUE, comment = "#>"
 )
+```
+
+```{r, comment="", results="asis", echo = FALSE}
+if (knitr::opts_knit$get("rmarkdown.pandoc.to") == "html") {
+  old.hooks <- fansi::set_knit_hooks(knitr::knit_hooks)
+  options(crayon.enabled = TRUE)
+  options(crayon.colors = 256)
+  invisible(crayon::num_colors(forget = TRUE))
+}
 ```
 
 ## Introduction
 
-```{r, echo = FALSE}
+```{r echo = FALSE}
 source("taskq.R")
 ```
 
@@ -93,9 +101,8 @@ task_q <- R6::R6Class(
 )
 ```
 
-`initialize()` has an argument to set the number of workers, for this
-queue the size of the worker pool remains fixed for the lifetime of the
-queue.
+`initialize()` has an argument to set the number of workers. The size of
+the worker pool remains fixed for the lifetime of the queue.
 
 The `get_num_*()` methods return the number of waiting, running and
 completed tasks. `get_num_done()` includes tasks that haven't been
@@ -456,8 +463,8 @@ then selects it and (re-)assigns a worker to it. This is perfectly fine.
 ## Try it out
 
 As a simple example, we add a bunch of fake tasks to a queue, and then
-run a simple event loop to run it to completion. (To run this code, first
-you need to run the complete code at the enc of the post.)
+run a simple event loop to completion. (To run this code, first
+you need to run the complete code at the end of the post.)
 
 ```{r}
 q <- task_q$new()
@@ -474,7 +481,7 @@ q$list_tasks()
 Probably no tasks are running just yet. The queue only has the chance to
 change its state when you `push()`, `pop()` or `poll()`. When pushing the
 tasks to the queue, the workers were still starting up (i.e. the idle tasks
-_running_), so `push()` could not start any real tasks. Never mind, as
+are _running_), so `push()` could not start any real tasks. Never mind, as
 soon as you try to `pop()` or `poll()`, they'll start running:
 
 ```{r}
@@ -514,7 +521,7 @@ res <- q$pop(Inf)
 res$error
 ```
 
-The error is two-part, the first refers to the main process, and the
+The error has two parts, the first refers to the main process, and the
 second is the original error, thrown in the background process. To help with
 debugging, the error from the background process includes a stack trace:
 
@@ -522,7 +529,7 @@ debugging, the error from the background process includes a stack trace:
 res$error$parent$trace
 ```
 
-For this simple function that just calls `stop()` the trace is not
+For this simple function that just calls `stop()`, the trace is not
 very exciting, but it can be very helpful in general.
 
 ## How about process cleanup?
@@ -553,8 +560,8 @@ robust and flexible.
 3. Make the queue interrupt-safe. All operations of the queue (e.g.
    `poll()`, `pop()`, etc.) are interruptible by the user, but they
    don't always leave the task data frame and the background sessions in a
-   consistent state. E.g. if `schedule()` is interrupted, if you are
-   unlucky you might lose all worker processes. This is a very hard issue
+   consistent state. E.g. if `schedule()` is interrupted and you are
+   unlucky, you might lose all worker processes. This is a very hard issue
    to solve, the relatively new `suspendInterrupts()` function probably
    helps a lot.
 4. It would be great to be able to change the `concurrency` level of the
@@ -564,107 +571,9 @@ robust and flexible.
    from being trivial, especially if one wants to avoid copying data
    (the function arguments) twice for every task.
 
-## Summary
-
 ## Complete code
 
-```{r}
-task_q <- R6::R6Class(
-  "task_q",
-  public = list(
-    initialize = function(concurrency = 4L) {
-      private$start_workers(concurrency)
-      invisible(self)
-    },
-    list_tasks = function() private$tasks,
-    get_num_waiting = function()
-      sum(!private$tasks$idle & private$tasks$state == "waiting"),
-    get_num_running = function()
-      sum(!private$tasks$idle & private$tasks$state == "running"),
-    get_num_done = function() sum(private$tasks$state == "done"),
+It is also available [on GitHub](https://github.com/r-lib/callr/blob/811a02f604de2cf03264f6b35ce9ec8a412f2581/vignettes/taskq.R).
 
-    push = function(fun, args = list(), id = NULL) {
-      if (is.null(id)) id <- private$get_next_id()
-      if (id %in% private$tasks$id) stop("Duplicate task id")
-      before <- which(private$tasks$idle)[1]
-      private$tasks <- tibble::add_row(private$tasks, .before = before,
-        id = id, idle = FALSE, state = "waiting", fun = list(fun),
-        args = list(args), worker = list(NULL), result = list(NULL))
-      private$schedule()
-      invisible(id)
-    },
-
-    poll = function(timeout = 0) {
-      limit <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
-      repeat{
-        topoll <- which(private$tasks$state == "running")
-        conns <- lapply(
-          private$tasks$worker[topoll],
-          function(x) x$get_poll_connection())
-        pr <- unlist(processx::poll(conns, timeout))
-        private$tasks$state[topoll][pr == "ready"] <- "ready"
-        private$schedule()
-        ret <- private$tasks$id[private$tasks$state == "done"]
-        if (length(ret) || (timeout != -1 && Sys.time() > limit)) break;
-        if (timeout != -1)
-          timeout <- max(0, as.double(limit - Sys.time(), units = "secs"))
-      }
-      ret
-    },
-
-    pop = function(timeout = 0) {
-      if (is.na(done <- self$poll(timeout)[1])) return(NULL)
-      row <- match(done, private$tasks$id)
-      result <- private$tasks$result[[row]]
-      private$tasks <- private$tasks[-row, ]
-      c(result, list(task_id = done))
-    }
-  ),
-
-  private = list(
-    tasks = NULL,
-    next_id = 1L,
-    get_next_id = function() {
-      id <- private$next_id
-      private$next_id <- id + 1L
-      paste0(".", id)
-    },
-
-    start_workers = function(concurrency) {
-      private$tasks <- tibble::tibble(
-        id = character(), idle = logical(),
-        state = c("waiting", "running", "ready", "done")[NULL],
-        fun = list(), args = list(), worker = list(), result = list())
-      for (i in seq_len(concurrency)) {
-        rs <- callr::r_session$new(wait = FALSE)
-        private$tasks <- tibble::add_row(private$tasks,
-          id = paste0(".idle-", i), idle = TRUE, state = "running",
-          fun = list(NULL), args = list(NULL), worker = list(rs),
-          result = list(NULL))
-      }
-    },
-
-    schedule = function() {
-      ready <- which(private$tasks$state == "ready")
-      if (!length(ready)) return()
-      rss <- private$tasks$worker[ready]
-
-      private$tasks$result[ready] <- lapply(rss, function(x) x$read())
-      private$tasks$worker[ready] <- replicate(length(ready), NULL)
-      private$tasks$state[ready] <-
-        ifelse(private$tasks$idle[ready], "waiting", "done")
-
-      waiting <- which(private$tasks$state == "waiting")[1:length(ready)]
-      private$tasks$worker[waiting] <- rss
-      private$tasks$state[waiting] <-
-        ifelse(private$tasks$idle[waiting], "ready", "running")
-      lapply(waiting, function(i) {
-        if (! private$tasks$idle[i]) {
-          private$tasks$worker[[i]]$call(private$tasks$fun[[i]],
-                                         private$tasks$args[[i]])
-        }
-      })
-    }
-  )
-)
+```{r code = readLines("taskq.R")}
 ```
