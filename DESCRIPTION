@@ -25,6 +25,7 @@ Suggests:
     cliapp,
     covr,
     crayon,
+    fansi,
     knitr,
     pingr,
     ps,
