@@ -26,8 +26,7 @@ task_q <- R6::R6Class(
 
     poll = function(timeout = 0) {
       limit <- Sys.time() + timeout
-      as_ms <- function(x)
-        if (x==Inf) -1 else as.integer(as.double(x, "secs") * 1000)
+      as_ms <- function(x) if (x == Inf) -1L else as.integer(x)
       repeat{
         topoll <- which(private$tasks$state == "running")
         conns <- lapply(
