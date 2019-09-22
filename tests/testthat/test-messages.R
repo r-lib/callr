@@ -9,6 +9,7 @@ test_that("messages in callr::r do not crash session", {
 
 test_that("messages in callr::r_bg do not crash session", {
   skip_in_covr()  # TODO: what wrong with this on Windows?
+  skip_on_cran()
 
   rx <- r_bg(function() { cliapp::cli_text("fooobar"); 1 + 1 })
   rx$wait(5000)

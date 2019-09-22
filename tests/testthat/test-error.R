@@ -147,6 +147,8 @@ test_that("error traces are merged", {
 })
 
 test_that("errors in r_bg() are merged", {
+  skip_on_cran()
+
   withr::local_options(list("callr.error" = "error"))
 
   p <- r_bg(function() 1 + "A")
@@ -168,6 +170,7 @@ test_that("errors in r_bg() are merged", {
 })
 
 test_that("errors in r_process are merged", {
+  skip_on_cran()
   withr::local_options(list("callr.error" = "error"))
 
   opts <- r_process_options(func = function() 1 + "A")
