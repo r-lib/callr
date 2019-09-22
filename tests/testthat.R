@@ -16,5 +16,9 @@ if (ps::ps_is_supported()) {
 
 } else {
   ## ps does not support this platform
-  test_check("callr", reporter = "summary")
+
+  sysname <- tolower(Sys.info()[["sysname"]])
+  if (sysname != "sunos" || Sys.getenv("NOT_CRAN") == "true") {
+    test_check("callr", reporter = "summary")
+  }
 }
