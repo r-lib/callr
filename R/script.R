@@ -16,6 +16,13 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
       rm("__callr_dump__", envir = .GlobalEnv)
 
+      # callr_remote_error does have conditionMessage and conditionCall
+      # methods that defer to $error, but in the subprocess callr is not
+      # loaded, maybe, and these methods are not defined. So we do add
+      # the message and call of the original error
+      e2 <- err$new_error(conditionMessage(e), call. = conditionCall(e))
+      class(e2) <- c("callr_remote_error", class(e2))
+      e2$error <- e
       # To find the frame of the evaluated function, we search for
       # do.call in the stack, and then skip one more frame, the other
       # do.call. This method only must change if the eval code changes,
@@ -26,11 +33,11 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         calls,
         function(x) length(x) >= 1 && identical(x[[1]], quote(do.call)),
         logical(1)))[1]
-      if (!is.na(dcframe)) e$`_ignore` <- list(c(1, dcframe + 1L))
-      e$`_pid` <- Sys.getpid()
-      e$`_timestamp` <- Sys.time()
-      e <- err$add_trace_back(e)
-      saveRDS(list("error", e), file = paste0(`__res__`, ".error")) },
+      if (!is.na(dcframe)) e2$`_ignore` <- list(c(1, dcframe + 1L))
+      e2$`_pid` <- Sys.getpid()
+      e2$`_timestamp` <- Sys.time()
+      e2 <- err$add_trace_back(e2)
+      saveRDS(list("error", e2), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
     )
 

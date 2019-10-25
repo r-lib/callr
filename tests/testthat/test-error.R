@@ -140,7 +140,7 @@ test_that("error traces are merged", {
   expect_s3_class(cond$parent, "error")
   expect_s3_class(cond$trace, "rlib_trace")
 
-  expect_equal(length(cond$trace$nframe), 2)
+  expect_equal(length(cond$trace$nframes), 2)
   expect_true(cond$trace$nframe[1] < cond$trace$nframe[2])
   expect_match(cond$trace$messages[[1]], "subprocess failed: non-numeric")
   expect_match(cond$trace$messages[[2]], "non-numeric argument")
@@ -240,4 +240,10 @@ test_that("errors in r_session$call() are merged", {
       conditionMessage(err[[i]]$parent),
       "non-numeric argument")
   }
+})
+
+test_that("child error is not modified", {
+  err <- tryCatch(callr::r(function() stop("foobar")), error = function(e) e)
+  expect_identical(class(err$parent), c("simpleError", "error", "condition"))
+  expect_null(err$parent$trace)
 })

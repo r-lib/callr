@@ -149,7 +149,9 @@ err <- local({
 
     # If we get here that means that the condition was not caught by
     # an exiting handler. That means that we need to create a trace.
-    cond <- add_trace_back(cond)
+    # If there is a hand-constructed trace already in the error object,
+    # then we'll just leave it there.
+    if (is.null(cond$trace)) cond <- add_trace_back(cond)
 
     # Set up environment to store .Last.error, it will be just before
     # baseenv(), so it is almost as if it was in baseenv() itself, like

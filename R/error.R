@@ -36,10 +36,3 @@ print.callr_error <- function(x, ...) {
   err$.internal$print_rlib_error(x)
   invisible(x)
 }
-
-#' @export
-
-print.callr_remote_trace <- function(x, ...) {
-  err$.internal$print_rlib_trace(x)
-  invisible(x)
-}
