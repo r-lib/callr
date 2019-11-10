@@ -1,4 +1,8 @@
 
+# dev
+
+* Better printing of `rlang_error`s that happened in the subprocess.
+
 # callr 3.3.2
 
 No user visible changes in this version.
