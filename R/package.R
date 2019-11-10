@@ -19,6 +19,8 @@ env_file <- NULL
   env <- new.env(parent = emptyenv())
   env$`__callr_data__` <- new.env(parent = baseenv())
 
+  err$onload_hook()
+
   # We need some R code in the subprocess, we parse it here, so the
   # subprocess just needs to load it. This code will also load the
   # shared lib of the compiled functions that we need.
