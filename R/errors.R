@@ -59,6 +59,12 @@
 #
 # * Register print methods via onload_hook() function, call from .onLoad()
 # * Print the error manually, and the trace in non-interactive sessions
+#
+# ### 1.1.1 -- 2019-11-10
+#
+# * Only use `trace` in parent errors if they are `rlib_error`s.
+#   Because e.g. `rlang_error`s also have a trace, with a slightly
+#   different format.
 
 err <- local({
 
@@ -343,9 +349,11 @@ err <- local({
     if (is.null(cond$parent)) {
       # Nothing to do, no parent
 
-    } else if (is.null(cond$parent$trace)) {
+    } else if (is.null(cond$parent$trace) ||
+               !inherits(cond$parent, "rlib_error")) {
       # If the parent does not have a trace, that means that it is using
-      # the same trace as us.
+      # the same trace as us. We ignore traces from non-r-lib errors.
+      # E.g. rlang errors have a trace, but we do not use that.
       parent <- cond
       while (!is.null(parent <- parent$parent)) {
         nframes <- c(nframes, parent$`_nframe`)
