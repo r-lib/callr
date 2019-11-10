@@ -1,5 +1,5 @@
 
-# dev
+# development version
 
 * Better printing of `rlang_error`s that happened in the subprocess.
 
