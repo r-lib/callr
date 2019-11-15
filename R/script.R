@@ -67,7 +67,12 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       msg <- paste0("base64::", pxlib$base64_encode(serialize(e, NULL)))
       data <- paste(e$code, msg, "\n")
       pxlib$write_fd(3L, data)
-      if (!is.null(findRestart("muffleMessage"))) {
+
+      if (inherits(e, "cli_message") &&
+          !is.null(findRestart("cli_message_handled"))) {
+        invokeRestart("cli_message_handled")
+      } else if (inherits(e, "message") &&
+                 !is.null(findRestart("muffleMessage"))) {
         invokeRestart("muffleMessage")
       }
     })
