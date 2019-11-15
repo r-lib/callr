@@ -681,10 +681,13 @@ rs__handle_condition <- function(cond) {
     }
   }
 
+  if (is.list(cond) && is.null(cond$muffle)) {
+    cond$muffle <- "callr_r_session_muffle"
+  }
   withRestarts({
     signalCondition(cond)
     default_handler(cond)
-  }, muffleMessage = function() NULL)
+  }, callr_r_session_muffle = function() NULL)
 
   invisible()
 }
