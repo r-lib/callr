@@ -65,6 +65,13 @@
 # * Only use `trace` in parent errors if they are `rlib_error`s.
 #   Because e.g. `rlang_error`s also have a trace, with a slightly
 #   different format.
+#
+# ### 1.2.0 -- 2019-11-13
+#
+# * Fix the trace if a non-thrown error is re-thrown.
+# * Provide print_this() and print_parents() to make it easier to define
+#   custom print methods.
+# * Fix annotating our throw() methods with the incorrect `base::`.
 
 err <- local({
 
@@ -242,7 +249,7 @@ err <- local({
     for (h in names(handlers)) {
       cl[[h]] <- function(e) {
         # This will be NULL if the error is not throw()-n
-        if (is.null(e$`_nframe`)) e$`_nframe` <- sys.parent()
+        if (is.null(e$`_nframe`)) e$`_nframe` <- length(sys.calls())
         e$`_childcall` <- realcall
         e$`_childframe` <- realframe
         # We drop after realframe, until the first withCallingHandlers
@@ -278,7 +285,7 @@ err <- local({
       expr,
       error = function(e) {
         # This will be NULL if the error is not throw()-n
-        if (is.null(e$`_nframe`)) e$`_nframe` <- sys.parent()
+        if (is.null(e$`_nframe`)) e$`_nframe` <- length(sys.calls())
         e$`_childcall` <- realcall
         e$`_childframe` <- realframe
         # We just ignore the withCallingHandlers call, and the tail
@@ -339,7 +346,7 @@ err <- local({
     envs <- lapply(frames, env_label)
     topenvs <- lapply(
       seq_along(frames),
-      function(i) env_label(topenv(environment(sys.function(i)))))
+      function(i) env_label(topenvx(environment(sys.function(i)))))
     nframes <- if (!is.null(cond$`_nframe`)) cond$`_nframe` else sys.parent()
     messages <- list(conditionMessage(cond))
     ignore <- cond$`_ignore`
@@ -383,6 +390,10 @@ err <- local({
     cond
   }
 
+  topenvx <- function(x) {
+    topenv(x, matchThisEnv = err_env)
+  }
+
   new_trace <- function (calls, parents, envs, topenvs, nframes, messages,
                          ignore, classes, pids) {
     indices <- seq_along(calls)
@@ -408,6 +419,9 @@ err <- local({
   }
 
   env_name <- function(env) {
+    if (identical(env, err_env)) {
+      return("")
+    }
     if (identical(env, globalenv())) {
       return("global")
     }
@@ -426,8 +440,7 @@ err <- local({
 
   # -- printing ---------------------------------------------------------
 
-  print_rlib_error <- function(x, ...) {
-
+  print_this <- function(x, ...) {
     msg <- conditionMessage(x)
     call <- conditionCall(x)
     cl <- class(x)[1L]
@@ -443,12 +456,20 @@ err <- local({
       cat(" in process", x$`_pid`, "\n")
     }
 
+    invisible(x)
+  }
+
+  print_parents <- function(x, ...) {
     if (!is.null(x$parent)) {
       cat("-->\n")
       print(x$parent)
     }
-
     invisible(x)
+  }
+
+  print_rlib_error <- function(x, ...) {
+    print_this(x, ...)
+    print_parents(x, ...)
   }
 
   print_rlib_trace <- function(x, ...) {
@@ -649,12 +670,12 @@ err <- local({
     paste0(crayon::yellow(call), rest)
   }
 
-  env <- environment()
-  parent.env(env) <- baseenv()
+  err_env <- environment()
+  parent.env(err_env) <- baseenv()
 
   structure(
     list(
-      .internal      = env,
+      .internal      = err_env,
       new_cond       = new_cond,
       new_error      = new_error,
       throw          = throw,
@@ -662,7 +683,9 @@ err <- local({
       catch_rethrow  = catch_rethrow,
       rethrow_call   = rethrow_call,
       add_trace_back = add_trace_back,
-      onload_hook    = onload_hook
+      onload_hook    = onload_hook,
+      print_this     = print_this,
+      print_parents  = print_parents
     ),
     class = c("standalone_errors", "standalone"))
 })
