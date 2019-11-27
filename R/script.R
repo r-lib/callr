@@ -1,6 +1,7 @@
 
 make_vanilla_script_expr <- function(expr_file, res, error,
-                                     pre_hook = NULL, post_hook = NULL) {
+                                     pre_hook = NULL, post_hook = NULL,
+                                     messages = FALSE) {
 
   ## Code to handle errors in the child
   ## This will inserted into the main script
@@ -60,22 +61,26 @@ make_vanilla_script_expr <- function(expr_file, res, error,
     throw(new_error("Unknown `error` argument: `", error, "`"))
   }
 
-  message <- function() {
-    substitute({
-      pxlib <- as.environment("tools:callr")$`__callr_data__`$pxlib
-      if (is.null(e$code)) e$code <- "301"
-      msg <- paste0("base64::", pxlib$base64_encode(serialize(e, NULL)))
-      data <- paste(e$code, msg, "\n")
-      pxlib$write_fd(3L, data)
+  if (messages) {
+    message <- function() {
+      substitute({
+        pxlib <- as.environment("tools:callr")$`__callr_data__`$pxlib
+        if (is.null(e$code)) e$code <- "301"
+        msg <- paste0("base64::", pxlib$base64_encode(serialize(e, NULL)))
+        data <- paste(e$code, msg, "\n")
+        pxlib$write_fd(3L, data)
 
-      if (inherits(e, "cli_message") &&
-          !is.null(findRestart("cli_message_handled"))) {
-        invokeRestart("cli_message_handled")
-      } else if (inherits(e, "message") &&
-                 !is.null(findRestart("muffleMessage"))) {
-        invokeRestart("muffleMessage")
-      }
-    })
+        if (inherits(e, "cli_message") &&
+            !is.null(findRestart("cli_message_handled"))) {
+          invokeRestart("cli_message_handled")
+        } else if (inherits(e, "message") &&
+                   !is.null(findRestart("muffleMessage"))) {
+          invokeRestart("muffleMessage")
+        }
+      })
+    }
+  } else {
+    message <- function() substitute(signalCondition(e))
   }
 
   ## The function to run and its arguments are saved as a list:

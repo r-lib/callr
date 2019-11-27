@@ -308,7 +308,8 @@ rs_call <- function(self, private, func, args) {
   expr <- make_vanilla_script_expr(private$options$func_file,
                                    private$options$result_file,
                                    private$options$error,
-                                   pre_hook = pre, post_hook = post)
+                                   pre_hook = pre, post_hook = post,
+                                   messages = TRUE)
   cmd <- paste0(deparse(expr), "\n")
 
   ## Write this to stdin
