@@ -61,3 +61,7 @@ env_file <- NULL
   saveRDS(env, file = env_file, version = 2, compress = FALSE)
   invisible()
 }
+
+.onUnload <- function(libpath) {
+  if (!is.null(env_file)) unlink(env_file)
+}
