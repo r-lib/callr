@@ -2,7 +2,7 @@
 setup_script_files <- function(options) {
   within(options, {
     func_file   <- save_function_to_temp(options)
-    result_file <- tempfile()
+    result_file <- tempfile("callr-res-")
     script_file <- make_vanilla_script_file(
       func_file, result_file, options$error)
     tmp_files <- c(tmp_files, func_file, script_file, result_file)
@@ -10,7 +10,7 @@ setup_script_files <- function(options) {
 }
 
 save_function_to_temp <- function(options) {
-  tmp <- tempfile()
+  tmp <- tempfile("callr-fun-")
   environment(options$func) <- .GlobalEnv
   saveRDS(list(options$func, options$args), file = tmp)
   tmp
@@ -47,8 +47,8 @@ setup_context <- function(options) {
 
 make_profiles <- function(system, user, repos, libpath, load_hook) {
 
-  profile_system <- tempfile()
-  profile_user <- tempfile()
+  profile_system <- tempfile("callr-spr-")
+  profile_user <- tempfile("callr-upr-")
 
   ## Create file2
   cat("", file = profile_system)
@@ -96,8 +96,8 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
 
 make_environ <- function(profiles, libpath) {
 
-  env_sys <- tempfile()
-  env_user <- tempfile()
+  env_sys <- tempfile("callr-sev-")
+  env_user <- tempfile("callr-uev-")
 
   for (ef in c(env_sys, env_user)) {
     cat("CALLR_CHILD_R_LIBS=\"${R_LIBS}\"\n",
