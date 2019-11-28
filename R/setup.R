@@ -33,12 +33,22 @@ setup_context <- function(options) {
     envs <- make_environ(profiles, libpath)
     tmp_files <- c(tmp_files, envs)
 
+    ## environment variables
+
+    ## First, save these, so we can restore them exactly in the subprocess,
+    ## and sub-subprocesses are not affected by our workarounds
+    save_env <- c("R_ENVIRON", "R_ENVIRON_USER", "R_PROFILE",
+                  "R_PROFILE_USER", "R_LIBS", "R_LIBS_USER", "R_LIBS_SITE")
+    save_set <- save_env %in% names(Sys.getenv())
+    save_nms <- paste0("CALLR_", save_env, "_BAK")
+    env[save_nms[save_set]] <- Sys.getenv(save_env[save_set])
+    env <- env[setdiff(names(env), save_nms[!save_set])]
+
     if (is.na(env["R_ENVIRON"])) env["R_ENVIRON"] <- envs[[1]]
     if (is.na(env["R_ENVIRON_USER"])) env["R_ENVIRON_USER"] <- envs[[2]]
     if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- profiles[[1]]
     if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profiles[[2]]
 
-    ## environment variables
     if (is.na(env["R_LIBS"])) env["R_LIBS"] <- make_path(libpath)
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- make_path(libpath)
     if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- make_path(.Library.site)

@@ -27,29 +27,74 @@ has_locale <- function(l) {
   has
 }
 
-test_paths <- function(drop, keep) {
+test_paths <- function(callr_drop, callr_keep,
+                       system_drop = callr_drop, system_keep = callr_keep,
+                       system_vanilla_drop = system_drop,
+                       system_vanilla_keep = system_keep) {
+
+  # env vars we manipulate and need to restore in the child process
+  envs <- c("R_ENVIRON", "R_ENVIRON_USER", "R_PROFILE", "R_PROFILE_USER",
+            "R_LIBS", "R_LIBS_USER", "R_LIBS_SITE")
+
+  # env vars that should not be set, in addition to the CALLR_*_BAK ones
+  xenvs <- c("CALLR_CHILD_R_LIBS", "CALLR_CHILD_R_LIBS_SITE",
+             "CALLR_CHILD_R_LIBS_USER")
+
+  check_env <- function(subenv) {
+    miss <- paste0("CALLR_", envs, "_BAK")
+    expect_equal(Sys.getenv()[envs], subenv[envs])
+    expect_false(any(miss %in% names(subenv)))
+  }
+
+  fc <- function() {
+    lib <- normalizePath(.libPaths())
+    list(env = Sys.getenv(), lib = lib)
+  }
+
+  out <- callr::r(fc , libpath = callr_keep)
+  expect_equal(
+    out$lib,
+    unique(normalizePath(c(callr_keep, .Library.site, .Library)))
+  )
+  check_env(out$env)
+
   rbin <- setup_r_binary_and_args(list())$bin
   rbin <- shQuote(rbin)
 
   f1 <- function(rbin) {
-    system(paste(rbin, "-q -e \".libPaths()\""), intern = TRUE)
+    lib <- system(paste(rbin, "-q -e \".libPaths()\""), intern = TRUE)
+    list(env = Sys.getenv(), lib = lib)
   }
+
+  out <- callr::r(f1, list(rbin = rbin), libpath = system_keep)
+  if (length(system_keep)) {
+    expect_false(any(grepl(basename(normalizePath(system_keep)), out)))
+  }
+  if (length(system_drop)) {
+    expect_false(any(grepl(basename(normalizePath(system_drop)), out)))
+  }
+  check_env(out$env)
 
   fvanilla <- function(rbin) {
-    system(paste(rbin, "--vanilla -q -e \".libPaths()\""), intern = TRUE)
+    lib <- system(paste(rbin, "--vanilla -q -e \".libPaths()\""), intern = TRUE)
+    list(env = Sys.getenv(), lib = lib)
   }
 
-  expect_equal(
-    callr::r(function() normalizePath(.libPaths()), libpath = keep),
-    unique(normalizePath(c(keep, .Library.site, .Library))))
-
-  out <- callr::r(f1, list(rbin = rbin), libpath = keep)
-  expect_true(any(grepl(basename(normalizePath(keep)), out)))
-  expect_false(any(grepl(basename(normalizePath(drop)), out)))
-
-  outvanilla <- callr::r(fvanilla, list(rbin = rbin), libpath = keep)
-  expect_true(any(grepl(basename(normalizePath(keep)), outvanilla)))
-  expect_false(any(grepl(basename(normalizePath(drop)), outvanilla)))
+  outvanilla <- callr::r(
+    fvanilla, list(rbin = rbin),
+    libpath = system_vanilla_keep
+  )
+  if (length(system_vanilla_keep)) {
+    expect_false(
+      any(grepl(basename(normalizePath(system_vanilla_keep)), outvanilla))
+    )
+  }
+  if (length(system_vanilla_drop)) {
+    expect_false(
+      any(grepl(basename(normalizePath(system_vanilla_drop)), outvanilla))
+    )
+  }
+  check_env(out$env)
 }
 
 skip_if_offline <- function(host = "httpbin.org", port = 80) {
