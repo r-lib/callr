@@ -30,6 +30,9 @@ rscript <- function(script, cmdargs = character(), libpath = .libPaths(),
 
   options <- setup_rscript_binary_and_args(options)
 
+  ## This cleans up everything...
+  on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
+
   invisible(run_r(options))
 }
 
