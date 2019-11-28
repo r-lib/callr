@@ -48,7 +48,11 @@ r_process <- R6::R6Class(
     initialize = function(options)
       rp_init(self, private, super, options),
     get_result = function()
-      rp_get_result(self, private)
+      rp_get_result(self, private),
+    finalize = function() {
+      unlink(private$options$tmp_files, recursive = TRUE)
+      if ("finalize" %in% ls(super)) super$finalize()
+    }
   ),
   private = list(
     options = NULL
