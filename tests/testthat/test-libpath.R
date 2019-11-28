@@ -188,6 +188,8 @@ test_that("libpath in system, if subprocess changes R_LIBS #2", {
 })
 
 test_that("libpath in system, in R CMD INSTALL", {
+  skip_on_cran()
+
   csomag <- test_path("fixtures","csomag")
   tmplib <- tempfile()
   dir.create(tmplib)
