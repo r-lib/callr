@@ -58,3 +58,29 @@ test_that("can read stdout and stderr", {
   rm(x)
   gc()
 })
+
+test_that("cleans up temporary files", {
+
+  skip_on_cran()
+
+  rbg <- function() {
+    library(callr)
+    old <- dir(tempdir(), pattern = "^callr-")
+    rp <- callr::r_bg(function() 1+1)
+    on.exit(tryCatch(rp$kill, error = function(e) NULL), add = TRUE)
+    rp$wait(5000)
+    rp$kill()
+    result <- rp$get_result()
+
+    rm(rp)
+    gc()
+    gc()
+    new <- setdiff(dir(tempdir(), "^callr-"), old)
+
+    list(result = result, new = new)
+  }
+
+  out <- r(rbg)
+  expect_identical(out$result, 2)
+  expect_identical(out$new, character())
+})

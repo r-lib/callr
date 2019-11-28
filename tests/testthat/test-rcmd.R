@@ -86,3 +86,24 @@ test_that("stderr -> stdout", {
     "installing.*No man pages found.*testing if installed package")
   gc()
 })
+
+test_that("cleans up temp files", {
+  skip_on_cran()
+
+  rc <- function() {
+    library(callr)
+    scriptfile <- tempfile(fileext = ".R")
+
+    old <- dir(tempdir(), pattern = "^callr-")
+
+    result <- callr::rcmd("config", "CC")
+
+    new <- setdiff(dir(tempdir(), "^callr-"), old)
+
+    list(result = result, new = new)
+  }
+
+  out <- r(rc)
+  expect_identical(out$result$status, 0L)
+  expect_identical(out$new, character())
+})
