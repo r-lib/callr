@@ -59,6 +59,9 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
   options <- setup_callbacks(options)
   options <- setup_rcmd_binary_and_args(options)
 
+  ## This cleans up everything...
+  on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
+
   run_r(options)
 }
 

@@ -200,3 +200,22 @@ test_that("callr messages do not cause problems", {
   expect_equal(readLines(out), "stdout")
   expect_equal(readLines(err), "stderr")
 })
+
+test_that("cleans up temp files", {
+  skip_on_cran()
+
+  rsc <- function() {
+    library(callr)
+    old <- dir(tempdir(), pattern = "^callr-")
+
+    result <- callr::r(function() 1+1)
+
+    new <- setdiff(dir(tempdir(), "^callr-"), old)
+
+    list(result = result, new = new)
+  }
+
+  out <- r(rsc)
+  expect_identical(out$result, 2)
+  expect_identical(out$new, character())
+})

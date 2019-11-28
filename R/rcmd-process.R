@@ -33,7 +33,11 @@ rcmd_process <- R6::R6Class(
   inherit = processx::process,
   public = list(
     initialize = function(options)
-      rcmdp_init(self, private, super, options)
+      rcmdp_init(self, private, super, options),
+    finalize = function() {
+      unlink(private$options$tmp_files, recursive = TRUE)
+      if ("finalize" %in% ls(super)) super$finalize()
+    }
   ),
   private = list(
     options = NULL

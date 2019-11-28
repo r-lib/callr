@@ -40,3 +40,57 @@ test_that("stderr -> stdout", {
   expect_equal(readLines(out2), "out1err1out2err2")
   gc()
 })
+
+test_that("cleans up temporary files", {
+
+  skip_on_cran()
+
+  rsc <- function() {
+    library(callr)
+    scriptfile <- tempfile(fileext = ".R")
+    cat("cat('foobar')\n", file = scriptfile)
+
+    old <- dir(tempdir(), pattern = "^callr-")
+
+    result <- callr::rscript(scriptfile)
+
+    new <- setdiff(dir(tempdir(), "^callr-"), old)
+
+    list(result = result, new = new)
+  }
+
+  out <- r(rsc)
+  expect_identical(out$result$stdout, "foobar")
+  expect_identical(out$new, character())
+})
+
+test_that("bg process cleans up temporary files", {
+
+  skip_on_cran()
+
+  rsc <- function() {
+    library(callr)
+    scriptfile <- tempfile(fileext = ".R")
+    cat("cat('foobar')\n", file = scriptfile)
+
+    old <- dir(tempdir(), pattern = "^callr-")
+
+    opts <- rscript_process_options(script = scriptfile)
+    rp <- rscript_process$new(opts)
+    on.exit(tryCatch(rp$kill, error = function(e) NULL), add = TRUE)
+    rp$wait(5000)
+    result <- rp$read_output()
+    rp$kill()
+
+    rm(rp)
+    gc()
+    gc()
+    new <- setdiff(dir(tempdir(), "^callr-"), old)
+
+    list(result = result, new = new)
+  }
+
+  out <- r(rsc)
+  expect_identical(out$result, "foobar")
+  expect_identical(out$new, character())
+})

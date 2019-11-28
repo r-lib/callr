@@ -151,6 +151,7 @@ r_session <- R6::R6Class(
     finalize = function() {
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
+      unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     },
     print = function(...) {

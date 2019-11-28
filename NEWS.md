@@ -1,6 +1,9 @@
 
 # development version
 
+* All callr functions and background processes properly clean up
+  temporary files now (#104).
+
 * Better printing of `rlang_error`s that happened in the subprocess.
 
 # callr 3.3.2
