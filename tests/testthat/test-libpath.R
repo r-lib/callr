@@ -199,11 +199,13 @@ test_that("libpath in system, in R CMD INSTALL", {
 
   out <- callr::r(function(pkg, lib, savefile) {
     Sys.setenv(CALLR_DUMP_HERE = savefile)
+    ## We need to do this, otherwise install.packages() only keeps the
+    ## first library
+    Sys.unsetenv("_R_CHECK_INSTALL_DEPENDS_")
     install.packages(pkg, lib = lib, repos = NULL, type = "source")
   }, list(csomag, tmplib, dump))
 
   data <- readRDS(dump)
-  if (!interactive()) print(data)
   ## We test the basename, in case a normalizePath makes dirnames differ
   expect_true(basename(tmplib) %in% basename(data$libpaths))
 
