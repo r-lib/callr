@@ -61,7 +61,7 @@ convert_and_check_my_args <- function(options) {
       is.function(block_callback),
     no("spinner") || is_flag(spinner),
     is_flag(system_profile),
-    is_flag(user_profile),
+    is_flag(user_profile) || identical(user_profile, "project"),
     is.character(env),
     no("timeout") || (length(timeout) == 1 && !is.na(timeout)),
     no("wd") || is_string(wd),

@@ -5,9 +5,11 @@ finalizer
 igraph
 interruptible
 macOS
+packrat
 pkgdown
 pollable
 processx
+renv
 REPL
 subcommand
 subprocess

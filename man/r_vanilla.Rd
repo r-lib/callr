@@ -6,7 +6,7 @@
 \usage{
 r_vanilla(func, args = list(), libpath = character(), repos = c(CRAN
   = "@CRAN@"), cmdargs = "--slave", system_profile = FALSE,
-  user_profile = FALSE, env = character(), ...)
+  user_profile = "project", env = character(), ...)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -41,7 +41,10 @@ supplied function and some error handling code.}
 
 \item{system_profile}{Whether to use the system profile file.}
 
-\item{user_profile}{Whether to use the user's profile file.}
+\item{user_profile}{Whether to use the user's profile file.
+If this is \code{"project"}, then only the profile from the working
+directory is used, but the \code{R_PROFILE_USER} environment variable
+and the user level profile is not.}
 
 \item{env}{Environment variables to set for the child process.}
 
