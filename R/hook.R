@@ -9,6 +9,26 @@ common_hook <- function() {
     data$pxlib <- data$load_client_lib(data$sofile)
     options(error = function() invokeRestart("abort"))
     rm(list = c("data", "env"))
+
+    lapply(
+      c("R_ENVIRON", "R_ENVIRON_USER", "R_PROFILE", "R_PROFILE_USER",
+        "R_LIBS", "R_LIBS_USER", "R_LIBS_SITE"),
+      function(var) {
+        bakvar <- paste0("CALLR_", var, "_BAK")
+        val <- Sys.getenv(bakvar, NA_character_)
+        if (!is.na(val)) {
+          do.call("Sys.setenv", structure(list(val), names = var))
+        } else {
+          Sys.unsetenv(var)
+        }
+        Sys.unsetenv(bakvar)
+      }
+    )
+
+    Sys.unsetenv("CALLR_CHILD_R_LIBS")
+    Sys.unsetenv("CALLR_CHILD_R_LIBS_SITE")
+    Sys.unsetenv("CALLR_CHILD_R_LIBS_USER")
+
   }, list("__envfile__" = env_file))
 }
 

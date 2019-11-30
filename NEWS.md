@@ -4,6 +4,11 @@
 * All callr functions and background processes properly clean up
   temporary files now (#104).
 
+* callr now uses a more principled setup for the library path, and
+  restores the related environment variables in the child process.
+  This is a **breaking change** if you relied on having the library set
+  in a `system()` subprocess of the callr subprocess (#114).
+
 * Better printing of `rlang_error`s that happened in the subprocess.
 
 * callr now loads `.Rprofile` files from the current working directory
