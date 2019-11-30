@@ -4,6 +4,7 @@ Eval
 finalizer
 igraph
 interruptible
+keyring
 macOS
 packrat
 pkgdown

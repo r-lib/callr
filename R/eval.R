@@ -116,7 +116,7 @@
 #' `callr` makes a copy of the user's `.Renviron` file and potentially of
 #' the local or user `.Rprofile`, in the session temporary
 #' directory. Avoid storing sensitive information such as passwords, in
-#' your environment file or your profile, otherwise this infomation will
+#' your environment file or your profile, otherwise this information will
 #' get scattered in various files, at least temporarily, until the
 #' subprocess finishes. You can use the keyring package to avoid passwords
 #' in plain files.
