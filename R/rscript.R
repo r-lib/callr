@@ -16,7 +16,7 @@ rscript <- function(script, cmdargs = character(), libpath = .libPaths(),
                     stdout = NULL, stderr = NULL,
                     poll_connection = TRUE, echo = FALSE, show = TRUE,
                     callback = NULL, block_callback = NULL, spinner = FALSE,
-                    system_profile = FALSE, user_profile = FALSE,
+                    system_profile = FALSE, user_profile = "project",
                     env = rcmd_safe_env(), timeout = Inf, wd = ".",
                     fail_on_status = TRUE, color = TRUE, ...) {
 

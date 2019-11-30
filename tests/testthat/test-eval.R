@@ -219,3 +219,15 @@ test_that("cleans up temp files", {
   expect_identical(out$result, 2)
   expect_identical(out$new, character())
 })
+
+test_that("local .Rprofile is loaded", {
+  tmp <- tempfile()
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  dir.create(tmp)
+  wd <- getwd()
+  on.exit(setwd(wd), add = TRUE)
+  setwd(tmp)
+  cat("aa <- 123\n", file = ".Rprofile")
+  out <- callr::r(function() aa)
+  expect_equal(out, 123)
+})

@@ -717,7 +717,7 @@ r_session_options_default <- function() {
     error = getOption("callr.error", "error"),
     cmdargs = c("--no-readline", "--slave", "--no-save", "--no-restore"),
     system_profile = FALSE,
-    user_profile = FALSE,
+    user_profile = "project",
     env = c(TERM = "dumb"),
     supervise = FALSE,
     load_hook = NULL,

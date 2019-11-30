@@ -47,7 +47,7 @@ rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  stdout = NULL, stderr = NULL, poll_connection = TRUE,
                  echo = FALSE, show = FALSE, callback = NULL,
                  block_callback = NULL, spinner = show && interactive(),
-                 system_profile = FALSE, user_profile = FALSE,
+                 system_profile = FALSE, user_profile = "project",
                  env = rcmd_safe_env(), timeout = Inf, wd = ".",
                  fail_on_status = FALSE, ...) {
 

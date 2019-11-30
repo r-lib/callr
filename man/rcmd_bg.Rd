@@ -7,7 +7,7 @@
 rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(),
   stdout = "|", stderr = "|", poll_connection = TRUE,
   repos = default_repos(), system_profile = FALSE,
-  user_profile = FALSE, env = rcmd_safe_env(), wd = ".",
+  user_profile = "project", env = rcmd_safe_env(), wd = ".",
   supervise = FALSE, ...)
 }
 \arguments{
@@ -40,7 +40,10 @@ as it is set using the system or the user profile.}
 
 \item{system_profile}{Whether to use the system profile file.}
 
-\item{user_profile}{Whether to use the user's profile file.}
+\item{user_profile}{Whether to use the user's profile file.
+If this is \code{"project"}, then only the profile from the working
+directory is used, but the \code{R_PROFILE_USER} environment variable
+and the user level profile is not.}
 
 \item{env}{Environment variables to set for the child process.}
 

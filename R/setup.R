@@ -62,14 +62,20 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
     if (file.exists(sys)) file.append(profile_system, sys)
   }
 
-  if (user) {
+  if (identical(user, "project")) {
+    local <- ".Rprofile"
+    if (file.exists(local)) user <- local else user <- NA_character_
+  } else if (user) {
     user <- Sys.getenv("R_PROFILE_USER", NA_character_)
     local <- ".Rprofile"
     home  <- path.expand("~/.Rprofile")
     if (is.na(user) && file.exists(local)) user <- local
     if (is.na(user) && file.exists(home)) user <- home
-    if (!is.na(user) && file.exists(user)) file.append(profile_user, user)
+  } else {
+    user <- NA_character_
   }
+
+  if (!is.na(user) && file.exists(user)) file.append(profile_user, user)
 
   ## Override repos, as requested
   for (p in c(profile_system, profile_user)) {

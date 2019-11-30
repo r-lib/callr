@@ -6,6 +6,10 @@
 
 * Better printing of `rlang_error`s that happened in the subprocess.
 
+* callr now loads `.Rprofile` files from the current working directory
+  by default. This works better with packrat, renv, and other software
+  that relies on a local profile for initialization (#131).
+
 # callr 3.3.2
 
 No user visible changes in this version.

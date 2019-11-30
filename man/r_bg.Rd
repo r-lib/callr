@@ -8,7 +8,7 @@ r_bg(func, args = list(), libpath = .libPaths(),
   repos = default_repos(), stdout = "|", stderr = "|",
   poll_connection = TRUE, error = getOption("callr.error", "error"),
   cmdargs = c("--slave", "--no-save", "--no-restore"),
-  system_profile = FALSE, user_profile = FALSE,
+  system_profile = FALSE, user_profile = "project",
   env = rcmd_safe_env(), supervise = FALSE, ...)
 }
 \arguments{
@@ -66,7 +66,10 @@ supplied function and some error handling code.}
 
 \item{system_profile}{Whether to use the system profile file.}
 
-\item{user_profile}{Whether to use the user's profile file.}
+\item{user_profile}{Whether to use the user's profile file.
+If this is \code{"project"}, then only the profile from the working
+directory is used, but the \code{R_PROFILE_USER} environment variable
+and the user level profile is not.}
 
 \item{env}{Environment variables to set for the child process.}
 

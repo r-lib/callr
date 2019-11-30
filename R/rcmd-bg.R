@@ -19,7 +19,7 @@ rcmd_bg <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                     stdout = "|", stderr = "|",
                     poll_connection = TRUE,
                     repos = default_repos(),
-                    system_profile = FALSE, user_profile = FALSE,
+                    system_profile = FALSE, user_profile = "project",
                     env = rcmd_safe_env(), wd = ".",
                     supervise = FALSE, ...) {
 

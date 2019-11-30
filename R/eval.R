@@ -77,6 +77,9 @@
 #'   `show = TRUE` and the R session is interactive.
 #' @param system_profile Whether to use the system profile file.
 #' @param user_profile Whether to use the user's profile file.
+#'   If this is `"project"`, then only the profile from the working
+#'   directory is used, but the `R_PROFILE_USER` environment variable
+#'   and the user level profile is not.
 #' @param env Environment variables to set for the child process.
 #' @param timeout Timeout for the function call to finish. It can be a
 #'   [base::difftime] object, or a real number, meaning seconds.
@@ -128,7 +131,7 @@ r <- function(func, args = list(), libpath = .libPaths(),
               cmdargs = c("--slave", "--no-save", "--no-restore"),
               show = FALSE, callback = NULL,
               block_callback = NULL, spinner = show && interactive(),
-              system_profile = FALSE, user_profile = FALSE,
+              system_profile = FALSE, user_profile = "project",
               env = rcmd_safe_env(), timeout = Inf, ...) {
 
   ## This contains the context that we set up in steps
