@@ -35,6 +35,18 @@ defaults:
 \item No extra environment variables are defined.
 }
 }
+\section{Security considerations}{
+
+
+\code{callr} makes a copy of the user's \code{.Renviron} file and potentially of
+the local or user \code{.Rprofile}, in the session temporary
+directory. Avoid storing sensitive information such as passwords, in
+your environment file or your profile, otherwise this infomation will
+get scattered in various files, at least temporarily, until the
+subprocess finishes. You can use the keyring package to avoid passwords
+in plain files.
+}
+
 \seealso{
 Other R CMD commands: \code{\link{rcmd_bg}},
   \code{\link{rcmd}}

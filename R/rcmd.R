@@ -29,6 +29,7 @@
 #' @param fail_on_status Whether to throw an R error if the command returns
 #'   with a non-zero status code. By default no error is thrown.
 #' @inheritParams r
+#' @inheritSection r Security considerations
 #' @return A list with the command line `$command`),
 #'   standard output (`$stdout`), standard error (`stderr`),
 #'   exit status (`$status`) of the external `R CMD` command, and
@@ -118,6 +119,7 @@ rcmd_safe_env <- function() {
 #' * The `repos` options is unchanged.
 #' * No extra environment variables are defined.
 #'
+#' @inheritSection r Security considerations
 #' @inheritParams rcmd
 #' @param ... Additional arguments are passed to [rcmd()].
 #'

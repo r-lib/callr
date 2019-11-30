@@ -4,6 +4,7 @@
 #' The child process is started in the background, and the function
 #' return immediately.
 #'
+#' @inheritSection r Security considerations
 #' @inheritParams rcmd
 #' @param supervise Whether to register the process with a supervisor. If \code{TRUE},
 #'   the supervisor will ensure that the process is killed when the R process

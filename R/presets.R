@@ -8,6 +8,7 @@
 #'
 #' @param ... Additional arguments are passed to [r()].
 #' @inheritParams r
+#' @inheritSection r Security considerations
 #'
 #' @family callr functions
 #' @export
@@ -45,6 +46,7 @@ r_safe <- r
 #' * The system profile and the user profile are loaded.
 #' * No extra environment variables are set up.
 #'
+#' @inheritSection r Security considerations
 #' @inheritParams r
 #' @param ... Additional arguments are passed to [r()].
 #'

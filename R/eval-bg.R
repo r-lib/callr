@@ -4,6 +4,7 @@
 #' Starts evaluating an R function call in a background R process, and
 #' returns immediately.
 #'
+#' @inheritSection r Security considerations
 #' @inheritParams r
 #' @param supervise Whether to register the process with a supervisor. If \code{TRUE},
 #'   the supervisor will ensure that the process is killed when the R process

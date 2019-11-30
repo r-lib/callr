@@ -79,7 +79,8 @@
 #' @param user_profile Whether to use the user's profile file.
 #'   If this is `"project"`, then only the profile from the working
 #'   directory is used, but the `R_PROFILE_USER` environment variable
-#'   and the user level profile is not.
+#'   and the user level profile are not. See also "Security considerations"
+#'   below.
 #' @param env Environment variables to set for the child process.
 #' @param timeout Timeout for the function call to finish. It can be a
 #'   [base::difftime] object, or a real number, meaning seconds.
@@ -109,6 +110,16 @@
 #'
 #' The default error behavior can be also set using the `callr.error`
 #' option. This is useful to debug code that uses `callr`.
+#'
+#' @section Security considerations:
+#'
+#' `callr` makes a copy of the user's `.Renviron` file and potentially of
+#' the local or user `.Rprofile`, in the session temporary
+#' directory. Avoid storing sensitive information such as passwords, in
+#' your environment file or your profile, otherwise this infomation will
+#' get scattered in various files, at least temporarily, until the
+#' subprocess finishes. You can use the keyring package to avoid passwords
+#' in plain files.
 #'
 #' @family callr functions
 #' @examples

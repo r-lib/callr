@@ -4,6 +4,7 @@
 #' It uses the `Rscript` program corresponding to the current R version,
 #' to run the script. It streams `stdout` and `stderr` of the process.
 #'
+#' @inheritSection r Security considerations
 #' @inheritParams rcmd
 #' @param script Path of the script to run.
 #' @param color Whether to use terminal colors in the child process,

@@ -62,7 +62,8 @@ the child R session is running. By default it is shown if
 \item{user_profile}{Whether to use the user's profile file.
 If this is \code{"project"}, then only the profile from the working
 directory is used, but the \code{R_PROFILE_USER} environment variable
-and the user level profile is not.}
+and the user level profile are not. See also "Security considerations"
+below.}
 
 \item{env}{Environment variables to set for the child process.}
 
@@ -87,3 +88,15 @@ assuming they are active in the parent process.}
 It uses the \code{Rscript} program corresponding to the current R version,
 to run the script. It streams \code{stdout} and \code{stderr} of the process.
 }
+\section{Security considerations}{
+
+
+\code{callr} makes a copy of the user's \code{.Renviron} file and potentially of
+the local or user \code{.Rprofile}, in the session temporary
+directory. Avoid storing sensitive information such as passwords, in
+your environment file or your profile, otherwise this infomation will
+get scattered in various files, at least temporarily, until the
+subprocess finishes. You can use the keyring package to avoid passwords
+in plain files.
+}
+
