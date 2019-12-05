@@ -70,9 +70,9 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         data <- paste(e$code, msg, "\n")
         pxlib$write_fd(3L, data)
 
-        if (inherits(e, "cli_message") &&
-            !is.null(findRestart("cli_message_handled"))) {
-          invokeRestart("cli_message_handled")
+        if (inherits(e, "callr_message") &&
+            !is.null(findRestart("callr_message_handled"))) {
+          invokeRestart("callr_message_handled")
         } else if (inherits(e, "message") &&
                    !is.null(findRestart("muffleMessage"))) {
           invokeRestart("muffleMessage")
