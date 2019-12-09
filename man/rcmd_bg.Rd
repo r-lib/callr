@@ -2,13 +2,23 @@
 % Please edit documentation in R/rcmd-bg.R
 \name{rcmd_bg}
 \alias{rcmd_bg}
-\title{Run an \code{R CMD} command in the background}
+\title{Run an \verb{R CMD} command in the background}
 \usage{
-rcmd_bg(cmd, cmdargs = character(), libpath = .libPaths(),
-  stdout = "|", stderr = "|", poll_connection = TRUE,
-  repos = default_repos(), system_profile = FALSE,
-  user_profile = "project", env = rcmd_safe_env(), wd = ".",
-  supervise = FALSE, ...)
+rcmd_bg(
+  cmd,
+  cmdargs = character(),
+  libpath = .libPaths(),
+  stdout = "|",
+  stderr = "|",
+  poll_connection = TRUE,
+  repos = default_repos(),
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  wd = ".",
+  supervise = FALSE,
+  ...
+)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -78,7 +88,8 @@ in plain files.
 }
 
 \seealso{
-Other R CMD commands: \code{\link{rcmd_copycat}},
-  \code{\link{rcmd}}
+Other R CMD commands: 
+\code{\link{rcmd_copycat}()},
+\code{\link{rcmd}()}
 }
 \concept{R CMD commands}

@@ -2,9 +2,9 @@
 % Please edit documentation in R/rcmd-process.R
 \name{rcmd_process}
 \alias{rcmd_process}
-\title{External \code{R CMD} Process}
+\title{External \verb{R CMD} Process}
 \description{
-An \code{R CMD *} command that runs in the background. This is an R6 class
+An \verb{R CMD *} command that runs in the background. This is an R6 class
 that extends the \link{process} class.
 }
 \section{Usage}{

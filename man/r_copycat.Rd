@@ -4,9 +4,17 @@
 \alias{r_copycat}
 \title{Run an R process that mimics the current R process}
 \usage{
-r_copycat(func, args = list(), libpath = .libPaths(),
-  repos = getOption("repos"), cmdargs = "--slave",
-  system_profile = TRUE, user_profile = TRUE, env = character(), ...)
+r_copycat(
+  func,
+  args = list(),
+  libpath = .libPaths(),
+  repos = getOption("repos"),
+  cmdargs = "--slave",
+  system_profile = TRUE,
+  user_profile = TRUE,
+  env = character(),
+  ...
+)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -74,7 +82,8 @@ in plain files.
 }
 
 \seealso{
-Other callr functions: \code{\link{r_vanilla}},
-  \code{\link{r}}
+Other callr functions: 
+\code{\link{r_vanilla}()},
+\code{\link{r}()}
 }
 \concept{callr functions}

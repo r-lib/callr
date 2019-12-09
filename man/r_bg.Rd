@@ -4,12 +4,22 @@
 \alias{r_bg}
 \title{Evaluate an expression in another R session, in the background}
 \usage{
-r_bg(func, args = list(), libpath = .libPaths(),
-  repos = default_repos(), stdout = "|", stderr = "|",
-  poll_connection = TRUE, error = getOption("callr.error", "error"),
+r_bg(
+  func,
+  args = list(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = "|",
+  stderr = "|",
+  poll_connection = TRUE,
+  error = getOption("callr.error", "error"),
   cmdargs = c("--slave", "--no-save", "--no-restore"),
-  system_profile = FALSE, user_profile = "project",
-  env = rcmd_safe_env(), supervise = FALSE, ...)
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  supervise = FALSE,
+  ...
+)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.

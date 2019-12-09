@@ -3,23 +3,51 @@
 \name{rcmd}
 \alias{rcmd}
 \alias{rcmd_safe}
-\title{Run an \code{R CMD} command}
+\title{Run an \verb{R CMD} command}
 \usage{
-rcmd(cmd, cmdargs = character(), libpath = .libPaths(),
-  repos = default_repos(), stdout = NULL, stderr = NULL,
-  poll_connection = TRUE, echo = FALSE, show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show &&
-  interactive(), system_profile = FALSE, user_profile = "project",
-  env = rcmd_safe_env(), timeout = Inf, wd = ".",
-  fail_on_status = FALSE, ...)
+rcmd(
+  cmd,
+  cmdargs = character(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = NULL,
+  stderr = NULL,
+  poll_connection = TRUE,
+  echo = FALSE,
+  show = FALSE,
+  callback = NULL,
+  block_callback = NULL,
+  spinner = show && interactive(),
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  timeout = Inf,
+  wd = ".",
+  fail_on_status = FALSE,
+  ...
+)
 
-rcmd_safe(cmd, cmdargs = character(), libpath = .libPaths(),
-  repos = default_repos(), stdout = NULL, stderr = NULL,
-  poll_connection = TRUE, echo = FALSE, show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show &&
-  interactive(), system_profile = FALSE, user_profile = "project",
-  env = rcmd_safe_env(), timeout = Inf, wd = ".",
-  fail_on_status = FALSE, ...)
+rcmd_safe(
+  cmd,
+  cmdargs = character(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = NULL,
+  stderr = NULL,
+  poll_connection = TRUE,
+  echo = FALSE,
+  show = FALSE,
+  callback = NULL,
+  block_callback = NULL,
+  spinner = show && interactive(),
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  timeout = Inf,
+  wd = ".",
+  fail_on_status = FALSE,
+  ...
+)
 }
 \arguments{
 \item{cmd}{Command to run. See \code{R --help} from the command
@@ -95,13 +123,13 @@ with a non-zero status code. By default no error is thrown.}
 \item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }
 \value{
-A list with the command line \code{$command}),
-standard output (\code{$stdout}), standard error (\code{stderr}),
-exit status (\code{$status}) of the external \code{R CMD} command, and
-whether a timeout was reached (\code{$timeout}).
+A list with the command line \verb{$command}),
+standard output (\verb{$stdout}), standard error (\code{stderr}),
+exit status (\verb{$status}) of the external \verb{R CMD} command, and
+whether a timeout was reached (\verb{$timeout}).
 }
 \description{
-Run an \code{R CMD} command form within R. This will usually start
+Run an \verb{R CMD} command form within R. This will usually start
 another R process, from a shell script.
 }
 \details{
@@ -127,7 +155,8 @@ rcmd("config", "CC")
 }
 }
 \seealso{
-Other R CMD commands: \code{\link{rcmd_bg}},
-  \code{\link{rcmd_copycat}}
+Other R CMD commands: 
+\code{\link{rcmd_bg}()},
+\code{\link{rcmd_copycat}()}
 }
 \concept{R CMD commands}

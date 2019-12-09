@@ -62,7 +62,7 @@ the process is actually ready to run. In the latter case you may call
 session. It throws an error if the function call generated an error in
 the child process.
 
-\code{rs$run_with_output()} is similar to \code{$run()}, but returns the standard
+\code{rs$run_with_output()} is similar to \verb{$run()}, but returns the standard
 output and error of the child process as well. It does not throw on
 errors, but returns a non-zero \code{error} member in the result list.
 

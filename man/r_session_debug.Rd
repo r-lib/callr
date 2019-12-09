@@ -8,21 +8,21 @@ The \code{r_session$debug()} method is an interactive debugger to inspect
 the stack of the background process after an error.
 }
 \details{
-\code{$debug()} starts a REPL (Read-Eval-Print-Loop), that evaluates R
+\verb{$debug()} starts a REPL (Read-Eval-Print-Loop), that evaluates R
 expressions in the subprocess. It is similar to \code{\link[=browser]{browser()}} and
 \code{\link[=debugger]{debugger()}} and also has some extra commands:
 \itemize{
 \item \code{.help} prints a short help message.
 \item \code{.where} prints the complete stack trace of the error. (The same as
-the \code{$traceback()} method.
-\item \code{.inspect <n>} switches the "focus" to frame \code{<n>}. Frame 0 is the
-global environment, so \code{.inspect 0} will switch back to that.
+the \verb{$traceback()} method.
+\item \verb{.inspect <n>} switches the "focus" to frame \verb{<n>}. Frame 0 is the
+global environment, so \verb{.inspect 0} will switch back to that.
 }
 
 To exit the debugger, press the usual interrupt key, i.e. \code{CTRL+c} or
 \code{ESC} in some GUIs.
 
-Here is an example session that uses \code{$debug()} (some output is omitted
+Here is an example session that uses \verb{$debug()} (some output is omitted
 for brevity):\preformatted{# ----------------------------------------------------------------------
 > rs <- r_session$new()
 > rs$run(function() knitr::knit("no-such-file"))

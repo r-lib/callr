@@ -16,8 +16,8 @@ A list of options.
 object from the \code{rcmd_process} class. Its arguments must be named, the
 names are used as option names. The options correspond to (some of)
 the arguments of the \code{\link[=rcmd]{rcmd()}} function. At least the \code{cmd} option must
-be specified, to select the \code{R CMD} subcommand to run. Typically
-\code{cmdargs} is specified as well, to supply more arguments to \code{R CMD}.
+be specified, to select the \verb{R CMD} subcommand to run. Typically
+\code{cmdargs} is specified as well, to supply more arguments to \verb{R CMD}.
 }
 \description{
 Create options for an \link{rcmd_process} object

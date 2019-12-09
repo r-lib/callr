@@ -3,7 +3,6 @@
 \docType{package}
 \name{callr}
 \alias{callr}
-\alias{callr-package}
 \title{Call R from R}
 \description{
 It is sometimes useful to perform a computation in a separate R

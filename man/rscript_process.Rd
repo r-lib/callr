@@ -4,7 +4,7 @@
 \alias{rscript_process}
 \title{External \code{Rscript} process}
 \description{
-An \code{Rscript script.R} command that runs in the background. This is an
+An \verb{Rscript script.R} command that runs in the background. This is an
 R6 class that extends the \link{process} class.
 }
 \section{Usage}{

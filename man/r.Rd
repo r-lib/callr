@@ -5,21 +5,47 @@
 \alias{r_safe}
 \title{Evaluate an expression in another R session}
 \usage{
-r(func, args = list(), libpath = .libPaths(),
-  repos = default_repos(), stdout = NULL, stderr = NULL,
-  poll_connection = TRUE, error = getOption("callr.error", "error"),
-  cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show &&
-  interactive(), system_profile = FALSE, user_profile = "project",
-  env = rcmd_safe_env(), timeout = Inf, ...)
+r(
+  func,
+  args = list(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = NULL,
+  stderr = NULL,
+  poll_connection = TRUE,
+  error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"),
+  show = FALSE,
+  callback = NULL,
+  block_callback = NULL,
+  spinner = show && interactive(),
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  timeout = Inf,
+  ...
+)
 
-r_safe(func, args = list(), libpath = .libPaths(),
-  repos = default_repos(), stdout = NULL, stderr = NULL,
-  poll_connection = TRUE, error = getOption("callr.error", "error"),
-  cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
-  callback = NULL, block_callback = NULL, spinner = show &&
-  interactive(), system_profile = FALSE, user_profile = "project",
-  env = rcmd_safe_env(), timeout = Inf, ...)
+r_safe(
+  func,
+  args = list(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = NULL,
+  stderr = NULL,
+  poll_connection = TRUE,
+  error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"),
+  show = FALSE,
+  callback = NULL,
+  block_callback = NULL,
+  spinner = show && interactive(),
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  timeout = Inf,
+  ...
+)
 }
 \arguments{
 \item{func}{Function object to call in the new R process.
@@ -185,7 +211,8 @@ r(function() .libPaths())
 
 }
 \seealso{
-Other callr functions: \code{\link{r_copycat}},
-  \code{\link{r_vanilla}}
+Other callr functions: 
+\code{\link{r_copycat}()},
+\code{\link{r_vanilla}()}
 }
 \concept{callr functions}
