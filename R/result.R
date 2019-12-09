@@ -66,14 +66,8 @@ get_result <- function(output, options) {
   if (remerr[[1]] == "error") {
     remerr[[2]]$message <- remerr[[2]]$message %||% "interrupt"
     msg <- conditionMessage(remerr[[2]]$error)
-    # We construct a new error object, that merges the trace of the
-    # subprocess to the current trace. But it uses the original error
-    # object otherwise, saved in remerr[[2]]$error.
     newerr <- new_callr_error(output, msg)
-    newerr$parent <- remerr[[2]]
-    newerr <- err$add_trace_back(newerr)
-    newerr$parent <- remerr[[2]]$error
-    throw(newerr)
+    throw(newerr, parent = remerr[[2]])
 
   } else if (remerr[[1]] == "stack") {
     myerr <- structure(

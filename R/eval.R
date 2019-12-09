@@ -55,7 +55,7 @@
 #'   See details below.
 #' @param poll_connection Whether to have a control connection to
 #'   the process. This is used to transmit messages from the subprocess
-#'   to the parent.
+#'   to the main process.
 #' @param cmdargs Command line arguments to pass to the R process.
 #'   Note that `c("-f", rscript)` is appended to this, `rscript`
 #'   is the name of the script file to run. This contains a call to the
@@ -94,22 +94,26 @@
 #'
 #' `callr` handles errors properly. If the child process throws an
 #' error, then `callr` throws an error with the same error message
-#' in the parent process.
+#' in the main process.
 #'
 #' The `error` expert argument may be used to specify a different
 #' behavior on error. The following values are possible:
-#' * `error` is the default behavior: throw an error in the parent, with
-#'   the same error message. In fact the same error object is thrown again.
-#' * `stack` also throws an error in the parent, but the error
+#' * `error` is the default behavior: throw an error in the main process,
+#'   with a prefix and the same error message as in the subprocess.
+#' * `stack` also throws an error in the main process, but the error
 #'   is of a special kind, class `callr_error`, and it contains
 #'   both the original error object, and the call stack of the child,
-#'   as written out by [utils::dump.frames()].
+#'   as written out by [utils::dump.frames()]. This is now deprecated,
+#'   because the error thrown for `"error"` has the same information.
 #' * `debugger` is similar to `stack`, but in addition
 #'   to returning the complete call stack, it also start up a debugger
 #'   in the child call stack, via [utils::debugger()].
 #'
 #' The default error behavior can be also set using the `callr.error`
 #' option. This is useful to debug code that uses `callr`.
+#'
+#' callr uses parent errors, to keep the stacks of the main process and the
+#' subprocess(es) in the same error object. 
 #'
 #' @section Security considerations:
 #'

@@ -54,7 +54,7 @@ string \code{"2>&1"}, then standard error is redirected to standard output.}
 
 \item{poll_connection}{Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess
-to the parent.}
+to the main process.}
 
 \item{error}{What to do if the remote process throws an error.
 See details below.}
