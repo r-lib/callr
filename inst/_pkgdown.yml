@@ -28,6 +28,7 @@ reference:
   contents:
   - r_session
   - r_session_options
+  - r_session_debug
 
 - title: Run R CMD
   contents:

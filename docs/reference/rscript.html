@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -48,6 +50,7 @@ to run the script. It streams stdout and stderr of the process." />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -64,7 +67,7 @@ to run the script. It streams stdout and stderr of the process." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
       </span>
     </div>
 
@@ -72,7 +75,7 @@ to run the script. It streams stdout and stderr of the process." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,7 +102,7 @@ to run the script. It streams stdout and stderr of the process." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -110,6 +113,7 @@ to run the script. It streams stdout and stderr of the process." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -127,13 +131,28 @@ to run the script. It streams <code>stdout</code> and <code>stderr</code> of the
     
     </div>
 
-    <pre class="usage"><span class='fu'>rscript</span>(<span class='no'>script</span>, <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/libPaths'>.libPaths</a></span>(),
-  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(), <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
-  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>rscript</span>(
+  <span class='no'>script</span>,
+  <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>(),
+  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(),
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>echo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='st'>"project"</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(),
+  <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>wd</span> <span class='kw'>=</span> <span class='st'>"."</span>,
+  <span class='kw'>fail_on_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -212,7 +231,11 @@ the child R session is running. By default it is shown if
     </tr>
     <tr>
       <th>user_profile</th>
-      <td><p>Whether to use the user's profile file.</p></td>
+      <td><p>Whether to use the user's profile file.
+If this is <code>"project"</code>, then only the profile from the working
+directory is used, but the <code>R_PROFILE_USER</code> environment variable
+and the user level profile are not. See also "Security considerations"
+below.</p></td>
     </tr>
     <tr>
       <th>env</th>
@@ -221,7 +244,7 @@ the child R session is running. By default it is shown if
     <tr>
       <th>timeout</th>
       <td><p>Timeout for the function call to finish. It can be a
-<a href='https://www.rdocumentation.org/packages/base/topics/difftime'>base::difftime</a> object, or a real number, meaning seconds.
+<a href='https://rdrr.io/r/base/difftime.html'>base::difftime</a> object, or a real number, meaning seconds.
 If the process does not finish before the timeout period expires,
 then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
 means no timeout.</p></td>
@@ -247,16 +270,32 @@ assuming they are active in the parent process.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="security-considerations"><a class="anchor" href="#security-considerations"></a>Security considerations</h2>
+
+    
+
+
+<p><code>callr</code> makes a copy of the user's <code>.Renviron</code> file and potentially of
+the local or user <code>.Rprofile</code>, in the session temporary
+directory. Avoid storing sensitive information such as passwords, in
+your environment file or your profile, otherwise this information will
+get scattered in various files, at least temporarily, until the
+subprocess finishes. You can use the keyring package to avoid passwords
+in plain files.</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#security-considerations">Security considerations</a></li>
+          </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -264,13 +303,16 @@ assuming they are active in the parent process.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

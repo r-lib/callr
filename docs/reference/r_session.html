@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -48,6 +50,7 @@ that extends the processx::process class." />
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -64,7 +67,7 @@ that extends the processx::process class." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
       </span>
     </div>
 
@@ -72,7 +75,7 @@ that extends the processx::process class." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,7 +102,7 @@ that extends the processx::process class." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -110,6 +113,7 @@ that extends the processx::process class." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -135,25 +139,33 @@ be used to evaluate R function calls, one at a time.</p>
     
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-    <pre>rs &lt;- r_session$new(options = r_session_options(), wait = TRUE,
+    
+<pre>rs &lt;- r_session$new(options = r_session_options(), wait = TRUE,
                      wait_timeout = 3000)
-    rs$run(func, args = list())
+
+rs$run(func, args = list())
 rs$run_with_output(func, args = list())
 rs$call(func, args = list())
-    rs$poll_process(timeout)
-    rs$get_state()
+
+rs$poll_process(timeout)
+
+rs$get_state()
 rs$get_running_time()
-    rs$read()
+
+rs$read()
 rs$close(grace = 1000)
-    rs$traceback()
+
+rs$traceback()
 rs$debug()
 rs$attach()
 </pre>
+
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
-    <ul>
+
+<ul>
 <li><p><code>options</code>: A list of options created via <code><a href='r_session_options.html'>r_session_options()</a></code>.</p></li>
 <li><p><code>wait</code>: Whether to wait for the R process to start and be ready
 for running commands.</p></li>
@@ -167,11 +179,13 @@ Please read the notes for the similar argument of <code><a href='r.html'>r()</a>
 exit cleanly, after its standard input is closed. If the process is
 still running after this period, it will be killed.</p></li>
 </ul>
+
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-    <p><code>r_session$new()</code> creates a new R background process. It can wait for the
+
+<p><code>r_session$new()</code> creates a new R background process. It can wait for the
 process to start up (<code>wait = TRUE</code>), or return immediately, i.e. before
 the process is actually ready to run. In the latter case you may call
 <code>rs$poll_process()</code> to make sure it is ready.</p>
@@ -193,7 +207,8 @@ is reached, it returns with <code>"timeout"</code>.</p>
 <li><p><code>"busy"</code>: computing right now,</p></li>
 <li><p><code>"finished"</code>: the R process has finished.</p></li>
 </ul>
-    <p><code>rs$get_running_time()</code> returns the elapsed time since the R process
+
+<p><code>rs$get_running_time()</code> returns the elapsed time since the R process
 has started, and the elapsed time since the current computation has
 started. The latter is NA if there is no active computation.</p>
 <p><code>rs$read()</code> reads an event from the child process, if there is one
@@ -202,7 +217,7 @@ or they can be progress report events.</p>
 <p><code>rs$close()</code> terminates the current computation and the R process.
 The session object will be in <code>"finished"</code> state after this.</p>
 <p>`rs$traceback() can be used after an error in the R subprocess. It is
-equivalent to the <code><a href='https://www.rdocumentation.org/packages/base/topics/traceback'>traceback()</a></code> call, but it is performed in the
+equivalent to the <code><a href='https://rdrr.io/r/base/traceback.html'>traceback()</a></code> call, but it is performed in the
 subprocess.</p>
 <p><code>rs$debug()</code> is an interactive debugger to inspect the dumped frames
 in the subprocess, after an error. See more at <a href='r_session_debug.html'>r_session_debug</a>.</p>
@@ -211,18 +226,18 @@ in the subprocess, after an error. See more at <a href='r_session_debug.html'>r_
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='no'>rs</span> <span class='kw'>&lt;-</span> <span class='no'>r_ression</span>$<span class='fu'>new</span>()
 
 <span class='no'>rs</span>$<span class='fu'><a href='http://processx.r-lib.org/reference/run.html'>run</a></span>(<span class='kw'>function</span>() <span class='fl'>1</span> + <span class='fl'>2</span>)
 
-<span class='no'>rs</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/call'>call</a></span>(<span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.sleep'>Sys.sleep</a></span>(<span class='fl'>1</span>))
+<span class='no'>rs</span>$<span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>1</span>))
 <span class='no'>rs</span>$<span class='fu'>get_state</span>()
 
 <span class='no'>rs</span>$<span class='fu'>poll_process</span>(-<span class='fl'>1</span>)
 <span class='no'>rs</span>$<span class='fu'>get_state</span>()
 <span class='no'>rs</span>$<span class='fu'>read</span>()
-<span class='co'># }</span></pre>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -242,19 +257,23 @@ in the subprocess, after an error. See more at <a href='r_session_debug.html'>r_
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://www.tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -43,6 +45,7 @@ warnings about DOS-style paths, R_TESTS to avoid issues
 when callr is invoked from unit tests, R_BROWSER
 and R_PDFVIEWER to avoid starting a browser or a PDF viewer.
 See rcmd_safe_env().
+
 " />
 <meta name="twitter:card" content="summary" />
 
@@ -56,6 +59,7 @@ See rcmd_safe_env().
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -74,7 +78,7 @@ See rcmd_safe_env().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
       </span>
     </div>
 
@@ -82,7 +86,7 @@ See rcmd_safe_env().
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +113,7 @@ See rcmd_safe_env().
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -120,6 +124,7 @@ See rcmd_safe_env().
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -144,24 +149,51 @@ when <code>callr</code> is invoked from unit tests, <code>R_BROWSER</code>
 and <code>R_PDFVIEWER</code> to avoid starting a browser or a PDF viewer.
 See <code><a href='rcmd_safe.html'>rcmd_safe_env()</a></code>.</p></li>
 </ul>
+
     
     </div>
 
-    <pre class="usage"><span class='fu'>r</span>(<span class='no'>func</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/libPaths'>.libPaths</a></span>(),
-  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(), <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>error</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
-  <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>), <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>(), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>r</span>(
+  <span class='no'>func</span>,
+  <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>(),
+  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(),
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>error</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>),
+  <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>(),
+  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='st'>"project"</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(),
+  <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='no'>...</span>
+)
 
-<span class='fu'>r_safe</span>(<span class='no'>func</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/libPaths'>.libPaths</a></span>(),
-  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(), <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>error</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
-  <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>), <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/interactive'>interactive</a></span>(), <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(), <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>r_safe</span>(
+  <span class='no'>func</span>,
+  <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  <span class='kw'>libpath</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>(),
+  <span class='kw'>repos</span> <span class='kw'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span>(),
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>poll_connection</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>error</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
+  <span class='kw'>cmdargs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>),
+  <span class='kw'>show</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>block_callback</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>spinner</span> <span class='kw'>=</span> <span class='no'>show</span> <span class='kw'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>(),
+  <span class='kw'>system_profile</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>user_profile</span> <span class='kw'>=</span> <span class='st'>"project"</span>,
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='rcmd_safe.html'>rcmd_safe_env</a></span>(),
+  <span class='kw'>timeout</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,14 +237,14 @@ as it is set using the system or the user profile.</p></td>
 the child R process will be written to.
 If the child process runs with the <code>--slave</code> option (the default),
 then the commands are not echoed and will not be shown
-in the standard output. Also note that you need to call <code><a href='https://www.rdocumentation.org/packages/base/topics/print'>print()</a></code>
+in the standard output. Also note that you need to call <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code>
 explicitly to show the output of the command(s).</p></td>
     </tr>
     <tr>
       <th>stderr</th>
       <td><p>The name of the file the standard error of
 the child R process will be written to.
-In particular <code><a href='https://www.rdocumentation.org/packages/base/topics/message'>message()</a></code> sends output to the standard
+In particular <code><a href='https://rdrr.io/r/base/message.html'>message()</a></code> sends output to the standard
 error. If nothing was sent to the standard error, then this file
 will be empty. This argument can be the same file as <code>stdout</code>,
 in which case they will be correctly interleaved. If this is the
@@ -222,7 +254,7 @@ string <code>"2&gt;&amp;1"</code>, then standard error is redirected to standard
       <th>poll_connection</th>
       <td><p>Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess
-to the parent.</p></td>
+to the main process.</p></td>
     </tr>
     <tr>
       <th>error</th>
@@ -232,7 +264,7 @@ See details below.</p></td>
     <tr>
       <th>cmdargs</th>
       <td><p>Command line arguments to pass to the R process.
-Note that <code><a href='https://www.rdocumentation.org/packages/base/topics/c'>c("-f", rscript)</a></code> is appended to this, <code>rscript</code>
+Note that <code><a href='https://rdrr.io/r/base/c.html'>c("-f", rscript)</a></code> is appended to this, <code>rscript</code>
 is the name of the script file to run. This contains a call to the
 supplied function and some error handling code.</p></td>
     </tr>
@@ -269,7 +301,11 @@ the child R session is running. By default it is shown if
     </tr>
     <tr>
       <th>user_profile</th>
-      <td><p>Whether to use the user's profile file.</p></td>
+      <td><p>Whether to use the user's profile file.
+If this is <code>"project"</code>, then only the profile from the working
+directory is used, but the <code>R_PROFILE_USER</code> environment variable
+and the user level profile are not. See also "Security considerations"
+below.</p></td>
     </tr>
     <tr>
       <th>env</th>
@@ -278,7 +314,7 @@ the child R session is running. By default it is shown if
     <tr>
       <th>timeout</th>
       <td><p>Timeout for the function call to finish. It can be a
-<a href='https://www.rdocumentation.org/packages/base/topics/difftime'>base::difftime</a> object, or a real number, meaning seconds.
+<a href='https://rdrr.io/r/base/difftime.html'>base::difftime</a> object, or a real number, meaning seconds.
 If the process does not finish before the timeout period expires,
 then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
 means no timeout.</p></td>
@@ -300,40 +336,59 @@ means no timeout.</p></td>
     <h2 class="hasAnchor" id="error-handling"><a class="anchor" href="#error-handling"></a>Error handling</h2>
 
     
-    <p><code>callr</code> handles errors properly. If the child process throws an
+
+
+<p><code>callr</code> handles errors properly. If the child process throws an
 error, then <code>callr</code> throws an error with the same error message
-in the parent process.</p>
+in the main process.</p>
 <p>The <code>error</code> expert argument may be used to specify a different
 behavior on error. The following values are possible:</p><ul>
-<li><p><code>error</code> is the default behavior: throw an error in the parent, with
-the same error message. In fact the same error object is thrown again.</p></li>
-<li><p><code>stack</code> also throws an error in the parent, but the error
+<li><p><code>error</code> is the default behavior: throw an error in the main process,
+with a prefix and the same error message as in the subprocess.</p></li>
+<li><p><code>stack</code> also throws an error in the main process, but the error
 is of a special kind, class <code>callr_error</code>, and it contains
 both the original error object, and the call stack of the child,
-as written out by <code><a href='https://www.rdocumentation.org/packages/utils/topics/debugger'>utils::dump.frames()</a></code>.</p></li>
+as written out by <code><a href='https://rdrr.io/r/utils/debugger.html'>utils::dump.frames()</a></code>. This is now deprecated,
+because the error thrown for <code>"error"</code> has the same information.</p></li>
 <li><p><code>debugger</code> is similar to <code>stack</code>, but in addition
 to returning the complete call stack, it also start up a debugger
-in the child call stack, via <code><a href='https://www.rdocumentation.org/packages/utils/topics/debugger'>utils::debugger()</a></code>.</p></li>
+in the child call stack, via <code><a href='https://rdrr.io/r/utils/debugger.html'>utils::debugger()</a></code>.</p></li>
 </ul>
-    <p>The default error behavior can be also set using the <code>callr.error</code>
+
+<p>The default error behavior can be also set using the <code>callr.error</code>
 option. This is useful to debug code that uses <code>callr</code>.</p>
+<p>callr uses parent errors, to keep the stacks of the main process and the
+subprocess(es) in the same error object.</p>
+    
+    <h2 class="hasAnchor" id="security-considerations"><a class="anchor" href="#security-considerations"></a>Security considerations</h2>
+
+    
+
+
+<p><code>callr</code> makes a copy of the user's <code>.Renviron</code> file and potentially of
+the local or user <code>.Rprofile</code>, in the session temporary
+directory. Avoid storing sensitive information such as passwords, in
+your environment file or your profile, otherwise this information will
+get scattered in various files, at least temporarily, until the
+subprocess finishes. You can use the keyring package to avoid passwords
+in plain files.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other callr functions: <code><a href='r_copycat.html'>r_copycat</a></code>,
-  <code><a href='r_vanilla.html'>r_vanilla</a></code></p></div>
+    <div class='dont-index'><p>Other callr functions: 
+<code><a href='r_copycat.html'>r_copycat</a>()</code>,
+<code><a href='r_vanilla.html'>r_vanilla</a>()</code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Workspace is empty</span>
-<span class='fu'>r</span>(<span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ls'>ls</a></span>())
+<span class='fu'>r</span>(<span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span>())
 
 <span class='co'># library path is the same by default</span>
-<span class='fu'>r</span>(<span class='kw'>function</span>() <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/libPaths'>.libPaths</a></span>())
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/libPaths'>.libPaths</a></span>()
-<span class='co'># }</span><div class='input'>
-</div></pre>
+<span class='fu'>r</span>(<span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -346,6 +401,8 @@ option. This is useful to debug code that uses <code>callr</code>.</p>
 
       <li><a href="#error-handling">Error handling</a></li>
 
+      <li><a href="#security-considerations">Security considerations</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -354,19 +411,23 @@ option. This is useful to debug code that uses <code>callr</code>.</p>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by <a href='https://github.com/gaborcsardi'>Gábor Csárdi</a>, <a href='https://github.com/wch'>Winston Chang</a>, <a href='https://www.rstudio.com'><img src='https://www.tidyverse.org/rstudio-logo.svg' alt='RStudio' height='24' /></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

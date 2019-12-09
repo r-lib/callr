@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Call R from R • callr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Call R from R">
 <meta property="og:description" content="It is sometimes useful to perform a computation in a
     separate R process, without affecting the current R process at all.
@@ -20,7 +21,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -32,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
       </span>
     </div>
 
@@ -40,7 +41,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -66,7 +67,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/r-lib/callr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -79,15 +80,37 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    
 
-    
-    
-<style type="text/css" scoped>
-PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
-</style>
+      </header><div class="row">
+  <div class="contents col-md-9">
+<div id="callr" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#callr" class="anchor"></a>callr</h1></div>
+<blockquote>
+<p>Call R from R</p>
+</blockquote>
+<!-- badges: start -->
+
+<p>It is sometimes useful to perform a computation in a separate R process, without affecting the current R process at all. This packages does exactly that.</p>
+<hr>
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#synchronous-one-off-r-processes">Synchronous, one-off R processes</a>
+<ul>
+<li><a href="#passing-arguments">Passing arguments</a></li>
+<li><a href="#using-packages">Using packages</a></li>
+<li><a href="#error-handling">Error handling</a></li>
+<li><a href="#standard-output-and-error">Standard output and error</a></li>
+</ul>
+</li>
+<li><a href="#background-r-processes">Background R processes</a></li>
+<li><a href="#multiple-background-r-processes-and-poll">Multiple background R processes and <code><a href="http://processx.r-lib.org/reference/poll.html">poll()</a></code></a></li>
+<li><a href="#persistent-r-sessions">Persistent R sessions</a></li>
+<li><a href="#running-r-cmd-commands">Running <code>R CMD</code> commands</a></li>
+<li><a href="#license">License</a></li>
+</ul>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
@@ -107,89 +130,90 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the stable version from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"callr"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"callr"</span>)</span></code></pre></div>
 </div>
 <div id="synchronous-one-off-r-processes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#synchronous-one-off-r-processes" class="anchor"></a>Synchronous, one-off R processes</h2>
 <p>Use <code><a href="reference/r.html">r()</a></code> to run an R function in a new R process. The results are passed back seamlessly:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(callr)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">var</a></span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]))</a></code></pre></div>
-<pre><code>#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width
-#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
-#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
-#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
-#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(callr)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://rdrr.io/r/stats/cor.html">var</a></span>(iris[, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]))</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063</span></span></code></pre></div>
 <div id="passing-arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#passing-arguments" class="anchor"></a>Passing arguments</h3>
 <p>You can pass arguments to the function by setting <code>args</code> to the list of arguments. This is often necessary as these arguments are explicitly copied to the child process, whereas the evaluated function cannot refer to variables in the parent. For example, the following does not work:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">mycars &lt;-<span class="st"> </span>cars</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(mycars))</a></code></pre></div>
-<pre><code>#&gt; Error: callr subprocess failed: object 'mycars' not found</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>mycars &lt;-<span class="st"> </span>cars</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(mycars))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; Error: callr subprocess failed: object 'mycars' not found</span></span></code></pre></div>
 <p>But this does:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(x), <span class="dt">args =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(mycars))</a></code></pre></div>
-<pre><code>#&gt;      speed           dist       
-#&gt;  Min.   : 4.0   Min.   :  2.00  
-#&gt;  1st Qu.:12.0   1st Qu.: 26.00  
-#&gt;  Median :15.0   Median : 36.00  
-#&gt;  Mean   :15.4   Mean   : 42.98  
-#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  
-#&gt;  Max.   :25.0   Max.   :120.00</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>(x) <span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(x), <span class="dt">args =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(mycars))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#&gt;      speed           dist       </span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;  Median :15.0   Median : 36.00  </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;  Mean   :15.4   Mean   : 42.98  </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  </span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  Max.   :25.0   Max.   :120.00</span></span></code></pre></div>
 <p>Note that the arguments will be serialized and saved to a file, so if they are large R objects, it might take a long time for the child process to start up.</p>
 </div>
 <div id="using-packages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-packages" class="anchor"></a>Using packages</h3>
 <p>You can use any R package in the child process, just make sure to refer to it explicitly with the <code>::</code> operator. For example, the following code creates an <a href="https://github.com/igraph/rigraph">igraph</a> graph in the child, and calculates some metrics of it.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() { g &lt;-<span class="st"> </span>igraph<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/sample_gnp">sample_gnp</a></span>(<span class="dv">1000</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">1000</span>); igraph<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/diameter">diameter</a></span>(g) })</a></code></pre></div>
-<pre><code>#&gt; [1] 10</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() { g &lt;-<span class="st"> </span>igraph<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/igraph/man/sample_gnp.html">sample_gnp</a></span>(<span class="dv">1000</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">1000</span>); igraph<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/igraph/man/diameter.html">diameter</a></span>(g) })</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#&gt; [1] 11</span></span></code></pre></div>
 </div>
 <div id="error-handling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#error-handling" class="anchor"></a>Error handling</h3>
 <p>callr` copies errors from the child process back to the main R session:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() <span class="dv">1</span> <span class="op">+</span><span class="st"> "A"</span>)</a></code></pre></div>
-<pre><code>#&gt; Error: callr subprocess failed: non-numeric argument to binary operator</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() <span class="dv">1</span> <span class="op">+</span><span class="st"> "A"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#&gt; Error: callr subprocess failed: non-numeric argument to binary operator</span></span></code></pre></div>
 <p>callr sets the <code>.Last.error</code> variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">.Last.error</a></code></pre></div>
-<pre><code>#&gt; &lt;callr_status_error: callr subprocess failed: non-numeric argument to binary operator&gt;
-#&gt; --&gt;
-#&gt; &lt;callr_remote_error in 1 + "A": non-numeric argument to binary operator&gt;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>.Last.error</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#&gt; &lt;callr_status_error: callr subprocess failed: non-numeric argument to binary operator&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt; --&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; &lt;callr_remote_error in 1 + "A": non-numeric argument to binary operator&gt;</span></span></code></pre></div>
 <p>The error objects has two parts. The first belongs to the main process, and the second belongs to the subprocess.</p>
 <p><code>.Last.error</code> also includes a stack trace, that includes both the main R process and the subprocess:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">.Last.error.trace</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; 
-#&gt; <span style="font-weight: bold;"> ERROR TRACE for callr_status_error, callr_error, rlib_error</span><span>
-#&gt; 
-#&gt;  </span><span style="font-weight: bold;">Process 82097:</span><span>
-#&gt; </span><span style="color: #555555;"> 36. </span><span style="color: #BBBB00;">callr:::r</span><span>(function() 1 + "A")
-#&gt; </span><span style="color: #555555;"> 37. </span><span style="color: #BBBB00;">callr:::get_result</span><span>(output = out, options)
-#&gt; </span><span style="color: #555555;"> 38. </span><span style="color: #BBBB00;">base:::throw</span><span>(new_callr_error(output, msg), parent = err[[2]])
-#&gt; </span><span style="color: #BB0000;font-weight: bold;">
-#&gt;  x callr subprocess failed: non-numeric argument to binary operator </span><span>
-#&gt; 
-#&gt;  </span><span style="font-weight: bold;">Process 82154:</span><span>
-#&gt; </span><span style="color: #555555;"> 50. </span><span>(function ()  ...
-#&gt; </span><span style="color: #555555;"> 51. </span><span style="color: #BBBB00;">base:::.handleSimpleError</span><span>(function (e)  ...
-#&gt;     </span><span style="color: #00BBBB;font-style: italic;">R/&lt;text&gt;:1:3</span><span>
-#&gt; </span><span style="color: #555555;"> 52. </span><span style="color: #BBBB00;">h</span><span>(simpleError(msg, call))
-#&gt; </span><span style="color: #BB0000;font-weight: bold;">
-#&gt;  x non-numeric argument to binary operator </span><span>
-</span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>.Last.error.trace</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;  ERROR TRACE for callr_status_error, callr_error, rlib_error</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt; </span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt;  Process 31908:</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt;  38. callr:::r(function() 1 + "A")</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt;  39. callr:::get_result(output = out, options)</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt;     R/eval.R:149:3</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt;  40. callr:::throw(new_callr_error(output, msg), parent = err[[2]])</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;     R/result.R:73:5</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="co">#&gt; </span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt;  x callr subprocess failed: non-numeric argument to binary operator </span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt; </span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt;  Process 32006:</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt;  52. (function ()  ...</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt;  53. base:::.handleSimpleError(function (e)  ...</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="co">#&gt;     R/&lt;text&gt;:1:3</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="co">#&gt;  54. h(simpleError(msg, call))</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="co">#&gt; </span></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="co">#&gt;  x non-numeric argument to binary operator</span></span></code></pre></div>
 <p>The top part of the trace contains the frames in the main process, and the bottom part contains the frames in the subprocess, starting with the anonymous function.</p>
 </div>
 <div id="standard-output-and-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#standard-output-and-error" class="anchor"></a>Standard output and error</h3>
 <p>By default, the standard output and error of the child is lost, but you can request callr to redirect them to files, and then inspect the files in the parent:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() { <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="st">"hello world!"</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">message</a></span>(<span class="st">"hello again!"</span>) },</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">  <span class="dt">stdout =</span> <span class="st">"/tmp/out"</span>, <span class="dt">stderr =</span> <span class="st">"/tmp/err"</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">)</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(<span class="st">"/tmp/out"</span>)</a></code></pre></div>
-<pre><code>#&gt; [1] "[1] \"hello world!\""</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(<span class="st">"/tmp/err"</span>)</a></code></pre></div>
-<pre><code>#&gt; [1] "hello again!"</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>x &lt;-<span class="st"> </span><span class="kw"><a href="reference/r.html">r</a></span>(<span class="cf">function</span>() { <span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="st">"hello world!"</span>); <span class="kw"><a href="https://rdrr.io/r/base/message.html">message</a></span>(<span class="st">"hello again!"</span>) },</span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="dt">stdout =</span> <span class="st">"/tmp/out"</span>, <span class="dt">stderr =</span> <span class="st">"/tmp/err"</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="st">"/tmp/out"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#&gt; [1] "[1] \"hello world!\""</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="st">"/tmp/err"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">#&gt; [1] "hello again!"</span></span></code></pre></div>
 <p>With the <code>stdout</code> option, the standard output is collected and can be examined once the child process finished. The <code>show = TRUE</code> options will also show the output of the child, as it is printed, on the console of the parent.</p>
 </div>
 </div>
@@ -197,37 +221,37 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <h2 class="hasAnchor">
 <a href="#background-r-processes" class="anchor"></a>Background R processes</h2>
 <p><code><a href="reference/r_bg.html">r_bg()</a></code> is similar to <code><a href="reference/r.html">r()</a></code> but it starts the R process in the background. It returns an <code>r_process</code> R6 object, that provides a rich API:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">rp &lt;-<span class="st"> </span><span class="kw"><a href="reference/r_bg.html">r_bg</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.sleep">Sys.sleep</a></span>(.<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">rp</a></code></pre></div>
-<pre><code>#&gt; PROCESS 'R', running, pid 82176.</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>rp &lt;-<span class="st"> </span><span class="kw"><a href="reference/r_bg.html">r_bg</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(.<span class="dv">2</span>))</span>
+<span id="cb20-2"><a href="#cb20-2"></a>rp</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#&gt; PROCESS 'R', running, pid 32028.</span></span></code></pre></div>
 <p>This is a list of all <code>r_process</code> methods:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ls">ls</a></span>(rp)</a></code></pre></div>
-<pre><code>#&gt;  [1] "as_ps_handle"          "clone"                
-#&gt;  [3] "finalize"              "format"               
-#&gt;  [5] "get_cmdline"           "get_cpu_times"        
-#&gt;  [7] "get_error_connection"  "get_error_file"       
-#&gt;  [9] "get_exe"               "get_exit_status"      
-#&gt; [11] "get_input_connection"  "get_input_file"       
-#&gt; [13] "get_memory_info"       "get_name"             
-#&gt; [15] "get_output_connection" "get_output_file"      
-#&gt; [17] "get_pid"               "get_poll_connection"  
-#&gt; [19] "get_result"            "get_start_time"       
-#&gt; [21] "get_status"            "get_username"         
-#&gt; [23] "get_wd"                "has_error_connection" 
-#&gt; [25] "has_input_connection"  "has_output_connection"
-#&gt; [27] "has_poll_connection"   "initialize"           
-#&gt; [29] "interrupt"             "is_alive"             
-#&gt; [31] "is_incomplete_error"   "is_incomplete_output" 
-#&gt; [33] "is_supervised"         "kill"                 
-#&gt; [35] "kill_tree"             "poll_io"              
-#&gt; [37] "print"                 "read_all_error"       
-#&gt; [39] "read_all_error_lines"  "read_all_output"      
-#&gt; [41] "read_all_output_lines" "read_error"           
-#&gt; [43] "read_error_lines"      "read_output"          
-#&gt; [45] "read_output_lines"     "resume"               
-#&gt; [47] "signal"                "supervise"            
-#&gt; [49] "suspend"               "wait"                 
-#&gt; [51] "write_input"</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw"><a href="https://rdrr.io/r/base/ls.html">ls</a></span>(rp)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#&gt;  [1] "as_ps_handle"          "clone"                </span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co">#&gt;  [3] "finalize"              "format"               </span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="co">#&gt;  [5] "get_cmdline"           "get_cpu_times"        </span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="co">#&gt;  [7] "get_error_connection"  "get_error_file"       </span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="co">#&gt;  [9] "get_exe"               "get_exit_status"      </span></span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="co">#&gt; [11] "get_input_connection"  "get_input_file"       </span></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="co">#&gt; [13] "get_memory_info"       "get_name"             </span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="co">#&gt; [15] "get_output_connection" "get_output_file"      </span></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="co">#&gt; [17] "get_pid"               "get_poll_connection"  </span></span>
+<span id="cb23-10"><a href="#cb23-10"></a><span class="co">#&gt; [19] "get_result"            "get_start_time"       </span></span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="co">#&gt; [21] "get_status"            "get_username"         </span></span>
+<span id="cb23-12"><a href="#cb23-12"></a><span class="co">#&gt; [23] "get_wd"                "has_error_connection" </span></span>
+<span id="cb23-13"><a href="#cb23-13"></a><span class="co">#&gt; [25] "has_input_connection"  "has_output_connection"</span></span>
+<span id="cb23-14"><a href="#cb23-14"></a><span class="co">#&gt; [27] "has_poll_connection"   "initialize"           </span></span>
+<span id="cb23-15"><a href="#cb23-15"></a><span class="co">#&gt; [29] "interrupt"             "is_alive"             </span></span>
+<span id="cb23-16"><a href="#cb23-16"></a><span class="co">#&gt; [31] "is_incomplete_error"   "is_incomplete_output" </span></span>
+<span id="cb23-17"><a href="#cb23-17"></a><span class="co">#&gt; [33] "is_supervised"         "kill"                 </span></span>
+<span id="cb23-18"><a href="#cb23-18"></a><span class="co">#&gt; [35] "kill_tree"             "poll_io"              </span></span>
+<span id="cb23-19"><a href="#cb23-19"></a><span class="co">#&gt; [37] "print"                 "read_all_error"       </span></span>
+<span id="cb23-20"><a href="#cb23-20"></a><span class="co">#&gt; [39] "read_all_error_lines"  "read_all_output"      </span></span>
+<span id="cb23-21"><a href="#cb23-21"></a><span class="co">#&gt; [41] "read_all_output_lines" "read_error"           </span></span>
+<span id="cb23-22"><a href="#cb23-22"></a><span class="co">#&gt; [43] "read_error_lines"      "read_output"          </span></span>
+<span id="cb23-23"><a href="#cb23-23"></a><span class="co">#&gt; [45] "read_output_lines"     "resume"               </span></span>
+<span id="cb23-24"><a href="#cb23-24"></a><span class="co">#&gt; [47] "signal"                "supervise"            </span></span>
+<span id="cb23-25"><a href="#cb23-25"></a><span class="co">#&gt; [49] "suspend"               "wait"                 </span></span>
+<span id="cb23-26"><a href="#cb23-26"></a><span class="co">#&gt; [51] "write_input"</span></span></code></pre></div>
 <p>These include all methods of the <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> superclass and the new <code><a href="reference/get_result.html">get_result()</a></code> method, to retrieve the R object returned by the function call. Some of the handiest methods are:</p>
 <ul>
 <li>
@@ -252,104 +276,105 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </div>
 <div id="multiple-background-r-processes-and-poll" class="section level2">
 <h2 class="hasAnchor">
-<a href="#multiple-background-r-processes-and-poll" class="anchor"></a>Multiple background R processes and <code><a href="http://processx.r-lib.org/reference/poll.html">poll()</a></code>
+<a href="#multiple-background-r-processes-and-poll" class="anchor"></a>Multiple background R processes and <code>poll()</code>
 </h2>
 <p>Multiple background R processes are best managed with the <code><a href="http://processx.r-lib.org/reference/poll.html">processx::poll()</a></code> function that waits for events (standard output/error or termination) from multiple processes. It returns as soon as one process has generated an event, or if its timeout has expired. The timeout is in milliseconds.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">rp1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/r_bg.html">r_bg</a></span>(<span class="cf">function</span>() { <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.sleep">Sys.sleep</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>); <span class="st">"1 done"</span> })</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">rp2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/r_bg.html">r_bg</a></span>(<span class="cf">function</span>() { <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.sleep">Sys.sleep</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">1000</span>); <span class="st">"2 done"</span> })</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">processx<span class="op">::</span><span class="kw"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(rp1, rp2), <span class="dv">1000</span>)</a></code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt;   output    error  process 
-#&gt; "silent" "silent" "silent" 
-#&gt; 
-#&gt; [[2]]
-#&gt;   output    error  process 
-#&gt; "silent" "silent"  "ready"</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">rp2<span class="op">$</span><span class="kw"><a href="reference/get_result.html">get_result</a></span>()</a></code></pre></div>
-<pre><code>#&gt; [1] "2 done"</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">processx<span class="op">::</span><span class="kw"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(rp1), <span class="dv">1000</span>)</a></code></pre></div>
-<pre><code>#&gt; [[1]]
-#&gt;   output    error  process 
-#&gt; "silent" "silent"  "ready"</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">rp1<span class="op">$</span><span class="kw"><a href="reference/get_result.html">get_result</a></span>()</a></code></pre></div>
-<pre><code>#&gt; [1] "1 done"</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>rp1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/r_bg.html">r_bg</a></span>(<span class="cf">function</span>() { <span class="kw"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>); <span class="st">"1 done"</span> })</span>
+<span id="cb24-2"><a href="#cb24-2"></a>rp2 &lt;-<span class="st"> </span><span class="kw"><a href="reference/r_bg.html">r_bg</a></span>(<span class="cf">function</span>() { <span class="kw"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="dv">1</span><span class="op">/</span><span class="dv">1000</span>); <span class="st">"2 done"</span> })</span>
+<span id="cb24-3"><a href="#cb24-3"></a>processx<span class="op">::</span><span class="kw"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(rp1, rp2), <span class="dv">1000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="co">#&gt;   output    error  process </span></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="co">#&gt; "silent" "silent" "silent" </span></span>
+<span id="cb25-4"><a href="#cb25-4"></a><span class="co">#&gt; </span></span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="co">#&gt;   output    error  process </span></span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="co">#&gt; "silent" "silent"  "ready"</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>rp2<span class="op">$</span><span class="kw"><a href="reference/get_result.html">get_result</a></span>()</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">#&gt; [1] "2 done"</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>processx<span class="op">::</span><span class="kw"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(rp1), <span class="dv">1000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="co">#&gt;   output    error  process </span></span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="co">#&gt; "silent" "silent"  "ready"</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>rp1<span class="op">$</span><span class="kw"><a href="reference/get_result.html">get_result</a></span>()</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">#&gt; [1] "1 done"</span></span></code></pre></div>
 </div>
 <div id="persistent-r-sessions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#persistent-r-sessions" class="anchor"></a>Persistent R sessions</h2>
 <p><code>r_session</code> is another <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> subclass that represents a persistent background R session:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">rs &lt;-<span class="st"> </span>r_session<span class="op">$</span><span class="kw">new</span>()</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">rs</a></code></pre></div>
-<pre><code>#&gt; R SESSION, alive, idle, pid 82209.</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>rs &lt;-<span class="st"> </span>r_session<span class="op">$</span><span class="kw">new</span>()</span>
+<span id="cb32-2"><a href="#cb32-2"></a>rs</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#&gt; R SESSION, alive, idle, pid 32095.</span></span></code></pre></div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> objects.</p>
 <p>Once an R session is done with an asynchronous computation, its <code>poll_process()</code> method returns <code>"ready"</code> and the <code>r_session$read()</code> method can read out the result.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">rs<span class="op">$</span><span class="kw"><a href="http://processx.r-lib.org/reference/run.html">run</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">10</span>))</a></code></pre></div>
-<pre><code>#&gt;  [1] 0.96488641 0.89624551 0.37856311 0.67507219 0.27713313 0.07015286
-#&gt;  [7] 0.98934355 0.23990256 0.44568766 0.14386637</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">rs<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/call">call</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">rs</a></code></pre></div>
-<pre><code>#&gt; R SESSION, alive, busy, pid 82209.</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">rs<span class="op">$</span><span class="kw">poll_process</span>(<span class="dv">2000</span>)</a></code></pre></div>
-<pre><code>#&gt; [1] "ready"</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">rs<span class="op">$</span><span class="kw">read</span>()</a></code></pre></div>
-<pre><code>#&gt; $code
-#&gt; [1] 200
-#&gt; 
-#&gt; $message
-#&gt; [1] "done file140b171de09d5"
-#&gt; 
-#&gt; $result
-#&gt;  [1] -0.01858266  2.08768006  0.87850514 -1.32160879  0.38558535
-#&gt;  [6] -1.08763373 -0.57957239  1.68403330 -0.21364203  0.92031347
-#&gt; 
-#&gt; $stdout
-#&gt; [1] ""
-#&gt; 
-#&gt; $stderr
-#&gt; [1] ""
-#&gt; 
-#&gt; $error
-#&gt; NULL
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "callr_session_result"</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>rs<span class="op">$</span><span class="kw"><a href="http://processx.r-lib.org/reference/run.html">run</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">#&gt;  [1] 0.7896924 0.1770236 0.9931798 0.2850374 0.8582676 0.4489599 0.1556783</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="co">#&gt;  [8] 0.4240582 0.4260408 0.5561292</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>rs<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/call.html">call</a></span>(<span class="cf">function</span>() <span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">10</span>))</span>
+<span id="cb36-2"><a href="#cb36-2"></a>rs</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#&gt; R SESSION, alive, busy, pid 32095.</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>rs<span class="op">$</span><span class="kw">poll_process</span>(<span class="dv">2000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">#&gt; [1] "ready"</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>rs<span class="op">$</span><span class="kw">read</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="co">#&gt; $code</span></span>
+<span id="cb41-2"><a href="#cb41-2"></a><span class="co">#&gt; [1] 200</span></span>
+<span id="cb41-3"><a href="#cb41-3"></a><span class="co">#&gt; </span></span>
+<span id="cb41-4"><a href="#cb41-4"></a><span class="co">#&gt; $message</span></span>
+<span id="cb41-5"><a href="#cb41-5"></a><span class="co">#&gt; [1] "done file7ca436de78be"</span></span>
+<span id="cb41-6"><a href="#cb41-6"></a><span class="co">#&gt; </span></span>
+<span id="cb41-7"><a href="#cb41-7"></a><span class="co">#&gt; $result</span></span>
+<span id="cb41-8"><a href="#cb41-8"></a><span class="co">#&gt;  [1] -1.0339966 -0.7015408  1.2220644 -0.9691123 -0.6991386  1.2698753</span></span>
+<span id="cb41-9"><a href="#cb41-9"></a><span class="co">#&gt;  [7]  0.2595250  1.0871667  0.5148076  0.4015015</span></span>
+<span id="cb41-10"><a href="#cb41-10"></a><span class="co">#&gt; </span></span>
+<span id="cb41-11"><a href="#cb41-11"></a><span class="co">#&gt; $stdout</span></span>
+<span id="cb41-12"><a href="#cb41-12"></a><span class="co">#&gt; [1] ""</span></span>
+<span id="cb41-13"><a href="#cb41-13"></a><span class="co">#&gt; </span></span>
+<span id="cb41-14"><a href="#cb41-14"></a><span class="co">#&gt; $stderr</span></span>
+<span id="cb41-15"><a href="#cb41-15"></a><span class="co">#&gt; [1] ""</span></span>
+<span id="cb41-16"><a href="#cb41-16"></a><span class="co">#&gt; </span></span>
+<span id="cb41-17"><a href="#cb41-17"></a><span class="co">#&gt; $error</span></span>
+<span id="cb41-18"><a href="#cb41-18"></a><span class="co">#&gt; NULL</span></span>
+<span id="cb41-19"><a href="#cb41-19"></a><span class="co">#&gt; </span></span>
+<span id="cb41-20"><a href="#cb41-20"></a><span class="co">#&gt; attr(,"class")</span></span>
+<span id="cb41-21"><a href="#cb41-21"></a><span class="co">#&gt; [1] "callr_session_result"</span></span></code></pre></div>
 </div>
 <div id="running-r-cmd-commands" class="section level2">
 <h2 class="hasAnchor">
 <a href="#running-r-cmd-commands" class="anchor"></a>Running <code>R CMD</code> commands</h2>
 <p>The <code><a href="reference/rcmd.html">rcmd()</a></code> function calls an <code>R CMD</code> command. For example, you can call <code>R CMD INSTALL</code>, <code>R CMD check</code> or <code>R CMD config</code> this way:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw"><a href="reference/rcmd.html">rcmd</a></span>(<span class="st">"config"</span>, <span class="st">"CC"</span>)</a></code></pre></div>
-<pre><code>#&gt; $status
-#&gt; [1] 0
-#&gt; 
-#&gt; $stdout
-#&gt; [1] "ccache clang -Qunused-arguments\n"
-#&gt; 
-#&gt; $stderr
-#&gt; [1] ""
-#&gt; 
-#&gt; $timeout
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $command
-#&gt; [1] "/Library/Frameworks/R.framework/Resources/bin/R"
-#&gt; [2] "CMD"                                            
-#&gt; [3] "config"                                         
-#&gt; [4] "CC"</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co">#&gt;$stdout</span></a>
-<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="co">#&gt;[1] "clang\n"</span></a>
-<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="co">#&gt;</span></a>
-<a class="sourceLine" id="cb43-4" data-line-number="4"><span class="co">#&gt;$stderr</span></a>
-<a class="sourceLine" id="cb43-5" data-line-number="5"><span class="co">#&gt;[1] ""</span></a>
-<a class="sourceLine" id="cb43-6" data-line-number="6"><span class="co">#&gt;</span></a>
-<a class="sourceLine" id="cb43-7" data-line-number="7"><span class="co">#&gt;$status</span></a>
-<a class="sourceLine" id="cb43-8" data-line-number="8"><span class="co">#&gt;[1] 0</span></a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="kw"><a href="reference/rcmd.html">rcmd</a></span>(<span class="st">"config"</span>, <span class="st">"CC"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co">#&gt; $status</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb43-3"><a href="#cb43-3"></a><span class="co">#&gt; </span></span>
+<span id="cb43-4"><a href="#cb43-4"></a><span class="co">#&gt; $stdout</span></span>
+<span id="cb43-5"><a href="#cb43-5"></a><span class="co">#&gt; [1] "clang\n"</span></span>
+<span id="cb43-6"><a href="#cb43-6"></a><span class="co">#&gt; </span></span>
+<span id="cb43-7"><a href="#cb43-7"></a><span class="co">#&gt; $stderr</span></span>
+<span id="cb43-8"><a href="#cb43-8"></a><span class="co">#&gt; [1] ""</span></span>
+<span id="cb43-9"><a href="#cb43-9"></a><span class="co">#&gt; </span></span>
+<span id="cb43-10"><a href="#cb43-10"></a><span class="co">#&gt; $timeout</span></span>
+<span id="cb43-11"><a href="#cb43-11"></a><span class="co">#&gt; [1] FALSE</span></span>
+<span id="cb43-12"><a href="#cb43-12"></a><span class="co">#&gt; </span></span>
+<span id="cb43-13"><a href="#cb43-13"></a><span class="co">#&gt; $command</span></span>
+<span id="cb43-14"><a href="#cb43-14"></a><span class="co">#&gt; [1] "/Library/Frameworks/R.framework/Resources/bin/R"</span></span>
+<span id="cb43-15"><a href="#cb43-15"></a><span class="co">#&gt; [2] "CMD"                                            </span></span>
+<span id="cb43-16"><a href="#cb43-16"></a><span class="co">#&gt; [3] "config"                                         </span></span>
+<span id="cb43-17"><a href="#cb43-17"></a><span class="co">#&gt; [4] "CC"</span></span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co">#&gt;$stdout</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a><span class="co">#&gt;[1] "clang\n"</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a><span class="co">#&gt;</span></span>
+<span id="cb44-4"><a href="#cb44-4"></a><span class="co">#&gt;$stderr</span></span>
+<span id="cb44-5"><a href="#cb44-5"></a><span class="co">#&gt;[1] ""</span></span>
+<span id="cb44-6"><a href="#cb44-6"></a><span class="co">#&gt;</span></span>
+<span id="cb44-7"><a href="#cb44-7"></a><span class="co">#&gt;$status</span></span>
+<span id="cb44-8"><a href="#cb44-8"></a><span class="co">#&gt;[1] 0</span></span></code></pre></div>
 <p>This returns a list with three components: the standard output, the standard error, and the exit (status) code of the <code>R CMD</code> command.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h2>
 <p>MIT © Mango Solutions, RStudio</p>
+</div>
 </div>
   </div>
 
@@ -377,7 +402,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://github.com/gaborcsardi">Gábor Csárdi</a> <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0001-7098-9676" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<a href="https://github.com/gaborcsardi">Gábor Csárdi</a> <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0001-7098-9676" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://github.com/wch">Winston Chang</a> <br><small class="roles"> Author </small>  </li>
 <li>
@@ -386,8 +411,17 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </ul>
 </div>
 
-      </div>
-
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/r-lib/callr"><img src="https://travis-ci.org/r-lib/callr.svg?branch=master" alt="Linux Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/gaborcsardi/callr"><img src="https://ci.appveyor.com/api/projects/status/github/r-lib/callr?svg=true" alt="Windows Build status"></a></li>
+<li><a href="http://www.r-pkg.org/pkg/callr"><img src="http://www.r-pkg.org/badges/version/callr"></a></li>
+<li><a href="http://www.r-pkg.org/pkg/callr"><img src="http://cranlogs.r-pkg.org/badges/callr" alt="CRAN RStudio mirror downloads"></a></li>
+<li><a href="https://codecov.io/github/r-lib/callr?branch=master"><img src="https://img.shields.io/codecov/c/github/r-lib/callr/master.svg" alt="Coverage Status"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
@@ -396,12 +430,14 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
