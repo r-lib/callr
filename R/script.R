@@ -18,7 +18,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       rm("__callr_dump__", envir = .GlobalEnv)
 
       # callr_remote_error does have conditionMessage and conditionCall
-      # methods that defer to $error, but in the subprocess callr is not
+      # methods that refer to $error, but in the subprocess callr is not
       # loaded, maybe, and these methods are not defined. So we do add
       # the message and call of the original error
       e2 <- err$new_error(conditionMessage(e), call. = conditionCall(e))
@@ -37,6 +37,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       if (!is.na(dcframe)) e2$`_ignore` <- list(c(1, dcframe + 1L))
       e2$`_pid` <- Sys.getpid()
       e2$`_timestamp` <- Sys.time()
+      if (inherits(e, "rlib_error")) e2$parent <- e$parent
       e2 <- err$add_trace_back(e2)
       saveRDS(list("error", e2), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
