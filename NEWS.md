@@ -11,6 +11,9 @@
 
 * Better printing of `rlang_error`s that happened in the subprocess.
 
+* The stacking of error objects is slightly different now, as we keep the
+  unmodified error from the subprocess in `$parent$error`.
+
 * callr now loads `.Rprofile` files from the current working directory
   by default. This works better with packrat, renv, and other software
   that relies on a local profile for initialization (#131).
