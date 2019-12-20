@@ -231,3 +231,18 @@ test_that("local .Rprofile is loaded", {
   out <- callr::r(function() aa)
   expect_equal(out, 123)
 })
+
+test_that("local .Rprofile is not loaded from actual wd", {
+  tmp <- tempfile()
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  dir.create(tmp)
+  wd <- getwd()
+  on.exit(setwd(wd), add = TRUE)
+  setwd(tmp)
+
+  dir.create(wd2 <- tempfile())
+  on.exit(unlink(wd2, recursive = TRUE), add = TRUE)
+  cat("aa <- 123\n", file = ".Rprofile")
+  out <- callr::r(function() ls(.GlobalEnv), wd = wd2)
+  expect_equal(out, character())
+})

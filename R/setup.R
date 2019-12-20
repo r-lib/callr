@@ -85,7 +85,13 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
     user <- NA_character_
   }
 
-  if (!is.na(user) && file.exists(user)) file.append(profile_user, user)
+  if (!is.na(user) && file.exists(user)) {
+    xpr <- substitute(
+      if (file.exists(user)) source(user, local = TRUE),
+      list(user = user)
+    )
+    cat(deparse(xpr), file = profile_user, append = TRUE, sep = "\n")
+  }
 
   ## Override repos, as requested
   for (p in c(profile_system, profile_user)) {
