@@ -1,0 +1,9 @@
+pandoc: 2.7.3
+pkgdown: 1.4.1.9000
+pkgdown_sha: ~
+articles:
+  Task-queue-with-callr: Task-queue-with-callr.html
+urls:
+  reference: http://callr.r-lib.org/reference
+  article: http://callr.r-lib.org/articles
+
