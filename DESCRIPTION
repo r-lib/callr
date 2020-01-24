@@ -26,15 +26,12 @@ Suggests:
     covr,
     crayon,
     fansi,
-    knitr,
     pingr,
     ps,
-    rmarkdown,
     rprojroot,
     spelling,
     testthat,
     tibble,
     withr
 Encoding: UTF-8
-VignetteBuilder: knitr
 Language: en-US
