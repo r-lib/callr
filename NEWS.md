@@ -1,5 +1,5 @@
 
-# callr development version
+# callr 3.4.1
 
 * callr is now more careful when loading the local `.Rprofile` in the
   subprocess. This fixes issues with packrat and renv that use `.Rprofile`
