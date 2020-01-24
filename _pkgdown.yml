@@ -1,1 +1,80 @@
-inst/_pkgdown.yml
+url: http://callr.r-lib.org
+
+development:
+  mode: auto
+
+authors:
+  "Gábor Csárdi":
+    href: https://github.com/gaborcsardi
+  "Winston Chang":
+    href: https://github.com/wch
+
+reference:
+- title: Introduction
+  contents:
+  - callr
+
+- title: Run R
+  contents:
+  - r
+  - r_copycat
+  - r_safe
+  - r_vanilla
+
+- title: Run R in the background
+  contents:
+  - r_bg
+  - r_process
+  - r_process_options
+
+- title: Persistent background R session
+  contents:
+  - r_session
+  - r_session_options
+  - r_session_debug
+
+- title: Run R CMD
+  contents:
+  - rcmd
+  - rcmd_copycat
+  - rcmd_safe
+  - rcmd_safe_env
+
+- title: Run R CMD in the background
+  contents:
+  - rcmd_bg
+  - rcmd_process
+  - rcmd_process_options
+
+- title: Run Rscript
+  contents:
+  - rscript
+
+- title: Run Rscript in the background
+  contents:
+  - rscript_process
+  - rscript_process_options
+
+- title: Miscellaneous utilities
+  contents:
+  - default_repos
+
+- title: Re-exported functions
+  contents:
+  - process
+  - run
+  - poll
+
+navbar:
+  type: default
+  left:
+  - text: Reference
+    href: reference/index.html
+  - text: Articles
+    menu:
+    - text: A multi process task queue in 100 lines of R code
+      href: https://www.tidyverse.org/blog/2019/09/callr-task-q
+  - text: News
+    menu:
+    - text: "Change log"
+      href: news/index.html
