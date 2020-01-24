@@ -1,0 +1,8 @@
+pandoc: '2.2'
+pkgdown: 1.4.1.9000
+pkgdown_sha: 3efb5c9288929bda9aa73e0cd88ae6461e4b6565
+articles: []
+urls:
+  reference: http://callr.r-lib.org/reference
+  article: http://callr.r-lib.org/articles
+
