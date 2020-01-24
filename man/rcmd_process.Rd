@@ -26,10 +26,10 @@ best created by the \code{\link[=rcmd_process_options]{rcmd_process_options()}} 
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
 rp <- rcmd_process$new(options)
 rp$wait()
 rp$read_output_lines()
-}
+\dontshow{\}) # examplesIf}
 }

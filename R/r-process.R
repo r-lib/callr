@@ -26,8 +26,7 @@
 #' optionally with a timeout.)
 #'
 #' @name r_process
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' ## List all options and their default values:
 #' r_process_options()
 #'
@@ -36,7 +35,6 @@
 #' rp <- r_process$new(opts)
 #' rp$wait()
 #' rp$get_result()
-#' }
 NULL
 
 #' @export

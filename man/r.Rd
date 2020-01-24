@@ -200,15 +200,14 @@ in plain files.
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Workspace is empty
 r(function() ls())
 
 # library path is the same by default
 r(function() .libPaths())
 .libPaths()
-}
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other callr functions: 

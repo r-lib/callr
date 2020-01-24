@@ -16,7 +16,7 @@ LazyData: true
 URL: https://github.com/r-lib/callr#readme
 BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 7.0.2
-Roxygen: list(markdown = TRUE)
+Roxygen: { library(roxygenlabs); list(markdown = TRUE) }
 Imports:
     processx (>= 3.4.0),
     R6,

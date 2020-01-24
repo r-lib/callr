@@ -72,13 +72,11 @@ rscript_load_hook_color <- function(color) {
 #' best created by the [rscript_process_options()] function.
 #'
 #' @name rscript_process
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' options <- rscript_process_options(script = "script.R")
 #' rp <- rscript_process$new(options)
 #' rp$wait()
 #' rp$read_output_lines()
-#' }
 NULL
 
 #' @export

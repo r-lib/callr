@@ -126,15 +126,13 @@
 #' in plain files.
 #'
 #' @family callr functions
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' # Workspace is empty
 #' r(function() ls())
 #'
 #' # library path is the same by default
 #' r(function() .libPaths())
 #' .libPaths()
-#' }
 #'
 #' @export
 

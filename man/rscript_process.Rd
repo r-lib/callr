@@ -26,10 +26,10 @@ best created by the \code{\link[=rscript_process_options]{rscript_process_option
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 options <- rscript_process_options(script = "script.R")
 rp <- rscript_process$new(options)
 rp$wait()
 rp$read_output_lines()
-}
+\dontshow{\}) # examplesIf}
 }

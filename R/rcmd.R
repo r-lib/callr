@@ -38,10 +38,8 @@
 #' @family R CMD commands
 #' @export
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' rcmd("config", "CC")
-#' }
 
 rcmd <- function(cmd, cmdargs = character(), libpath = .libPaths(),
                  repos = default_repos(),

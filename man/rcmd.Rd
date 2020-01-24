@@ -150,9 +150,9 @@ in plain files.
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 rcmd("config", "CC")
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other R CMD commands: 

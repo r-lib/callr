@@ -80,14 +80,14 @@ in plain files.
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # Compare to r()
 r(function() .libPaths())
 r_vanilla(function() .libPaths())
 
 r(function() getOption("repos"))
 r_vanilla(function() getOption("repos"))
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other callr functions: 

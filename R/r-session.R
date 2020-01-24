@@ -93,8 +93,7 @@
 #' (Read-Eval-Print-Loop) to the subprocess.
 #'
 #' @name r_session
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' rs <- r_ression$new()
 #'
 #' rs$run(function() 1 + 2)
@@ -105,7 +104,6 @@
 #' rs$poll_process(-1)
 #' rs$get_state()
 #' rs$read()
-#' }
 NULL
 
 

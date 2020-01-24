@@ -17,13 +17,11 @@
 #' best created by the [rcmd_process_options()] function.
 #'
 #' @name rcmd_process
-#' @examples
-#' \dontrun{
+#' @examplesIf FALSE
 #' options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
 #' rp <- rcmd_process$new(options)
 #' rp$wait()
 #' rp$read_output_lines()
-#' }
 NULL
 
 #' @export

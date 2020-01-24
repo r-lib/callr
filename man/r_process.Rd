@@ -35,7 +35,7 @@ optionally with a timeout.)
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ## List all options and their default values:
 r_process_options()
 
@@ -44,5 +44,5 @@ opts <- r_process_options(func = function() 1 + 1)
 rp <- r_process$new(opts)
 rp$wait()
 rp$get_result()
-}
+\dontshow{\}) # examplesIf}
 }

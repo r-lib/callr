@@ -105,7 +105,7 @@ in the subprocess, after an error. See more at \link{r_session_debug}.
 }
 
 \examples{
-\dontrun{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 rs <- r_ression$new()
 
 rs$run(function() 1 + 2)
@@ -116,5 +116,5 @@ rs$get_state()
 rs$poll_process(-1)
 rs$get_state()
 rs$read()
-}
+\dontshow{\}) # examplesIf}
 }
