@@ -1,5 +1,8 @@
 url: http://callr.r-lib.org
 
+development:
+  mode: auto
+
 authors:
   "Gábor Csárdi":
     href: https://github.com/gaborcsardi
