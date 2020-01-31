@@ -33,6 +33,13 @@ common_hook <- function() {
 }
 
 default_load_hook <- function(user_hook = NULL) {
+
+  if (!file.exists(env_file))
+    stop(
+      "Unable to find environment file in temporary directory.",
+      " Try restarting R session."
+    )
+
   hook <- common_hook()
 
   if (!is.null(user_hook)) {

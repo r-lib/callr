@@ -7,6 +7,8 @@
   subprocess. This fixes issues with packrat and renv that use `.Rprofile`
   for setup (#139).
 
+* callr functions fail early if environment file is missing (#123, @jdblischak)
+
 # callr 3.4.0
 
 * All callr functions and background processes properly clean up
