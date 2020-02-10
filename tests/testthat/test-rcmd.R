@@ -45,7 +45,7 @@ test_that("fail_on_status", {
     withr::with_dir(
       tempdir(),
       rcmd("BATCH", rand, fail_on_status = TRUE)),
-    "System command error",
+    "System command .* failed|System command error",
     class = "system_command_status_error"
   )
   expect_silent(
