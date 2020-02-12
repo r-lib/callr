@@ -20,6 +20,10 @@ specified, this is the R function to run in the background.
 }
 \description{
 Create options for an \link{r_process} object
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \examples{
 ## List all options and their default values:

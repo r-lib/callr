@@ -21,6 +21,10 @@ be specified, to select the \verb{R CMD} subcommand to run. Typically
 }
 \description{
 Create options for an \link{rcmd_process} object
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \examples{
 ## List all options and their default values:

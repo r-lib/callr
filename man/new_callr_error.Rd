@@ -18,5 +18,9 @@ There are two kinds of errors, both have class \code{callr_error}:
 \item the second one is thrown after an R error (in the other session):
 \code{callr_status_error}.
 }
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \keyword{internal}

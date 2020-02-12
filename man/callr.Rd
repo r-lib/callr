@@ -3,9 +3,37 @@
 \docType{package}
 \name{callr}
 \alias{callr}
+\alias{callr-package}
 \title{Call R from R}
 \description{
 It is sometimes useful to perform a computation in a separate R
 process, without affecting the current R process at all. This packages
 does exactly that.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/r-lib/callr#readme}
+  \item Report bugs at \url{https://github.com/r-lib/callr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Gábor Csárdi \email{csardi.gabor@gmail.com} (\href{https://orcid.org/0000-0001-7098-9676}{ORCID}) [copyright holder]
+
+Authors:
+\itemize{
+  \item Winston Chang
+}
+
+Other contributors:
+\itemize{
+  \item RStudio [copyright holder, funder]
+  \item Mango Solutions [copyright holder, funder]
+}
+
 }

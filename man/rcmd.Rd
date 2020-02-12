@@ -131,6 +131,10 @@ whether a timeout was reached (\verb{$timeout}).
 \description{
 Run an \verb{R CMD} command form within R. This will usually start
 another R process, from a shell script.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 Starting from \code{callr} 2.0.0, \code{rcmd()} has safer defaults, the same as

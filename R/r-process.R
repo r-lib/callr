@@ -1,31 +1,11 @@
 
 #' External R Process
 #'
+#' @description
 #' An R process that runs in the background. This is an R6 class that
 #' extends the [processx::process] class. The process starts in the
 #' background, evaluates an R function call, and then quits.
 #'
-#' @section Usage:
-#' ```
-#' rp <- r_process$new(options)
-#' rp$get_result()
-#' ```
-#'
-#' See [process] for the inherited methods.
-#'
-#' @section Arguments:
-#' * `options` A list of options created via [r_process_options()].
-#'
-#' @section Details:
-#' `r_process$new` creates a new instance. Its `options` argument is best
-#' created by the [r_process_options()] function.
-#'
-#' `rp$get_result()` returns the result, an R object, from a finished
-#' background R process. If the process has not finished yet, it throws an
-#' error. (You can use `rp$wait()` to wait for the process to finish,
-#' optionally with a timeout.)
-#'
-#' @name r_process
 #' @examplesIf FALSE
 #' ## List all options and their default values:
 #' r_process_options()
@@ -35,18 +15,36 @@
 #' rp <- r_process$new(opts)
 #' rp$wait()
 #' rp$get_result()
-NULL
-
 #' @export
 
 r_process <- R6::R6Class(
   "r_process",
   inherit = processx::process,
   public = list(
+
+    #' @description
+    #' Start a new R process in the background.
+    #' @param options A list of options created via [r_process_options()].
+    #' @return A new `r_process` object.
     initialize = function(options)
       rp_init(self, private, super, options),
+
+    #' @description
+    #' Return the result, an R object, from a finished
+    #' background R process. If the process has not finished yet, it throws
+    #' an error. (You can use `wait()` method (see [processx::process]) to
+    #' wait for the process to finish, optionally with a timeout.) You can
+    #' also use [processx::poll()] to wait for the end of the process,
+    #' together with other processes or events.
+    #'
+    #' @return The return value of the R expression evaluated in the R
+    #' process.
     get_result = function()
       rp_get_result(self, private),
+
+    #' @description
+    #' Clean up temporary files once an R process has finished and its
+    #' handle is garbage collected.
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()

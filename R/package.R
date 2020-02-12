@@ -5,9 +5,9 @@
 #' process, without affecting the current R process at all. This packages
 #' does exactly that.
 #'
-#' @docType package
+#' @theme assets/extra.css assets/rd.js
 #' @name callr
-NULL
+"_PACKAGE"
 
 ## R CMD check workaround
 dummy_r6 <- function() R6::R6Class

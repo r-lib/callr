@@ -5,26 +5,12 @@
 \title{External \verb{R CMD} Process}
 \description{
 An \verb{R CMD *} command that runs in the background. This is an R6 class
-that extends the \link{process} class.
-}
-\section{Usage}{
-\preformatted{rp <- rcmd_process$new(options)
-}
-}
+that extends the \link[processx:process]{processx::process} class.
 
-\section{Arguments}{
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
 
-\itemize{
-\item \code{options} A list of options created via \code{\link[=rcmd_process_options]{rcmd_process_options()}}.
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
-}
-
-\section{Details}{
-
-\code{rcmd_process$new} creates a new instance. Its \code{options} argument is
-best created by the \code{\link[=rcmd_process_options]{rcmd_process_options()}} function.
-}
-
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
@@ -32,4 +18,115 @@ rp <- rcmd_process$new(options)
 rp$wait()
 rp$read_output_lines()
 \dontshow{\}) # examplesIf}
+}
+\section{Super class}{
+\code{\link[processx:process]{processx::process}} -> \code{rcmd_process}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{rcmd_process$new()}}
+\item \href{#method-finalize}{\code{rcmd_process$finalize()}}
+\item \href{#method-clone}{\code{rcmd_process$clone()}}
+}
+}
+\if{html}{
+\out{<details ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle">}\href{../../processx/html/process.html#method-as_ps_handle}{\code{processx::process$as_ps_handle()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format">}\href{../../processx/html/process.html#method-format}{\code{processx::process$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline">}\href{../../processx/html/process.html#method-get_cmdline}{\code{processx::process$get_cmdline()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times">}\href{../../processx/html/process.html#method-get_cpu_times}{\code{processx::process$get_cpu_times()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_error_connection">}\href{../../processx/html/process.html#method-get_error_connection}{\code{processx::process$get_error_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_error_file">}\href{../../processx/html/process.html#method-get_error_file}{\code{processx::process$get_error_file()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_exe">}\href{../../processx/html/process.html#method-get_exe}{\code{processx::process$get_exe()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_exit_status">}\href{../../processx/html/process.html#method-get_exit_status}{\code{processx::process$get_exit_status()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_input_connection">}\href{../../processx/html/process.html#method-get_input_connection}{\code{processx::process$get_input_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_input_file">}\href{../../processx/html/process.html#method-get_input_file}{\code{processx::process$get_input_file()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_memory_info">}\href{../../processx/html/process.html#method-get_memory_info}{\code{processx::process$get_memory_info()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_name">}\href{../../processx/html/process.html#method-get_name}{\code{processx::process$get_name()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_output_connection">}\href{../../processx/html/process.html#method-get_output_connection}{\code{processx::process$get_output_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_output_file">}\href{../../processx/html/process.html#method-get_output_file}{\code{processx::process$get_output_file()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_pid">}\href{../../processx/html/process.html#method-get_pid}{\code{processx::process$get_pid()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_poll_connection">}\href{../../processx/html/process.html#method-get_poll_connection}{\code{processx::process$get_poll_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_result">}\href{../../processx/html/process.html#method-get_result}{\code{processx::process$get_result()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_start_time">}\href{../../processx/html/process.html#method-get_start_time}{\code{processx::process$get_start_time()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_status">}\href{../../processx/html/process.html#method-get_status}{\code{processx::process$get_status()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_username">}\href{../../processx/html/process.html#method-get_username}{\code{processx::process$get_username()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_wd">}\href{../../processx/html/process.html#method-get_wd}{\code{processx::process$get_wd()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_error_connection">}\href{../../processx/html/process.html#method-has_error_connection}{\code{processx::process$has_error_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_input_connection">}\href{../../processx/html/process.html#method-has_input_connection}{\code{processx::process$has_input_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_output_connection">}\href{../../processx/html/process.html#method-has_output_connection}{\code{processx::process$has_output_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_poll_connection">}\href{../../processx/html/process.html#method-has_poll_connection}{\code{processx::process$has_poll_connection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="interrupt">}\href{../../processx/html/process.html#method-interrupt}{\code{processx::process$interrupt()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_alive">}\href{../../processx/html/process.html#method-is_alive}{\code{processx::process$is_alive()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_incomplete_error">}\href{../../processx/html/process.html#method-is_incomplete_error}{\code{processx::process$is_incomplete_error()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_incomplete_output">}\href{../../processx/html/process.html#method-is_incomplete_output}{\code{processx::process$is_incomplete_output()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_supervised">}\href{../../processx/html/process.html#method-is_supervised}{\code{processx::process$is_supervised()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="kill">}\href{../../processx/html/process.html#method-kill}{\code{processx::process$kill()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="kill_tree">}\href{../../processx/html/process.html#method-kill_tree}{\code{processx::process$kill_tree()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="poll_io">}\href{../../processx/html/process.html#method-poll_io}{\code{processx::process$poll_io()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="print">}\href{../../processx/html/process.html#method-print}{\code{processx::process$print()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_error">}\href{../../processx/html/process.html#method-read_all_error}{\code{processx::process$read_all_error()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_error_lines">}\href{../../processx/html/process.html#method-read_all_error_lines}{\code{processx::process$read_all_error_lines()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_output">}\href{../../processx/html/process.html#method-read_all_output}{\code{processx::process$read_all_output()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_output_lines">}\href{../../processx/html/process.html#method-read_all_output_lines}{\code{processx::process$read_all_output_lines()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_error">}\href{../../processx/html/process.html#method-read_error}{\code{processx::process$read_error()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_error_lines">}\href{../../processx/html/process.html#method-read_error_lines}{\code{processx::process$read_error_lines()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_output">}\href{../../processx/html/process.html#method-read_output}{\code{processx::process$read_output()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_output_lines">}\href{../../processx/html/process.html#method-read_output_lines}{\code{processx::process$read_output_lines()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="resume">}\href{../../processx/html/process.html#method-resume}{\code{processx::process$resume()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="signal">}\href{../../processx/html/process.html#method-signal}{\code{processx::process$signal()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="supervise">}\href{../../processx/html/process.html#method-supervise}{\code{processx::process$supervise()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="suspend">}\href{../../processx/html/process.html#method-suspend}{\code{processx::process$suspend()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="wait">}\href{../../processx/html/process.html#method-wait}{\code{processx::process$wait()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="write_input">}\href{../../processx/html/process.html#method-write_input}{\code{processx::process$write_input()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Start an \verb{R CMD} process.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{rcmd_process$new(options)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{options}}{A list of options created via
+\code{\link[=rcmd_process_options]{rcmd_process_options()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new \code{rcmd_process} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-finalize"></a>}}
+\subsection{Method \code{finalize()}}{
+Clean up the temporary files created for an \verb{R CMD} process.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{rcmd_process$finalize()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{rcmd_process$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
 }

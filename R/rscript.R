@@ -56,20 +56,9 @@ rscript_load_hook_color <- function(color) {
 
 #' External `Rscript` process
 #'
+#' @description
 #' An `Rscript script.R` command that runs in the background. This is an
-#' R6 class that extends the [process] class.
-#'
-#' @section Usage:
-#' ```
-#' rp <- rscript_process$new(options)
-#' ```
-#'
-#' @section Arguments:
-#' * `options` A list of options created via [rscript_process_options()].
-#'
-#' @section Details:
-#' `rscript_process$new` creates a new instance. Its `options` argument is
-#' best created by the [rscript_process_options()] function.
+#' R6 class that extends the [processx::process] class.
 #'
 #' @name rscript_process
 #' @examplesIf FALSE
@@ -77,16 +66,19 @@ rscript_load_hook_color <- function(color) {
 #' rp <- rscript_process$new(options)
 #' rp$wait()
 #' rp$read_output_lines()
-NULL
-
 #' @export
 
 rscript_process <- R6::R6Class(
   "rscript_process",
   inherit = processx::process,
   public = list(
+    #' @description Create a new `Rscript` process.
+    #' @param options A list of options created via
+    #'   [rscript_process_options()].
     initialize = function(options)
       rscript_init(self, private, super, options),
+    #' @description Clean up after an `Rsctipt` process, remove
+    #' temporary files.
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()

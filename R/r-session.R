@@ -1,98 +1,17 @@
 
 #' External R Session
 #'
+#' @description
 #' A permanent R session that runs in the background. This is an R6 class
 #' that extends the [processx::process] class.
 #'
 #' The process is started at the creation of the object, and then it can
 #' be used to evaluate R function calls, one at a time.
 #'
-#' @section Usage:
-#' ```
-#' rs <- r_session$new(options = r_session_options(), wait = TRUE,
-#'                      wait_timeout = 3000)
+#' @param func Function object to call in the background R process.
+#'   Please read the notes for the similar argument of [r()].
+#' @param args Arguments to pass to the function. Must be a list.
 #'
-#' rs$run(func, args = list())
-#' rs$run_with_output(func, args = list())
-#' rs$call(func, args = list())
-#'
-#' rs$poll_process(timeout)
-#'
-#' rs$get_state()
-#' rs$get_running_time()
-#'
-#' rs$read()
-#' rs$close(grace = 1000)
-#'
-#' rs$traceback()
-#' rs$debug()
-#' rs$attach()
-#' ```
-#'
-#' @section Arguments:
-#' * `options`: A list of options created via [r_session_options()].
-#' * `wait`: Whether to wait for the R process to start and be ready
-#'   for running commands.
-#' * `wait_timeout`: Timeout for waiting for the R process to start,
-#'   in milliseconds.
-#' * `func`: Function object to call in the background R process.
-#'   Please read the notes for the similar argument of [r()]
-#' * `args`: Arguments to pass to the function. Must be a list.
-#' * `timeout`: Timeout period in milliseconds.
-#' * `grace`: Grace period in milliseconds, to wait for the subprocess to
-#'   exit cleanly, after its standard input is closed. If the process is
-#'   still running after this period, it will be killed.
-#'
-#' @section Details:
-#' `r_session$new()` creates a new R background process. It can wait for the
-#' process to start up (`wait = TRUE`), or return immediately, i.e. before
-#' the process is actually ready to run. In the latter case you may call
-#' `rs$poll_process()` to make sure it is ready.
-#'
-#' `rs$run()` is similar to [r()], but runs the function in the `rs` R
-#' session. It throws an error if the function call generated an error in
-#' the child process.
-#'
-#' `rs$run_with_output()` is similar to `$run()`, but returns the standard
-#' output and error of the child process as well. It does not throw on
-#' errors, but returns a non-zero `error` member in the result list.
-#'
-#' `rs$call()` starts running a function in the background R session, and
-#' returns immediately. To check if the function is done, call the
-#' `poll_process()` method.
-#'
-#' `rs$poll_process()` polls the R session with a timeout. If the session
-#' has finished the computation, it returns with `"ready"`. If the timeout
-#' is reached, it returns with `"timeout"`.
-#'
-#' `rs$get_state()` return the state of the R session. Possible values:
-#' * `"starting"`: starting up,
-#' * `"idle"`: ready to compute,
-#' * `"busy"`: computing right now,
-#' * `"finished"`: the R process has finished.
-#'
-#' `rs$get_running_time()` returns the elapsed time since the R process
-#' has started, and the elapsed time since the current computation has
-#' started. The latter is NA if there is no active computation.
-#'
-#' `rs$read()` reads an event from the child process, if there is one
-#' available. Events might signal that the function call has finished,
-#' or they can be progress report events.
-#'
-#' `rs$close()` terminates the current computation and the R process.
-#' The session object will be in `"finished"` state after this.
-#'
-#' `rs$traceback() can be used after an error in the R subprocess. It is
-#' equivalent to the [traceback()] call, but it is performed in the
-#' subprocess.
-#'
-#' `rs$debug()` is an interactive debugger to inspect the dumped frames
-#' in the subprocess, after an error. See more at [r_session_debug].
-#'
-#' `rs$attach()` is an experimental function that provides a REPL
-#' (Read-Eval-Print-Loop) to the subprocess.
-#'
-#' @name r_session
 #' @examplesIf FALSE
 #' rs <- r_ression$new()
 #'
@@ -104,9 +23,6 @@
 #' rs$poll_process(-1)
 #' rs$get_state()
 #' rs$read()
-NULL
-
-
 #' @export
 
 r_session <- R6::R6Class(
@@ -114,44 +30,155 @@ r_session <- R6::R6Class(
   inherit = processx::process,
 
   public = list(
+
+    #' @description
+    #' creates a new R background process. It can wait for the process to
+    #' start up (`wait = TRUE`), or return immediately, i.e. before
+    #' the process is actually ready to run. In the latter case you may call
+    #' the `poll_process()` method to make sure it is ready.
+    #'
+    #' @param options A list of options created via [r_session_options()].
+    #' @param wait Whether to wait for the R process to start and be ready
+    #'   for running commands.
+    #' @param wait_timeout Timeout for waiting for the R process to start,
+    #'   in milliseconds.
+    #' @return An `r_session` object.
     initialize = function(options = r_session_options(), wait = TRUE,
                           wait_timeout = 3000)
       rs_init(self, private, super, options, wait, wait_timeout),
 
-    read = function()
-      rs_read(self, private),
-    close = function(grace = 1000)
-      rs_close(self, private, grace),
-
-    call = function(func, args = list())
-      rs_call(self, private, func, args),
-    run_with_output = function(func, args = list())
-      rs_run_with_output(self, private, func, args),
+    #' @description
+    #' Similar to [r()], but runs the function in a permanent background
+    #' R session. It throws an error if the function call generated an
+    #' error in the child process.
+    #' @return The return value of the R expression.
     run = function(func, args = list())
       rs_run(self, private, func, args),
 
-    get_state = function()
-      rs_get_state(self, private),
-    get_running_time = function()
-      rs_get_running_time(self, private),
+    #' @description
+    #' Similar to `$run()`, but returns the standard output and error of
+    #' the child process as well. It does not throw on errors, but
+    #' returns a non-`NULL` `error` member in the result list.
+    #'
+    #' @return A list with the following entries.
+    #' * `result`: The value returned by `func`. On error this is `NULL`.
+    #' * `stdout`: The standard output of the process while evaluating
+    #    the `func` call,
+    #' * `stderr`: The standard error of the process while evaluating
+    #'   the `func` call.
+    #' * `error`: On error it contains an error object, that contains the
+    #'   error thrown in the subprocess. Otherwise it is `NULL`.
+    #' * `code`, `message`: These fields are used by call internally and
+    #'   you can ignore them.
+    run_with_output = function(func, args = list())
+      rs_run_with_output(self, private, func, args),
 
+    #' @description
+    #' Starts running a function in the background R session, and
+    #' returns immediately. To check if the function is done, call the
+    #' `poll_process()` method.
+    call = function(func, args = list())
+      rs_call(self, private, func, args),
+
+    #' @description
+    #' Poll the R session with a timeout. If the session has finished the
+    #' computation, it returns with `"ready"`. If the timeout
+    #' is reached, it returns with `"timeout"`.
+    #'
+    #' @param timeout Timeout period in milliseconds.
+    #' @return Character string `"ready"` or `"timeout"`.
     poll_process = function(timeout)
       rs_poll_process(self, private, timeout),
 
+    #' @description
+    #' Return the state of the R session.
+    #'
+    #' @return Possible values:
+    #'   * `"starting"`: starting up,
+    #'   * `"idle"`: ready to compute,
+    #'   * `"busy"`: computing right now,
+    #'   * `"finished"`: the R process has finished.
+    get_state = function()
+      rs_get_state(self, private),
+
+    #' @description
+    #' Returns the elapsed time since the R process has started, and the
+    #' elapsed time since the current computation has started. The latter
+    #' is `NA` if there is no active computation.
+    #' @return Named vector of `POSIXct` objects. The names are `"total"`
+    #'   and `"current"`.
+    get_running_time = function()
+      rs_get_running_time(self, private),
+
+    #' @description
+    #' Reads an event from the child process, if there is one available.
+    #' Events might signal that the function call has finished, or they
+    #' can be progress report events.
+    #'
+    #' This is a low level function that you only need to use if you
+    #' want to process events (messages) from the R session manually.
+    #'
+    #' @return `NULL` if no events are available. Otherwise a named list,
+    #'   which is also a `callr_session_result` object. The list always has
+    #'   a `code` entry which is the type of the event. Event types:
+    #'   * `200`: The computation is done, and the event includes the
+    #'      result, in the same form as for the `run()` method.
+    #'   * `201`: An R session that was in 'starting' state is ready to go.
+    #'   * `202`: Used by the `attach()` method.
+    #'   * `301`: A message from the suprocess. The message is a condition
+    #'      object with class `callr_message`. (It typically has other
+    #'      classes, e.g. `cli_message` for output from the cli package.
+    #'   * `500`: The R session finished cleanly. This means that the
+    #'      evaluated expression quit R.
+    #'   * `501`: The R session crashed or was killed.
+    #'   * `502`: The R session closed its end of the connection that
+    #'      callr uses for communication.
+
+    read = function()
+      rs_read(self, private),
+
+    #' @description
+    #' Terminate the current computation and the R process.
+    #' The session object will be in `"finished"` state after this.
+    #' @param grace Grace period in milliseconds, to wait for the
+    #' subprocess to exit cleanly, after its standard input is closed.
+    #' If the process is still running after this period, it will be
+    #' killed.
+    close = function(grace = 1000)
+      rs_close(self, private, grace),
+
+    #' @description
+    #' The `traceback()` method can be used after an error in the R
+    #' subprocess. It is equivalent to the [base::traceback()] call, in
+    #' the subprocess.
+    #' @return The same output as from [base::traceback()]
     traceback = function()
       rs_traceback(self, private),
+
+    #' @description
+    #' Interactive debugger to inspect the dumped frames in the subprocess,
+    #' after an error. See more at [r_session_debug].
     debug = function()
       rs_debug(self, private),
 
+    #' @description Experimental function that provides a REPL
+    #' (Read-Eval-Print-Loop) to the subprocess.
     attach = function()
       rs_attach(self, private),
 
+    #' @description
+    #' Finalizer that is called when garbage collecting an `r_session`
+    #' object, to clean up temporary files.
     finalize = function() {
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     },
+
+    #' @description
+    #' Print method for an `r_session`.
+    #' @param ... Arguments are not used currently.
     print = function(...) {
       cat(
         sep = "",

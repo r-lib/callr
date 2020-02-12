@@ -28,6 +28,10 @@ be used from unit tests.
 from the child R process.
 \item \code{R_PDFVIEWER="false"}: similarly for the PDF viewer.
 }
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 Note that \code{callr} also sets the \code{R_ENVIRON}, \code{R_ENVIRON_USER},

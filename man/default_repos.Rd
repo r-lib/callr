@@ -14,6 +14,10 @@ option in callr subprocesses.
 callr sets the \code{repos} option in subprocesses, to make sure that
 a CRAN mirror is set up. This is because the subprocess cannot bring
 up the menu of CRAN mirrors for the user to choose from.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \examples{
 default_repos()

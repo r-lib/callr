@@ -6,6 +6,10 @@
 \description{
 The \code{r_session$debug()} method is an interactive debugger to inspect
 the stack of the background process after an error.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 \verb{$debug()} starts a REPL (Read-Eval-Print-Loop), that evaluates R

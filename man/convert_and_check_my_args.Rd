@@ -12,6 +12,10 @@ convert_and_check_my_args(options)
 \description{
 This function is used for all variants of \code{r} and \code{rcmd}. An argument
 name is only used to refer to one kind of object, to make this possible.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 The benefit of having a single \code{options} object is to avoid passing

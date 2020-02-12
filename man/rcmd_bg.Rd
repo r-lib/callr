@@ -74,6 +74,10 @@ It returns a \link{process} object.
 \description{
 The child process is started in the background, and the function
 return immediately.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \section{Security considerations}{
 

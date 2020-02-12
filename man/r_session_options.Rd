@@ -11,4 +11,8 @@ r_session_options(...)
 }
 \description{
 Create options for an \link{r_session} object
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }

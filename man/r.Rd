@@ -154,6 +154,10 @@ when \code{callr} is invoked from unit tests, \code{R_BROWSER}
 and \code{R_PDFVIEWER} to avoid starting a browser or a PDF viewer.
 See \code{\link[=rcmd_safe_env]{rcmd_safe_env()}}.
 }
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 The \code{r()} function from before 2.0.0 is called \code{\link[=r_copycat]{r_copycat()}} now.

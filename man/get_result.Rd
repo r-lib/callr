@@ -22,5 +22,9 @@ Even if an error happens, the output file might still exist,
 because \code{\link[=saveRDS]{saveRDS()}} creates the file before evaluating its object
 argument. So we need to check for the error file to decide
 if an error happened.
+
+\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
+
+\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \keyword{internal}
