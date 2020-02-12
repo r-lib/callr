@@ -8,11 +8,13 @@
 
 <title>Call and <code>R CMD</code> command, while mimicking the current R session — rcmd_copycat • callr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,15 +34,18 @@
 
 
 
-<meta property="og:title" content="Call and <code>R CMD</code> command, while mimicking the current R session — rcmd_copycat" />
 
+<meta property="og:title" content="Call and <code>R CMD</code> command, while mimicking the current R session — rcmd_copycat" />
 <meta property="og:description" content="This function is similar to rcmd(), but it has slightly different
 defaults:
 The repos options is unchanged.
 No extra environment variables are defined.
 
+
+
 " />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -71,19 +76,13 @@ No extra environment variables are defined.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -94,15 +93,23 @@ No extra environment variables are defined.
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Task-queue-with-callr.html">A multi process task queue in 100 lines of R code</a>
+      <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q">A multi process task queue in 100 lines of R code</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Change log</a>
+    </li>
+  </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr">
@@ -129,14 +136,14 @@ No extra environment variables are defined.
     </div>
 
     <div class="ref-description">
-    
     <p>This function is similar to <code><a href='rcmd.html'>rcmd()</a></code>, but it has slightly different
 defaults:</p><ul>
 <li><p>The <code>repos</code> options is unchanged.</p></li>
 <li><p>No extra environment variables are defined.</p></li>
 </ul>
 
-    
+<p><link rel="stylesheet" type="text/css" href="../doc/assets/extra.css"></p>
+<p><script src="../doc/assets/rd.js"></script></p>
     </div>
 
     <pre class="usage"><span class='fu'>rcmd_copycat</span>(
@@ -147,7 +154,7 @@ defaults:</p><ul>
   <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
   <span class='no'>...</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -183,7 +190,7 @@ as it is set using the system or the user profile.</p></td>
       <td><p>Additional arguments are passed to <code><a href='rcmd.html'>rcmd()</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="security-considerations"><a class="anchor" href="#security-considerations"></a>Security considerations</h2>
 
     
@@ -196,24 +203,20 @@ your environment file or your profile, otherwise this information will
 get scattered in various files, at least temporarily, until the
 subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other R CMD commands: 
 <code><a href='rcmd_bg.html'>rcmd_bg</a>()</code>,
 <code><a href='rcmd.html'>rcmd</a>()</code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#security-considerations">Security considerations</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

@@ -8,11 +8,13 @@
 
 <title>Changelog • callr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,7 +34,9 @@
 
 
 
+
 <meta property="og:title" content="Changelog" />
+
 
 
 
@@ -63,19 +67,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -86,15 +84,23 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Task-queue-with-callr.html">A multi process task queue in 100 lines of R code</a>
+      <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q">A multi process task queue in 100 lines of R code</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    News
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../news/index.html">Change log</a>
+    </li>
+  </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr">
@@ -119,9 +125,26 @@
       <small>Source: <a href='https://github.com/r-lib/callr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="callr-340" class="section level1">
+    <div id="callr-3-4-2" class="section level1">
 <h1 class="page-header">
-<a href="#callr-340" class="anchor"></a>callr 3.4.0<small> 2019-12-09 </small>
+<a href="#callr-3-4-2" class="anchor"></a>callr 3.4.2<small> 2020-02-12 </small>
+</h1>
+<ul>
+<li>Improved error messages. Error messages are now fully printed after an error. In non-interactive sessions, the stack trace is printed as well.</li>
+</ul>
+</div>
+    <div id="callr-3-4-1" class="section level1">
+<h1 class="page-header">
+<a href="#callr-3-4-1" class="anchor"></a>callr 3.4.1<small> 2020-01-24 </small>
+</h1>
+<ul>
+<li><p>callr is now more careful when loading the local <code>.Rprofile</code> in the subprocess. This fixes issues with packrat and renv that use <code>.Rprofile</code> for setup (<a href='https://github.com/r-lib/callr/issues/139'>#139</a>).</p></li>
+<li><p>callr functions fail early if environment file is missing (<a href='https://github.com/r-lib/callr/issues/123'>#123</a>, <a href='https://github.com/jdblischak'>@jdblischak</a>)</p></li>
+</ul>
+</div>
+    <div id="callr-3-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#callr-3-4-0" class="anchor"></a>callr 3.4.0<small> 2019-12-09 </small>
 </h1>
 <ul>
 <li><p>All callr functions and background processes properly clean up temporary files now (<a href='https://github.com/r-lib/callr/issues/104'>#104</a>).</p></li>
@@ -131,24 +154,24 @@
 <li><p>callr now loads <code>.Rprofile</code> files from the current working directory by default. This works better with packrat, renv, and other software that relies on a local profile for initialization (<a href='https://github.com/r-lib/callr/issues/131'>#131</a>).</p></li>
 </ul>
 </div>
-    <div id="callr-332" class="section level1">
+    <div id="callr-3-3-2" class="section level1">
 <h1 class="page-header">
-<a href="#callr-332" class="anchor"></a>callr 3.3.2<small> 2019-09-22 </small>
+<a href="#callr-3-3-2" class="anchor"></a>callr 3.3.2<small> 2019-09-22 </small>
 </h1>
 <p>No user visible changes in this version.</p>
 </div>
-    <div id="callr-331" class="section level1">
+    <div id="callr-3-3-1" class="section level1">
 <h1 class="page-header">
-<a href="#callr-331" class="anchor"></a>callr 3.3.1<small> 2019-07-18 </small>
+<a href="#callr-3-3-1" class="anchor"></a>callr 3.3.1<small> 2019-07-18 </small>
 </h1>
 <ul>
 <li><p><code>r_session</code> now avoids creating <code>data</code> and <code>env</code> objects in the global environment of the subprocess.</p></li>
 <li><p>New <code>$debug()</code> method for <code>r_session</code> to inspect the dumped frames in the subprocess, after an error.</p></li>
 </ul>
 </div>
-    <div id="callr-330" class="section level1">
+    <div id="callr-3-3-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-330" class="anchor"></a>callr 3.3.0<small> 2019-07-04 </small>
+<a href="#callr-3-3-0" class="anchor"></a>callr 3.3.0<small> 2019-07-04 </small>
 </h1>
 <ul>
 <li><p>callr now sets the <code>.Last.error</code> variable for every uncaught callr error to the error condition, and also sets <code>.Last.error.trace</code> to its stack trace. If the error originates in the subprocess, then <code>.Last.error</code> is a hierarchical error object, and <code>.Last.error.trace</code> merges the traces from the two processes. See the <code>README.md</code> for an example.</p></li>
@@ -157,27 +180,27 @@
 <li><p>New vignette, that showcases <code>r_session</code>.</p></li>
 </ul>
 </div>
-    <div id="callr-320" class="section level1">
+    <div id="callr-3-2-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-320" class="anchor"></a>callr 3.2.0<small> 2019-03-15 </small>
+<a href="#callr-3-2-0" class="anchor"></a>callr 3.2.0<small> 2019-03-15 </small>
 </h1>
 <ul>
 <li><p><code><a href="../reference/r.html">r()</a></code>, <code><a href="../reference/rcmd.html">rcmd()</a></code> and <code><a href="../reference/rscript.html">rscript()</a></code> can now redirect the standard error of the subprocess its standard output. This allows to keep them correctly interleaved. For this, you need to either set the <code>stderr</code> argument to the special string <code>"2&gt;&amp;1"</code>, or to the same output file as specified for <code>stdout</code>.</p></li>
 <li><p><code><a href="../reference/r.html">r()</a></code>, <code><a href="../reference/rcmd.html">rcmd()</a></code> and <code><a href="../reference/rscript.html">rscript()</a></code> now pass <code>...</code> arguments to <code><a href="http://processx.r-lib.org/reference/run.html">processx::run()</a></code>. <code><a href="../reference/r_bg.html">r_bg()</a></code> and <code><a href="../reference/rcmd_bg.html">rcmd_bg()</a></code> pass <code>...</code> arguments to the <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> constructor. For <code>r_process</code>, <code>rcmd_process</code> and <code>rscript_process</code> extra arguments can be specified as <code>options$extra</code>, these are also passed to the <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> constructor (<a href='https://github.com/r-lib/callr/issues/100'>#100</a>).</p></li>
 </ul>
 </div>
-    <div id="callr-311" class="section level1">
+    <div id="callr-3-1-1" class="section level1">
 <h1 class="page-header">
-<a href="#callr-311" class="anchor"></a>callr 3.1.1<small> 2018-12-21 </small>
+<a href="#callr-3-1-1" class="anchor"></a>callr 3.1.1<small> 2018-12-21 </small>
 </h1>
 <ul>
 <li><p><code><a href="../reference/r.html">r()</a></code>, <code><a href="../reference/r_bg.html">r_bg()</a></code>, etc. now handle messages from the cliapp package properly. They used to make the R session exit.</p></li>
 <li><p>Better default for the <code>repos</code> option in callr subprocesses. callr no longer creates duplicate “CRAN” entries. By default the new <code><a href="../reference/default_repos.html">default_repos()</a></code> function is used to set <code>repos</code> in the subprocess.</p></li>
 </ul>
 </div>
-    <div id="callr-310" class="section level1">
+    <div id="callr-3-1-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-310" class="anchor"></a>callr 3.1.0<small> 2018-12-10 </small>
+<a href="#callr-3-1-0" class="anchor"></a>callr 3.1.0<small> 2018-12-10 </small>
 </h1>
 <ul>
 <li><p>New <code><a href="../reference/rscript.html">rscript()</a></code> function and <code>rscript_process</code> class to execute R scripts via <code>Rscript</code> (<a href='https://github.com/r-lib/callr/issues/40'>#40</a>, <a href='https://github.com/r-lib/callr/issues/81'>#81</a>).</p></li>
@@ -187,9 +210,9 @@
 <li><p><code>r_session$run*()</code> handle interrupts properly. It tries to interrupt the background process fist, kills it if it is not interruptible, and then re-throws the interrupt condition, going back to the top level prompt if the re-thrown condition is uncaught.</p></li>
 </ul>
 </div>
-    <div id="callr-300" class="section level1">
+    <div id="callr-3-0-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-300" class="anchor"></a>callr 3.0.0<small> 2018-08-24 </small>
+<a href="#callr-3-0-0" class="anchor"></a>callr 3.0.0<small> 2018-08-24 </small>
 </h1>
 <ul>
 <li><p>New <code>r_session</code> class: a background R session you can send commands to (<a href='https://github.com/r-lib/callr/issues/56'>#56</a>).</p></li>
@@ -197,9 +220,9 @@
 <li><p>Retain names of the <code>repos</code> option (<a href='https://github.com/r-lib/callr/issues/67'>#67</a>, <a href='https://github.com/jennybc'>@jennybc</a>)</p></li>
 </ul>
 </div>
-    <div id="callr-204" class="section level1">
+    <div id="callr-2-0-4" class="section level1">
 <h1 class="page-header">
-<a href="#callr-204" class="anchor"></a>callr 2.0.4<small> 2018-05-15 </small>
+<a href="#callr-2-0-4" class="anchor"></a>callr 2.0.4<small> 2018-05-15 </small>
 </h1>
 <ul>
 <li><p>pkgdown web site at <a href="https://callr.r-lib.org" class="uri">https://callr.r-lib.org</a> (<a href='https://github.com/r-lib/callr/issues/52'>#52</a>, <a href='https://github.com/r-lib/callr/issues/53'>#53</a>).</p></li>
@@ -208,9 +231,9 @@
 <li><p>callr now uses the processx package, instead of embedded code, to create and control processes.</p></li>
 </ul>
 </div>
-    <div id="callr-203" class="section level1">
+    <div id="callr-2-0-3" class="section level1">
 <h1 class="page-header">
-<a href="#callr-203" class="anchor"></a>callr 2.0.3<small> 2018-04-11 </small>
+<a href="#callr-2-0-3" class="anchor"></a>callr 2.0.3<small> 2018-04-11 </small>
 </h1>
 <ul>
 <li><p>The default behavior on error can be set now with the <code>callr.error</code> option.</p></li>
@@ -218,30 +241,29 @@
 <li><p><code>r_bg</code> and <code>rcmd_bg</code> now have the <code>supervise</code> option (<a href='https://github.com/r-lib/callr/issues/45'>#45</a>).</p></li>
 </ul>
 </div>
-    <div id="callr-202" class="section level1">
+    <div id="callr-2-0-2" class="section level1">
 <h1 class="page-header">
-<a href="#callr-202" class="anchor"></a>callr 2.0.2<small> 2018-02-11 </small>
+<a href="#callr-2-0-2" class="anchor"></a>callr 2.0.2<small> 2018-02-11 </small>
 </h1>
 <ul>
-<li>
-<p>Fix a bug with R-devel, caused by the change on 2018-02-08: <a href="https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5" class="uri">https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5</a></p>
+<li>Fix a bug with R-devel, caused by the change on 2018-02-08: <a href="https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5" class="uri">https://github.com/wch/r-source/commit/924582943706100e88a11d6bb0585d25779c91f5</a>
 <p><a href='https://github.com/r-lib/callr/issues/37'>#37</a>, <a href='https://github.com/r-lib/callr/issues/38'>#38</a></p>
 </li>
 <li><p>Fix a race condition on Windows, when creating named pipes for <code>stdout</code> or <code>stderr</code>. The client sometimes didn’t wait for the server, and callr failed with ERROR_PIPE_BUSY (231, All pipe instances are busy).</p></li>
 </ul>
 </div>
-    <div id="callr-201" class="section level1">
+    <div id="callr-2-0-1" class="section level1">
 <h1 class="page-header">
-<a href="#callr-201" class="anchor"></a>callr 2.0.1<small> 2018-01-30 </small>
+<a href="#callr-2-0-1" class="anchor"></a>callr 2.0.1<small> 2018-01-30 </small>
 </h1>
 <ul>
 <li><p>Fix compilation issues on Solaris</p></li>
 <li><p>Fix a test failure on macOS</p></li>
 </ul>
 </div>
-    <div id="callr-200" class="section level1">
+    <div id="callr-2-0-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-200" class="anchor"></a>callr 2.0.0<small> 2018-01-28 </small>
+<a href="#callr-2-0-0" class="anchor"></a>callr 2.0.0<small> 2018-01-28 </small>
 </h1>
 <ul>
 <li><p>Run R or <code>R CMD</code> in the background, see <code><a href="../reference/r_bg.html">r_bg()</a></code>, <code><a href="../reference/rcmd_bg.html">rcmd_bg()</a></code>, and also <code>r_process</code> and <code>rcmd_process</code></p></li>
@@ -257,9 +279,9 @@
 <li><p><code><a href="../reference/rcmd.html">rcmd()</a></code> gets a <code>wd</code> argument to set the working directory</p></li>
 </ul>
 </div>
-    <div id="callr-100" class="section level1">
+    <div id="callr-1-0-0" class="section level1">
 <h1 class="page-header">
-<a href="#callr-100" class="anchor"></a>callr 1.0.0<small> 2016-06-18 </small>
+<a href="#callr-1-0-0" class="anchor"></a>callr 1.0.0<small> 2016-06-18 </small>
 </h1>
 <p>First public release.</p>
 </div>
@@ -269,20 +291,22 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#callr-340">3.4.0</a></li>
-        <li><a href="#callr-332">3.3.2</a></li>
-        <li><a href="#callr-331">3.3.1</a></li>
-        <li><a href="#callr-330">3.3.0</a></li>
-        <li><a href="#callr-320">3.2.0</a></li>
-        <li><a href="#callr-311">3.1.1</a></li>
-        <li><a href="#callr-310">3.1.0</a></li>
-        <li><a href="#callr-300">3.0.0</a></li>
-        <li><a href="#callr-204">2.0.4</a></li>
-        <li><a href="#callr-203">2.0.3</a></li>
-        <li><a href="#callr-202">2.0.2</a></li>
-        <li><a href="#callr-201">2.0.1</a></li>
-        <li><a href="#callr-200">2.0.0</a></li>
-        <li><a href="#callr-100">1.0.0</a></li>
+        <li><a href="#callr-3-4-2">3.4.2</a></li>
+        <li><a href="#callr-3-4-1">3.4.1</a></li>
+        <li><a href="#callr-3-4-0">3.4.0</a></li>
+        <li><a href="#callr-3-3-2">3.3.2</a></li>
+        <li><a href="#callr-3-3-1">3.3.1</a></li>
+        <li><a href="#callr-3-3-0">3.3.0</a></li>
+        <li><a href="#callr-3-2-0">3.2.0</a></li>
+        <li><a href="#callr-3-1-1">3.1.1</a></li>
+        <li><a href="#callr-3-1-0">3.1.0</a></li>
+        <li><a href="#callr-3-0-0">3.0.0</a></li>
+        <li><a href="#callr-2-0-4">2.0.4</a></li>
+        <li><a href="#callr-2-0-3">2.0.3</a></li>
+        <li><a href="#callr-2-0-2">2.0.2</a></li>
+        <li><a href="#callr-2-0-1">2.0.1</a></li>
+        <li><a href="#callr-2-0-0">2.0.0</a></li>
+        <li><a href="#callr-1-0-0">1.0.0</a></li>
       </ul>
     </div>
   </div>
