@@ -1,6 +1,9 @@
 
 # development version
 
+* Improved error messages. Error messages are now fully printed after
+  an error. In non-interactive sessions, the stack trace is printed as well.
+
 # callr 3.4.1
 
 * callr is now more careful when loading the local `.Rprofile` in the
