@@ -125,7 +125,7 @@ r_session <- R6::R6Class(
     #'      result, in the same form as for the `run()` method.
     #'   * `201`: An R session that was in 'starting' state is ready to go.
     #'   * `202`: Used by the `attach()` method.
-    #'   * `301`: A message from the suprocess. The message is a condition
+    #'   * `301`: A message from the subprocess. The message is a condition
     #'      object with class `callr_message`. (It typically has other
     #'      classes, e.g. `cli_message` for output from the cli package.
     #'   * `500`: The R session finished cleanly. This means that the

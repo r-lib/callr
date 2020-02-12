@@ -287,7 +287,7 @@ a \code{code} entry which is the type of the event. Event types:
 result, in the same form as for the \code{run()} method.
 \item \code{201}: An R session that was in 'starting' state is ready to go.
 \item \code{202}: Used by the \code{attach()} method.
-\item \code{301}: A message from the suprocess. The message is a condition
+\item \code{301}: A message from the subprocess. The message is a condition
 object with class \code{callr_message}. (It typically has other
 classes, e.g. \code{cli_message} for output from the cli package.
 \item \code{500}: The R session finished cleanly. This means that the
