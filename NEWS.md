@@ -1,5 +1,5 @@
 
-# development version
+# callr 3.4.2
 
 * Improved error messages. Error messages are now fully printed after
   an error. In non-interactive sessions, the stack trace is printed as well.
