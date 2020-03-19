@@ -93,7 +93,7 @@ r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 
 ### Error handling
 
-callr` copies errors from the child process back to the main R session:
+callr copies errors from the child process back to the main R session:
 
 ```{r include = FALSE}
 options(rlib_error_always_trace = TRUE)
