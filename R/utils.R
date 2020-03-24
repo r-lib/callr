@@ -14,9 +14,11 @@
 
 default_repos <- function() {
   opt <- getOption("repos")
+  was_list <- is.list(opt)
   if (! "CRAN" %in% names(opt) || opt[["CRAN"]] == "@CRAN@") {
     opt[["CRAN"]] <- "https://cloud.r-project.org"
   }
+  if (!was_list) opt <- unlist(opt)
   opt
 }
 

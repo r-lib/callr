@@ -1,6 +1,9 @@
 
 # callr (development version)
 
+* `default_repos()` now returns a list if `getOption("repos")` is a list,
+  and a vector otherwise, on R 4.x.y as well.
+
 # callr 3.4.2
 
 * Improved error messages. Error messages are now fully printed after
