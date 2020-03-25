@@ -24,36 +24,38 @@ env_file <- NULL
   # We need some R code in the subprocess, we parse it here, so the
   # subprocess just needs to load it. This code will also load the
   # shared lib of the compiled functions that we need.
-  client_file <- system.file("client.R", package = "callr")
+  client_file <- system.file("client.R", package = pkgname, lib.loc = libname)
   if (client_file == "") stop("Cannot find client R file")
 
   source(
     client_file, local = env$`__callr_data__`,
     keep.source = FALSE)
 
+  # An env var can override the location of the client lib
+  # We also unset the env var here, so sub-sub-processes are
+  # not affected by it. If they should, then the subprocess needs
+  # to set this up again.
+  px <- Sys.getenv("CALLR_PROCESSX_CLIENT_LIB", "")
+  Sys.unsetenv("CALL_PROCESSX_CLIENT_LIB")
+  if (px == "") px <- getNamespaceInfo("processx", "path")
+
   arch <- .Platform$r_arch
   ext <- .Platform$dynlib.ext
-  sofile <- system.file(
-    "libs", arch, paste0("client", ext),
-    package = "processx")
+  sofile <- file.path(px, "libs", arch, paste0("client", ext))
 
   # Maybe not multi-arch build on a multi-arch system?
-  # Can this happent at all?
-  if (sofile == "") {
-    sofile <- system.file(
-      "libs", paste0("client", ext),
-      package = "processx")
+  # Can this happen at all?
+  if (!file.exists(sofile)) {
+    sofile <- file.path(px, "libs", paste0("client", ext))
   }
 
   # Try this as well, this is for devtools/pkgload
-  if (sofile == "") {
-    sofile <- system.file(
-      "src", paste0("client", ext),
-      package = "processx")
+  if (!file.exists(sofile)) {
+    sofile <- file.path("src", paste0("client", ext))
   }
 
   # stop() here and not throw(), because this function should be standalone
-  if (sofile == "") stop("Cannot find client file")
+  if (!file.exists(sofile)) stop("Cannot find client so file")
 
   env$`__callr_data__`$sofile <- sofile
 
