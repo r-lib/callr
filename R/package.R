@@ -29,7 +29,13 @@ env_file <- NULL
   if (!file.exists(client_file)) {
     client_file <- file.path(libname, pkgname, "inst", "client.R")
   }
-  if (client_file == "") stop("Cannot find client R file")
+  # This is for compatibility with current CRAN pak (0.1.2)
+  if (!file.exists(client_file)) {
+    client_file <- system.file("client.R", package = "callr")
+  }
+  if (client_file == "" || !file.exists(client_file)) {
+    stop("Cannot find client R file")
+  }
 
   source(
     client_file, local = env$`__callr_data__`,
