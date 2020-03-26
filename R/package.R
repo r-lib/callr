@@ -24,12 +24,6 @@ env_file <- NULL
   # We need some R code in the subprocess, we parse it here, so the
   # subprocess just needs to load it. This code will also load the
   # shared lib of the compiled functions that we need.
-  client_file <- system.file("client.R", package = pkgname, lib.loc = libname)
-  if (client_file == "") stop("Cannot find client R file")
-
-  source(
-    client_file, local = env$`__callr_data__`,
-    keep.source = FALSE)
 
   # An env var can override the location of the client lib
   # We also unset the env var here, so sub-sub-processes are
@@ -38,6 +32,16 @@ env_file <- NULL
   px <- Sys.getenv("CALLR_PROCESSX_CLIENT_LIB", "")
   Sys.unsetenv("CALL_PROCESSX_CLIENT_LIB")
   if (px == "") px <- getNamespaceInfo("processx", "path")
+
+  client_file <- file.path(libname, pkgname, "client.R")
+  if (!file.exists(client_file)) {
+    client_file <- file.path(libname, pkgname, "inst", "client.R")
+  }
+  if (client_file == "") stop("Cannot find client R file")
+
+  source(
+    client_file, local = env$`__callr_data__`,
+    keep.source = FALSE)
 
   arch <- .Platform$r_arch
   ext <- .Platform$dynlib.ext
