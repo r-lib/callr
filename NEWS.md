@@ -1,5 +1,5 @@
 
-# callr (development version)
+# callr 3.4.3
 
 * `default_repos()` now returns a list if `getOption("repos")` is a list,
   and a vector otherwise, on R 4.x.y as well.
