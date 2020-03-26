@@ -25,14 +25,6 @@ env_file <- NULL
   # subprocess just needs to load it. This code will also load the
   # shared lib of the compiled functions that we need.
 
-  # An env var can override the location of the client lib
-  # We also unset the env var here, so sub-sub-processes are
-  # not affected by it. If they should, then the subprocess needs
-  # to set this up again.
-  px <- Sys.getenv("CALLR_PROCESSX_CLIENT_LIB", "")
-  Sys.unsetenv("CALL_PROCESSX_CLIENT_LIB")
-  if (px == "") px <- getNamespaceInfo("processx", "path")
-
   client_file <- file.path(libname, pkgname, "client.R")
   if (!file.exists(client_file)) {
     client_file <- file.path(libname, pkgname, "inst", "client.R")
@@ -43,19 +35,27 @@ env_file <- NULL
     client_file, local = env$`__callr_data__`,
     keep.source = FALSE)
 
+  # An env var can override the location of the client lib
+  # We also unset the env var here, so sub-sub-processes are
+  # not affected by it. If they should, then the subprocess needs
+  # to set this up again.
+  px <- Sys.getenv("CALLR_PROCESSX_CLIENT_LIB", "")
+  Sys.unsetenv("CALL_PROCESSX_CLIENT_LIB")
+  if (px == "") px <- getNamespaceInfo("processx", "path")
+
   arch <- .Platform$r_arch
-  ext <- .Platform$dynlib.ext
-  sofile <- file.path(px, "libs", arch, paste0("client", ext))
+  so <- paste0("client", .Platform$dynlib.ext)
+  sofile <- file.path(px, "libs", arch, so)
 
   # Maybe not multi-arch build on a multi-arch system?
   # Can this happen at all?
   if (!file.exists(sofile)) {
-    sofile <- file.path(px, "libs", paste0("client", ext))
+    sofile <- file.path(px, "libs", so)
   }
 
   # Try this as well, this is for devtools/pkgload
   if (!file.exists(sofile)) {
-    sofile <- file.path("src", paste0("client", ext))
+    sofile <- file.path("src", so)
   }
 
   # stop() here and not throw(), because this function should be standalone
