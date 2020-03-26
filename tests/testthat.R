@@ -3,7 +3,7 @@ library(callr)
 
 Sys.unsetenv("R_TESTS")
 
-if (ps::ps_is_supported()) {
+if (ps::ps_is_supported() && Sys.getenv("ON_CRAN") == "true") {
   reporter <- ps::CleanupReporter(testthat::SummaryReporter)$new()
   results <- test_check("callr", reporter = reporter)
   failed <- sum(vapply(results, FUN.VALUE = integer(1), function(r) {
