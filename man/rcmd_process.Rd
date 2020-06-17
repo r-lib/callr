@@ -86,6 +86,7 @@ rp$read_output_lines()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Start an \verb{R CMD} process.
 \subsection{Usage}{
@@ -106,6 +107,7 @@ A new \code{rcmd_process} object.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Clean up the temporary files created for an \verb{R CMD} process.
 \subsection{Usage}{
@@ -115,6 +117,7 @@ Clean up the temporary files created for an \verb{R CMD} process.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

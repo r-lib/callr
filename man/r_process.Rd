@@ -91,6 +91,7 @@ rp$get_result()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Start a new R process in the background.
 \subsection{Usage}{
@@ -110,6 +111,7 @@ A new \code{r_process} object.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_result"></a>}}
+\if{latex}{\out{\hypertarget{method-get_result}{}}}
 \subsection{Method \code{get_result()}}{
 Return the result, an R object, from a finished
 background R process. If the process has not finished yet, it throws
@@ -128,6 +130,7 @@ process.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Clean up temporary files once an R process has finished and its
 handle is garbage collected.
@@ -138,6 +141,7 @@ handle is garbage collected.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

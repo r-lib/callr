@@ -106,6 +106,7 @@ rs$read()
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 creates a new R background process. It can wait for the process to
 start up (\code{wait = TRUE}), or return immediately, i.e. before
@@ -134,6 +135,7 @@ An \code{r_session} object.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-run"></a>}}
+\if{latex}{\out{\hypertarget{method-run}{}}}
 \subsection{Method \code{run()}}{
 Similar to \code{\link[=r]{r()}}, but runs the function in a permanent background
 R session. It throws an error if the function call generated an
@@ -158,6 +160,7 @@ The return value of the R expression.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-run_with_output"></a>}}
+\if{latex}{\out{\hypertarget{method-run_with_output}{}}}
 \subsection{Method \code{run_with_output()}}{
 Similar to \verb{$run()}, but returns the standard output and error of
 the child process as well. It does not throw on errors, but
@@ -192,6 +195,7 @@ you can ignore them.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-call"></a>}}
+\if{latex}{\out{\hypertarget{method-call}{}}}
 \subsection{Method \code{call()}}{
 Starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
@@ -213,6 +217,7 @@ Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-poll_process"></a>}}
+\if{latex}{\out{\hypertarget{method-poll_process}{}}}
 \subsection{Method \code{poll_process()}}{
 Poll the R session with a timeout. If the session has finished the
 computation, it returns with \code{"ready"}. If the timeout
@@ -234,6 +239,7 @@ Character string \code{"ready"} or \code{"timeout"}.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_state"></a>}}
+\if{latex}{\out{\hypertarget{method-get_state}{}}}
 \subsection{Method \code{get_state()}}{
 Return the state of the R session.
 \subsection{Usage}{
@@ -252,6 +258,7 @@ Possible values:
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_running_time"></a>}}
+\if{latex}{\out{\hypertarget{method-get_running_time}{}}}
 \subsection{Method \code{get_running_time()}}{
 Returns the elapsed time since the R process has started, and the
 elapsed time since the current computation has started. The latter
@@ -267,6 +274,7 @@ and \code{"current"}.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-read"></a>}}
+\if{latex}{\out{\hypertarget{method-read}{}}}
 \subsection{Method \code{read()}}{
 Reads an event from the child process, if there is one available.
 Events might signal that the function call has finished, or they
@@ -300,6 +308,7 @@ callr uses for communication.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-close"></a>}}
+\if{latex}{\out{\hypertarget{method-close}{}}}
 \subsection{Method \code{close()}}{
 Terminate the current computation and the R process.
 The session object will be in \code{"finished"} state after this.
@@ -320,6 +329,7 @@ killed.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-traceback"></a>}}
+\if{latex}{\out{\hypertarget{method-traceback}{}}}
 \subsection{Method \code{traceback()}}{
 The \code{traceback()} method can be used after an error in the R
 subprocess. It is equivalent to the \code{\link[base:traceback]{base::traceback()}} call, in
@@ -334,6 +344,7 @@ The same output as from \code{\link[base:traceback]{base::traceback()}}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-debug"></a>}}
+\if{latex}{\out{\hypertarget{method-debug}{}}}
 \subsection{Method \code{debug()}}{
 Interactive debugger to inspect the dumped frames in the subprocess,
 after an error. See more at \link{r_session_debug}.
@@ -344,6 +355,7 @@ after an error. See more at \link{r_session_debug}.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-attach"></a>}}
+\if{latex}{\out{\hypertarget{method-attach}{}}}
 \subsection{Method \code{attach()}}{
 Experimental function that provides a REPL
 (Read-Eval-Print-Loop) to the subprocess.
@@ -354,6 +366,7 @@ Experimental function that provides a REPL
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Finalizer that is called when garbage collecting an \code{r_session}
 object, to clean up temporary files.
@@ -364,6 +377,7 @@ object, to clean up temporary files.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
 \subsection{Method \code{print()}}{
 Print method for an \code{r_session}.
 \subsection{Usage}{
@@ -380,6 +394,7 @@ Print method for an \code{r_session}.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
