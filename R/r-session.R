@@ -756,7 +756,12 @@ r_session_options_default <- function() {
     stdout = NULL,
     stderr = NULL,
     error = getOption("callr.error", "error"),
-    cmdargs = c("--no-readline", "--slave", "--no-save", "--no-restore"),
+    cmdargs = c(
+      if (os_platform() != "windows") "--no-readline",
+      "--slave",
+      "--no-save",
+      "--no-restore"
+    ),
     system_profile = FALSE,
     user_profile = "project",
     env = c(TERM = "dumb"),
