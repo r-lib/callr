@@ -31,6 +31,13 @@ rs$read()
 \section{Super class}{
 \code{\link[processx:process]{processx::process}} -> \code{r_session}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{status}}{Status codes returned by \code{read()}.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -289,20 +296,24 @@ want to process events (messages) from the R session manually.
 \subsection{Returns}{
 \code{NULL} if no events are available. Otherwise a named list,
 which is also a \code{callr_session_result} object. The list always has
-a \code{code} entry which is the type of the event. Event types:
+a \code{code} entry which is the type of the event. See also
+\code{r_session$public_fields$status} for symbolic names of the
+event types.
 \itemize{
-\item \code{200}: The computation is done, and the event includes the
-result, in the same form as for the \code{run()} method.
-\item \code{201}: An R session that was in 'starting' state is ready to go.
-\item \code{202}: Used by the \code{attach()} method.
-\item \code{301}: A message from the subprocess. The message is a condition
-object with class \code{callr_message}. (It typically has other
-classes, e.g. \code{cli_message} for output from the cli package.
-\item \code{500}: The R session finished cleanly. This means that the
-evaluated expression quit R.
-\item \code{501}: The R session crashed or was killed.
-\item \code{502}: The R session closed its end of the connection that
-callr uses for communication.
+\item \code{200}: (\code{DONE}) The computation is done, and the event includes
+the result, in the same form as for the \code{run()} method.
+\item \code{201}: (\code{STARTED}) An R session that was in 'starting' state is
+ready to go.
+\item \code{202}: (\code{ATTACH_DONE}) Used by the \code{attach()} method.
+\item \code{301}: (\code{MSG}) A message from the subprocess. The message is a
+condition object with class \code{callr_message}. (It typically has
+other classes, e.g. \code{cli_message} for output from the cli
+package.
+\item \code{500}: (\code{EXITED}) The R session finished cleanly. This means
+that the evaluated expression quit R.
+\item \code{501}: (\code{CRASHED}) The R session crashed or was killed.
+\item \code{502}: (\code{CLOSED}) The R session closed its end of the connection
+that callr uses for communication.
 }
 }
 }

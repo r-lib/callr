@@ -31,6 +31,18 @@ r_session <- R6::R6Class(
 
   public = list(
 
+    #' @field status
+    #' Status codes returned by `read()`.
+    status = list(
+      DONE        = 200L,
+      STARTED     = 201L,
+      ATTACH_DONE = 202L,
+      MSG         = 301L,
+      EXITED      = 500L,
+      CRASHED     = 501L,
+      CLOSED      = 502L
+    ),
+
     #' @description
     #' creates a new R background process. It can wait for the process to
     #' start up (`wait = TRUE`), or return immediately, i.e. before
@@ -120,19 +132,23 @@ r_session <- R6::R6Class(
     #'
     #' @return `NULL` if no events are available. Otherwise a named list,
     #'   which is also a `callr_session_result` object. The list always has
-    #'   a `code` entry which is the type of the event. Event types:
-    #'   * `200`: The computation is done, and the event includes the
-    #'      result, in the same form as for the `run()` method.
-    #'   * `201`: An R session that was in 'starting' state is ready to go.
-    #'   * `202`: Used by the `attach()` method.
-    #'   * `301`: A message from the subprocess. The message is a condition
-    #'      object with class `callr_message`. (It typically has other
-    #'      classes, e.g. `cli_message` for output from the cli package.
-    #'   * `500`: The R session finished cleanly. This means that the
-    #'      evaluated expression quit R.
-    #'   * `501`: The R session crashed or was killed.
-    #'   * `502`: The R session closed its end of the connection that
-    #'      callr uses for communication.
+    #'   a `code` entry which is the type of the event. See also
+    #'   `r_session$public_fields$status` for symbolic names of the
+    #'   event types.
+    #'   * `200`: (`DONE`) The computation is done, and the event includes
+    #'      the result, in the same form as for the `run()` method.
+    #'   * `201`: (`STARTED`) An R session that was in 'starting' state is
+    #'      ready to go.
+    #'   * `202`: (`ATTACH_DONE`) Used by the `attach()` method.
+    #'   * `301`: (`MSG`) A message from the subprocess. The message is a
+    #'      condition object with class `callr_message`. (It typically has
+    #'      other classes, e.g. `cli_message` for output from the cli
+    #'      package.
+    #'   * `500`: (`EXITED`) The R session finished cleanly. This means
+    #'      that the evaluated expression quit R.
+    #'   * `501`: (`CRASHED`) The R session crashed or was killed.
+    #'   * `502`: (`CLOSED`) The R session closed its end of the connection
+    #'      that callr uses for communication.
 
     read = function()
       rs_read(self, private),
