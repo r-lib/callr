@@ -222,8 +222,8 @@ r_session <- R6::R6Class(
     func_file = NULL,
     res_file = NULL,
 
-    get_result_and_output = function()
-      rs__get_result_and_output(self, private),
+    get_result_and_output = function(std = FALSE)
+      rs__get_result_and_output(self, private, std),
     report_back = function(code, text = "")
       rs__report_back(self, private, code, text),
     write_for_sure = function(text)
@@ -277,7 +277,18 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     }
 
     if (pr["process"] == "ready") {
-      self$read()
+      msg <- self$read()
+      out <- paste0(out, msg$stdout)
+      err <- paste0(err, msg$stderr)
+      if (msg$code != 201) {
+        data <- list(
+          status = self$get_exit_status(),
+          stdout = out,
+          stderr = err,
+          timeout = FALSE
+        )
+        throw(new_callr_error(data, "Failed to start R session"))
+      }
     } else if (pr["process"] != "ready") {
       cat("stdout:]\n", out, "\n")
       cat("stderr:]\n", err, "\n")
@@ -613,7 +624,7 @@ rs__parse_msg_funcs[["301"]] <- function(self, private, code, message) {
 
 rs__parse_msg_funcs[["500"]] <- function(self, private, code, message) {
   private$state <- "finished"
-  res <- private$get_result_and_output()
+  res <- private$get_result_and_output(std = TRUE)
   c(list(code = code, message = message), res)
 }
 
@@ -622,7 +633,7 @@ rs__parse_msg_funcs[["501"]] <- function(self, private, code, message) {
   err <- structure(
     list(message = message),
     class = c("error", "condition"))
-  res <- private$get_result_and_output()
+  res <- private$get_result_and_output(std = TRUE)
   res$error <- err
   c(list(code = code, message = message), res)
 }
@@ -675,18 +686,22 @@ rs__posthook <- function(stdout, stderr) {
   substitute({ o; e }, list(o = oexpr, e = eexpr))
 }
 
-rs__get_result_and_output <- function(self, private) {
+rs__get_result_and_output <- function(self, private, std) {
 
   ## Get stdout and stderr
   stdout <- if (!is.null(private$tmp_output_file) &&
              file.exists(private$tmp_output_file)) {
     tryCatch(suppressWarnings(read_all(private$tmp_output_file)),
              error = function(e) "")
+  } else if (std && self$has_output_connection()) {
+    self$read_all_output()
   }
   stderr <- if (!is.null(private$tmp_error_file) &&
              file.exists(private$tmp_error_file)) {
     tryCatch(suppressWarnings(read_all(private$tmp_error_file)),
              error = function(e) "")
+  } else if (std && self$has_error_connection()) {
+    self$read_all_error()
   }
   unlink(c(private$tmp_output_file, private$tmp_error_file))
   private$tmp_output_file <- private$tmp_error_file <- NULL
