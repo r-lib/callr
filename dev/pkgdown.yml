@@ -2,7 +2,7 @@ pandoc: '2.2'
 pkgdown: 1.5.1.9000
 pkgdown_sha: 4e9e7cecdd027969706a14bc20d30d3da2b0dea9
 articles: []
-last_built: 2020-08-27T08:56Z
+last_built: 2020-08-31T09:09Z
 urls:
   reference: http://callr.r-lib.org/reference
   article: http://callr.r-lib.org/articles
