@@ -61,5 +61,17 @@ session_load_hook <- function(user_hook = NULL) {
   if (!is.null(user_hook)) {
     hook <- substitute({ d; u }, list(d = hook, u = user_hook))
   }
+
+  hook <- substitute({
+    err_ <- TRUE
+    callr_startup_hook <- function() {
+      on.exit(if (err_) quit("no", 1, TRUE))
+      { `_hook_` }
+      err_ <<- FALSE
+    }
+    callr_startup_hook()
+    rm(err_, callr_startup_hook)
+  }, list("_hook_" = hook))
+
   paste0(deparse(hook), "\n")
 }

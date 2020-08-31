@@ -271,3 +271,19 @@ test_that("traceback", {
     expect_match(c(tb[[4]]), "f()", fixed = TRUE)
   }
 })
+
+test_that("error in the load hook", {
+  opts <- r_session_options(load_hook = quote(stop("oops")))
+  expect_error({
+    rs <- r_session$new(opts)
+    on.exit(rs$kill(), add = TRUE)
+  })
+
+  rs2 <- r_session$new(opts, wait = FALSE)
+  on.exit(rs2$kill(), add = TRUE)
+
+  processx::poll(list(rs2$get_poll_connection()), 3000)
+  msg <- rs2$read()
+  expect_equal(msg$code, 501L)
+  expect_match(msg$stderr, "oops")
+})

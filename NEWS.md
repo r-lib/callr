@@ -1,6 +1,10 @@
 
 # callr development version
 
+* An `r_session` now exits if the load hook errors. This generates an error
+  if the session is started with `wait = TRUE`. For `wait = FALSE` the
+  first `$read()` operation will return with an error (#162).
+
 # callr 3.4.3
 
 * `default_repos()` now returns a list if `getOption("repos")` is a list,
