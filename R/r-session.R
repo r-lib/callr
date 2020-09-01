@@ -304,7 +304,8 @@ rs_read <- function(self, private) {
   if (!length(out)) {
     if (processx::processx_conn_is_incomplete(private$pipe)) return()
     if (self$is_alive()) {
-      self$kill()
+      # We do this in on.exit(), because parse_msg still reads the streams
+      on.exit(self$kill(), add = TRUE)
       out <- "502 R session closed the process connection, killed"
     } else if (identical(es <- self$get_exit_status(), 0L)) {
       out <- "500 R session finished cleanly"
