@@ -342,17 +342,17 @@ rs_call <- function(self, private, func, args) {
   private$options$func <- func
   private$options$args <- args
   private$options$func_file <- save_function_to_temp(private$options)
-  private$options$result_file <- tempfile()
+  private$options$result_file <- tempfile("callr-rs-result-")
   private$options$tmp_files <-
     c(private$options$tmp_files, private$options$func_file,
       private$options$result_file)
 
   ## Maybe we need to redirect stdout / stderr
   re_stdout <- if (is.null(private$options$stdout)) {
-    private$tmp_output_file <- tempfile()
+    private$tmp_output_file <- tempfile("callr-rs-stdout-")
   }
   re_stderr <- if (is.null(private$options$stderr)) {
-    private$tmp_error_file <- tempfile()
+    private$tmp_error_file <- tempfile("callr-rs-stderr-")
   }
 
   pre <- rs__prehook(re_stdout, re_stderr)
