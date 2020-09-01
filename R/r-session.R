@@ -694,14 +694,14 @@ rs__get_result_and_output <- function(self, private, std) {
     tryCatch(suppressWarnings(read_all(private$tmp_output_file)),
              error = function(e) "")
   } else if (std && self$has_output_connection()) {
-    self$read_all_output()
+    tryCatch(self$read_all_output(), error = function(err) NULL)
   }
   stderr <- if (!is.null(private$tmp_error_file) &&
              file.exists(private$tmp_error_file)) {
     tryCatch(suppressWarnings(read_all(private$tmp_error_file)),
              error = function(e) "")
   } else if (std && self$has_error_connection()) {
-    self$read_all_error()
+    tryCatch(self$read_all_error(), error = function(err) NULL)
   }
   unlink(c(private$tmp_output_file, private$tmp_error_file))
   private$tmp_output_file <- private$tmp_error_file <- NULL
