@@ -8,8 +8,8 @@
 <!-- badges: start -->
 [![Linux Build Status](https://travis-ci.org/r-lib/callr.svg?branch=master)](https://travis-ci.org/r-lib/callr)
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/github/r-lib/callr?svg=true)](https://ci.appveyor.com/project/gaborcsardi/callr)
-[![](http://www.r-pkg.org/badges/version/callr)](http://www.r-pkg.org/pkg/callr)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/callr)](http://www.r-pkg.org/pkg/callr)
+[![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
 [![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/callr/master.svg)](https://codecov.io/github/r-lib/callr?branch=master)
 <!-- badges: end -->
 
