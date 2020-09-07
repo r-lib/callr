@@ -154,10 +154,6 @@ when \code{callr} is invoked from unit tests, \code{R_BROWSER}
 and \code{R_PDFVIEWER} to avoid starting a browser or a PDF viewer.
 See \code{\link[=rcmd_safe_env]{rcmd_safe_env()}}.
 }
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \details{
 The \code{r()} function from before 2.0.0 is called \code{\link[=r_copycat]{r_copycat()}} now.
@@ -177,7 +173,7 @@ with a prefix and the same error message as in the subprocess.
 \item \code{stack} also throws an error in the main process, but the error
 is of a special kind, class \code{callr_error}, and it contains
 both the original error object, and the call stack of the child,
-as written out by \code{\link[utils:dump.frames]{utils::dump.frames()}}. This is now deprecated,
+as written out by \code{\link[utils:debugger]{utils::dump.frames()}}. This is now deprecated,
 because the error thrown for \code{"error"} has the same information.
 \item \code{debugger} is similar to \code{stack}, but in addition
 to returning the complete call stack, it also start up a debugger

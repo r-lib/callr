@@ -40,10 +40,6 @@ defaults:
 \item The \code{repos} options is unchanged.
 \item No extra environment variables are defined.
 }
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \section{Security considerations}{
 

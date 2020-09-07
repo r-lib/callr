@@ -99,10 +99,6 @@ has a \code{get_result()} method to collect the result.
 \description{
 Starts evaluating an R function call in a background R process, and
 returns immediately.
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \section{Security considerations}{
 

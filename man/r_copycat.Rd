@@ -68,10 +68,6 @@ command line arguments are not used. (But \code{--slave} still is.)
 \item The system profile and the user profile are loaded.
 \item No extra environment variables are set up.
 }
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \section{Security considerations}{
 

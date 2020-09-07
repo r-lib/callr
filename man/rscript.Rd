@@ -102,10 +102,6 @@ assuming they are active in the parent process.}
 \description{
 It uses the \code{Rscript} program corresponding to the current R version,
 to run the script. It streams \code{stdout} and \code{stderr} of the process.
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \section{Security considerations}{
 

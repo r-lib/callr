@@ -66,10 +66,6 @@ It tries to mimic a fresh R installation. In particular:
 \item No CRAN(-like) repository is set.
 \item The system and user profiles are not run.
 }
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \section{Security considerations}{
 

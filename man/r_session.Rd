@@ -9,10 +9,6 @@ that extends the \link[processx:process]{processx::process} class.
 
 The process is started at the creation of the object, and then it can
 be used to evaluate R function calls, one at a time.
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -7,10 +7,6 @@
 An R process that runs in the background. This is an R6 class that
 extends the \link[processx:process]{processx::process} class. The process starts in the
 background, evaluates an R function call, and then quits.
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

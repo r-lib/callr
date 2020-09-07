@@ -9,10 +9,6 @@
 It is sometimes useful to perform a computation in a separate R
 process, without affecting the current R process at all. This packages
 does exactly that.
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \seealso{
 Useful links:

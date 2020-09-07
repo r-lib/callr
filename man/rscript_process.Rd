@@ -6,10 +6,6 @@
 \description{
 An \verb{Rscript script.R} command that runs in the background. This is an
 R6 class that extends the \link[processx:process]{processx::process} class.
-
-\if{html}{\out{<link rel="stylesheet" type="text/css" href="../doc/assets/extra.css">}}
-
-\if{html}{\out{<script src="../doc/assets/rd.js"></script>}}
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
