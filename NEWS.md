@@ -1,5 +1,5 @@
 
-# callr development version
+# callr 3.4.4
 
 * An `r_session` now exits if the load hook errors. This generates an error
   if the session is started with `wait = TRUE`. For `wait = FALSE` the
