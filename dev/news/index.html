@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">3.4.3.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">3.4.4.9000</span>
       </span>
     </div>
 
@@ -129,6 +129,14 @@
       <small>Source: <a href='https://github.com/r-lib/callr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="callr-3-4-4" class="section level1">
+<h1 class="page-header" data-toc-text="3.4.4">
+<a href="#callr-3-4-4" class="anchor"></a>callr 3.4.4<small> 2020-09-07 </small>
+</h1>
+<ul>
+<li>An <code>r_session</code> now exits if the load hook errors. This generates an error if the session is started with <code>wait = TRUE</code>. For <code>wait = FALSE</code> the first <code>$read()</code> operation will return with an error (<a href='https://github.com/r-lib/callr/issues/162'>#162</a>).</li>
+</ul>
+</div>
     <div id="callr-3-4-3" class="section level1">
 <h1 class="page-header" data-toc-text="3.4.3">
 <a href="#callr-3-4-3" class="anchor"></a>callr 3.4.3<small> 2020-03-28 </small>
