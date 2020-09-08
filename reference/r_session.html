@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -39,10 +43,7 @@
 <meta property="og:description" content="A permanent R session that runs in the background. This is an R6 class
 that extends the processx::process class.
 The process is started at the creation of the object, and then it can
-be used to evaluate R function calls, one at a time.
-
-" />
-<meta name="twitter:card" content="summary" />
+be used to evaluate R function calls, one at a time." />
 
 
 
@@ -60,7 +61,7 @@ be used to evaluate R function calls, one at a time.
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +75,7 @@ be used to evaluate R function calls, one at a time.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.4</span>
       </span>
     </div>
 
@@ -110,7 +111,7 @@ be used to evaluate R function calls, one at a time.
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/callr">
+  <a href="https://github.com/r-lib/callr/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -138,8 +139,6 @@ be used to evaluate R function calls, one at a time.
 that extends the <a href='http://processx.r-lib.org/reference/process.html'>processx::process</a> class.</p>
 <p>The process is started at the creation of the object, and then it can
 be used to evaluate R function calls, one at a time.</p>
-<p><link rel="stylesheet" type="text/css" href="../doc/assets/extra.css"></p>
-<p><script src="../doc/assets/rd.js"></script></p>
     </div>
 
 
@@ -147,10 +146,16 @@ be used to evaluate R function calls, one at a time.</p>
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
     <p><code><a href='http://processx.r-lib.org/reference/process.html'>processx::process</a></code> -&gt; <code>r_session</code></p>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl>
+<dt><code>status</code></dt><dd><p>Status codes returned by <code>read()</code>.</p></dd>
+
+</dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>r_session$new()</code></a></p></li>
@@ -222,15 +227,15 @@ be used to evaluate R function calls, one at a time.</p>
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>creates a new R background process. It can wait for the process to
 start up (<code>wait = TRUE</code>), or return immediately, i.e. before
 the process is actually ready to run. In the latter case you may call
-the <code>poll_process()</code> method to make sure it is ready.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$new(options = r_session_options(), wait = TRUE, wait_timeout = 3000)</pre><p></div></p>
+the <code>poll_process()</code> method to make sure it is ready.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>new</span>(options = <span class='fu'><a href='r_session_options.html'>r_session_options</a></span>(), wait = <span class='fl'>TRUE</span>, wait_timeout = <span class='fl'>3000</span>)</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>options</code></dt><dd><p>A list of options created via <code><a href='r_session_options.html'>r_session_options()</a></code>.</p></dd>
 
 <dt><code>wait</code></dt><dd><p>Whether to wait for the R process to start and be ready
@@ -240,41 +245,41 @@ for running commands.</p></dd>
 in milliseconds.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>An <code>r_session</code> object.</p>
 <p><hr>
-<a id="method-run"></a></p><h3>Method <code><a href='http://processx.r-lib.org/reference/run.html'>run()</a></code></h3>
+<a id="method-run"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='http://processx.r-lib.org/reference/run.html'>run()</a></code></h3>
 <p>Similar to <code><a href='r.html'>r()</a></code>, but runs the function in a permanent background
 R session. It throws an error if the function call generated an
-error in the child process.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$run(func, args = list())</pre><p></div></p>
+error in the child process.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='http://processx.r-lib.org/reference/run.html'>run</a></span>(<span class='kw'>func</span>, args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>func</code></dt><dd><p>Function object to call in the background R process.
 Please read the notes for the similar argument of <code><a href='r.html'>r()</a></code>.</p></dd>
 
 <dt><code>args</code></dt><dd><p>Arguments to pass to the function. Must be a list.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>The return value of the R expression.</p>
 <p><hr>
-<a id="method-run_with_output"></a></p><h3>Method <code>run_with_output()</code></h3>
+<a id="method-run_with_output"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>run_with_output()</code></h3>
 <p>Similar to <code>$run()</code>, but returns the standard output and error of
 the child process as well. It does not throw on errors, but
-returns a non-<code>NULL</code> <code>error</code> member in the result list.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$run_with_output(func, args = list())</pre><p></div></p>
+returns a non-<code>NULL</code> <code>error</code> member in the result list.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>run_with_output</span>(<span class='kw'>func</span>, args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>func</code></dt><dd><p>Function object to call in the background R process.
 Please read the notes for the similar argument of <code><a href='r.html'>r()</a></code>.</p></dd>
 
 <dt><code>args</code></dt><dd><p>Arguments to pass to the function. Must be a list.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>A list with the following entries.</p><ul>
 <li><p><code>result</code>: The value returned by <code>func</code>. On error this is <code>NULL</code>.</p></li>
 <li><p><code>stdout</code>: The standard output of the process while evaluating</p></li>
@@ -287,14 +292,14 @@ you can ignore them.</p></li>
 </ul>
 
 <p><hr>
-<a id="method-call"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/call.html'>call()</a></code></h3>
+<a id="method-call"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/call.html'>call()</a></code></h3>
 <p>Starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
-<code>poll_process()</code> method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$call(func, args = list())</pre><p></div></p>
+<code>poll_process()</code> method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='kw'>func</span>, args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>func</code></dt><dd><p>Function object to call in the background R process.
 Please read the notes for the similar argument of <code><a href='r.html'>r()</a></code>.</p></dd>
 
@@ -302,25 +307,25 @@ Please read the notes for the similar argument of <code><a href='r.html'>r()</a>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-poll_process"></a></p><h3>Method <code>poll_process()</code></h3>
+<a id="method-poll_process"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>poll_process()</code></h3>
 <p>Poll the R session with a timeout. If the session has finished the
 computation, it returns with <code>"ready"</code>. If the timeout
-is reached, it returns with <code>"timeout"</code>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$poll_process(timeout)</pre><p></div></p>
+is reached, it returns with <code>"timeout"</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>poll_process</span>(<span class='kw'>timeout</span>)</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>timeout</code></dt><dd><p>Timeout period in milliseconds.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Character string <code>"ready"</code> or <code>"timeout"</code>.</p>
 <p><hr>
-<a id="method-get_state"></a></p><h3>Method <code>get_state()</code></h3>
-<p>Return the state of the R session.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$get_state()</pre><p></div></p>
+<a id="method-get_state"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_state()</code></h3>
+<p>Return the state of the R session.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>get_state</span>()</pre><p></div></p>
 
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Possible values:</p><ul>
 <li><p><code>"starting"</code>: starting up,</p></li>
 <li><p><code>"idle"</code>: ready to compute,</p></li>
@@ -329,50 +334,54 @@ is reached, it returns with <code>"timeout"</code>.</p><h3>Usage</h3>
 </ul>
 
 <p><hr>
-<a id="method-get_running_time"></a></p><h3>Method <code>get_running_time()</code></h3>
+<a id="method-get_running_time"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_running_time()</code></h3>
 <p>Returns the elapsed time since the R process has started, and the
 elapsed time since the current computation has started. The latter
-is <code>NA</code> if there is no active computation.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$get_running_time()</pre><p></div></p>
+is <code>NA</code> if there is no active computation.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>get_running_time</span>()</pre><p></div></p>
 
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Named vector of <code>POSIXct</code> objects. The names are <code>"total"</code>
 and <code>"current"</code>.</p>
 <p><hr>
-<a id="method-read"></a></p><h3>Method <code>read()</code></h3>
+<a id="method-read"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>read()</code></h3>
 <p>Reads an event from the child process, if there is one available.
 Events might signal that the function call has finished, or they
 can be progress report events.</p>
 <p>This is a low level function that you only need to use if you
-want to process events (messages) from the R session manually.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$read()</pre><p></div></p>
+want to process events (messages) from the R session manually.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>read</span>()</pre><p></div></p>
 
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><code>NULL</code> if no events are available. Otherwise a named list,
 which is also a <code>callr_session_result</code> object. The list always has
-a <code>code</code> entry which is the type of the event. Event types:</p><ul>
-<li><p><code>200</code>: The computation is done, and the event includes the
-result, in the same form as for the <code><a href='http://processx.r-lib.org/reference/run.html'>run()</a></code> method.</p></li>
-<li><p><code>201</code>: An R session that was in 'starting' state is ready to go.</p></li>
-<li><p><code>202</code>: Used by the <code><a href='https://rdrr.io/r/base/attach.html'>attach()</a></code> method.</p></li>
-<li><p><code>301</code>: A message from the subprocess. The message is a condition
-object with class <code>callr_message</code>. (It typically has other
-classes, e.g. <code>cli_message</code> for output from the cli package.</p></li>
-<li><p><code>500</code>: The R session finished cleanly. This means that the
-evaluated expression quit R.</p></li>
-<li><p><code>501</code>: The R session crashed or was killed.</p></li>
-<li><p><code>502</code>: The R session closed its end of the connection that
-callr uses for communication.</p></li>
+a <code>code</code> entry which is the type of the event. See also
+<code>r_session$public_fields$status</code> for symbolic names of the
+event types.</p><ul>
+<li><p><code>200</code>: (<code>DONE</code>) The computation is done, and the event includes
+the result, in the same form as for the <code><a href='http://processx.r-lib.org/reference/run.html'>run()</a></code> method.</p></li>
+<li><p><code>201</code>: (<code>STARTED</code>) An R session that was in 'starting' state is
+ready to go.</p></li>
+<li><p><code>202</code>: (<code>ATTACH_DONE</code>) Used by the <code><a href='https://rdrr.io/r/base/attach.html'>attach()</a></code> method.</p></li>
+<li><p><code>301</code>: (<code>MSG</code>) A message from the subprocess. The message is a
+condition object with class <code>callr_message</code>. (It typically has
+other classes, e.g. <code>cli_message</code> for output from the cli
+package.</p></li>
+<li><p><code>500</code>: (<code>EXITED</code>) The R session finished cleanly. This means
+that the evaluated expression quit R.</p></li>
+<li><p><code>501</code>: (<code>CRASHED</code>) The R session crashed or was killed.</p></li>
+<li><p><code>502</code>: (<code>CLOSED</code>) The R session closed its end of the connection
+that callr uses for communication.</p></li>
 </ul>
 
 <p><hr>
-<a id="method-close"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/connections.html'>close()</a></code></h3>
+<a id="method-close"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/connections.html'>close()</a></code></h3>
 <p>Terminate the current computation and the R process.
-The session object will be in <code>"finished"</code> state after this.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$close(grace = 1000)</pre><p></div></p>
+The session object will be in <code>"finished"</code> state after this.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span>(grace = <span class='fl'>1000</span>)</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>grace</code></dt><dd><p>Grace period in milliseconds, to wait for the
 subprocess to exit cleanly, after its standard input is closed.
 If the process is still running after this period, it will be
@@ -380,49 +389,49 @@ killed.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-traceback"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/traceback.html'>traceback()</a></code></h3>
+<a id="method-traceback"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/traceback.html'>traceback()</a></code></h3>
 <p>The <code><a href='https://rdrr.io/r/base/traceback.html'>traceback()</a></code> method can be used after an error in the R
 subprocess. It is equivalent to the <code><a href='https://rdrr.io/r/base/traceback.html'>base::traceback()</a></code> call, in
-the subprocess.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$traceback()</pre><p></div></p>
+the subprocess.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/traceback.html'>traceback</a></span>()</pre><p></div></p>
 
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>The same output as from <code><a href='https://rdrr.io/r/base/traceback.html'>base::traceback()</a></code></p>
 <p><hr>
-<a id="method-debug"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
+<a id="method-debug"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
 <p>Interactive debugger to inspect the dumped frames in the subprocess,
-after an error. See more at <a href='r_session_debug.html'>r_session_debug</a>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$debug()</pre><p></div></p>
+after an error. See more at <a href='r_session_debug.html'>r_session_debug</a>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>()</pre><p></div></p>
 
 <p><hr>
-<a id="method-attach"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/attach.html'>attach()</a></code></h3>
+<a id="method-attach"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/attach.html'>attach()</a></code></h3>
 <p>Experimental function that provides a REPL
-(Read-Eval-Print-Loop) to the subprocess.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$attach()</pre><p></div></p>
+(Read-Eval-Print-Loop) to the subprocess.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/attach.html'>attach</a></span>()</pre><p></div></p>
 
 <p><hr>
-<a id="method-finalize"></a></p><h3>Method <code>finalize()</code></h3>
+<a id="method-finalize"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>finalize()</code></h3>
 <p>Finalizer that is called when garbage collecting an <code>r_session</code>
-object, to clean up temporary files.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$finalize()</pre><p></div></p>
+object, to clean up temporary files.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>finalize</span>()</pre><p></div></p>
 
 <p><hr>
-<a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
-<p>Print method for an <code>r_session</code>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$print(...)</pre><p></div></p>
+<a id="method-print"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
+<p>Print method for an <code>r_session</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>...</span>)</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Arguments are not used currently.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre>r_session$clone(deep = FALSE)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>clone</span>(deep = <span class='fl'>FALSE</span>)</pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl class='dl-horizontal'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -430,27 +439,24 @@ object, to clean up temporary files.</p><h3>Usage</h3>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>rs</span> <span class='kw'>&lt;-</span> <span class='no'>r_ression</span>$<span class='fu'>new</span>()
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>rs</span> <span class='op'>&lt;-</span> <span class='kw'>r_ression</span><span class='op'>$</span><span class='fu'>new</span>()
 
-<span class='no'>rs</span>$<span class='fu'><a href='http://processx.r-lib.org/reference/run.html'>run</a></span>(<span class='kw'>function</span>() <span class='fl'>1</span> + <span class='fl'>2</span>)
+<span class='kw'>rs</span><span class='op'>$</span><span class='fu'><a href='http://processx.r-lib.org/reference/run.html'>run</a></span>(<span class='fu'>function</span>() <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)
 
-<span class='no'>rs</span>$<span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='kw'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>1</span>))
-<span class='no'>rs</span>$<span class='fu'>get_state</span>()
+<span class='kw'>rs</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>1</span>))
+<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>get_state</span>()
 
-<span class='no'>rs</span>$<span class='fu'>poll_process</span>(-<span class='fl'>1</span>)
-<span class='no'>rs</span>$<span class='fu'>get_state</span>()
-<span class='no'>rs</span>$<span class='fu'>read</span>()
-}</div></pre>
+<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>poll_process</span>(<span class='op'>-</span><span class='fl'>1</span>)
+<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>get_state</span>()
+<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>read</span>()
+}
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#super-class">Super class</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -461,7 +467,7 @@ object, to clean up temporary files.</p><h3>Usage</h3>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
