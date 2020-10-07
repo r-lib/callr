@@ -22,7 +22,7 @@ Imports:
     R6,
     utils
 Suggests:
-    cliapp,
+    cli,
     covr,
     crayon,
     fansi,
