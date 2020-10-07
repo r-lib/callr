@@ -71,7 +71,7 @@ test_that("libpath in system(), empty .Renviron", {
   dir.create(tmpkeep <- tempfile("keep"))
   on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
 
-  withr::local_tempfile("tmpenv")
+  tmpenv <- withr::local_tempfile()
   cat("", file = tmpenv)
   withr::local_envvar(c(R_ENVIRON_USER = tmpenv))
 
@@ -93,7 +93,7 @@ test_that("libpath in system, R_LIBS in .Renviron", {
   dir.create(tmpkeep <- tempfile("keep"))
   on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
 
-  withr::local_tempfile("tmpenv")
+  tmpenv <- withr::local_tempfile()
   cat("R_LIBS=\"", tmpdrop, "\"\n", sep = "", file = tmpenv)
   withr::local_envvar(c(R_ENVIRON_USER = tmpenv))
 
@@ -116,7 +116,7 @@ test_that("libpath in system, R_LIBS", {
   dir.create(tmpkeep <- tempfile("keep"))
   on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
 
-  withr::local_tempfile("tmpenv")
+  tmpenv <- withr::local_tempfile()
   cat("", file = tmpenv)
   withr::local_envvar(c(R_ENVIRON_USER = tmpenv, R_LIBS=tmpdrop))
 
@@ -139,7 +139,7 @@ test_that("libpath in system, R_LIBS and .Renviron", {
   dir.create(tmpkeep <- tempfile("keep"))
   on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
 
-  withr::local_tempfile("tmpenv")
+  tmpenv <-  withr::local_tempfile()
   cat("R_LIBS=\"", tmpdrop, "\"\n", sep = "", file = tmpenv)
   withr::local_envvar(c(R_ENVIRON_USER = tmpenv, R_LIBS=tmpdrop))
 
