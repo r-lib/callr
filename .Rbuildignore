@@ -2,8 +2,6 @@
 ^\.Rproj\.user$
 ^Makefile$
 ^README.Rmd$
-^.travis.yml$
-^appveyor.yml$
 ^revdep$
 ^README.markdown$
 ^src/callr\.so$
@@ -19,3 +17,4 @@
 ^Meta$
 ^r-packages$
 ^\.Rprofile$
+^\.github$
