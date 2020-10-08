@@ -18,8 +18,9 @@
 #' @param func Function object to call in the new R process.
 #'   The function should be self-contained and only refer to
 #'   other functions and use variables explicitly from other packages
-#'   using the `::` notation. The environment of the function
+#'   using the `::` notation. By default the environment of the function
 #'   is set to `.GlobalEnv` before passing it to the child process.
+#'   (See the `package` option if you want to keep the environment.)
 #'   Because of this, it is good practice to create an anonymous
 #'   function and pass that to `callr`, instead of passing
 #'   a function object from a (base or other) package. In particular
@@ -87,6 +88,11 @@
 #'   If the process does not finish before the timeout period expires,
 #'   then a `system_command_timeout_error` error is thrown. `Inf`
 #'   means no timeout.
+#' @param package Whether to keep the environment of `func` when passing
+#'   it to the other package. Possible values are:
+#'   * `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+#'   * `TRUE`: keep the environment as is.
+#'   * `pkg`: set the environment to the `pkg` package namespace.
 #' @param ... Extra arguments are passed to [processx::run()].
 #' @return Value of the evaluated expression.
 #'
@@ -145,7 +151,7 @@ r <- function(func, args = list(), libpath = .libPaths(),
               show = FALSE, callback = NULL,
               block_callback = NULL, spinner = show && interactive(),
               system_profile = FALSE, user_profile = "project",
-              env = rcmd_safe_env(), timeout = Inf, ...) {
+              env = rcmd_safe_env(), timeout = Inf, package = FALSE, ...) {
 
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))

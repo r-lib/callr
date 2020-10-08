@@ -1,6 +1,6 @@
 Package: callr
 Title: Call R from R
-Version: 3.4.4.9000
+Version: 3.4.4.9001
 Authors@R: c(
     person("Gábor", "Csárdi", role = c("aut", "cre", "cph"),
            email = "csardi.gabor@gmail.com",
@@ -15,7 +15,7 @@ License: MIT + file LICENSE
 LazyData: true
 URL: https://github.com/r-lib/callr#readme
 BugReports: https://github.com/r-lib/callr/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.1.9000
 Roxygen: list(markdown = TRUE, packages = "roxygenlabs")
 Imports:
     processx (>= 3.4.0),

@@ -23,6 +23,7 @@ r(
   user_profile = "project",
   env = rcmd_safe_env(),
   timeout = Inf,
+  package = FALSE,
   ...
 )
 
@@ -44,6 +45,7 @@ r_safe(
   user_profile = "project",
   env = rcmd_safe_env(),
   timeout = Inf,
+  package = FALSE,
   ...
 )
 }
@@ -51,8 +53,9 @@ r_safe(
 \item{func}{Function object to call in the new R process.
 The function should be self-contained and only refer to
 other functions and use variables explicitly from other packages
-using the \code{::} notation. The environment of the function
+using the \code{::} notation. By default the environment of the function
 is set to \code{.GlobalEnv} before passing it to the child process.
+(See the \code{package} option if you want to keep the environment.)
 Because of this, it is good practice to create an anonymous
 function and pass that to \code{callr}, instead of passing
 a function object from a (base or other) package. In particular\preformatted{r(.libPaths)
@@ -134,6 +137,14 @@ below.}
 If the process does not finish before the timeout period expires,
 then a \code{system_command_timeout_error} error is thrown. \code{Inf}
 means no timeout.}
+
+\item{package}{Whether to keep the environment of \code{func} when passing
+it to the other package. Possible values are:
+\itemize{
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{TRUE}: keep the environment as is.
+\item \code{pkg}: set the environment to the \code{pkg} package namespace.
+}}
 
 \item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }

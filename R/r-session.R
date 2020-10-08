@@ -11,6 +11,11 @@
 #' @param func Function object to call in the background R process.
 #'   Please read the notes for the similar argument of [r()].
 #' @param args Arguments to pass to the function. Must be a list.
+#' @param package Whether to keep the environment of `func` when passing
+#'   it to the other package. Possible values are:
+#'   * `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+#'   * `TRUE`: keep the environment as is.
+#'   * `pkg`: set the environment to the `pkg` package namespace.
 #'
 #' @examplesIf FALSE
 #' rs <- r_ression$new()
@@ -64,8 +69,8 @@ r_session <- R6::R6Class(
     #' R session. It throws an error if the function call generated an
     #' error in the child process.
     #' @return The return value of the R expression.
-    run = function(func, args = list())
-      rs_run(self, private, func, args),
+    run = function(func, args = list(), package = FALSE)
+      rs_run(self, private, func, args, package),
 
     #' @description
     #' Similar to `$run()`, but returns the standard output and error of
@@ -82,15 +87,15 @@ r_session <- R6::R6Class(
     #'   error thrown in the subprocess. Otherwise it is `NULL`.
     #' * `code`, `message`: These fields are used by call internally and
     #'   you can ignore them.
-    run_with_output = function(func, args = list())
-      rs_run_with_output(self, private, func, args),
+    run_with_output = function(func, args = list(), package = FALSE)
+      rs_run_with_output(self, private, func, args, package),
 
     #' @description
     #' Starts running a function in the background R session, and
     #' returns immediately. To check if the function is done, call the
     #' `poll_process()` method.
-    call = function(func, args = list())
-      rs_call(self, private, func, args),
+    call = function(func, args = list(), package = FALSE)
+      rs_call(self, private, func, args, package),
 
     #' @description
     #' Poll the R session with a timeout. If the session has finished the
@@ -329,7 +334,7 @@ rs_close <- function(self, private, grace) {
   processx::processx_conn_close(self$get_error_connection())
 }
 
-rs_call <- function(self, private, func, args) {
+rs_call <- function(self, private, func, args, package) {
 
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
@@ -341,6 +346,7 @@ rs_call <- function(self, private, func, args) {
   ## Save the function in a file
   private$options$func <- func
   private$options$args <- args
+  private$options$package <- package
   private$options$func_file <- save_function_to_temp(private$options)
   private$options$result_file <- tempfile("callr-rs-result-")
   private$options$tmp_files <-
@@ -377,8 +383,8 @@ rs_call <- function(self, private, func, args) {
   private$state <- "busy"
 }
 
-rs_run_with_output <- function(self, private, func, args) {
-  self$call(func, args)
+rs_run_with_output <- function(self, private, func, args, package) {
+  self$call(func, args, package)
 
   go <- TRUE
   res <- NULL
@@ -420,8 +426,8 @@ rs_run_with_output <- function(self, private, func, args) {
   res
 }
 
-rs_run <- function(self, private, func, args) {
-  res <- rs_run_with_output(self, private, func, args)
+rs_run <- function(self, private, func, args, package) {
+  res <- rs_run_with_output(self, private, func, args, package)
   if (is.null(res$error)) {
     res$result
   } else{

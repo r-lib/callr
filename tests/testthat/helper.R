@@ -153,8 +153,12 @@ test_package_root <- function() {
   stop("Cannot find package root")
 }
 
+in_covr <- function() {
+  Sys.getenv("R_COVR") == "true"
+}
+
 skip_in_covr <- function() {
-  if (Sys.getenv("R_COVR") == "true") skip("In covr")
+  if (in_covr()) skip("In covr")
 }
 
 clean_envvars <- function() {

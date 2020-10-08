@@ -31,7 +31,8 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                  error = getOption("callr.error", "error"),
                  cmdargs = c("--slave", "--no-save", "--no-restore"),
                  system_profile = FALSE, user_profile = "project",
-                 env = rcmd_safe_env(), supervise = FALSE, ...) {
+                 env = rcmd_safe_env(), supervise = FALSE,
+                 package = FALSE, ...) {
 
   options <- as.list(environment())
   options$extra  <- list(...)

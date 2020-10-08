@@ -76,7 +76,8 @@ r_process_options_default <- function() {
     env = character(),
     supervise = FALSE,
     load_hook = default_load_hook(),
-    extra = list()
+    extra = list(),
+    package = FALSE
   )
 }
 

@@ -144,7 +144,7 @@ Similar to \code{\link[=r]{r()}}, but runs the function in a permanent backgroun
 R session. It throws an error if the function call generated an
 error in the child process.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_session$run(func, args = list())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{r_session$run(func, args = list(), package = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -154,6 +154,14 @@ error in the child process.
 Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
 
 \item{\code{args}}{Arguments to pass to the function. Must be a list.}
+
+\item{\code{package}}{Whether to keep the environment of \code{func} when passing
+it to the other package. Possible values are:
+\itemize{
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{TRUE}: keep the environment as is.
+\item \code{pkg}: set the environment to the \code{pkg} package namespace.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -169,7 +177,7 @@ Similar to \verb{$run()}, but returns the standard output and error of
 the child process as well. It does not throw on errors, but
 returns a non-\code{NULL} \code{error} member in the result list.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_session$run_with_output(func, args = list())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{r_session$run_with_output(func, args = list(), package = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -179,6 +187,14 @@ returns a non-\code{NULL} \code{error} member in the result list.
 Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
 
 \item{\code{args}}{Arguments to pass to the function. Must be a list.}
+
+\item{\code{package}}{Whether to keep the environment of \code{func} when passing
+it to the other package. Possible values are:
+\itemize{
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{TRUE}: keep the environment as is.
+\item \code{pkg}: set the environment to the \code{pkg} package namespace.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -204,7 +220,7 @@ Starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
 \code{poll_process()} method.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_session$call(func, args = list())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{r_session$call(func, args = list(), package = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -214,6 +230,14 @@ returns immediately. To check if the function is done, call the
 Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
 
 \item{\code{args}}{Arguments to pass to the function. Must be a list.}
+
+\item{\code{package}}{Whether to keep the environment of \code{func} when passing
+it to the other package. Possible values are:
+\itemize{
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{TRUE}: keep the environment as is.
+\item \code{pkg}: set the environment to the \code{pkg} package namespace.
+}}
 }
 \if{html}{\out{</div>}}
 }

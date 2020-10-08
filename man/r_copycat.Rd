@@ -20,8 +20,9 @@ r_copycat(
 \item{func}{Function object to call in the new R process.
 The function should be self-contained and only refer to
 other functions and use variables explicitly from other packages
-using the \code{::} notation. The environment of the function
+using the \code{::} notation. By default the environment of the function
 is set to \code{.GlobalEnv} before passing it to the child process.
+(See the \code{package} option if you want to keep the environment.)
 Because of this, it is good practice to create an anonymous
 function and pass that to \code{callr}, instead of passing
 a function object from a (base or other) package. In particular\preformatted{r(.libPaths)
