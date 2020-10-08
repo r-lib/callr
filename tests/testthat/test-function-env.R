@@ -20,9 +20,9 @@ test_that("r()", {
 
 test_that("r_bg()", {
   # not passed by default
-  p1 <- r_bg(callr::remove_source, list(r))
+  p1 <- r_bg(callr:::remove_source, list(r))
   on.exit(p1$kill(), add = TRUE)
-  p2 <- r_bg(callr::remove_source, list(r), package = TRUE)
+  p2 <- r_bg(callr:::remove_source, list(r), package = TRUE)
   on.exit(p2$kill(), add = TRUE)
   p3 <- r_bg(function(x) remove_source(x), list(r), package = "callr")
   on.exit(p3$kill(), add = TRUE)
