@@ -226,6 +226,8 @@ test_that("libpath in system, in R CMD INSTALL", {
 
   data <- readRDS(dump)
   ## We test the basename, in case a normalizePath makes dirnames differ
+  print(basename(tmplib))
+  print(basename(data$libpaths))
   expect_true(basename(tmplib) %in% basename(data$libpaths))
 
   ## Close FDs
