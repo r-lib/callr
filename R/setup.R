@@ -11,9 +11,17 @@ setup_script_files <- function(options) {
 
 save_function_to_temp <- function(options) {
   tmp <- tempfile("callr-fun-")
-  environment(options$func) <- .GlobalEnv
-  saveRDS(list(options$func, options$args), file = tmp)
+  options$func <- transport_fun(options$func)
+  # Once we start saving the function environments, we might get
+  # "'package:x' may not be available when loading" warnings
+  suppressWarnings(saveRDS(list(options$func, options$args), file = tmp))
   tmp
+}
+
+transport_fun <- function(fun, keep.source = getOption("callr.keep.source")) {
+  if (!isTRUE(keep.source)) fun <- remove_source(fun)
+  environment(fun) <- .GlobalEnv
+  fun
 }
 
 setup_context <- function(options) {

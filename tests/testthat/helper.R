@@ -160,3 +160,8 @@ skip_in_covr <- function() {
 clean_envvars <- function() {
   c(R_DEFAULT_PACKAGES = "NULL", R_ENABLE_JIT = "0")
 }
+
+without_env <- function(f) {
+  environment(f) <- .GlobalEnv
+  f
+}

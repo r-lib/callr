@@ -22,6 +22,22 @@ default_repos <- function() {
   opt
 }
 
+remove_source <- function(x) {
+  if (is.function(x)) {
+    body(x) <- remove_source(body(x))
+    x
+  } else if (is.call(x)) {
+    attr(x, "srcref") <- NULL
+    attr(x, "wholeSrcref") <- NULL
+    attr(x, "srcfile") <- NULL
+
+    x[] <- lapply(x, remove_source)
+    x
+  } else {
+    x
+  }
+}
+
 `%||%` <- function(l, r) if (is.null(l)) r else l
 
 is.named <- function(x) {
