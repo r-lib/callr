@@ -205,31 +205,3 @@ test_that("libpath in system, if subprocess changes R_LIBS #2", {
   ## Close FDs
   gc()
 })
-
-test_that("libpath in system, in R CMD INSTALL", {
-  skip_on_cran()
-
-  csomag <- test_path("fixtures","csomag")
-  tmplib <- tempfile()
-  dir.create(tmplib)
-  on.exit(unlink(tmplib, recursive = TRUE), add = TRUE)
-  dump <- tempfile(fileext = ".rds")
-  on.exit(unlink(dump), add = TRUE)
-
-  out <- callr::r(function(pkg, lib, savefile) {
-    Sys.setenv(CALLR_DUMP_HERE = savefile)
-    ## We need to do this, otherwise install.packages() only keeps the
-    ## first library
-    Sys.unsetenv("_R_CHECK_INSTALL_DEPENDS_")
-    install.packages(pkg, lib = lib, repos = NULL, type = "source")
-  }, list(csomag, tmplib, dump))
-
-  data <- readRDS(dump)
-  ## We test the basename, in case a normalizePath makes dirnames differ
-  print(basename(tmplib))
-  print(basename(data$libpaths))
-  expect_true(basename(tmplib) %in% basename(data$libpaths))
-
-  ## Close FDs
-  gc()
-})
