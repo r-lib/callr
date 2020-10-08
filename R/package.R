@@ -5,7 +5,6 @@
 #' process, without affecting the current R process at all. This packages
 #' does exactly that.
 #'
-#' @theme assets/extra.css assets/rd.js
 #' @name callr
 "_PACKAGE"
 
