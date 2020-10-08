@@ -219,7 +219,10 @@ test_that("crash", {
     error = function(e) e)
   expect_true(
     grepl("crashed with exit code", conditionMessage(err)) ||
-    grepl("R session closed the process connection", conditionMessage(err)))
+    grepl("R session closed the process connection", conditionMessage(err)) ||
+    grepl("Invalid (uninitialized or closed?) connection object",
+          conditionMessage(err), fixed = TRUE)
+  )
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
   rs$close()
