@@ -1,5 +1,5 @@
 
-# callr development version
+# callr 3.5.0
 
 * callr can now pass the environment of the function to the subprocess,
   optionally. This makes it easier to call an internal function of a
