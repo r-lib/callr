@@ -58,3 +58,36 @@ test_that("message handlers", {
 
   rs$close()
 })
+
+test_that("large messages", {
+  rs <- r_session$new()
+  on.exit(rs$close(), add = TRUE)
+
+  do <- function() {
+    msg <- structure(list(message = paste(1:150000, sep = " ")),
+                     class = c("myclass", "callr_message", "condition"))
+    signalCondition(msg)
+    for (i in 1:5) {
+      msg <- structure(list(message = paste("message", i)),
+                       class = c("myclass", "callr_message", "condition"))
+      signalCondition(msg)
+    }
+  }
+
+  cond <- list()
+  withr::with_options(
+    list(callr.condition_handler_myclass = function(x) {
+      cond <<- c(cond, list(x))
+    }),
+    rs$run(do)
+  )
+
+  expect_equal(length(cond), 6)
+  expect_s3_class(cond[[1]], "myclass")
+  expect_equal(cond[[1]]$message, paste(1:150000, sep = " "))
+  for (i in 1:5) {
+    expect_equal(cond[[i + 1]]$message, paste("message", i))
+  }
+
+  rs$close()
+})

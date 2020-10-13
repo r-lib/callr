@@ -68,7 +68,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         pxlib <- as.environment("tools:callr")$`__callr_data__`$pxlib
         if (is.null(e$code)) e$code <- "301"
         msg <- paste0("base64::", pxlib$base64_encode(serialize(e, NULL)))
-        data <- paste(e$code, msg, "\n")
+        data <- paste0(e$code, " ", nchar(msg), "\n", msg)
         pxlib$write_fd(3L, data)
 
         if (inherits(e, "cli_message") &&

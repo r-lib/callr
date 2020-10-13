@@ -1,6 +1,9 @@
 
 # callr development version
 
+* `callr::r_session` now handles large messages from the subprocess
+  well (#168).
+
 # callr 3.5.0
 
 * callr can now pass the environment of the function to the subprocess,
