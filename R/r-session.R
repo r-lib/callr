@@ -345,7 +345,24 @@ rs_read <- function(self, private) {
 rs__read_buffer <- function(self, private) {
   # There is a partial message in the buffer already, we need to
   # read some more
-  stop("large messages not implemented yet :(")
+  need <- private$buffer$header$length - private$buffer$got
+  chunk <- processx::processx_conn_read_chars(private$pipe, need)
+  got <- nchar(chunk)
+  if (got == 0) {
+    # make this special case fast
+    NULL
+  } else if (got == need) {
+    msg <- list(
+      header = private$buffer$header,
+      body = paste(c(private$buffer$chunks, list(chunk)), collapse = "")
+    )
+    private$buffer <- NULL
+    msg
+  } else {
+    private$buffer$got <- private$buffer$got + got
+    private$buffer$chunks <- c(private$buffer$chunks, list(chunk))
+    NULL
+  }
 }
 
 rs__read_message <- function(self, private) {
@@ -361,9 +378,14 @@ rs__read_message <- function(self, private) {
       header$length
     )
   }
-  if (nchar(body) < header$length) {
+  got <- nchar(body)
+  if (got < header$length) {
     # Partial message
-    private$buffer <- list(header = header, body = body)
+    private$buffer <- list(
+      header = header,
+      got = got,
+      chunks = list(body)
+    )
     NULL
   } else {
     list(header = header, body = body)
