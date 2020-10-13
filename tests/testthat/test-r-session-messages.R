@@ -58,3 +58,26 @@ test_that("message handlers", {
 
   rs$close()
 })
+
+test_that("large messages", {
+  rs <- r_session$new()
+  on.exit(rs$close(), add = TRUE)
+
+  do <- function() {
+    msg <- structure(list(message = paste(1:150000, sep = " ")),
+                     class = c("myclass", "callr_message", "condition"))
+    signalCondition(msg)
+  }
+
+  cond <- NULL
+  withr::with_options(
+    list(callr.condition_handler_myclass = function(x) {
+      cond <<- x
+    }),
+    rs$run(do)
+  )
+
+  expect_s3_class(cond, "myclass")
+
+  rs$close()
+})
