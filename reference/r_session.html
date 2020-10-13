@@ -75,7 +75,7 @@ be used to evaluate R function calls, one at a time." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0</span>
       </span>
     </div>
 
@@ -232,7 +232,7 @@ be used to evaluate R function calls, one at a time.</p>
 start up (<code>wait = TRUE</code>), or return immediately, i.e. before
 the process is actually ready to run. In the latter case you may call
 the <code>poll_process()</code> method to make sure it is ready.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>new</span>(options = <span class='fu'><a href='r_session_options.html'>r_session_options</a></span>(), wait = <span class='fl'>TRUE</span>, wait_timeout = <span class='fl'>3000</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>options <span class='op'>=</span> <span class='fu'><a href='r_session_options.html'>r_session_options</a></span><span class='op'>(</span><span class='op'>)</span>, wait <span class='op'>=</span> <span class='cn'>TRUE</span>, wait_timeout <span class='op'>=</span> <span class='fl'>3000</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -252,7 +252,7 @@ in milliseconds.</p></dd>
 <p>Similar to <code><a href='r.html'>r()</a></code>, but runs the function in a permanent background
 R session. It throws an error if the function call generated an
 error in the child process.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='http://processx.r-lib.org/reference/run.html'>run</a></span>(<span class='kw'>func</span>, args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>run</span><span class='op'>(</span><span class='va'>func</span>, args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -260,6 +260,14 @@ error in the child process.</p><h4 class='hasAnchor' id='arguments'><a class='an
 Please read the notes for the similar argument of <code><a href='r.html'>r()</a></code>.</p></dd>
 
 <dt><code>args</code></dt><dd><p>Arguments to pass to the function. Must be a list.</p></dd>
+
+<dt><code>package</code></dt><dd><p>Whether to keep the environment of <code>func</code> when passing
+it to the other package. Possible values are:
+<ul>
+<li><p><code>FALSE</code>: reset the environment to <code>.GlobalEnv</code>. This is the default.</p></li>
+<li><p><code>TRUE</code>: keep the environment as is.</p></li>
+<li><p><code>pkg</code>: set the environment to the <code>pkg</code> package namespace.</p></li>
+</ul></p></dd>
 
 </dl><p></div></p>
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
@@ -269,7 +277,7 @@ Please read the notes for the similar argument of <code><a href='r.html'>r()</a>
 <p>Similar to <code>$run()</code>, but returns the standard output and error of
 the child process as well. It does not throw on errors, but
 returns a non-<code>NULL</code> <code>error</code> member in the result list.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>run_with_output</span>(<span class='kw'>func</span>, args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>run_with_output</span><span class='op'>(</span><span class='va'>func</span>, args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -277,6 +285,14 @@ returns a non-<code>NULL</code> <code>error</code> member in the result list.</p
 Please read the notes for the similar argument of <code><a href='r.html'>r()</a></code>.</p></dd>
 
 <dt><code>args</code></dt><dd><p>Arguments to pass to the function. Must be a list.</p></dd>
+
+<dt><code>package</code></dt><dd><p>Whether to keep the environment of <code>func</code> when passing
+it to the other package. Possible values are:
+<ul>
+<li><p><code>FALSE</code>: reset the environment to <code>.GlobalEnv</code>. This is the default.</p></li>
+<li><p><code>TRUE</code>: keep the environment as is.</p></li>
+<li><p><code>pkg</code>: set the environment to the <code>pkg</code> package namespace.</p></li>
+</ul></p></dd>
 
 </dl><p></div></p>
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
@@ -296,7 +312,7 @@ you can ignore them.</p></li>
 <p>Starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
 <code>poll_process()</code> method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='kw'>func</span>, args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>call</span><span class='op'>(</span><span class='va'>func</span>, args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>, package <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -305,13 +321,21 @@ Please read the notes for the similar argument of <code><a href='r.html'>r()</a>
 
 <dt><code>args</code></dt><dd><p>Arguments to pass to the function. Must be a list.</p></dd>
 
+<dt><code>package</code></dt><dd><p>Whether to keep the environment of <code>func</code> when passing
+it to the other package. Possible values are:
+<ul>
+<li><p><code>FALSE</code>: reset the environment to <code>.GlobalEnv</code>. This is the default.</p></li>
+<li><p><code>TRUE</code>: keep the environment as is.</p></li>
+<li><p><code>pkg</code>: set the environment to the <code>pkg</code> package namespace.</p></li>
+</ul></p></dd>
+
 </dl><p></div></p>
 <p><hr>
 <a id="method-poll_process"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>poll_process()</code></h3>
 <p>Poll the R session with a timeout. If the session has finished the
 computation, it returns with <code>"ready"</code>. If the timeout
 is reached, it returns with <code>"timeout"</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>poll_process</span>(<span class='kw'>timeout</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>poll_process</span><span class='op'>(</span><span class='va'>timeout</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -323,7 +347,7 @@ is reached, it returns with <code>"timeout"</code>.</p><h4 class='hasAnchor' id=
 <p><hr>
 <a id="method-get_state"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_state()</code></h3>
 <p>Return the state of the R session.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>get_state</span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>get_state</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Possible values:</p><ul>
@@ -338,7 +362,7 @@ is reached, it returns with <code>"timeout"</code>.</p><h4 class='hasAnchor' id=
 <p>Returns the elapsed time since the R process has started, and the
 elapsed time since the current computation has started. The latter
 is <code>NA</code> if there is no active computation.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>get_running_time</span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>get_running_time</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Named vector of <code>POSIXct</code> objects. The names are <code>"total"</code>
@@ -350,7 +374,7 @@ Events might signal that the function call has finished, or they
 can be progress report events.</p>
 <p>This is a low level function that you only need to use if you
 want to process events (messages) from the R session manually.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>read</span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>read</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><code>NULL</code> if no events are available. Otherwise a named list,
@@ -378,7 +402,7 @@ that callr uses for communication.</p></li>
 <a id="method-close"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/connections.html'>close()</a></code></h3>
 <p>Terminate the current computation and the R process.
 The session object will be in <code>"finished"</code> state after this.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/connections.html'>close</a></span>(grace = <span class='fl'>1000</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>close</span><span class='op'>(</span>grace <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -393,7 +417,7 @@ killed.</p></dd>
 <p>The <code><a href='https://rdrr.io/r/base/traceback.html'>traceback()</a></code> method can be used after an error in the R
 subprocess. It is equivalent to the <code><a href='https://rdrr.io/r/base/traceback.html'>base::traceback()</a></code> call, in
 the subprocess.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/traceback.html'>traceback</a></span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>traceback</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>The same output as from <code><a href='https://rdrr.io/r/base/traceback.html'>base::traceback()</a></code></p>
@@ -401,24 +425,24 @@ the subprocess.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='
 <a id="method-debug"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
 <p>Interactive debugger to inspect the dumped frames in the subprocess,
 after an error. See more at <a href='r_session_debug.html'>r_session_debug</a>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>debug</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-attach"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/attach.html'>attach()</a></code></h3>
 <p>Experimental function that provides a REPL
 (Read-Eval-Print-Loop) to the subprocess.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/attach.html'>attach</a></span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='kw'>attach</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-finalize"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>finalize()</code></h3>
 <p>Finalizer that is called when garbage collecting an <code>r_session</code>
 object, to clean up temporary files.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>finalize</span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>finalize</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-print"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
 <p>Print method for an <code>r_session</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>...</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -428,7 +452,7 @@ object, to clean up temporary files.</p><h4 class='hasAnchor' id='arguments'><a 
 <p><hr>
 <a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>r_session</span><span class='op'>$</span><span class='fu'>clone</span>(deep = <span class='fl'>FALSE</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>r_session</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -439,18 +463,18 @@ object, to clean up temporary files.</p><h4 class='hasAnchor' id='arguments'><a 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>rs</span> <span class='op'>&lt;-</span> <span class='kw'>r_ression</span><span class='op'>$</span><span class='fu'>new</span>()
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>rs</span> <span class='op'>&lt;-</span> <span class='va'>r_ression</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='kw'>rs</span><span class='op'>$</span><span class='fu'><a href='http://processx.r-lib.org/reference/run.html'>run</a></span>(<span class='fu'>function</span>() <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span>)
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>run</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span>
 
-<span class='kw'>rs</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/call.html'>call</a></span>(<span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span>(<span class='fl'>1</span>))
-<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>get_state</span>()
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>call</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>get_state</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>poll_process</span>(<span class='op'>-</span><span class='fl'>1</span>)
-<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>get_state</span>()
-<span class='kw'>rs</span><span class='op'>$</span><span class='fu'>read</span>()
-}
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>poll_process</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>get_state</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>read</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -467,7 +491,7 @@ object, to clean up temporary files.</p><h4 class='hasAnchor' id='arguments'><a 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

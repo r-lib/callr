@@ -84,7 +84,7 @@ See rcmd_safe_env().
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.0</span>
       </span>
     </div>
 
@@ -159,47 +159,49 @@ See <code><a href='rcmd_safe_env.html'>rcmd_safe_env()</a></code>.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>r</span>(
-  <span class='kw'>func</span>,
-  args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  libpath = <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>(),
-  repos = <span class='fu'><a href='default_repos.html'>default_repos</a></span>(),
-  stdout = <span class='kw'>NULL</span>,
-  stderr = <span class='kw'>NULL</span>,
-  poll_connection = <span class='fl'>TRUE</span>,
-  error = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
-  cmdargs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>),
-  show = <span class='fl'>FALSE</span>,
-  callback = <span class='kw'>NULL</span>,
-  block_callback = <span class='kw'>NULL</span>,
-  spinner = <span class='kw'>show</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>(),
-  system_profile = <span class='fl'>FALSE</span>,
-  user_profile = <span class='st'>"project"</span>,
-  env = <span class='fu'><a href='rcmd_safe_env.html'>rcmd_safe_env</a></span>(),
-  timeout = <span class='fl'>Inf</span>,
-  <span class='kw'>...</span>
-)
+    <pre class="usage"><span class='fu'>r</span><span class='op'>(</span>
+  <span class='va'>func</span>,
+  args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  libpath <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span>,
+  repos <span class='op'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span><span class='op'>(</span><span class='op'>)</span>,
+  stdout <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stderr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  poll_connection <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  error <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"callr.error"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  cmdargs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span><span class='op'>)</span>,
+  show <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  callback <span class='op'>=</span> <span class='cn'>NULL</span>,
+  block_callback <span class='op'>=</span> <span class='cn'>NULL</span>,
+  spinner <span class='op'>=</span> <span class='va'>show</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span>,
+  system_profile <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  user_profile <span class='op'>=</span> <span class='st'>"project"</span>,
+  env <span class='op'>=</span> <span class='fu'><a href='rcmd_safe_env.html'>rcmd_safe_env</a></span><span class='op'>(</span><span class='op'>)</span>,
+  timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
+  package <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>r_safe</span>(
-  <span class='kw'>func</span>,
-  args = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  libpath = <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>(),
-  repos = <span class='fu'><a href='default_repos.html'>default_repos</a></span>(),
-  stdout = <span class='kw'>NULL</span>,
-  stderr = <span class='kw'>NULL</span>,
-  poll_connection = <span class='fl'>TRUE</span>,
-  error = <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"callr.error"</span>, <span class='st'>"error"</span>),
-  cmdargs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span>),
-  show = <span class='fl'>FALSE</span>,
-  callback = <span class='kw'>NULL</span>,
-  block_callback = <span class='kw'>NULL</span>,
-  spinner = <span class='kw'>show</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>(),
-  system_profile = <span class='fl'>FALSE</span>,
-  user_profile = <span class='st'>"project"</span>,
-  env = <span class='fu'><a href='rcmd_safe_env.html'>rcmd_safe_env</a></span>(),
-  timeout = <span class='fl'>Inf</span>,
-  <span class='kw'>...</span>
-)</pre>
+<span class='fu'>r_safe</span><span class='op'>(</span>
+  <span class='va'>func</span>,
+  args <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  libpath <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span>,
+  repos <span class='op'>=</span> <span class='fu'><a href='default_repos.html'>default_repos</a></span><span class='op'>(</span><span class='op'>)</span>,
+  stdout <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stderr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  poll_connection <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  error <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"callr.error"</span>, <span class='st'>"error"</span><span class='op'>)</span>,
+  cmdargs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"--slave"</span>, <span class='st'>"--no-save"</span>, <span class='st'>"--no-restore"</span><span class='op'>)</span>,
+  show <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  callback <span class='op'>=</span> <span class='cn'>NULL</span>,
+  block_callback <span class='op'>=</span> <span class='cn'>NULL</span>,
+  spinner <span class='op'>=</span> <span class='va'>show</span> <span class='op'>&amp;&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span>,
+  system_profile <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  user_profile <span class='op'>=</span> <span class='st'>"project"</span>,
+  env <span class='op'>=</span> <span class='fu'><a href='rcmd_safe_env.html'>rcmd_safe_env</a></span><span class='op'>(</span><span class='op'>)</span>,
+  timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
+  package <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,15 +211,16 @@ See <code><a href='rcmd_safe_env.html'>rcmd_safe_env()</a></code>.</p></li>
       <td><p>Function object to call in the new R process.
 The function should be self-contained and only refer to
 other functions and use variables explicitly from other packages
-using the <code><a href='https://rdrr.io/r/base/ns-dblcolon.html'>::</a></code> notation. The environment of the function
+using the <code><a href='https://rdrr.io/r/base/ns-dblcolon.html'>::</a></code> notation. By default the environment of the function
 is set to <code>.GlobalEnv</code> before passing it to the child process.
+(See the <code>package</code> option if you want to keep the environment.)
 Because of this, it is good practice to create an anonymous
 function and pass that to <code>callr</code>, instead of passing
-a function object from a (base or other) package. In particular</p><pre><span class='fu'>r</span>(<span class='kw'>.libPaths</span>)
+a function object from a (base or other) package. In particular</p><pre><span class='fu'>r</span><span class='op'>(</span><span class='va'>.libPaths</span><span class='op'>)</span>
 </pre>
 
 <p>does not work, because <code>.libPaths</code> is defined in a special
-environment, but</p><pre><span class='fu'>r</span>(<span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>())
+environment, but</p><pre><span class='fu'>r</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <p>works just fine.</p></td>
@@ -326,6 +329,15 @@ then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</cod
 means no timeout.</p></td>
     </tr>
     <tr>
+      <th>package</th>
+      <td><p>Whether to keep the environment of <code>func</code> when passing
+it to the other package. Possible values are:</p><ul>
+<li><p><code>FALSE</code>: reset the environment to <code>.GlobalEnv</code>. This is the default.</p></li>
+<li><p><code>TRUE</code>: keep the environment as is.</p></li>
+<li><p><code>pkg</code>: set the environment to the <code>pkg</code> package namespace.</p></li>
+</ul></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Extra arguments are passed to <code><a href='http://processx.r-lib.org/reference/run.html'>processx::run()</a></code>.</p></td>
     </tr>
@@ -382,14 +394,14 @@ in plain files.</p>
 <code><a href='r_vanilla.html'>r_vanilla</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Workspace is empty</span>
-<span class='fu'>r</span>(<span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span>())
+<span class='fu'>r</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/ls.html'>ls</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># library path is the same by default</span>
-<span class='fu'>r</span>(<span class='fu'>function</span>() <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>())
-<span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span>()
-}
+<span class='fu'>r</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -406,7 +418,7 @@ in plain files.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
