@@ -13,7 +13,7 @@ Description: It is sometimes useful to perform a computation in a
     This packages does exactly that.
 License: MIT + file LICENSE
 LazyData: true
-URL: https://github.com/r-lib/callr#readme
+URL: https://callr.r-lib.org, https://github.com/r-lib/callr#readme
 BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 7.1.1.9000
 Roxygen: list(markdown = TRUE, packages = "roxygenlabs")
