@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/r-lib/callr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -134,16 +134,16 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the stable version from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"callr"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"callr"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="synchronous-one-off-r-processes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#synchronous-one-off-r-processes" class="anchor"></a>Synchronous, one-off R processes</h2>
 <p>Use <code><a href="reference/r.html">r()</a></code> to run an R function in a new R process. The results are passed back seamlessly:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/callr#readme">callr</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://callr.r-lib.org">callr</a></span><span class="op">)</span>
+<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">#&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394</span></span>
@@ -153,13 +153,13 @@
 <h3 class="hasAnchor">
 <a href="#passing-arguments" class="anchor"></a>Passing arguments</h3>
 <p>You can pass arguments to the function by setting <code>args</code> to the list of arguments. This is often necessary as these arguments are explicitly copied to the child process, whereas the evaluated function cannot refer to variables in the parent. For example, the following does not work:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">mycars</span> <span class="op">&lt;-</span> <span class="va">cars</span>
-<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mycars</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mycars</span> <span class="op">&lt;-</span> <span class="va">cars</span>
+<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mycars</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">#&gt; Error: callr subprocess failed: object 'mycars' not found</span></span></code></pre></div>
 <p>But this does:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mycars</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mycars</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">#&gt;      speed           dist       </span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></span>
@@ -173,27 +173,27 @@
 <h3 class="hasAnchor">
 <a href="#using-packages" class="anchor"></a>Using packages</h3>
 <p>You can use any R package in the child process, just make sure to refer to it explicitly with the <code><a href="https://rdrr.io/r/base/ns-dblcolon.html">::</a></code> operator. For example, the following code creates an <a href="https://github.com/igraph/rigraph">igraph</a> graph in the child, and calculates some metrics of it.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu">sample_gnp</span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">4</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="fu">igraph</span><span class="fu">::</span><span class="fu">diameter</span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu">sample_gnp</span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">4</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="fu">igraph</span><span class="fu">::</span><span class="fu">diameter</span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#&gt; [1] 11</span></span></code></pre></div>
 </div>
 <div id="error-handling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#error-handling" class="anchor"></a>Error handling</h3>
 <p>callr` copies errors from the child process back to the main R session:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="st">"A"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="st">"A"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#&gt; Error: callr subprocess failed: non-numeric argument to binary operator</span></span></code></pre></div>
 <p>callr sets the <code>.Last.error</code> variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">.Last.error</span></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">.Last.error</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#&gt; &lt;callr_status_error: callr subprocess failed: non-numeric argument to binary operator&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt; --&gt;</span></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; &lt;callr_remote_error in 1 + "A": non-numeric argument to binary operator&gt;</span></span></code></pre></div>
 <p>The error objects has two parts. The first belongs to the main process, and the second belongs to the subprocess.</p>
 <p><code>.Last.error</code> also includes a stack trace, that includes both the main R process and the subprocess:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">.Last.error.trace</span></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">.Last.error.trace</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; </span></span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;  ERROR TRACE for callr_status_error, callr_error, rlib_error</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt; </span></span>
@@ -219,14 +219,14 @@
 <h3 class="hasAnchor">
 <a href="#standard-output-and-error" class="anchor"></a>Standard output and error</h3>
 <p>By default, the standard output and error of the child is lost, but you can request callr to redirect them to files, and then inspect the files in the parent:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"hello world!"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"hello again!"</span><span class="op">)</span> <span class="op">}</span>,
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"hello world!"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"hello again!"</span><span class="op">)</span> <span class="op">}</span>,
   stdout <span class="op">=</span> <span class="st">"/tmp/out"</span>, stderr <span class="op">=</span> <span class="st">"/tmp/err"</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="st">"/tmp/out"</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="st">"/tmp/out"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co">#&gt; [1] "[1] \"hello world!\""</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="st">"/tmp/err"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="st">"/tmp/err"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">#&gt; [1] "hello again!"</span></span></code></pre></div>
 <p>With the <code>stdout</code> option, the standard output is collected and can be examined once the child process finished. The <code>show = TRUE</code> options will also show the output of the child, as it is printed, on the console of the parent.</p>
 </div>
@@ -235,13 +235,13 @@
 <h2 class="hasAnchor">
 <a href="#background-r-processes" class="anchor"></a>Background R processes</h2>
 <p><code><a href="reference/r_bg.html">r_bg()</a></code> is similar to <code><a href="reference/r.html">r()</a></code> but it starts the R process in the background. It returns an <code>r_process</code> R6 object, that provides a rich API:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="va">rp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">.2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">rp</span></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">.2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">rp</span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#&gt; PROCESS 'R', running, pid 32028.</span></span></code></pre></div>
 <p>This is a list of all <code>r_process</code> methods:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#&gt;  [1] "as_ps_handle"          "clone"                </span></span>
 <span id="cb23-2"><a href="#cb23-2"></a><span class="co">#&gt;  [3] "finalize"              "format"               </span></span>
 <span id="cb23-3"><a href="#cb23-3"></a><span class="co">#&gt;  [5] "get_cmdline"           "get_cpu_times"        </span></span>
@@ -295,10 +295,10 @@
 <a href="#multiple-background-r-processes-and-poll" class="anchor"></a>Multiple background R processes and <code>poll()</code>
 </h2>
 <p>Multiple background R processes are best managed with the <code><a href="http://processx.r-lib.org/reference/poll.html">processx::poll()</a></code> function that waits for events (standard output/error or termination) from multiple processes. It returns as soon as one process has generated an event, or if its timeout has expired. The timeout is in milliseconds.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="va">rp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>; <span class="st">"1 done"</span> <span class="op">}</span><span class="op">)</span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>; <span class="st">"1 done"</span> <span class="op">}</span><span class="op">)</span>
 <span class="va">rp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="st">"2 done"</span> <span class="op">}</span><span class="op">)</span>
-<span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">rp1</span>, <span class="va">rp2</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span></pre></div>
+<span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">rp1</span>, <span class="va">rp2</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co">#&gt; [[1]]</span></span>
 <span id="cb25-2"><a href="#cb25-2"></a><span class="co">#&gt;   output    error  process </span></span>
 <span id="cb25-3"><a href="#cb25-3"></a><span class="co">#&gt; "silent" "silent" "silent" </span></span>
@@ -306,41 +306,41 @@
 <span id="cb25-5"><a href="#cb25-5"></a><span class="co">#&gt; [[2]]</span></span>
 <span id="cb25-6"><a href="#cb25-6"></a><span class="co">#&gt;   output    error  process </span></span>
 <span id="cb25-7"><a href="#cb25-7"></a><span class="co">#&gt; "silent" "silent"  "ready"</span></span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="va">rp2</span><span class="op">$</span><span class="fu">get_result</span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rp2</span><span class="op">$</span><span class="fu">get_result</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co">#&gt; [1] "2 done"</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">rp1</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">rp1</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co">#&gt; [[1]]</span></span>
 <span id="cb29-2"><a href="#cb29-2"></a><span class="co">#&gt;   output    error  process </span></span>
 <span id="cb29-3"><a href="#cb29-3"></a><span class="co">#&gt; "silent" "silent"  "ready"</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit">
-<span class="va">rp1</span><span class="op">$</span><span class="fu">get_result</span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rp1</span><span class="op">$</span><span class="fu">get_result</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">#&gt; [1] "1 done"</span></span></code></pre></div>
 </div>
 <div id="persistent-r-sessions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#persistent-r-sessions" class="anchor"></a>Persistent R sessions</h2>
 <p><code>r_session</code> is another <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> subclass that represents a persistent background R session:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit">
-<span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">rs</span></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
+<span class="va">rs</span></code></pre></div>
 <div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#&gt; R SESSION, alive, idle, pid 32095.</span></span></code></pre></div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> objects.</p>
 <p>Once an R session is done with an asynchronous computation, its <code>poll_process()</code> method returns <code>"ready"</code> and the <code>r_session$read()</code> method can read out the result.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit">
-<span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">#&gt;  [1] 0.7896924 0.1770236 0.9931798 0.2850374 0.8582676 0.4489599 0.1556783</span></span>
 <span id="cb35-2"><a href="#cb35-2"></a><span class="co">#&gt;  [8] 0.4240582 0.4260408 0.5561292</span></span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="downlit">
-<span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-<span class="va">rs</span></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="va">rs</span></code></pre></div>
 <div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#&gt; R SESSION, alive, busy, pid 32095.</span></span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="downlit">
-<span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">#&gt; [1] "ready"</span></span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="downlit">
-<span class="va">rs</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb41"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="co">#&gt; $code</span></span>
 <span id="cb41-2"><a href="#cb41-2"></a><span class="co">#&gt; [1] 200</span></span>
 <span id="cb41-3"><a href="#cb41-3"></a><span class="co">#&gt; </span></span>
@@ -367,8 +367,8 @@
 <h2 class="hasAnchor">
 <a href="#running-r-cmd-commands" class="anchor"></a>Running <code>R CMD</code> commands</h2>
 <p>The <code><a href="reference/rcmd.html">rcmd()</a></code> function calls an <code>R CMD</code> command. For example, you can call <code>R CMD INSTALL</code>, <code>R CMD check</code> or <code>R CMD config</code> this way:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit">
-<span class="fu"><a href="reference/rcmd.html">rcmd</a></span><span class="op">(</span><span class="st">"config"</span>, <span class="st">"CC"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/rcmd.html">rcmd</a></span><span class="op">(</span><span class="st">"config"</span>, <span class="st">"CC"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb43"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co">#&gt; $status</span></span>
 <span id="cb43-2"><a href="#cb43-2"></a><span class="co">#&gt; [1] 0</span></span>
 <span id="cb43-3"><a href="#cb43-3"></a><span class="co">#&gt; </span></span>
@@ -386,15 +386,15 @@
 <span id="cb43-15"><a href="#cb43-15"></a><span class="co">#&gt; [2] "CMD"                                            </span></span>
 <span id="cb43-16"><a href="#cb43-16"></a><span class="co">#&gt; [3] "config"                                         </span></span>
 <span id="cb43-17"><a href="#cb43-17"></a><span class="co">#&gt; [4] "CC"</span></span></code></pre></div>
-<div class="sourceCode" id="cb44"><pre class="downlit">
-<span class="co">#&gt;$stdout</span>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#&gt;$stdout</span>
 <span class="co">#&gt;[1] "clang\n"</span>
 <span class="co">#&gt;</span>
 <span class="co">#&gt;$stderr</span>
 <span class="co">#&gt;[1] ""</span>
 <span class="co">#&gt;</span>
 <span class="co">#&gt;$status</span>
-<span class="co">#&gt;[1] 0</span></pre></div>
+<span class="co">#&gt;[1] 0</span></code></pre></div>
 <p>This returns a list with three components: the standard output, the standard error, and the exit (status) code of the <code>R CMD</code> command.</p>
 </div>
 <div id="license" class="section level2">
