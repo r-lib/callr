@@ -3,11 +3,10 @@
 #'
 #' From `callr` version 2.0.0, `r()` is equivalent to `r_safe()`, and
 #' tries to set up a less error prone execution environment. In particular:
-#' * It makes sure that at least one reasonable CRAN mirror is set up.
-#' * Adds some command line arguments are added to avoid saving
-#'   `.RData` files, etc.
-#' * Ignores the system and user profiles.
-#' * Various environment variables are set: `CYGWIN` to avoid
+#' * Ensures that at least one reasonable CRAN mirror is set up.
+#' * Adds some command line arguments to avoid saving `.RData` files, etc.
+#' * Ignores the system and user profiles (by default).
+#' * Sets various environment variables: `CYGWIN` to avoid
 #'   warnings about DOS-style paths, `R_TESTS` to avoid issues
 #'   when `callr` is invoked from unit tests, `R_BROWSER`
 #'   and `R_PDFVIEWER` to avoid starting a browser or a PDF viewer.
@@ -119,7 +118,7 @@
 #' option. This is useful to debug code that uses `callr`.
 #'
 #' callr uses parent errors, to keep the stacks of the main process and the
-#' subprocess(es) in the same error object. 
+#' subprocess(es) in the same error object.
 #'
 #' @section Security considerations:
 #'

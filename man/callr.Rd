@@ -13,6 +13,7 @@ does exactly that.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://callr.r-lib.org}
   \item \url{https://github.com/r-lib/callr#readme}
   \item Report bugs at \url{https://github.com/r-lib/callr/issues}
 }
