@@ -42,11 +42,10 @@
 <meta property="og:title" content="Evaluate an expression in another R session — r" />
 <meta property="og:description" content="From callr version 2.0.0, r() is equivalent to r_safe(), and
 tries to set up a less error prone execution environment. In particular:
-It makes sure that at least one reasonable CRAN mirror is set up.
-Adds some command line arguments are added to avoid saving
-.RData files, etc.
-Ignores the system and user profiles.
-Various environment variables are set: CYGWIN to avoid
+Ensures that at least one reasonable CRAN mirror is set up.
+Adds some command line arguments to avoid saving .RData files, etc.
+Ignores the system and user profiles (by default).
+Sets various environment variables: CYGWIN to avoid
 warnings about DOS-style paths, R_TESTS to avoid issues
 when callr is invoked from unit tests, R_BROWSER
 and R_PDFVIEWER to avoid starting a browser or a PDF viewer.
@@ -146,11 +145,10 @@ See rcmd_safe_env().
     <div class="ref-description">
     <p>From <code>callr</code> version 2.0.0, <code>r()</code> is equivalent to <code>r_safe()</code>, and
 tries to set up a less error prone execution environment. In particular:</p><ul>
-<li><p>It makes sure that at least one reasonable CRAN mirror is set up.</p></li>
-<li><p>Adds some command line arguments are added to avoid saving
-<code>.RData</code> files, etc.</p></li>
-<li><p>Ignores the system and user profiles.</p></li>
-<li><p>Various environment variables are set: <code>CYGWIN</code> to avoid
+<li><p>Ensures that at least one reasonable CRAN mirror is set up.</p></li>
+<li><p>Adds some command line arguments to avoid saving <code>.RData</code> files, etc.</p></li>
+<li><p>Ignores the system and user profiles (by default).</p></li>
+<li><p>Sets various environment variables: <code>CYGWIN</code> to avoid
 warnings about DOS-style paths, <code>R_TESTS</code> to avoid issues
 when <code>callr</code> is invoked from unit tests, <code>R_BROWSER</code>
 and <code>R_PDFVIEWER</code> to avoid starting a browser or a PDF viewer.
