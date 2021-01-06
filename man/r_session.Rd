@@ -328,7 +328,7 @@ ready to go.
 \item \code{301}: (\code{MSG}) A message from the subprocess. The message is a
 condition object with class \code{callr_message}. (It typically has
 other classes, e.g. \code{cli_message} for output from the cli
-package.
+package.)
 \item \code{500}: (\code{EXITED}) The R session finished cleanly. This means
 that the evaluated expression quit R.
 \item \code{501}: (\code{CRASHED}) The R session crashed or was killed.

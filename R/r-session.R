@@ -148,7 +148,7 @@ r_session <- R6::R6Class(
     #'   * `301`: (`MSG`) A message from the subprocess. The message is a
     #'      condition object with class `callr_message`. (It typically has
     #'      other classes, e.g. `cli_message` for output from the cli
-    #'      package.
+    #'      package.)
     #'   * `500`: (`EXITED`) The R session finished cleanly. This means
     #'      that the evaluated expression quit R.
     #'   * `501`: (`CRASHED`) The R session crashed or was killed.
