@@ -256,7 +256,7 @@ function call. Some of the handiest methods are:
 
 -   `get_exit_status()` to query the exit status of a finished process.
 -   `get_result()` to collect the return value of the R function call.
--   `intertupt()` to send an interrupt to the process. This is
+-   `interrupt()` to send an interrupt to the process. This is
     equivalent to a `CTRL+C` key press, and the R process might ignore it.
 -   `is_alive()` to check if the process is alive.
 -   `kill()` to terminate the process.
