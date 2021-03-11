@@ -290,3 +290,17 @@ test_that("error in the load hook", {
   expect_equal(msg$code, 501L)
   expect_match(msg$stderr, "oops")
 })
+
+test_that("fds are not leaked", {
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+
+  old <- rs$run(function() ps::ps_num_fds())
+  for (i in 1:10) {
+    rs$run(function() 1 + 1)
+  }
+  new <- rs$run(function() ps::ps_num_fds())
+
+  # Allow 2 new fds, just in case
+  expect_true(new - old <= 2)
+})

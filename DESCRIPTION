@@ -33,5 +33,7 @@ Suggests:
     testthat,
     tibble,
     withr (>= 2.3.0)
+Remotes:
+    r-lib/processx
 Encoding: UTF-8
 Language: en-US
