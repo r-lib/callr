@@ -103,8 +103,9 @@ make_vanilla_script_expr <- function(expr_file, res, error,
             saveRDS(
               do.call(
                 do.call,
-                c(readRDS(`__expr_file__`), list(envir = .GlobalEnv)),
-                envir = .GlobalEnv
+                c(readRDS(`__expr_file__`), list(envir = .GlobalEnv, quote = TRUE)),
+                envir = .GlobalEnv,
+                quote = TRUE
               ),
               file = `__res__`
             )

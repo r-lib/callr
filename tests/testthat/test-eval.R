@@ -246,3 +246,10 @@ test_that("local .Rprofile is not loaded from actual wd", {
   out <- callr::r(function() ls(.GlobalEnv), wd = wd2)
   expect_equal(out, character())
 })
+
+test_that("symbolic arguments are protected", {
+  expect_equal(
+    callr::r(function(x) x, list(x = quote(foobar))),
+    quote(foobar)
+  )
+})
