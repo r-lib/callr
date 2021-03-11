@@ -6,7 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create options for an r_process object — r_process_options • callr</title>
+<title>rcmd_safe_env returns a set of environment variables that are
+more appropriate for rcmd_safe(). It is exported to allow manipulating
+these variables (e.g. add an extra one), before passing them to the
+rcmd() functions. — rcmd_safe_env • callr</title>
 
 
 <!-- jquery -->
@@ -39,8 +42,25 @@
 
 
 
-<meta property="og:title" content="Create options for an r_process object — r_process_options" />
-<meta property="og:description" content="Create options for an r_process object" />
+<meta property="og:title" content="rcmd_safe_env returns a set of environment variables that are
+more appropriate for rcmd_safe(). It is exported to allow manipulating
+these variables (e.g. add an extra one), before passing them to the
+rcmd() functions. — rcmd_safe_env" />
+<meta property="og:description" content="It currently has the following variables:
+CYGWIN=&quot;nodosfilewarning&quot;: On Windows, do not warn about MS-DOS
+style file names.
+R_TESTS=&quot;&quot; This variable is set by R CMD check, and makes the
+child R process load a startup file at startup, from the current
+working directory, that is assumed to be the /test directory
+of the package being checked. If the current working directory is
+changed to something else (as it typically is by testthat, then R
+cannot start. Setting it to the empty string ensures that callr can
+be used from unit tests.
+R_BROWSER=&quot;false&quot;: typically we don't want to start up a browser
+from the child R process.
+R_PDFVIEWER=&quot;false&quot;: similarly for the PDF viewer.
+
+" />
 
 
 <meta name="robots" content="noindex">
@@ -126,112 +146,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create options for an <a href='r_process.html'>r_process</a> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/options.R'><code>R/options.R</code></a></small>
-    <div class="hidden name"><code>r_process_options.Rd</code></div>
+    <h1><code>rcmd_safe_env</code> returns a set of environment variables that are
+more appropriate for <code><a href='rcmd.html'>rcmd_safe()</a></code>. It is exported to allow manipulating
+these variables (e.g. add an extra one), before passing them to the
+<code><a href='rcmd.html'>rcmd()</a></code> functions.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rcmd.R'><code>R/rcmd.R</code></a></small>
+    <div class="hidden name"><code>rcmd_safe_env.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create options for an <a href='r_process.html'>r_process</a> object</p>
+    <p>It currently has the following variables:</p><ul>
+<li><p><code>CYGWIN="nodosfilewarning"</code>: On Windows, do not warn about MS-DOS
+style file names.</p></li>
+<li><p><code>R_TESTS=""</code> This variable is set by <code>R CMD check</code>, and makes the
+child R process load a startup file at startup, from the current
+working directory, that is assumed to be the <code>/test</code> directory
+of the package being checked. If the current working directory is
+changed to something else (as it typically is by <code>testthat</code>, then R
+cannot start. Setting it to the empty string ensures that <code>callr</code> can
+be used from unit tests.</p></li>
+<li><p><code>R_BROWSER="false"</code>: typically we don't want to start up a browser
+from the child R process.</p></li>
+<li><p><code>R_PDFVIEWER="false"</code>: similarly for the PDF viewer.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>r_process_options</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>rcmd_safe_env</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>Options to override, named arguments.</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of options.</p>
-<p><code>r_process_options()</code> creates a set of options to initialize a new
-object from the <code>r_process</code> class. Its arguments must be named, the
-names are used as option names. The options correspond to (some of)
-the arguments of the <code><a href='r.html'>r()</a></code> function. At least the <code>func</code> option must be
-specified, this is the R function to run in the background.</p>
+    <p>A named character vector of environment variables.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## List all options and their default values:</span>
-<span class='fu'>r_process_options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $func
-#&gt; NULL
-#&gt; 
-#&gt; $args
-#&gt; list()
-#&gt; 
-#&gt; $libpath
-#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.4/lib/R/library"     
-#&gt; 
-#&gt; $repos
-#&gt;                                                              RSPM 
-#&gt; "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" 
-#&gt;                                                              CRAN 
-#&gt;                                     "https://cloud.r-project.org" 
-#&gt; 
-#&gt; $stdout
-#&gt; [1] "|"
-#&gt; 
-#&gt; $stderr
-#&gt; [1] "|"
-#&gt; 
-#&gt; $poll_connection
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $error
-#&gt; [1] "error"
-#&gt; 
-#&gt; $cmdargs
-#&gt; [1] "--slave"      "--no-save"    "--no-restore"
-#&gt; 
-#&gt; $system_profile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $user_profile
-#&gt; [1] "project"
-#&gt; 
-#&gt; $env
-#&gt; character(0)
-#&gt; 
-#&gt; $supervise
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $load_hook
-#&gt;  [1] "{\n"                                                                                  
-#&gt;  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  
-#&gt;  [3] "    env &lt;- readRDS(\"/tmp/RtmpkZ7WAH/callr-env-3cd13dbc42b0\")\n"                     
-#&gt;  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
-#&gt;  [5] "    data &lt;- env$`__callr_data__`\n"                                                   
-#&gt;  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile)\n"                                
-#&gt;  [7] "    options(error = function() invokeRestart(\"abort\"))\n"                           
-#&gt;  [8] "    rm(list = c(\"data\", \"env\"))\n"                                                
-#&gt;  [9] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"
-#&gt; [10] "        \"R_LIBS\", \"R_LIBS_USER\", \"R_LIBS_SITE\"), function(var) {\n"             
-#&gt; [11] "        bakvar &lt;- paste0(\"CALLR_\", var, \"_BAK\")\n"                                
-#&gt; [12] "        val &lt;- Sys.getenv(bakvar, NA_character_)\n"                                   
-#&gt; [13] "        if (!is.na(val)) {\n"                                                         
-#&gt; [14] "            do.call(\"Sys.setenv\", structure(list(val), names = var))\n"             
-#&gt; [15] "        }\n"                                                                          
-#&gt; [16] "        else {\n"                                                                     
-#&gt; [17] "            Sys.unsetenv(var)\n"                                                      
-#&gt; [18] "        }\n"                                                                          
-#&gt; [19] "        Sys.unsetenv(bakvar)\n"                                                       
-#&gt; [20] "    })\n"                                                                             
-#&gt; [21] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS\")\n"                                           
-#&gt; [22] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_SITE\")\n"                                      
-#&gt; [23] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_USER\")\n"                                      
-#&gt; [24] "}\n"                                                                                  
-#&gt; 
-#&gt; $extra
-#&gt; list()
-#&gt; 
-#&gt; $package
-#&gt; [1] FALSE
-#&gt; </div></pre>
+    <p>Note that <code>callr</code> also sets the <code>R_ENVIRON</code>, <code>R_ENVIRON_USER</code>,
+<code>R_PROFILE</code> and <code>R_PROFILE_USER</code> environment variables
+appropriately, unless these are set by the user in the <code>env</code> argument
+of the <code>r</code>, etc. calls.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
