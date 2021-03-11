@@ -185,7 +185,11 @@ r_session <- R6::R6Class(
     #' @description Experimental function that provides a REPL
     #' (Read-Eval-Print-Loop) to the subprocess.
     attach = function()
-      rs_attach(self, private),
+      if (private$options$pty) {
+        rs_attach_pty(self, private)
+      } else {
+        rs_attach(self, private)
+      },
 
     #' @description
     #' Finalizer that is called when garbage collecting an `r_session`
@@ -258,11 +262,13 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
   private$options <- options
 
+  if (options$pty) std <- NULL else std <- "|"
+
   with_envvar(
     options$env,
     do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
-      stdin = "|", stdout = "|", stderr = "|", poll_connection = TRUE),
-      options$extra))
+      stdin = std, stdout = std, stderr = std, poll_connection = TRUE,
+      pty = options$pty), options$extra))
   )
 
   ## Make child report back when ready
@@ -281,7 +287,9 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     err <- ""
     while (any(pr == "ready")) {
       if (pr["output"] == "ready") out <- paste0(out, self$read_output())
-      if (pr["error"] == "ready") err <- paste0(err, self$read_error())
+      if (!options$pty && pr["error"] == "ready") {
+        err <- paste0(err, self$read_error())
+      }
       if (pr["process"] == "ready") break
       timeout <- as.double(have_until - Sys.time(), units = "secs") * 1000
       pr <- self$poll_io(as.integer(timeout))
@@ -413,7 +421,9 @@ rs_close <- function(self, private, grace) {
   private$fun_started_at <- as.POSIXct(NA)
   processx::processx_conn_close(private$pipe)
   processx::processx_conn_close(self$get_output_connection())
-  processx::processx_conn_close(self$get_error_connection())
+  if (! private$options$pty) {
+    processx::processx_conn_close(self$get_error_connection())
+  }
 }
 
 rs_call <- function(self, private, func, args, package) {
@@ -514,7 +524,9 @@ rs_run <- function(self, private, func, args, package) {
     res$result
   } else{
     res$stdout <- paste0(res$stdout, self$read_output())
-    res$stderr <- paste0(res$stderr, self$read_error())
+    if (! private$options$pty) {
+      res$stderr <- paste0(res$stderr, self$read_error())
+    }
     throw(res$error)
   }
 }
@@ -621,6 +633,23 @@ rs_attach <- function(self, private) {
     } },
     interrupt = function(e) { self$interrupt(); invisible() }
   )
+}
+
+rs_attach_pty <- function(self, private) {
+  out <- self$get_output_connection()
+  while (processx::poll(list(out), 0) == "ready") {
+    cat(processx::processx_conn_read_chars(out))
+  }
+  tryCatch({
+    while (TRUE) {
+      cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
+      update_history(cmd)
+      private$write_for_sure(paste0(cmd, "\n"))
+      while (processx::poll(list(out), 0) == "ready") {
+        cat(processx::processx_conn_read_chars(out))
+      }
+    }
+  }, interrupt = function(e) { invisible() })
 }
 
 ## Internal functions ----------------------------------------------------
@@ -875,6 +904,7 @@ r_session_options_default <- function() {
     env = c(TERM = "dumb"),
     supervise = FALSE,
     load_hook = NULL,
+    pty = FALSE,
     extra = list()
   )
 }
