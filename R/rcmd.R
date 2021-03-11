@@ -96,7 +96,6 @@ rcmd_safe <- rcmd
 #' @return A named character vector of environment variables.
 #'
 #' @export
-#' @rdname rcmd_safe
 
 rcmd_safe_env <- function() {
 
