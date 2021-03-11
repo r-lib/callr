@@ -4,6 +4,9 @@
 * callr now handles symbolic arguments properly, and does not evaluate them.
   E.g. `callr::r(function(x) x, list(quote(foobar)))` works now (#175).
 
+* `callr::r_session` does not leak file descriptors now in the sub-process
+  (#184).
+
 # callr 3.5.1
 
 * `callr::r_session` now handles large messages from the subprocess
