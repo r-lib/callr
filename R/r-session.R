@@ -879,7 +879,7 @@ rs__handle_condition <- function(cond) {
 #'
 #' @export
 #' @examples
-#' r_ression_options()
+#' r_session_options()
 
 r_session_options <- function(...) {
   update_options(r_session_options_default(), ...)

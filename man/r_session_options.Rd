@@ -43,5 +43,5 @@ change these.
 Create options for an \link{r_session} object
 }
 \examples{
-r_ression_options()
+r_session_options()
 }
