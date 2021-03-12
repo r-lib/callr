@@ -9,6 +9,39 @@ r_session_options(...)
 \arguments{
 \item{...}{Options to override, named arguments.}
 }
+\value{
+Named list of options.
+
+The current options are:
+\itemize{
+\item \code{libpath}: Library path for the subprocess. By default the same as the
+\emph{current} library path. I.e. \emph{not} necessarily the library path of
+a fresh R session.)
+\item \code{repos}: \code{repos} option for the subprocess. By default the current
+value of the main process.
+\item \code{stdout}: Standard output of the sub-process. This can be \code{NULL} or
+a pipe: \code{"|"}. If it is a pipe then the output of the subprocess is
+not included in the responses, but you need to poll and read it
+manually. This is for exports.
+\item \code{stderr}: Similar to \code{stdout}, but for the standard error.
+\item \code{error}: See 'Error handling' in \code{\link[=r]{r()}}.
+\item \code{cmdargs}: See the same argument of \code{\link[=r]{r()}}. (Its default might be
+different, though.)
+\item \code{system_profile}: See the same argument of \code{\link[=r]{r()}}.
+\item \code{user_profile}: See the same argument of \code{\link[=r]{r()}}.
+\item \code{env}: See the same argument of \code{\link[=r]{r()}}.
+\item \code{load_hook}: \code{NULL}, or code (quoted) to run in the sub-process
+at start up. (I.e. not for every single \code{run()} call.)
+\item \code{extra}: List of extra arguments to pass to \link[processx:process]{processx::process}.
+}
+
+Call \code{r_session_options()} to see the default values.
+\code{r_session_options()} might contain undocumented entries, you cannot
+change these.
+}
 \description{
 Create options for an \link{r_session} object
+}
+\examples{
+r_ression_options()
 }

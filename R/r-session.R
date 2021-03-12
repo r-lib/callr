@@ -463,6 +463,8 @@ rs_call <- function(self, private, func, args, package) {
   private$report_back(200, report_str)
 
   private$state <- "busy"
+
+
 }
 
 rs_run_with_output <- function(self, private, func, args, package) {
@@ -848,8 +850,36 @@ rs__handle_condition <- function(cond) {
 #' Create options for an [r_session] object
 #'
 #' @param ... Options to override, named arguments.
+#' @return Named list of options.
+#'
+#' The current options are:
+#' * `libpath`: Library path for the subprocess. By default the same as the
+#'   _current_ library path. I.e. _not_ necessarily the library path of
+#'   a fresh R session.)
+#' * `repos`: `repos` option for the subprocess. By default the current
+#'   value of the main process.
+#' * `stdout`: Standard output of the sub-process. This can be `NULL` or
+#'   a pipe: `"|"`. If it is a pipe then the output of the subprocess is
+#'   not included in the responses, but you need to poll and read it
+#'   manually. This is for exports.
+#' * `stderr`: Similar to `stdout`, but for the standard error.
+#' * `error`: See 'Error handling' in [r()].
+#' * `cmdargs`: See the same argument of [r()]. (Its default might be
+#'   different, though.)
+#' * `system_profile`: See the same argument of [r()].
+#' * `user_profile`: See the same argument of [r()].
+#' * `env`: See the same argument of [r()].
+#' * `load_hook`: `NULL`, or code (quoted) to run in the sub-process
+#'   at start up. (I.e. not for every single `run()` call.)
+#' * `extra`: List of extra arguments to pass to [processx::process].
+#'
+#' Call `r_session_options()` to see the default values.
+#' `r_session_options()` might contain undocumented entries, you cannot
+#' change these.
 #'
 #' @export
+#' @examples
+#' r_ression_options()
 
 r_session_options <- function(...) {
   update_options(r_session_options_default(), ...)
