@@ -149,11 +149,6 @@ subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.
 }
 
-\examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-rcmd("config", "CC")
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 Other R CMD commands: 
 \code{\link{rcmd_bg}()},

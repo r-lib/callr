@@ -130,3 +130,32 @@ update_history <- function(cmd) {
   cat(cmd, "\n", sep = "", file = tmp, append = TRUE)
   utils::loadhistory(tmp)
 }
+
+#' Find supported sub-architectures for the current R installation
+#'
+#' This function uses a heuristic, which might fail, so its results
+#' should be takes as best guess.
+#'
+#' @return Character vector of supported architectures. If the
+#' current R build is not a multi-architecture build, then an empty
+#' string scalar is returned.
+#'
+#' @export
+#' @examples
+#' supported_archs()
+
+supported_archs <- function() {
+  oldwd <- getwd()
+  on.exit(setwd(oldwd), add = TRUE)
+  setwd(file.path(R.home(), "bin"))
+  archs <- setdiff(list.dirs(recursive = FALSE), "exec")
+  if (length(archs) == 0) {
+    if (nzchar(.Platform$r_arch)) {
+      archs <- .Platform$r_arch
+    } else {
+      archs <- Sys.getenv("R_ARCH")
+    }
+  }
+
+  sub("^[.]?[/\\\\]", "", archs)
+}

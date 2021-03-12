@@ -77,7 +77,8 @@ r_process_options_default <- function() {
     supervise = FALSE,
     load_hook = default_load_hook(),
     extra = list(),
-    package = FALSE
+    package = FALSE,
+    arch = "same"
   )
 }
 
@@ -95,7 +96,8 @@ rcmd_process_options_default <- function() {
     env = rcmd_safe_env(),
     wd = ".",
     supervise = FALSE,
-    extra = list()
+    extra = list(),
+    arch = "same"
   )
 }
 
@@ -113,7 +115,8 @@ rscript_process_options_default <- function() {
     env = rcmd_safe_env(),
     wd = ".",
     color = FALSE,
-    extra = list()
+    extra = list(),
+    arch = "same"
   )
 }
 

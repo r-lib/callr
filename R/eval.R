@@ -92,6 +92,11 @@
 #'   * `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
 #'   * `TRUE`: keep the environment as is.
 #'   * `pkg`: set the environment to the `pkg` package namespace.
+#' @param arch Architecture to use in the child process, for multi-arch
+#'   builds of R. By default the same as the main process. See
+#'   [supported_archs()]. If it contains a forward or backward slash
+#'   character, then it is taken as the path to the R executable.
+#'   Note that on Windows you need the path to `Rterm.exe`.
 #' @param ... Extra arguments are passed to [processx::run()].
 #' @return Value of the evaluated expression.
 #'
@@ -150,7 +155,8 @@ r <- function(func, args = list(), libpath = .libPaths(),
               show = FALSE, callback = NULL,
               block_callback = NULL, spinner = show && interactive(),
               system_profile = FALSE, user_profile = "project",
-              env = rcmd_safe_env(), timeout = Inf, package = FALSE, ...) {
+              env = rcmd_safe_env(), timeout = Inf, package = FALSE,
+              arch = "same", ...) {
 
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))
