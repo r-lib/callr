@@ -905,7 +905,8 @@ r_session_options_default <- function() {
     env = c(TERM = "dumb"),
     supervise = FALSE,
     load_hook = NULL,
-    extra = list()
+    extra = list(),
+    arch = "same"
   )
 }
 

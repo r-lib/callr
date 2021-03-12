@@ -44,6 +44,7 @@ convert_and_check_my_args <- function(options) {
     if (no("fail_on_status")) fail_on_status <- FALSE
     if (no("tmp_files")) tmp_files <- character()
     if (no("package")) package <- FALSE
+    if (no("arch")) arch <- "same"
   })
 
   ## Checks
@@ -67,7 +68,8 @@ convert_and_check_my_args <- function(options) {
     no("timeout") || (length(timeout) == 1 && !is.na(timeout)),
     no("wd") || is_string(wd),
     no("fail_on_status") || is_flag(fail_on_status),
-    is_string(package) || is_flag(package)
+    is_string(package) || is_flag(package),
+    is_string(arch)
   ))
 
   options

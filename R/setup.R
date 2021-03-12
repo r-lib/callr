@@ -218,8 +218,29 @@ setup_callbacks <- function(options) {
 }
 
 setup_r_binary_and_args <- function(options, script_file = TRUE) {
-  exec <- if (os_platform() == "windows") "Rterm" else "R"
-  options$bin <- file.path(R.home("bin"), exec)
+  options$arch <- options$arch %||% "same"
+  if (grepl("[/\\\\]", options$arch)) {
+    path <- options$arch
+
+  } else if (options$arch != "same") {
+    path <- file.path(
+      R.home(),
+      "bin",
+      options$arch,
+      if (os_platform() == "windows") "Rterm" else "R"
+    )
+
+  } else {
+    exec <- if (os_platform() == "windows") "Rterm" else "R"
+    path <- file.path(R.home("bin"), exec)
+  }
+
+  if (!file.exists(path) &&
+      !file.exists(paste0(path, ".exe"))) {
+    stop("Cannot find R executable at `", path, "`")
+  }
+
+  options$bin <- path
   options$real_cmdargs <-
     c(options$cmdargs, if (script_file) c("-f", options$script_file))
   options
@@ -227,7 +248,7 @@ setup_r_binary_and_args <- function(options, script_file = TRUE) {
 
 setup_rcmd_binary_and_args <- function(options) {
 
-  if(os_platform() == "windows") {
+  if (os_platform() == "windows") {
     options$bin <- file.path(R.home("bin"), "Rcmd.exe")
     options$real_cmdargs <- c(options$cmd, options$cmdargs)
 

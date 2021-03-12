@@ -80,16 +80,6 @@ subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.
 }
 
-\examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-# Compare to r()
-r(function() .libPaths())
-r_vanilla(function() .libPaths())
-
-r(function() getOption("repos"))
-r_vanilla(function() getOption("repos"))
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 Other callr functions: 
 \code{\link{r_copycat}()},
