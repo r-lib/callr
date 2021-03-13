@@ -11,14 +11,20 @@
 ## R CMD check workaround
 dummy_r6 <- function() R6::R6Class
 
+client_env <- NULL
+clients <- NULL
+sofiles <- NULL
 env_file <- NULL
 
 ## We save this as an RDS, so it can be loaded quickly
 .onLoad <- function(libname, pkgname) {
+  err$onload_hook()
+  env_file <<- tempfile("callr-env-")
+  clients <<- asNamespace("processx")$client
+  sofiles <<- get_client_files()
+
   env <- new.env(parent = emptyenv())
   env$`__callr_data__` <- new.env(parent = baseenv())
-
-  err$onload_hook()
 
   # We need some R code in the subprocess, we parse it here, so the
   # subprocess just needs to load it. This code will also load the
@@ -40,39 +46,43 @@ env_file <- NULL
     client_file, local = env$`__callr_data__`,
     keep.source = FALSE)
 
-  # An env var can override the location of the client lib
-  # We also unset the env var here, so sub-sub-processes are
-  # not affected by it. If they should, then the subprocess needs
-  # to set this up again.
-  px <- Sys.getenv("CALLR_PROCESSX_CLIENT_LIB", "")
-  Sys.unsetenv("CALL_PROCESSX_CLIENT_LIB")
-  if (px == "") px <- getNamespaceInfo("processx", "path")
+  env$`__callr_data__`$sofile <- sofiles
 
-  arch <- .Platform$r_arch
-  so <- paste0("client", .Platform$dynlib.ext)
-  sofile <- file.path(px, "libs", arch, so)
+  client_env <<- env
+}
 
-  # Maybe not multi-arch build on a multi-arch system?
-  # Can this happen at all?
-  if (!file.exists(sofile)) {
-    sofile <- file.path(px, "libs", so)
+prepare_client_files <- function() {
+  for (aa in names(client_env$`__callr_data__`$sofile)) {
+    fn <- client_env$`__callr_data__`$sofile[[aa]]
+    if (!file.exists(fn)) writeBin(clients[[aa]]$bytes, fn)
   }
 
-  # Try this as well, this is for devtools/pkgload
-  if (!file.exists(sofile)) {
-    sofile <- file.path("src", so)
+  if (!file.exists(env_file)) {
+    saveRDS(client_env, file = env_file, version = 2, compress = FALSE)
   }
-
-  # stop() here and not throw(), because this function should be standalone
-  if (!file.exists(sofile)) stop("Cannot find client so file")
-
-  env$`__callr_data__`$sofile <- sofile
-
-  env_file <<- tempfile("callr-env-")
-  saveRDS(env, file = env_file, version = 2, compress = FALSE)
   invisible()
 }
 
+get_client_files <- function() {
+  archs <- ls(clients)
+  vapply(archs, function(aa) {
+    file.path(
+      tempdir(),
+      paste0(
+        "callr-client-",
+        sub("arch-", "", aa),
+        "-",
+        substr(clients[[aa]]$md5, 1, 7),
+        .Platform$dynlib.ext
+      )
+    )
+  }, character(1))
+}
+
 .onUnload <- function(libpath) {
-  if (!is.null(env_file)) unlink(env_file)
+  unlink(
+    normalizePath(c(sofiles, env_file), mustWork = FALSE),
+    recursive = TRUE,
+    force = TRUE
+  )
 }

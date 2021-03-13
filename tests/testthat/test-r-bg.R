@@ -75,6 +75,8 @@ test_that("cleans up temporary files", {
     rm(rp)
     gc()
     gc()
+
+    unloadNamespace("callr")
     new <- setdiff(dir(tempdir(), "^callr-"), old)
 
     list(result = result, new = new)
