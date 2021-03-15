@@ -33,9 +33,7 @@ common_hook <- function() {
 }
 
 default_load_hook <- function(user_hook = NULL) {
-
   prepare_client_files()
-
   hook <- common_hook()
 
   if (!is.null(user_hook)) {
