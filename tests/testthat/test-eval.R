@@ -210,6 +210,8 @@ test_that("cleans up temp files", {
 
     result <- callr::r(function() 1+1)
 
+    unloadNamespace("callr")
+
     new <- setdiff(dir(tempdir(), "^callr-"), old)
 
     list(result = result, new = new)

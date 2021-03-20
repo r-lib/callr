@@ -258,6 +258,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 
   private$options <- options
 
+  prepare_client_files()
   with_envvar(
     options$env,
     do.call(super$initialize, c(list(options$bin, options$real_cmdargs,

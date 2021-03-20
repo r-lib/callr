@@ -6,7 +6,7 @@ common_hook <- function() {
     env <- readRDS(`__envfile__`)
     do.call("attach", list(env, pos = length(search()), name = "tools:callr"))
     data <- env$`__callr_data__`
-    data$pxlib <- data$load_client_lib(data$sofile)
+    data$pxlib <- data$load_client_lib(data$sofile[[paste0("arch-", .Platform$r_arch)]])
     options(error = function() invokeRestart("abort"))
     rm(list = c("data", "env"))
 
@@ -33,13 +33,7 @@ common_hook <- function() {
 }
 
 default_load_hook <- function(user_hook = NULL) {
-
-  if (!file.exists(env_file))
-    stop(
-      "Unable to find environment file in temporary directory.",
-      " Try restarting R session."
-    )
-
+  prepare_client_files()
   hook <- common_hook()
 
   if (!is.null(user_hook)) {

@@ -67,9 +67,9 @@ test_that("command is included in result", {
 test_that("stderr -> stdout", {
   lib <- test_temp_dir()
   pkg <- test_temp_dir()
-  file.copy("fixtures/D1", file.path(pkg, "DESCRIPTION"))
+  file.copy(test_path("fixtures/D1"), file.path(pkg, "DESCRIPTION"))
   out <- rcmd("INSTALL", c("-l", lib, pkg))
-  expect_match(out$stdout, "No man pages found")
+  expect_match(out$stdout, "No man pages found", useBytes = TRUE)
   expect_match(out$stderr, "installing help indices")
 
   out2 <- rcmd("INSTALL", c("-l", lib, pkg), stderr = "2>&1")
