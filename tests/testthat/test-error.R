@@ -256,16 +256,3 @@ test_that("child error is not modified", {
   )
   expect_null(err$parent$error$trace)
 })
-
-test_that("early error for missing environment file", {
-
-  f <- function() {
-    file.remove(callr:::env_file)
-    callr::r(function() 1 + 1)
-  }
-
-  expect_error(
-    callr::r(f),
-    "Unable to find environment file"
-  )
-})
