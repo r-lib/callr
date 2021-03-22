@@ -19,6 +19,7 @@ r_bg(
   env = rcmd_safe_env(),
   supervise = FALSE,
   package = FALSE,
+  arch = "same",
   ...
 )
 }
@@ -97,6 +98,12 @@ it to the other package. Possible values are:
 \item \code{TRUE}: keep the environment as is.
 \item \code{pkg}: set the environment to the \code{pkg} package namespace.
 }}
+
+\item{arch}{Architecture to use in the child process, for multi-arch
+builds of R. By default the same as the main process. See
+\code{\link[=supported_archs]{supported_archs()}}. If it contains a forward or backward slash
+character, then it is taken as the path to the R executable.
+Note that on Windows you need the path to \code{Rterm.exe}.}
 
 \item{...}{Extra arguments are passed to the \link[processx:process]{processx::process}
 constructor.}

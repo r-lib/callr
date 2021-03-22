@@ -24,6 +24,7 @@ r(
   env = rcmd_safe_env(),
   timeout = Inf,
   package = FALSE,
+  arch = "same",
   ...
 )
 
@@ -46,6 +47,7 @@ r_safe(
   env = rcmd_safe_env(),
   timeout = Inf,
   package = FALSE,
+  arch = "same",
   ...
 )
 }
@@ -146,11 +148,13 @@ it to the other package. Possible values are:
 \item \code{pkg}: set the environment to the \code{pkg} package namespace.
 }}
 
-\item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
-
 \item{arch}{Architecture to use in the child process, for multi-arch
 builds of R. By default the same as the main process. See
-\code{\link[=supported_archs]{supported_archs()}}.}
+\code{\link[=supported_archs]{supported_archs()}}. If it contains a forward or backward slash
+character, then it is taken as the path to the R executable.
+Note that on Windows you need the path to \code{Rterm.exe}.}
+
+\item{...}{Extra arguments are passed to \code{\link[processx:run]{processx::run()}}.}
 }
 \value{
 Value of the evaluated expression.
