@@ -32,7 +32,7 @@ r_bg <- function(func, args = list(), libpath = .libPaths(),
                  cmdargs = c("--slave", "--no-save", "--no-restore"),
                  system_profile = FALSE, user_profile = "project",
                  env = rcmd_safe_env(), supervise = FALSE,
-                 package = FALSE, ...) {
+                 package = FALSE, arch = "same", ...) {
 
   options <- as.list(environment())
   options$extra  <- list(...)

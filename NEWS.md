@@ -1,6 +1,10 @@
 
 # callr development version
 
+* callr now supports starting an R process with a different architecture,
+  so on Windows 64-bit R can start a 32-bit R background process, and
+  vice-versa (#95).
+
 * callr now handles symbolic arguments properly, and does not evaluate them.
   E.g. `callr::r(function(x) x, list(quote(foobar)))` works now (#175).
 
