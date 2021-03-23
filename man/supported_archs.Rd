@@ -12,8 +12,8 @@ current R build is not a multi-architecture build, then an empty
 string scalar is returned.
 }
 \description{
-This function uses a heuristic, which might fail, so its results
-should be takes as best guess.
+This function uses a heuristic, which might fail, so its result
+should be taken as a best guess.
 }
 \examples{
 supported_archs()
