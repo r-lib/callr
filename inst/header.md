@@ -6,6 +6,7 @@
 > Call R from R
 
 <!-- badges: start -->
+[![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R build status](https://github.com/r-lib/callr/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/callr/actions)
 [![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
