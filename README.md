@@ -123,7 +123,7 @@ r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 
 ### Error handling
 
-callr\` copies errors from the child process back to the main R session:
+callr copies errors from the child process back to the main R session:
 
 ``` r
 r(function() 1 + "A")
@@ -141,7 +141,9 @@ both from the main R process and the subprocess.
 
     #> <callr_status_error: callr subprocess failed: non-numeric argument to binary operator>
     #> -->
-    #> <callr_remote_error in 1 + "A": non-numeric argument to binary operator>
+    #> <callr_remote_error in 1 + "A":
+    #>  non-numeric argument to binary operator>
+    #>  in process 32169
 
 The error objects has two parts. The first belongs to the main process,
 and the second belongs to the subprocess.
@@ -154,7 +156,7 @@ process and the subprocess:
 ```
 
     #> 
-    #>  ERROR TRACE for callr_status_error, callr_error, rlib_error
+    #>  Stack trace:
     #> 
     #>  Process 31908:
     #>  38. callr:::r(function() 1 + "A")
