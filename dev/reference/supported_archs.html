@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create options for an r_process object — r_process_options • callr</title>
+<title>Find supported sub-architectures for the current R installation — supported_archs • callr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Create options for an r_process object — r_process_options" />
-<meta property="og:description" content="Create options for an r_process object" />
+<meta property="og:title" content="Find supported sub-architectures for the current R installation — supported_archs" />
+<meta property="og:description" content="This function uses a heuristic, which might fail, so its result
+should be taken as a best guess." />
 
 
 <meta name="robots" content="noindex">
@@ -126,116 +127,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create options for an <a href='r_process.html'>r_process</a> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/options.R'><code>R/options.R</code></a></small>
-    <div class="hidden name"><code>r_process_options.Rd</code></div>
+    <h1>Find supported sub-architectures for the current R installation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>supported_archs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create options for an <a href='r_process.html'>r_process</a> object</p>
+    <p>This function uses a heuristic, which might fail, so its result
+should be taken as a best guess.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>r_process_options</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>supported_archs</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>Options to override, named arguments.</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of options.</p>
-<p><code>r_process_options()</code> creates a set of options to initialize a new
-object from the <code>r_process</code> class. Its arguments must be named, the
-names are used as option names. The options correspond to (some of)
-the arguments of the <code><a href='r.html'>r()</a></code> function. At least the <code>func</code> option must be
-specified, this is the R function to run in the background.</p>
+    <p>Character vector of supported architectures. If the
+current R build is not a multi-architecture build, then an empty
+string scalar is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## List all options and their default values:</span>
-<span class='fu'>r_process_options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $func
-#&gt; NULL
-#&gt; 
-#&gt; $args
-#&gt; list()
-#&gt; 
-#&gt; $libpath
-#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.4/lib/R/library"     
-#&gt; 
-#&gt; $repos
-#&gt;                                                              RSPM 
-#&gt; "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" 
-#&gt;                                                              CRAN 
-#&gt;                                     "https://cloud.r-project.org" 
-#&gt; 
-#&gt; $stdout
-#&gt; [1] "|"
-#&gt; 
-#&gt; $stderr
-#&gt; [1] "|"
-#&gt; 
-#&gt; $poll_connection
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $error
-#&gt; [1] "error"
-#&gt; 
-#&gt; $cmdargs
-#&gt; [1] "--slave"      "--no-save"    "--no-restore"
-#&gt; 
-#&gt; $system_profile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $user_profile
-#&gt; [1] "project"
-#&gt; 
-#&gt; $env
-#&gt; character(0)
-#&gt; 
-#&gt; $supervise
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $load_hook
-#&gt;  [1] "{\n"                                                                                  
-#&gt;  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  
-#&gt;  [3] "    env &lt;- readRDS(\"/tmp/Rtmpl6kWVy/callr-env-36f854643a93\")\n"                     
-#&gt;  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
-#&gt;  [5] "    data &lt;- env$`__callr_data__`\n"                                                   
-#&gt;  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             
-#&gt;  [7] "        .Platform$r_arch)]])\n"                                                       
-#&gt;  [8] "    options(error = function() invokeRestart(\"abort\"))\n"                           
-#&gt;  [9] "    rm(list = c(\"data\", \"env\"))\n"                                                
-#&gt; [10] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"
-#&gt; [11] "        \"R_LIBS\", \"R_LIBS_USER\", \"R_LIBS_SITE\"), function(var) {\n"             
-#&gt; [12] "        bakvar &lt;- paste0(\"CALLR_\", var, \"_BAK\")\n"                                
-#&gt; [13] "        val &lt;- Sys.getenv(bakvar, NA_character_)\n"                                   
-#&gt; [14] "        if (!is.na(val)) {\n"                                                         
-#&gt; [15] "            do.call(\"Sys.setenv\", structure(list(val), names = var))\n"             
-#&gt; [16] "        }\n"                                                                          
-#&gt; [17] "        else {\n"                                                                     
-#&gt; [18] "            Sys.unsetenv(var)\n"                                                      
-#&gt; [19] "        }\n"                                                                          
-#&gt; [20] "        Sys.unsetenv(bakvar)\n"                                                       
-#&gt; [21] "    })\n"                                                                             
-#&gt; [22] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS\")\n"                                           
-#&gt; [23] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_SITE\")\n"                                      
-#&gt; [24] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_USER\")\n"                                      
-#&gt; [25] "}\n"                                                                                  
-#&gt; 
-#&gt; $extra
-#&gt; list()
-#&gt; 
-#&gt; $package
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $arch
-#&gt; [1] "same"
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>supported_archs</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] ""</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
