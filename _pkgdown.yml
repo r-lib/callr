@@ -58,6 +58,7 @@ reference:
 - title: Miscellaneous utilities
   contents:
   - default_repos
+  - supported_archs
 
 - title: Re-exported functions
   contents:
