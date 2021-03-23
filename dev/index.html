@@ -94,7 +94,7 @@
 <p>Call R from R</p>
 </blockquote>
 <!-- badges: start -->
-<p><a href="https://github.com/r-lib/callr/actions"><img src="https://github.com/r-lib/callr/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://www.r-pkg.org/pkg/callr"><img src="https://www.r-pkg.org/badges/version/callr"></a> <a href="https://www.r-pkg.org/pkg/callr"><img src="https://cranlogs.r-pkg.org/badges/callr" alt="CRAN RStudio mirror downloads"></a> <a href="https://codecov.io/github/r-lib/callr?branch=master"><img src="https://img.shields.io/codecov/c/github/r-lib/callr/master.svg" alt="Coverage Status"></a> <!-- badges: end --></p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg" alt="lifecycle"></a> <a href="https://github.com/r-lib/callr/actions"><img src="https://github.com/r-lib/callr/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://www.r-pkg.org/pkg/callr"><img src="https://www.r-pkg.org/badges/version/callr"></a> <a href="https://www.r-pkg.org/pkg/callr"><img src="https://cranlogs.r-pkg.org/badges/callr" alt="CRAN RStudio mirror downloads"></a> <a href="https://codecov.io/github/r-lib/callr?branch=master"><img src="https://img.shields.io/codecov/c/github/r-lib/callr/master.svg" alt="Coverage Status"></a> <!-- badges: end --></p>
 <p>It is sometimes useful to perform a computation in a separate R process, without affecting the current R process at all. This packages does exactly that.</p>
 <hr>
 <ul>
@@ -180,7 +180,7 @@
 <div id="error-handling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#error-handling" class="anchor"></a>Error handling</h3>
-<p>callr` copies errors from the child process back to the main R session:</p>
+<p>callr copies errors from the child process back to the main R session:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="st">"A"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">#&gt; Error: callr subprocess failed: non-numeric argument to binary operator</span></span></code></pre></div>
@@ -189,13 +189,15 @@
 <code class="sourceCode R"><span class="va">.Last.error</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#&gt; &lt;callr_status_error: callr subprocess failed: non-numeric argument to binary operator&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt; --&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; &lt;callr_remote_error in 1 + "A": non-numeric argument to binary operator&gt;</span></span></code></pre></div>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; &lt;callr_remote_error in 1 + "A":</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt;  non-numeric argument to binary operator&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt;  in process 32169</span></span></code></pre></div>
 <p>The error objects has two parts. The first belongs to the main process, and the second belongs to the subprocess.</p>
 <p><code>.Last.error</code> also includes a stack trace, that includes both the main R process and the subprocess:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">.Last.error.trace</span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;  ERROR TRACE for callr_status_error, callr_error, rlib_error</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;  Stack trace:</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt; </span></span>
 <span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt;  Process 31908:</span></span>
 <span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt;  38. callr:::r(function() 1 + "A")</span></span>
