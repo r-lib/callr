@@ -18,7 +18,7 @@ BugReports: https://github.com/r-lib/callr/issues
 RoxygenNote: 7.1.1.9001
 Roxygen: list(markdown = TRUE)
 Imports:
-    processx (>= 3.4.4),
+    processx (>= 3.4.5.9001),
     R6,
     utils
 Suggests:
