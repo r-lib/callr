@@ -1,5 +1,4 @@
-
-# callr development version
+# callr 3.6.0
 
 * callr now supports starting an R process with a different architecture,
   so on Windows 64-bit R can start a 32-bit R background process, and
