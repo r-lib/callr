@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -165,12 +165,13 @@ specified, this is the R function to run in the background.</p>
 #&gt; list()
 #&gt; 
 #&gt; $libpath
-#&gt; [1] "/Users/runner/work/_temp/Library"                              
-#&gt; [2] "/Library/Frameworks/R.framework/Versions/4.0/Resources/library"
+#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.4/lib/R/library"     
 #&gt; 
 #&gt; $repos
-#&gt;                          CRAN 
-#&gt; "https://cloud.r-project.org" 
+#&gt;                                                              RSPM 
+#&gt; "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" 
+#&gt;                                                              CRAN 
+#&gt;                                     "https://cloud.r-project.org" 
 #&gt; 
 #&gt; $stdout
 #&gt; [1] "|"
@@ -200,36 +201,40 @@ specified, this is the R function to run in the background.</p>
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $load_hook
-#&gt;  [1] "{\n"                                                                                                        
-#&gt;  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                                        
-#&gt;  [3] "    env &lt;- readRDS(\"/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpGTICFh/callr-env-562c3ab284\")\n"
-#&gt;  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n"                       
-#&gt;  [5] "    data &lt;- env$`__callr_data__`\n"                                                                         
-#&gt;  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile)\n"                                                      
-#&gt;  [7] "    options(error = function() invokeRestart(\"abort\"))\n"                                                 
-#&gt;  [8] "    rm(list = c(\"data\", \"env\"))\n"                                                                      
-#&gt;  [9] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"                      
-#&gt; [10] "        \"R_LIBS\", \"R_LIBS_USER\", \"R_LIBS_SITE\"), function(var) {\n"                                   
-#&gt; [11] "        bakvar &lt;- paste0(\"CALLR_\", var, \"_BAK\")\n"                                                      
-#&gt; [12] "        val &lt;- Sys.getenv(bakvar, NA_character_)\n"                                                         
-#&gt; [13] "        if (!is.na(val)) {\n"                                                                               
-#&gt; [14] "            do.call(\"Sys.setenv\", structure(list(val), names = var))\n"                                   
-#&gt; [15] "        }\n"                                                                                                
-#&gt; [16] "        else {\n"                                                                                           
-#&gt; [17] "            Sys.unsetenv(var)\n"                                                                            
-#&gt; [18] "        }\n"                                                                                                
-#&gt; [19] "        Sys.unsetenv(bakvar)\n"                                                                             
-#&gt; [20] "    })\n"                                                                                                   
-#&gt; [21] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS\")\n"                                                                 
-#&gt; [22] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_SITE\")\n"                                                            
-#&gt; [23] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_USER\")\n"                                                            
-#&gt; [24] "}\n"                                                                                                        
+#&gt;  [1] "{\n"                                                                                  
+#&gt;  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  
+#&gt;  [3] "    env &lt;- readRDS(\"/tmp/RtmpvqUpl7/callr-env-36616e391160\")\n"                     
+#&gt;  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
+#&gt;  [5] "    data &lt;- env$`__callr_data__`\n"                                                   
+#&gt;  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             
+#&gt;  [7] "        .Platform$r_arch)]])\n"                                                       
+#&gt;  [8] "    options(error = function() invokeRestart(\"abort\"))\n"                           
+#&gt;  [9] "    rm(list = c(\"data\", \"env\"))\n"                                                
+#&gt; [10] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"
+#&gt; [11] "        \"R_LIBS\", \"R_LIBS_USER\", \"R_LIBS_SITE\"), function(var) {\n"             
+#&gt; [12] "        bakvar &lt;- paste0(\"CALLR_\", var, \"_BAK\")\n"                                
+#&gt; [13] "        val &lt;- Sys.getenv(bakvar, NA_character_)\n"                                   
+#&gt; [14] "        if (!is.na(val)) {\n"                                                         
+#&gt; [15] "            do.call(\"Sys.setenv\", structure(list(val), names = var))\n"             
+#&gt; [16] "        }\n"                                                                          
+#&gt; [17] "        else {\n"                                                                     
+#&gt; [18] "            Sys.unsetenv(var)\n"                                                      
+#&gt; [19] "        }\n"                                                                          
+#&gt; [20] "        Sys.unsetenv(bakvar)\n"                                                       
+#&gt; [21] "    })\n"                                                                             
+#&gt; [22] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS\")\n"                                           
+#&gt; [23] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_SITE\")\n"                                      
+#&gt; [24] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_USER\")\n"                                      
+#&gt; [25] "}\n"                                                                                  
 #&gt; 
 #&gt; $extra
 #&gt; list()
 #&gt; 
 #&gt; $package
 #&gt; [1] FALSE
+#&gt; 
+#&gt; $arch
+#&gt; [1] "same"
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

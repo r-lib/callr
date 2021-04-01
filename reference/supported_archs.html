@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create options for an rcmd_process object — rcmd_process_options • callr</title>
+<title>Find supported sub-architectures for the current R installation — supported_archs • callr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Create options for an rcmd_process object — rcmd_process_options" />
-<meta property="og:description" content="Create options for an rcmd_process object" />
+<meta property="og:title" content="Find supported sub-architectures for the current R installation — supported_archs" />
+<meta property="og:description" content="This function uses a heuristic, which might fail, so its result
+should be taken as a best guess." />
 
 
 
@@ -126,85 +127,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/options.R'><code>R/options.R</code></a></small>
-    <div class="hidden name"><code>rcmd_process_options.Rd</code></div>
+    <h1>Find supported sub-architectures for the current R installation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>supported_archs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</p>
+    <p>This function uses a heuristic, which might fail, so its result
+should be taken as a best guess.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rcmd_process_options</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>supported_archs</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>Options to override, named arguments.</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of options.</p>
-<p><code>rcmd_process_options()</code> creates a set of options to initialize a new
-object from the <code>rcmd_process</code> class. Its arguments must be named, the
-names are used as option names. The options correspond to (some of)
-the arguments of the <code><a href='rcmd.html'>rcmd()</a></code> function. At least the <code>cmd</code> option must
-be specified, to select the <code>R CMD</code> subcommand to run. Typically
-<code>cmdargs</code> is specified as well, to supply more arguments to <code>R CMD</code>.</p>
+    <p>Character vector of supported architectures. If the
+current R build is not a multi-architecture build, then an empty
+string scalar is returned.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## List all options and their default values:</span>
-<span class='fu'>rcmd_process_options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $cmd
-#&gt; NULL
-#&gt; 
-#&gt; $cmdargs
-#&gt; character(0)
-#&gt; 
-#&gt; $libpath
-#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.4/lib/R/library"     
-#&gt; 
-#&gt; $stdout
-#&gt; [1] "|"
-#&gt; 
-#&gt; $stderr
-#&gt; [1] "|"
-#&gt; 
-#&gt; $poll_connection
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $repos
-#&gt;                                                              RSPM 
-#&gt; "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" 
-#&gt;                                                              CRAN 
-#&gt;                                     "https://cloud.r-project.org" 
-#&gt; 
-#&gt; $system_profile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $user_profile
-#&gt; [1] "project"
-#&gt; 
-#&gt; $env
-#&gt;             CYGWIN            R_TESTS          R_BROWSER        R_PDFVIEWER 
-#&gt; "nodosfilewarning"                 ""            "false"            "false" 
-#&gt; 
-#&gt; $wd
-#&gt; [1] "."
-#&gt; 
-#&gt; $supervise
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $extra
-#&gt; list()
-#&gt; 
-#&gt; $arch
-#&gt; [1] "same"
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>supported_archs</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] ""</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

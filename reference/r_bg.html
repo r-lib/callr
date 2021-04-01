@@ -73,7 +73,7 @@ returns immediately." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@ returns immediately." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/callr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -152,6 +152,7 @@ returns immediately.</p>
   env <span class='op'>=</span> <span class='fu'><a href='rcmd_safe_env.html'>rcmd_safe_env</a></span><span class='op'>(</span><span class='op'>)</span>,
   supervise <span class='op'>=</span> <span class='cn'>FALSE</span>,
   package <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  arch <span class='op'>=</span> <span class='st'>"same"</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -261,6 +262,14 @@ it to the other package. Possible values are:</p><ul>
 </ul></td>
     </tr>
     <tr>
+      <th>arch</th>
+      <td><p>Architecture to use in the child process, for multi-arch
+builds of R. By default the same as the main process. See
+<code><a href='supported_archs.html'>supported_archs()</a></code>. If it contains a forward or backward slash
+character, then it is taken as the path to the R executable.
+Note that on Windows you need the path to <code>Rterm.exe</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Extra arguments are passed to the <a href='http://processx.r-lib.org/reference/process.html'>processx::process</a>
 constructor.</p></td>
@@ -285,16 +294,6 @@ get scattered in various files, at least temporarily, until the
 subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>rx</span> <span class='op'>&lt;-</span> <span class='fu'>r_bg</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span>
-
-<span class='co'># wait until it is done</span>
-<span class='va'>rx</span><span class='op'>$</span><span class='fu'>wait</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>rx</span><span class='op'>$</span><span class='fu'>is_alive</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>rx</span><span class='op'>$</span><span class='fu'>get_result</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

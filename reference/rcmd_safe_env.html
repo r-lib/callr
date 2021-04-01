@@ -6,7 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create options for an rcmd_process object — rcmd_process_options • callr</title>
+<title>rcmd_safe_env returns a set of environment variables that are
+more appropriate for rcmd_safe(). It is exported to allow manipulating
+these variables (e.g. add an extra one), before passing them to the
+rcmd() functions. — rcmd_safe_env • callr</title>
 
 
 <!-- jquery -->
@@ -39,8 +42,25 @@
 
 
 
-<meta property="og:title" content="Create options for an rcmd_process object — rcmd_process_options" />
-<meta property="og:description" content="Create options for an rcmd_process object" />
+<meta property="og:title" content="rcmd_safe_env returns a set of environment variables that are
+more appropriate for rcmd_safe(). It is exported to allow manipulating
+these variables (e.g. add an extra one), before passing them to the
+rcmd() functions. — rcmd_safe_env" />
+<meta property="og:description" content="It currently has the following variables:
+CYGWIN=&quot;nodosfilewarning&quot;: On Windows, do not warn about MS-DOS
+style file names.
+R_TESTS=&quot;&quot; This variable is set by R CMD check, and makes the
+child R process load a startup file at startup, from the current
+working directory, that is assumed to be the /test directory
+of the package being checked. If the current working directory is
+changed to something else (as it typically is by testthat, then R
+cannot start. Setting it to the empty string ensures that callr can
+be used from unit tests.
+R_BROWSER=&quot;false&quot;: typically we don't want to start up a browser
+from the child R process.
+R_PDFVIEWER=&quot;false&quot;: similarly for the PDF viewer.
+
+" />
 
 
 
@@ -126,85 +146,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/options.R'><code>R/options.R</code></a></small>
-    <div class="hidden name"><code>rcmd_process_options.Rd</code></div>
+    <h1><code>rcmd_safe_env</code> returns a set of environment variables that are
+more appropriate for <code><a href='rcmd.html'>rcmd_safe()</a></code>. It is exported to allow manipulating
+these variables (e.g. add an extra one), before passing them to the
+<code><a href='rcmd.html'>rcmd()</a></code> functions.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/callr/blob/master/R/rcmd.R'><code>R/rcmd.R</code></a></small>
+    <div class="hidden name"><code>rcmd_safe_env.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Create options for an <a href='rcmd_process.html'>rcmd_process</a> object</p>
+    <p>It currently has the following variables:</p><ul>
+<li><p><code>CYGWIN="nodosfilewarning"</code>: On Windows, do not warn about MS-DOS
+style file names.</p></li>
+<li><p><code>R_TESTS=""</code> This variable is set by <code>R CMD check</code>, and makes the
+child R process load a startup file at startup, from the current
+working directory, that is assumed to be the <code>/test</code> directory
+of the package being checked. If the current working directory is
+changed to something else (as it typically is by <code>testthat</code>, then R
+cannot start. Setting it to the empty string ensures that <code>callr</code> can
+be used from unit tests.</p></li>
+<li><p><code>R_BROWSER="false"</code>: typically we don't want to start up a browser
+from the child R process.</p></li>
+<li><p><code>R_PDFVIEWER="false"</code>: similarly for the PDF viewer.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>rcmd_process_options</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>rcmd_safe_env</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>...</th>
-      <td><p>Options to override, named arguments.</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of options.</p>
-<p><code>rcmd_process_options()</code> creates a set of options to initialize a new
-object from the <code>rcmd_process</code> class. Its arguments must be named, the
-names are used as option names. The options correspond to (some of)
-the arguments of the <code><a href='rcmd.html'>rcmd()</a></code> function. At least the <code>cmd</code> option must
-be specified, to select the <code>R CMD</code> subcommand to run. Typically
-<code>cmdargs</code> is specified as well, to supply more arguments to <code>R CMD</code>.</p>
+    <p>A named character vector of environment variables.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## List all options and their default values:</span>
-<span class='fu'>rcmd_process_options</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $cmd
-#&gt; NULL
-#&gt; 
-#&gt; $cmdargs
-#&gt; character(0)
-#&gt; 
-#&gt; $libpath
-#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.4/lib/R/library"     
-#&gt; 
-#&gt; $stdout
-#&gt; [1] "|"
-#&gt; 
-#&gt; $stderr
-#&gt; [1] "|"
-#&gt; 
-#&gt; $poll_connection
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $repos
-#&gt;                                                              RSPM 
-#&gt; "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest" 
-#&gt;                                                              CRAN 
-#&gt;                                     "https://cloud.r-project.org" 
-#&gt; 
-#&gt; $system_profile
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $user_profile
-#&gt; [1] "project"
-#&gt; 
-#&gt; $env
-#&gt;             CYGWIN            R_TESTS          R_BROWSER        R_PDFVIEWER 
-#&gt; "nodosfilewarning"                 ""            "false"            "false" 
-#&gt; 
-#&gt; $wd
-#&gt; [1] "."
-#&gt; 
-#&gt; $supervise
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $extra
-#&gt; list()
-#&gt; 
-#&gt; $arch
-#&gt; [1] "same"
-#&gt; </div></pre>
+    <p>Note that <code>callr</code> also sets the <code>R_ENVIRON</code>, <code>R_ENVIRON_USER</code>,
+<code>R_PROFILE</code> and <code>R_PROFILE_USER</code> environment variables
+appropriately, unless these are set by the user in the <code>env</code> argument
+of the <code>r</code>, etc. calls.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

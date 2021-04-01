@@ -61,7 +61,7 @@
     <loc>https://callr.r-lib.org/reference/rcmd_process_options.html</loc>
   </url>
   <url>
-    <loc>https://callr.r-lib.org/reference/rcmd_safe.html</loc>
+    <loc>https://callr.r-lib.org/reference/rcmd_safe_env.html</loc>
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/reexports.html</loc>
@@ -74,5 +74,8 @@
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/rscript_process_options.html</loc>
+  </url>
+  <url>
+    <loc>https://callr.r-lib.org/reference/supported_archs.html</loc>
   </url>
 </urlset>
