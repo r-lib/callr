@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">3.5.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">3.6.0.9000</span>
       </span>
     </div>
 
@@ -129,6 +129,21 @@
       <small>Source: <a href='https://github.com/r-lib/callr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="callr-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="development version">
+<a href="#callr-development-version" class="anchor"></a>callr (development version)<small> Unreleased </small>
+</h1>
+</div>
+    <div id="callr-360" class="section level1">
+<h1 class="page-header" data-toc-text="3.6.0">
+<a href="#callr-360" class="anchor"></a>callr 3.6.0<small> 2021-03-28 </small>
+</h1>
+<ul>
+<li><p>callr now supports starting an R process with a different architecture, so on Windows 64-bit R can start a 32-bit R background process, and vice-versa (<a href='https://github.com/r-lib/callr/issues/95'>#95</a>).</p></li>
+<li><p>callr now handles symbolic arguments properly, and does not evaluate them. E.g. <code><a href="../reference/r.html">callr::r(function(x) x, list(quote(foobar)))</a></code> works now (<a href='https://github.com/r-lib/callr/issues/175'>#175</a>).</p></li>
+<li><p><code><a href="../reference/r_session.html">callr::r_session</a></code> does not leak file descriptors now in the sub-process (<a href='https://github.com/r-lib/callr/issues/184'>#184</a>).</p></li>
+</ul>
+</div>
     <div id="callr-351" class="section level1">
 <h1 class="page-header" data-toc-text="3.5.1">
 <a href="#callr-351" class="anchor"></a>callr 3.5.1<small> 2020-10-13 </small>
