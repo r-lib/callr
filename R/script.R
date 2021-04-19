@@ -10,7 +10,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       callr_data <- as.environment("tools:callr")$`__callr_data__`
       err <- callr_data$err
 
-      assign(".Traceback", .traceback(4, 10), envir = baseenv())
+      assign(".Traceback", .traceback(4, 10), envir = callr_data)
 
       dump.frames("__callr_dump__")
       assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
