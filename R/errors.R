@@ -22,7 +22,7 @@
 #   the error, e.g. `.Last.error$trace`. The trace of the last error is
 #   also at `.Last.error.trace`.
 # - Can merge errors and traces across multiple processes.
-# - Pretty-print errors and traces, if the crayon package is loaded.
+# - Pretty-print errors and traces, if the cli package is loaded.
 # - Automatically hides uninformative parts of the stack trace when
 #   printing.
 #
@@ -80,6 +80,19 @@
 #   error and highlight it.
 # * Add the rethrow_call_with_cleanup function, to work with embedded
 #   cleancall.
+#
+# ### 1.2.2 -- 2020-11-19
+#
+# * Add the `call` argument to `catch_rethrow()` and `rethrow()`, to be
+#   able to omit calls.
+#
+# ### 1.2.3 -- 2021-03-06
+#
+# * Use cli instead of crayon
+#
+# ### 1.2.4 -- 2012-04-01
+#
+# * Allow omitting the call with call. = FALSE in `new_cond()`, etc.
 
 err <- local({
 
@@ -92,7 +105,7 @@ err <- local({
   #'   character and then concatenated, like in [stop()].
   #' @param call. A call object to include in the condition, or `TRUE`
   #'   or `NULL`, meaning that [throw()] should add a call object
-  #'   automatically.
+  #'   automatically. If `FALSE`, then no call is added.
   #' @param domain Translation domain, see [stop()].
   #' @return Condition object. Currently a list, but you should not rely
   #'   on that.
@@ -143,8 +156,10 @@ err <- local({
       throw(new_error("Parent condition must be a condition object"))
     }
 
-    if (is.null(cond$call) || isTRUE(cond$call)) {
+    if (isTRUE(cond$call)) {
       cond$call <- sys.call(-1) %||% sys.call()
+    } else if (identical(cond$call, FALSE)) {
+      cond$call <- NULL
     }
 
     # Eventually the nframe numbers will help us print a better trace
@@ -266,6 +281,8 @@ err <- local({
   #'   [withCallingHandlers()]. You are supposed to call [throw()] from
   #'   the error handler, with a new error object, setting the original
   #'   error object as parent. See examples below.
+  #' @param call Logical flag, whether to add the call to
+  #'   `catch_rethrow()` to the error.
   #' @examples
   #' f <- function() {
   #'   ...
@@ -277,8 +294,8 @@ err <- local({
   #'   )
   #' }
 
-  catch_rethrow <- function(expr, ...) {
-    realcall <- sys.call(-1) %||% sys.call()
+  catch_rethrow <- function(expr, ..., call = TRUE) {
+    realcall <- if (isTRUE(call)) sys.call(-1) %||% sys.call()
     realframe <- sys.nframe()
     parent <- parent.frame()
 
@@ -316,9 +333,11 @@ err <- local({
   #' @param expr Expression to evaluate.
   #' @param ... Condition handler specification, the same way as in
   #'   [withCallingHandlers()].
+  #' @param call Logical flag, whether to add the call to
+  #'   `rethrow()` to the error.
 
-  rethrow <- function(expr, cond) {
-    realcall <- sys.call(-1) %||% sys.call()
+  rethrow <- function(expr, cond, call = TRUE) {
+    realcall <- if (isTRUE(call)) sys.call(-1) %||% sys.call()
     realframe <- sys.nframe()
     withCallingHandlers(
       expr,
@@ -581,8 +600,8 @@ err <- local({
   }
 
   capture_output <- function(expr) {
-    if (has_crayon()) {
-      opts <- options(crayon.enabled = crayon::has_color())
+    if (has_cli()) {
+      opts <- options(cli.num_colors = cli::num_ansi_colors())
       on.exit(options(opts), add = TRUE)
     }
 
@@ -689,22 +708,22 @@ err <- local({
 
   # -- printing, styles -------------------------------------------------
 
-  has_crayon <- function() "crayon" %in% loadedNamespaces()
+  has_cli <- function() "cli" %in% loadedNamespaces()
 
   style_numbers <- function(x) {
-    if (has_crayon()) crayon::silver(x) else x
+    if (has_cli()) cli::col_silver(x) else x
   }
 
   style_advice <- function(x) {
-    if (has_crayon()) crayon::silver(x) else x
+    if (has_cli()) cli::col_silver(x) else x
   }
 
   style_srcref <- function(x) {
-    if (has_crayon()) crayon::italic(crayon::cyan(x))
+    if (has_cli()) cli::style_italic(cli::col_cyan(x))
   }
 
   style_error <- function(x) {
-    if (has_crayon()) crayon::bold(crayon::red(x)) else x
+    if (has_cli()) cli::style_bold(cli::col_red(x)) else x
   }
 
   style_error_msg <- function(x) {
@@ -717,15 +736,15 @@ err <- local({
   }
 
   style_process <- function(x) {
-    if (has_crayon()) crayon::bold(x) else x
+    if (has_cli()) cli::style_bold(x) else x
   }
 
   style_call <- function(x) {
-    if (!has_crayon()) return(x)
+    if (!has_cli()) return(x)
     call <- sub("^([^(]+)[(].*$", "\\1", x)
     rest <- sub("^[^(]+([(].*)$", "\\1", x)
     if (call == x || rest == x) return(x)
-    paste0(crayon::yellow(call), rest)
+    paste0(cli::col_yellow(call), rest)
   }
 
   err_env <- environment()
