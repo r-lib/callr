@@ -22,6 +22,7 @@ env_file <- NULL
   clients <<- asNamespace("processx")$client
   sofiles <<- get_client_files()
   client_env$`__callr_data__`$sofile <- sofiles
+  client_env$`__callr_data__`$pxdir <- system.file(package = "processx")
 }
 
 prepare_client_files <- function() {

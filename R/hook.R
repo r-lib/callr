@@ -6,7 +6,10 @@ common_hook <- function() {
     env <- readRDS(`__envfile__`)
     do.call("attach", list(env, pos = length(search()), name = "tools:callr"))
     data <- env$`__callr_data__`
-    data$pxlib <- data$load_client_lib(data$sofile[[paste0("arch-", .Platform$r_arch)]])
+    data$pxlib <- data$load_client_lib(
+      data$sofile[[paste0("arch-", .Platform$r_arch)]],
+      data$pxdir
+    )
     options(error = function() invokeRestart("abort"))
     rm(list = c("data", "env"))
 

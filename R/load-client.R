@@ -1,24 +1,50 @@
 
-load_client_lib <- function(sofile = NULL) {
+load_client_lib <- function(sofile = NULL, pxdir = NULL) {
   ext <- .Platform$dynlib.ext
-  if (is.null(sofile)) {
+  sofile_in_processx <- function() {
     arch <- .Platform$r_arch
+    if (!is.null(pxdir)) {
+      sofile <- file.path(pxdir, "libs", arch, paste0("client", ext))
+      if (file.exists(sofile)) return(sofile)
+    }
+
     sofile <- system.file(
       "libs", arch, paste0("client", ext),
       package = "processx")
+    if (sofile != "" && file.exists(sofile)) return(sofile)
 
     # Try this as well, this is for devtools/pkgload
-    if (sofile == "") {
-      sofile <- system.file(
-        "src", paste0("client", ext),
-        package = "processx")
-    }
+    sofile <- system.file(
+      "src", paste0("client", ext),
+      package = "processx")
+    if (sofile != "" && file.exists(sofile)) return(sofile)
 
     # stop() here and not throw(), because this function should be standalone
-    if (sofile == "") stop("Cannot find client file")
+    stop("Cannot find client file")
   }
 
-  lib <- dyn.load(sofile)
+  if (is.null(sofile)) {
+    sofile <- sofile_in_processx()
+    lib <- dyn.load(sofile)
+  } else {
+    # This is the usual case, first we try loading it from the
+    # temporary directory. If that fails (e.g. noexec), then
+    # from processx. We saved the location of processx when we
+    # loaded callr, just in case the used changes the lib path.
+    lib <- tryCatch(dyn.load(sofile), error = function(err) err)
+    if (inherits(lib, "error")) {
+      sofile <- sofile_in_processx()
+      tryCatch(
+        lib <- dyn.load(sofile),
+	error = function(err2) {
+	  err2$message <- err2$message <- paste0(" after ", lib$message)
+	  stop(err2)
+	}
+      )
+    }
+  }
+
+  # cleanup if setup fails
   on.exit(dyn.unload(sofile))
 
   sym_encode <- getNativeSymbolInfo("processx_base64_encode", lib)
