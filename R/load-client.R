@@ -18,12 +18,8 @@ load_client_lib <- function(sofile = NULL) {
     if (sofile == "") stop("Cannot find client file")
   }
 
-  tmpsofile <- tempfile(fileext = ext)
-  file.copy(sofile, tmpsofile)
-  tmpsofile <- normalizePath(tmpsofile)
-
-  lib <- dyn.load(tmpsofile)
-  on.exit(dyn.unload(tmpsofile))
+  lib <- dyn.load(sofile)
+  on.exit(dyn.unload(sofile))
 
   sym_encode <- getNativeSymbolInfo("processx_base64_encode", lib)
   sym_decode <- getNativeSymbolInfo("processx_base64_decode", lib)
@@ -35,7 +31,7 @@ load_client_lib <- function(sofile = NULL) {
   sym_seterrf <- getNativeSymbolInfo("processx_set_stderr_to_file", lib)
 
   env <- new.env(parent = emptyenv())
-  env$.path <- tmpsofile
+  env$.path <- sofile
 
   mycall <- .Call
 
