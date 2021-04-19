@@ -46,7 +46,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
   } else if (error %in% c("stack", "debugger")) {
     substitute(
       {
-        assign(".Traceback", .traceback(4, 10), envir = baseenv())
+        callr_data <- as.environment("tools:callr")$`__callr_data__`
+        assign(".Traceback", .traceback(4, 10), envir = callr_data)
         dump.frames("__dump__")         # nocov start
         saveRDS(
           list(`__type__`, e, .GlobalEnv$`__dump__`),
