@@ -22,7 +22,7 @@
 
 r_vanilla <- function(func, args = list(), libpath = character(),
                       repos = c(CRAN = "@CRAN@"), cmdargs = "--slave",
-                      system_profile = FALSE, user_profile = "project",
+                      system_profile = FALSE, user_profile = FALSE,
                       env = character(), ...) {
 
   r(func, args = args, libpath = libpath, repos = repos,

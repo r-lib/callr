@@ -11,7 +11,7 @@ r_vanilla(
   repos = c(CRAN = "@CRAN@"),
   cmdargs = "--slave",
   system_profile = FALSE,
-  user_profile = "project",
+  user_profile = FALSE,
   env = character(),
   ...
 )
