@@ -10,8 +10,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       callr_data <- as.environment("tools:callr")$`__callr_data__`
       err <- callr_data$err
 
-      # TODO: get rid of magic number 9
-      capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+      assign(".Traceback", .traceback(4, 10), envir = baseenv())
 
       dump.frames("__callr_dump__")
       assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
@@ -21,6 +20,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       # methods that refer to $error, but in the subprocess callr is not
       # loaded, maybe, and these methods are not defined. So we do add
       # the message and call of the original error
+      e$call <- deparse(conditionCall(e), nlines = 6)
       e2 <- err$new_error(conditionMessage(e), call. = conditionCall(e))
       class(e2) <- c("callr_remote_error", class(e2))
       e2$error <- e
@@ -37,8 +37,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       if (!is.na(dcframe)) e2$`_ignore` <- list(c(1, dcframe + 1L))
       e2$`_pid` <- Sys.getpid()
       e2$`_timestamp` <- Sys.time()
-      if (inherits(e, "rlib_error")) e2$parent <- e$parent
-      e2 <- err$add_trace_back(e2)
+      if (inherits(e, "rlib_error_2_0")) e2$parent <- e$parent
+      e2 <- err$add_trace_back(e2, embed = FALSE)
       saveRDS(list("error", e2), file = paste0(`__res__`, ".error")) },
       list(`__res__` = res)
     )
@@ -46,7 +46,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
   } else if (error %in% c("stack", "debugger")) {
     substitute(
       {
-        capture.output(assign(".Traceback", traceback(9), envir = baseenv()))
+        assign(".Traceback", .traceback(4, 10), envir = baseenv())
         dump.frames("__dump__")         # nocov start
         saveRDS(
           list(`__type__`, e, .GlobalEnv$`__dump__`),

@@ -1,5 +1,7 @@
 # callr (development version)
 
+* Reporting errors is much faster now (#185).
+
 # callr 3.6.0
 
 * callr now supports starting an R process with a different architecture,

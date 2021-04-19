@@ -90,9 +90,17 @@
 #
 # * Use cli instead of crayon
 #
-# ### 1.2.4 -- 2012-04-01
+# ### 1.2.4 -- 2021-04-01
 #
 # * Allow omitting the call with call. = FALSE in `new_cond()`, etc.
+#
+# ### 1.3.0 -- 2021-04-19
+#
+# * Avoid embedding calls in trace with embed = FALSE.
+#
+# ### 2.0.0 -- 2021-04-19
+#
+# * Versioned classes and print methods
 
 err <- local({
 
@@ -130,7 +138,7 @@ err <- local({
 
   new_error <- function(..., call. = TRUE, domain = NULL) {
     cond <- new_cond(..., call. = call., domain = domain)
-    class(cond) <- c("rlib_error", "error", "condition")
+    class(cond) <- c("rlib_error_2_0", "rlib_error", "error", "condition")
     cond
   }
 
@@ -376,7 +384,7 @@ err <- local({
         e$`_nframe` <- nframe
         e$call <- call
         if (inherits(e, "simpleError")) {
-          class(e) <- c("c_error", "rlib_error", "error", "condition")
+          class(e) <- c("c_error", "rlib_error_2_0", "rlib_error", "error", "condition")
         }
         e$`_ignore` <- list(c(nframe + 1L, sys.nframe() + 1L))
         throw(e)
@@ -407,7 +415,7 @@ err <- local({
         e$`_nframe` <- nframe
         e$call <- call
         if (inherits(e, "simpleError")) {
-          class(e) <- c("c_error", "rlib_error", "error", "condition")
+          class(e) <- c("c_error", "rlib_error_2_0", "rlib_error", "error", "condition")
         }
         e$`_ignore` <- list(c(nframe + 1L, sys.nframe() + 1L))
         throw(e)
@@ -423,10 +431,14 @@ err <- local({
   #' so there is currently not much use to call it directly.
   #'
   #' @param cond Condition to add the trace to
+  #' @param embed Whether to embed calls into the condition.
   #'
   #' @return A condition object, with the trace added.
 
-  add_trace_back <- function(cond) {
+  add_trace_back <- function(
+      cond,
+      embed = getOption("rlib_error_embed_calls", FALSE)) {
+
     idx <- seq_len(sys.parent(1L))
     frames <- sys.frames()[idx]
 
@@ -442,11 +454,13 @@ err <- local({
     classes <- class(cond)
     pids <- rep(cond$`_pid` %||% Sys.getpid(), length(calls))
 
+    if (!embed) calls <- as.list(format_calls(calls, topenvs, nframes))
+
     if (is.null(cond$parent)) {
       # Nothing to do, no parent
 
     } else if (is.null(cond$parent$trace) ||
-               !inherits(cond$parent, "rlib_error")) {
+               !inherits(cond$parent, "rlib_error_2_0")) {
       # If the parent does not have a trace, that means that it is using
       # the same trace as us. We ignore traces from non-r-lib errors.
       # E.g. rlang errors have a trace, but we do not use that.
@@ -490,7 +504,7 @@ err <- local({
       list(calls = calls, parents = parents, envs = envs, topenvs = topenvs,
            indices = indices, nframes = nframes, messages = messages,
            ignore = ignore, classes = classes, pids = pids),
-      class = "rlib_trace")
+      class = c("rlib_trace_2_0", "rlib_trace"))
   }
 
   env_label <- function(env) {
@@ -556,19 +570,27 @@ err <- local({
     invisible(x)
   }
 
-  print_rlib_error <- function(x, ...) {
+  print_rlib_error_2_0 <- function(x, ...) {
     print_this(x, ...)
     print_parents(x, ...)
   }
 
-  print_rlib_trace <- function(x, ...) {
+  format_calls <- function(calls, topenv, nframes, messages = NULL) {
+    calls <- map2(calls, topenv, namespace_calls)
+    callstr <- vapply(calls, format_call_src, character(1))
+    if (!is.null(messages)) {
+      callstr[nframes] <-
+        paste0(callstr[nframes], "\n", style_error_msg(messages), "\n")
+    }
+    callstr
+  }
+
+  print_rlib_trace_2_0 <- function(x, ...) {
     cl <- paste0(" Stack trace:")
     cat(sep = "", "\n", style_trace_title(cl), "\n\n")
-    calls <- map2(x$calls, x$topenv, namespace_calls)
-    callstr <- vapply(calls, format_call_src, character(1))
-    callstr[x$nframes] <-
-      paste0(callstr[x$nframes], "\n", style_error_msg(x$messages), "\n")
-    callstr <- enumerate(callstr)
+    callstr <- enumerate(
+      format_calls(x$calls, x$topenv, x$nframes, x$messages)
+    )
 
     # Ignore what we were told to ignore
     ign <- integer()
@@ -634,8 +656,8 @@ err <- local({
   onload_hook <- function() {
     reg_env <- Sys.getenv("R_LIB_ERROR_REGISTER_PRINT_METHODS", "TRUE")
     if (tolower(reg_env) != "false") {
-      registerS3method("print", "rlib_error", print_rlib_error, baseenv())
-      registerS3method("print", "rlib_trace", print_rlib_trace, baseenv())
+      registerS3method("print", "rlib_error_2_0", print_rlib_error_2_0, baseenv())
+      registerS3method("print", "rlib_trace_2_0", print_rlib_trace_2_0, baseenv())
     }
   }
 

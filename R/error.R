@@ -33,6 +33,6 @@ new_callr_error <- function(out, msg = NULL) {
 #' @export
 
 print.callr_error <- function(x, ...) {
-  err$.internal$print_rlib_error(x)
+  err$.internal$print_rlib_error_2_0(x)
   invisible(x)
 }
