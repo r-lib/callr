@@ -270,9 +270,7 @@ test_that("traceback", {
 
   expect_error(rs$run(do), "oops")
   expect_output(tb <- rs$traceback(), "1: \"?f()\"?")
-  if (getRversion() >= "3.3.0" && getRversion() <= "4.0.0") {
-    expect_match(c(tb[[4]]), "f()", fixed = TRUE)
-  }
+  expect_match(c(tb[[3]]), "f()", fixed = TRUE)
 })
 
 test_that("error in the load hook", {

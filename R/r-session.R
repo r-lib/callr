@@ -540,7 +540,7 @@ rs_poll_process <- function(self, private, timeout) {
 rs_traceback <- function(self, private) {
   ## TODO: get rid of magic number 12
   traceback(utils::head(self$run(function() {
-    traceback(as.environment("tools:callr")$`__callr_data__`$.Traceback)
+    traceback(as.environment("tools:callr")$`__callr_data__`$.Traceback, 10)
   }), -12))
 }
 

@@ -10,7 +10,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       callr_data <- as.environment("tools:callr")$`__callr_data__`
       err <- callr_data$err
 
-      assign(".Traceback", .traceback(4, 10), envir = callr_data)
+      assign(".Traceback", .traceback(4), envir = callr_data)
 
       dump.frames("__callr_dump__")
       assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
@@ -47,7 +47,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
     substitute(
       {
         callr_data <- as.environment("tools:callr")$`__callr_data__`
-        assign(".Traceback", .traceback(4, 10), envir = callr_data)
+        assign(".Traceback", .traceback(4), envir = callr_data)
         dump.frames("__dump__")         # nocov start
         saveRDS(
           list(`__type__`, e, .GlobalEnv$`__dump__`),
