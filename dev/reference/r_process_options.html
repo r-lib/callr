@@ -203,11 +203,11 @@ specified, this is the R function to run in the background.</p>
 #&gt; $load_hook
 #&gt;  [1] "{\n"                                                                                  
 #&gt;  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  
-#&gt;  [3] "    env &lt;- readRDS(\"/tmp/RtmpLonLog/callr-env-2d11f1ef649\")\n"                      
+#&gt;  [3] "    env &lt;- readRDS(\"/tmp/Rtmp0zcfc1/callr-env-2e2d5beb7e41\")\n"                     
 #&gt;  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
 #&gt;  [5] "    data &lt;- env$`__callr_data__`\n"                                                   
 #&gt;  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             
-#&gt;  [7] "        .Platform$r_arch)]])\n"                                                       
+#&gt;  [7] "        .Platform$r_arch)]], data$pxdir)\n"                                           
 #&gt;  [8] "    options(error = function() invokeRestart(\"abort\"))\n"                           
 #&gt;  [9] "    rm(list = c(\"data\", \"env\"))\n"                                                
 #&gt; [10] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"
