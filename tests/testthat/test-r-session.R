@@ -285,7 +285,7 @@ test_that("error in the load hook", {
 
   processx::poll(list(rs2$get_poll_connection()), 3000)
   msg <- rs2$read()
-  expect_equal(msg$code, 501L)
+  expect_true(msg$code %in% c(501L, 502L))
   expect_match(msg$stderr, "oops")
 })
 
