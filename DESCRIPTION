@@ -28,7 +28,6 @@ Suggests:
     rprojroot,
     spelling,
     testthat,
-    tibble,
     withr (>= 2.3.0)
 Encoding: UTF-8
 Language: en-US
