@@ -45,11 +45,11 @@ setup_context <- function(options) {
   within(options, {
     ## profiles
     profiles <- make_profiles(system_profile, user_profile, repos, libpath,
-                             load_hook)
+                             load_hook, env)
     tmp_files <- c(tmp_files, profiles)
 
     ## environment files
-    envs <- make_environ(profiles, libpath)
+    envs <- make_environ(profiles, libpath, env)
     tmp_files <- c(tmp_files, envs)
 
     ## environment variables
@@ -58,10 +58,12 @@ setup_context <- function(options) {
     ## and sub-subprocesses are not affected by our workarounds
     save_env <- c("R_ENVIRON", "R_ENVIRON_USER", "R_PROFILE",
                   "R_PROFILE_USER", "R_LIBS", "R_LIBS_USER", "R_LIBS_SITE")
-    save_set <- save_env %in% names(Sys.getenv())
+    keep_set <- save_env %in% names(env)
+    save_set <- !keep_set & save_env %in% names(Sys.getenv())
     save_nms <- paste0("CALLR_", save_env, "_BAK")
+    env[save_nms[keep_set]] <- env[save_env[keep_set]]
     env[save_nms[save_set]] <- Sys.getenv(save_env[save_set])
-    env <- env[setdiff(names(env), save_nms[!save_set])]
+    env <- env[setdiff(names(env), save_nms[!keep_set & !save_set])]
 
     if (is.na(env["R_ENVIRON"])) env["R_ENVIRON"] <- envs[[1]]
     if (is.na(env["R_ENVIRON_USER"])) env["R_ENVIRON_USER"] <- envs[[2]]
@@ -74,7 +76,7 @@ setup_context <- function(options) {
   })
 }
 
-make_profiles <- function(system, user, repos, libpath, load_hook) {
+make_profiles <- function(system, user, repos, libpath, load_hook, env) {
 
   profile_system <- tempfile("callr-spr-")
   profile_user <- tempfile("callr-upr-")
@@ -85,8 +87,13 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
 
   ## Add profiles
   if (system) {
-    sys <- Sys.getenv("R_PROFILE",
-                      file.path(R.home("etc"), "Rprofile.site"))
+    sys <- env["R_PROFILE"]
+    if (is.na(sys)) {
+      sys <- Sys.getenv(
+        "R_PROFILE",
+        file.path(R.home("etc"), "Rprofile.site")
+      )
+    }
     sys <- path.expand(sys)
     if (file.exists(sys)) file.append(profile_system, sys)
   }
@@ -95,7 +102,8 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
     local <- ".Rprofile"
     if (file.exists(local)) user <- local else user <- NA_character_
   } else if (user) {
-    user <- Sys.getenv("R_PROFILE_USER", NA_character_)
+    user <- env["R_PROFILE_USER"]
+    if (is.na(user)) user <- Sys.getenv("R_PROFILE_USER", NA_character_)
     local <- ".Rprofile"
     home  <- path.expand("~/.Rprofile")
     if (is.na(user) && file.exists(local)) user <- local
@@ -135,7 +143,7 @@ make_profiles <- function(system, user, repos, libpath, load_hook) {
   c(profile_system, profile_user)
 }
 
-make_environ <- function(profiles, libpath) {
+make_environ <- function(profiles, libpath, env) {
 
   env_sys <- tempfile("callr-sev-")
   env_user <- tempfile("callr-uev-")
@@ -147,11 +155,13 @@ make_environ <- function(profiles, libpath) {
         file = ef, append = TRUE)
   }
 
-  sys <- Sys.getenv("R_ENVIRON", NA_character_)
+  sys <- env["R_ENVIRON"]
+  if (is.na(sys)) sys <- Sys.getenv("R_ENVIRON", NA_character_)
   if (is.na(sys)) sys <- file.path(R.home("etc"), "Renviron.site")
   if (!is.na(sys) && file.exists(sys)) file.append(env_sys, sys)
 
-  user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
+  user <- env["R_ENVIRON_USER"]
+  if (is.na(user)) user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
   local <- ".Renviron"
   home <- "~/.Renviron"
   if (is.na(user) && file.exists(local)) user <- local

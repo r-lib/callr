@@ -205,3 +205,35 @@ test_that("libpath in system, if subprocess changes R_LIBS #2", {
   ## Close FDs
   gc()
 })
+
+test_that("setting profile/environ variables in 'env'", {
+  # See https://github.com/r-lib/callr/issues/193
+
+  skip_in_covr()
+
+  profile <- tempfile()
+  on.exit(unlink(profile), add = TRUE)
+  cat("foo <- '11'\n", file = profile)
+
+  envfile <- tempfile()
+  on.exit(unlink(envfile), add = TRUE)
+  cat("MY_ENV2=MILES2\n", file = envfile)
+
+  ret <- callr::r(
+    function() {
+      c(Sys.getenv("MY_ENV"),
+        Sys.getenv("R_PROFILE_USER"),
+        exists("foo"),
+        Sys.getenv("MY_ENV2")
+        )
+    },
+    user_profile = TRUE,
+    env = c(
+      "R_PROFILE_USER" = profile,
+      "R_ENVIRON_USER" = envfile,
+      "MY_ENV" = "MILES"
+    )
+  )
+
+  expect_equal(ret, c("MILES", profile, "TRUE", "MILES2"))
+})
