@@ -4,6 +4,9 @@
 
 * The `user_profile` option of `r_vanilla()` defaults to `FALSE` now (#194).
 
+* It is now possible to set R environment variables (`R_ENVIRON_USER`,
+  `R_PROFILE_USER`, etc.) via the `env` argument (#193).
+
 # callr 3.6.0
 
 * callr now supports starting an R process with a different architecture,
