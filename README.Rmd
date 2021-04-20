@@ -15,15 +15,6 @@ output:
 knitr::opts_chunk$set(comment = "#>")
 ```
 
-```{r, comment="", results="asis", echo = FALSE}
-if (knitr::opts_knit$get("rmarkdown.pandoc.to") == "html") {
-  old.hooks <- fansi::set_knit_hooks(knitr::knit_hooks)
-  options(crayon.enabled = TRUE)
-  options(crayon.colors = 256)
-  invisible(crayon::num_colors(forget = TRUE))
-}
-```
-
 ## Features
 
 * Calls an R function, with arguments, in a subprocess.

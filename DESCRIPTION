@@ -23,7 +23,6 @@ Imports:
 Suggests:
     cli,
     covr,
-    fansi,
     pingr,
     ps,
     rprojroot,
