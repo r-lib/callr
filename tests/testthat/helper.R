@@ -97,16 +97,6 @@ test_paths <- function(callr_drop, callr_keep,
   check_env(out$env)
 }
 
-skip_if_offline <- function(host = "httpbin.org", port = 80) {
-
-  res <- tryCatch(
-    pingr::ping_port(host, count = 1L, port = port),
-    error = function(e) NA
-  )
-
-  if (is.na(res)) skip("No internet connection")
-}
-
 test_temp_file <- function(fileext = "", pattern = "test-file-",
                            envir = parent.frame(), create = TRUE) {
   tmp <- tempfile(pattern = pattern, fileext = fileext)
