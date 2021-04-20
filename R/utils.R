@@ -119,8 +119,9 @@ is_complete_expression <- function(x) {
 
 bold <- function(x) {
   tryCatch(
-    get("bold", asNamespace("crayon"))(x),
-    error = function(e) x)
+    cli::style_bold(x),
+    error = function(e) x
+  )
 }
 
 update_history <- function(cmd) {

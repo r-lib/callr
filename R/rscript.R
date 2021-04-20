@@ -42,7 +42,7 @@ rscript_load_hook_color <- function(color) {
   if (!color) return("")
 
   nc <- tryCatch(
-    get("num_colors", asNamespace("crayon"))(),
+    cli::num_ansi_colors(),
     error = function(e) 1L
   )
   if (nc == 1) return("")

@@ -23,7 +23,6 @@ Imports:
 Suggests:
     cli,
     covr,
-    crayon,
     fansi,
     pingr,
     ps,
