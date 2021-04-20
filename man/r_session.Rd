@@ -10,6 +10,20 @@ that extends the \link[processx:process]{processx::process} class.
 The process is started at the creation of the object, and then it can
 be used to evaluate R function calls, one at a time.
 }
+\examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+rs <- r_ression$new()
+
+rs$run(function() 1 + 2)
+
+rs$call(function() Sys.sleep(1))
+rs$get_state()
+
+rs$poll_process(-1)
+rs$get_state()
+rs$read()
+\dontshow{\}) # examplesIf}
+}
 \section{Super class}{
 \code{\link[processx:process]{processx::process}} -> \code{r_session}
 }

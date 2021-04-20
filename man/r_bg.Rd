@@ -129,3 +129,13 @@ subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.
 }
 
+\examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+rx <- r_bg(function() 1 + 2)
+
+# wait until it is done
+rx$wait()
+rx$is_alive()
+rx$get_result()
+\dontshow{\}) # examplesIf}
+}

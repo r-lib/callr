@@ -7,6 +7,14 @@
 An \verb{Rscript script.R} command that runs in the background. This is an
 R6 class that extends the \link[processx:process]{processx::process} class.
 }
+\examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+options <- rscript_process_options(script = "script.R")
+rp <- rscript_process$new(options)
+rp$wait()
+rp$read_output_lines()
+\dontshow{\}) # examplesIf}
+}
 \section{Super class}{
 \code{\link[processx:process]{processx::process}} -> \code{rscript_process}
 }

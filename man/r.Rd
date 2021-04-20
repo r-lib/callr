@@ -217,6 +217,16 @@ subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.
 }
 
+\examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# Workspace is empty
+r(function() ls())
+
+# library path is the same by default
+r(function() .libPaths())
+.libPaths()
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 Other callr functions: 
 \code{\link{r_copycat}()},

@@ -8,6 +8,18 @@ An R process that runs in the background. This is an R6 class that
 extends the \link[processx:process]{processx::process} class. The process starts in the
 background, evaluates an R function call, and then quits.
 }
+\examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+## List all options and their default values:
+r_process_options()
+
+## Start an R process in the background, wait for it, get result
+opts <- r_process_options(func = function() 1 + 1)
+rp <- r_process$new(opts)
+rp$wait()
+rp$get_result()
+\dontshow{\}) # examplesIf}
+}
 \section{Super class}{
 \code{\link[processx:process]{processx::process}} -> \code{r_process}
 }
