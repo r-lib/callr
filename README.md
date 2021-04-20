@@ -120,7 +120,7 @@ child, and calculates some metrics of it.
 r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-    #> [1] 11
+    #> [1] 14
 
 ### Error handling
 
@@ -144,7 +144,7 @@ both from the main R process and the subprocess.
     #> -->
     #> <callr_remote_error in 1 + "A":
     #>  non-numeric argument to binary operator>
-    #>  in process 32169
+    #>  in process 32341
 
 The error objects has two parts. The first belongs to the main process,
 and the second belongs to the subprocess.
@@ -159,20 +159,17 @@ process and the subprocess:
     #> 
     #>  Stack trace:
     #> 
-    #>  Process 31908:
-    #>  38. callr:::r(function() 1 + "A")
-    #>  39. callr:::get_result(output = out, options)
-    #>     R/eval.R:149:3
-    #>  40. callr:::throw(new_callr_error(output, msg), parent = err[[2]])
-    #>     R/result.R:73:5
+    #>  Process 32229:
+    #>  36. callr:::r(function() 1 + "A")
+    #>  37. callr:::get_result(output = out, options)
+    #>  38. throw(newerr, parent = remerr[[2]])
     #> 
     #>  x callr subprocess failed: non-numeric argument to binary operator 
     #> 
-    #>  Process 32006:
-    #>  52. (function ()  ...
-    #>  53. base:::.handleSimpleError(function (e)  ...
-    #>     R/<text>:1:3
-    #>  54. h(simpleError(msg, call))
+    #>  Process 32341:
+    #>  50. (function ()  ...
+    #>  51. base:::.handleSimpleError(function (e)  ...
+    #>  52. h(simpleError(msg, call))
     #> 
     #>  x non-numeric argument to binary operator
 
@@ -218,7 +215,7 @@ rp <- r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-    #> PROCESS 'R', running, pid 32028.
+    #> PROCESS 'R', running, pid 32379.
 
 This is a list of all `r_process` methods:
 
@@ -226,32 +223,23 @@ This is a list of all `r_process` methods:
 ls(rp)
 ```
 
-    #>  [1] "as_ps_handle"          "clone"                
-    #>  [3] "finalize"              "format"               
-    #>  [5] "get_cmdline"           "get_cpu_times"        
-    #>  [7] "get_error_connection"  "get_error_file"       
-    #>  [9] "get_exe"               "get_exit_status"      
-    #> [11] "get_input_connection"  "get_input_file"       
-    #> [13] "get_memory_info"       "get_name"             
-    #> [15] "get_output_connection" "get_output_file"      
-    #> [17] "get_pid"               "get_poll_connection"  
-    #> [19] "get_result"            "get_start_time"       
-    #> [21] "get_status"            "get_username"         
-    #> [23] "get_wd"                "has_error_connection" 
-    #> [25] "has_input_connection"  "has_output_connection"
-    #> [27] "has_poll_connection"   "initialize"           
-    #> [29] "interrupt"             "is_alive"             
-    #> [31] "is_incomplete_error"   "is_incomplete_output" 
-    #> [33] "is_supervised"         "kill"                 
-    #> [35] "kill_tree"             "poll_io"              
-    #> [37] "print"                 "read_all_error"       
-    #> [39] "read_all_error_lines"  "read_all_output"      
-    #> [41] "read_all_output_lines" "read_error"           
-    #> [43] "read_error_lines"      "read_output"          
-    #> [45] "read_output_lines"     "resume"               
-    #> [47] "signal"                "supervise"            
-    #> [49] "suspend"               "wait"                 
-    #> [51] "write_input"
+    #>  [1] "as_ps_handle"          "clone"                 "finalize"             
+    #>  [4] "format"                "get_cmdline"           "get_cpu_times"        
+    #>  [7] "get_error_connection"  "get_error_file"        "get_exe"              
+    #> [10] "get_exit_status"       "get_input_connection"  "get_input_file"       
+    #> [13] "get_memory_info"       "get_name"              "get_output_connection"
+    #> [16] "get_output_file"       "get_pid"               "get_poll_connection"  
+    #> [19] "get_result"            "get_start_time"        "get_status"           
+    #> [22] "get_username"          "get_wd"                "has_error_connection" 
+    #> [25] "has_input_connection"  "has_output_connection" "has_poll_connection"  
+    #> [28] "initialize"            "interrupt"             "is_alive"             
+    #> [31] "is_incomplete_error"   "is_incomplete_output"  "is_supervised"        
+    #> [34] "kill"                  "kill_tree"             "poll_io"              
+    #> [37] "print"                 "read_all_error"        "read_all_error_lines" 
+    #> [40] "read_all_output"       "read_all_output_lines" "read_error"           
+    #> [43] "read_error_lines"      "read_output"           "read_output_lines"    
+    #> [46] "resume"                "signal"                "supervise"            
+    #> [49] "suspend"               "wait"                  "write_input"
 
 These include all methods of the `processx::process` superclass and the
 new `get_result()` method, to retrieve the R object returned by the
@@ -260,7 +248,8 @@ function call. Some of the handiest methods are:
 -   `get_exit_status()` to query the exit status of a finished process.
 -   `get_result()` to collect the return value of the R function call.
 -   `interrupt()` to send an interrupt to the process. This is
-    equivalent to a `CTRL+C` key press, and the R process might ignore it.
+    equivalent to a `CTRL+C` key press, and the R process might ignore
+    it.
 -   `is_alive()` to check if the process is alive.
 -   `kill()` to terminate the process.
 -   `poll_io()` to wait for any standard output, standard error, or the
@@ -323,7 +312,7 @@ rs <- r_session$new()
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 32095.
+    #> R SESSION, alive, idle, pid 32412.
 
 `r_session$run()` is a synchronous call, that works similarly to `r()`,
 but uses the persistent session. `r_session$call()` starts the function
@@ -340,15 +329,15 @@ method can read out the result.
 rs$run(function() runif(10))
 ```
 
-    #>  [1] 0.7896924 0.1770236 0.9931798 0.2850374 0.8582676 0.4489599 0.1556783
-    #>  [8] 0.4240582 0.4260408 0.5561292
+    #>  [1] 0.75342837 0.12946532 0.98800304 0.09682751 0.23944882 0.99726443
+    #>  [7] 0.91098802 0.61136112 0.51781725 0.53566166
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-    #> R SESSION, alive, busy, pid 32095.
+    #> R SESSION, alive, busy, pid 32412.
 
 ``` r
 rs$poll_process(2000)
@@ -364,11 +353,11 @@ rs$read()
     #> [1] 200
     #> 
     #> $message
-    #> [1] "done file7ca436de78be"
+    #> [1] "done callr-rs-result-7de57e80bd54"
     #> 
     #> $result
-    #>  [1] -1.0339966 -0.7015408  1.2220644 -0.9691123 -0.6991386  1.2698753
-    #>  [7]  0.2595250  1.0871667  0.5148076  0.4015015
+    #>  [1]  0.73848421 -0.07600563 -1.18598532  0.10692265 -0.11717386 -0.24769265
+    #>  [7] -0.13800969 -0.97854700 -0.30949881 -1.57689514
     #> 
     #> $stdout
     #> [1] ""
@@ -396,7 +385,7 @@ rcmd("config", "CC")
     #> [1] 0
     #> 
     #> $stdout
-    #> [1] "clang\n"
+    #> [1] "clang -mmacosx-version-min=10.13\n"
     #> 
     #> $stderr
     #> [1] ""
@@ -405,9 +394,9 @@ rcmd("config", "CC")
     #> [1] FALSE
     #> 
     #> $command
-    #> [1] "/Library/Frameworks/R.framework/Resources/bin/R"
-    #> [2] "CMD"                                            
-    #> [3] "config"                                         
+    #> [1] "/Library/Frameworks/R.framework/Versions/4.0/Resources/bin/R"
+    #> [2] "CMD"                                                         
+    #> [3] "config"                                                      
     #> [4] "CC"
 
 ``` r

@@ -9,6 +9,9 @@ output:
   html_document:
     toc: true
     toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r, setup, include = FALSE}
@@ -17,31 +20,28 @@ knitr::opts_chunk$set(comment = "#>")
 
 ## Features
 
-* Calls an R function, with arguments, in a subprocess.
-* Copies function arguments to the subprocess and copies the return value
-  of the function back, seamlessly.
-* Copies error objects back from the subprocess, including a stack trace.
-* Shows and/or collects the standard output and standard error of the
-  subprocess.
-* Supports both one-off and persistent R subprocesses.
-* Calls the function synchronously or asynchronously (in the background).
-* Can call `R CMD` commands, synchronously or asynchronously.
-* Can call R scripts, synchronously or asynchronously.
-* Provides extensible `r_process`, `rcmd_process` and `rscript_process`
-  R6 classes, based on `processx::process`.
+-   Calls an R function, with arguments, in a subprocess.
+-   Copies function arguments to the subprocess and copies the return value of the function back, seamlessly.
+-   Copies error objects back from the subprocess, including a stack trace.
+-   Shows and/or collects the standard output and standard error of the subprocess.
+-   Supports both one-off and persistent R subprocesses.
+-   Calls the function synchronously or asynchronously (in the background).
+-   Can call `R CMD` commands, synchronously or asynchronously.
+-   Can call R scripts, synchronously or asynchronously.
+-   Provides extensible `r_process`, `rcmd_process` and `rscript_process` R6 classes, based on `processx::process`.
 
 ## Installation
 
 Install the stable version from CRAN:
 
-```r
+``` {.r}
 install.packages("callr")
 ```
 
 ## Synchronous, one-off R processes
 
-Use `r()` to run an R function in a new R process. The results are
-passed back seamlessly:
+Use `r()` to run an R function in a new R process.
+The results are passed back seamlessly:
 
 ```{r}
 library(callr)
@@ -50,11 +50,9 @@ r(function() var(iris[, 1:4]))
 
 ### Passing arguments
 
-You can pass arguments to the function by setting `args` to the list of
-arguments. This is often necessary as these arguments are explicitly
-copied to the child process, whereas the evaluated function cannot
-refer to variables in the parent. For example, the following does
-not work:
+You can pass arguments to the function by setting `args` to the list of arguments.
+This is often necessary as these arguments are explicitly copied to the child process, whereas the evaluated function cannot refer to variables in the parent.
+For example, the following does not work:
 
 ```{r, error = TRUE}
 mycars <- cars
@@ -67,16 +65,12 @@ But this does:
 r(function(x) summary(x), args = list(mycars))
 ```
 
-Note that the arguments will be serialized and saved to a file,
-so if they are large R objects, it might take a long time for the
-child process to start up.
+Note that the arguments will be serialized and saved to a file, so if they are large R objects, it might take a long time for the child process to start up.
 
 ### Using packages
 
-You can use any R package in the child process, just make sure to
-refer to it explicitly with the `::` operator. For example, the following
-code creates an [igraph](https://github.com/igraph/rigraph) graph
-in the child, and calculates some metrics of it.
+You can use any R package in the child process, just make sure to refer to it explicitly with the `::` operator.
+For example, the following code creates an [igraph](https://github.com/igraph/rigraph) graph in the child, and calculates some metrics of it.
 
 ```{r}
 r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
@@ -94,19 +88,16 @@ options(rlib_error_always_trace = TRUE)
 r(function() 1 + "A")
 ```
 
-callr sets the `.Last.error` variable, and after an error you can inspect
-this for more details about the error, including stack traces both from the
-main R process and the subprocess.
+callr sets the `.Last.error` variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.
 
 ```{r}
 .Last.error
 ```
 
-The error objects has two parts. The first belongs to the main process,
-and the second belongs to the subprocess.
+The error objects has two parts.
+The first belongs to the main process, and the second belongs to the subprocess.
 
-`.Last.error` also includes a stack trace, that includes both the main
-R process and the subprocess:
+`.Last.error` also includes a stack trace, that includes both the main R process and the subprocess:
 
 ```{r include = FALSE}
 # Remove most of the artificial knitr frames from the trace
@@ -114,9 +105,9 @@ local({
   tr <- .Last.error.trace
   rcall <- which(vapply(
     tr$calls,
-    function(x) length(x) >= 1 && identical(x[[1]], quote(r)),
+    function(x) grepl("^callr:::?r", x),
     logical(1)))
-  tr$ignore <- c(tr$ignore, list(c(1L, rcall - 1L)))
+  if (rcall > 1) tr$ignore <- c(tr$ignore, list(c(1L, rcall - 1L)))
   print(rcall)
   env <- as.environment("org:r-lib")
   assign(".Last.error.trace", tr, envir = env)
@@ -131,15 +122,11 @@ local({
 options(rlib_error_always_trace = FALSE)
 ```
 
-The top part of the trace contains the frames in the main process, and the
-bottom part contains the frames in the subprocess, starting with the
-anonymous function.
+The top part of the trace contains the frames in the main process, and the bottom part contains the frames in the subprocess, starting with the anonymous function.
 
 ### Standard output and error
 
-By default, the standard output and error of the child is lost,
-but you can request callr to redirect them to files, and then
-inspect the files in the parent:
+By default, the standard output and error of the child is lost, but you can request callr to redirect them to files, and then inspect the files in the parent:
 
 ```{r}
 x <- r(function() { print("hello world!"); message("hello again!") },
@@ -149,10 +136,8 @@ readLines("/tmp/out")
 readLines("/tmp/err")
 ```
 
-With the `stdout` option, the standard output is collected and can
-be examined once the child process finished. The `show = TRUE` options
-will also show the output of the child, as it is printed, on the console
-of the parent.
+With the `stdout` option, the standard output is collected and can be examined once the child process finished.
+The `show = TRUE` options will also show the output of the child, as it is printed, on the console of the parent.
 
 ## Background R processes
 
@@ -170,29 +155,24 @@ This is a list of all `r_process` methods:
 ls(rp)
 ```
 
-These include all methods of the `processx::process` superclass and the
-new `get_result()` method, to retrieve the R object returned by the
-function call. Some of the handiest methods are:
+These include all methods of the `processx::process` superclass and the new `get_result()` method, to retrieve the R object returned by the function call.
+Some of the handiest methods are:
 
-* `get_exit_status()` to query the exit status of a finished process.
-* `get_result()` to collect the return value of the R function call.
-* `interrupt()` to send an interrupt to the process. This is equivalent
-  to a `CTRL+C` key press, and the R process might ignore it.
-* `is_alive()` to check if the process is alive.
-* `kill()` to terminate the process.
-* `poll_io()` to wait for any standard output, standard error, or the
-  completion of the process, with a timeout.
-* `read_*()` to read the standard output or error.
-* `suspend()` and `resume()` to stop and continue a process.
-* `wait()` to wait for the completion of the process, with a timeout.
+-   `get_exit_status()` to query the exit status of a finished process.
+-   `get_result()` to collect the return value of the R function call.
+-   `interrupt()` to send an interrupt to the process. This is equivalent to a `CTRL+C` key press, and the R process might ignore it.
+-   `is_alive()` to check if the process is alive.
+-   `kill()` to terminate the process.
+-   `poll_io()` to wait for any standard output, standard error, or the completion of the process, with a timeout.
+-   `read_*()` to read the standard output or error.
+-   `suspend()` and `resume()` to stop and continue a process.
+-   `wait()` to wait for the completion of the process, with a timeout.
 
 ## Multiple background R processes and `poll()`
 
-Multiple background R processes are best managed with the
-`processx::poll()` function that waits for events (standard output/error or
-termination) from multiple processes. It returns as soon as one process
-has generated an event, or if its timeout has expired. The timeout is in
-milliseconds.
+Multiple background R processes are best managed with the `processx::poll()` function that waits for events (standard output/error or termination) from multiple processes.
+It returns as soon as one process has generated an event, or if its timeout has expired.
+The timeout is in milliseconds.
 
 ```{r}
 rp1 <- r_bg(function() { Sys.sleep(1/2); "1 done" })
@@ -205,24 +185,18 @@ rp1$get_result()
 
 ## Persistent R sessions
 
-`r_session` is another `processx::process` subclass that represents a
-persistent background R session:
+`r_session` is another `processx::process` subclass that represents a persistent background R session:
 
 ```{r}
 rs <- r_session$new()
 rs
 ```
 
-`r_session$run()` is a synchronous call, that works similarly to `r()`,
-but uses the persistent session. `r_session$call()` starts the function
-call and returns immediately. The `r_session$poll_process()` method or
-`processx::poll()` can then be used to wait for the completion or other
-events from one or more R sessions, R processes or other
-`processx::process` objects.
+`r_session$run()` is a synchronous call, that works similarly to `r()`, but uses the persistent session.
+`r_session$call()` starts the function call and returns immediately.
+The `r_session$poll_process()` method or `processx::poll()` can then be used to wait for the completion or other events from one or more R sessions, R processes or other `processx::process` objects.
 
-Once an R session is done with an asynchronous computation, its
-`poll_process()` method returns `"ready"` and the `r_session$read()`
-method can read out the result.
+Once an R session is done with an asynchronous computation, its `poll_process()` method returns `"ready"` and the `r_session$read()` method can read out the result.
 
 ```{r}
 rs$run(function() runif(10))
@@ -234,8 +208,8 @@ rs$read()
 
 ## Running `R CMD` commands
 
-The `rcmd()` function calls an `R CMD` command. For example, you can
-call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
+The `rcmd()` function calls an `R CMD` command.
+For example, you can call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
 
 ```{r}
 rcmd("config", "CC")
@@ -250,8 +224,7 @@ rcmd("config", "CC")
 #>[1] 0
 ```
 
-This returns a list with three components: the standard output, the standard
-error, and the exit (status) code of the `R CMD` command.
+This returns a list with three components: the standard output, the standard error, and the exit (status) code of the `R CMD` command.
 
 ## License
 
