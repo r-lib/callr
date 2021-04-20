@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.7.0</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@
 <p>You can use any R package in the child process, just make sure to refer to it explicitly with the <code><a href="https://rdrr.io/r/base/ns-dblcolon.html">::</a></code> operator. For example, the following code creates an <a href="https://github.com/igraph/rigraph">igraph</a> graph in the child, and calculates some metrics of it.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu">sample_gnp</span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">4</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="fu">igraph</span><span class="fu">::</span><span class="fu">diameter</span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#&gt; [1] 11</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">#&gt; [1] 14</span></span></code></pre></div>
 </div>
 <div id="error-handling" class="section level3">
 <h3 class="hasAnchor">
@@ -190,7 +190,7 @@
 <span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt; --&gt;</span></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; &lt;callr_remote_error in 1 + "A":</span></span>
 <span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt;  non-numeric argument to binary operator&gt;</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt;  in process 32169</span></span></code></pre></div>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt;  in process 32341</span></span></code></pre></div>
 <p>The error objects has two parts. The first belongs to the main process, and the second belongs to the subprocess.</p>
 <p><code>.Last.error</code> also includes a stack trace, that includes both the main R process and the subprocess:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -198,22 +198,19 @@
 <div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">#&gt; </span></span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;  Stack trace:</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt; </span></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt;  Process 31908:</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt;  38. callr:::r(function() 1 + "A")</span></span>
-<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt;  39. callr:::get_result(output = out, options)</span></span>
-<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt;     R/eval.R:149:3</span></span>
-<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt;  40. callr:::throw(new_callr_error(output, msg), parent = err[[2]])</span></span>
-<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;     R/result.R:73:5</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt;  Process 32229:</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt;  36. callr:::r(function() 1 + "A")</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt;  37. callr:::get_result(output = out, options)</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt;  38. throw(newerr, parent = remerr[[2]])</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt; </span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;  x callr subprocess failed: non-numeric argument to binary operator </span></span>
 <span id="cb15-10"><a href="#cb15-10"></a><span class="co">#&gt; </span></span>
-<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt;  x callr subprocess failed: non-numeric argument to binary operator </span></span>
-<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt; </span></span>
-<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt;  Process 32006:</span></span>
-<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt;  52. (function ()  ...</span></span>
-<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt;  53. base:::.handleSimpleError(function (e)  ...</span></span>
-<span id="cb15-16"><a href="#cb15-16"></a><span class="co">#&gt;     R/&lt;text&gt;:1:3</span></span>
-<span id="cb15-17"><a href="#cb15-17"></a><span class="co">#&gt;  54. h(simpleError(msg, call))</span></span>
-<span id="cb15-18"><a href="#cb15-18"></a><span class="co">#&gt; </span></span>
-<span id="cb15-19"><a href="#cb15-19"></a><span class="co">#&gt;  x non-numeric argument to binary operator</span></span></code></pre></div>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt;  Process 32341:</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt;  50. (function ()  ...</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt;  51. base:::.handleSimpleError(function (e)  ...</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt;  52. h(simpleError(msg, call))</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt; </span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="co">#&gt;  x non-numeric argument to binary operator</span></span></code></pre></div>
 <p>The top part of the trace contains the frames in the main process, and the bottom part contains the frames in the subprocess, starting with the anonymous function.</p>
 </div>
 <div id="standard-output-and-error" class="section level3">
@@ -239,36 +236,27 @@
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span><span class="op">(</span><span class="fl">.2</span><span class="op">)</span><span class="op">)</span>
 <span class="va">rp</span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#&gt; PROCESS 'R', running, pid 32028.</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#&gt; PROCESS 'R', running, pid 32379.</span></span></code></pre></div>
 <p>This is a list of all <code>r_process</code> methods:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#&gt;  [1] "as_ps_handle"          "clone"                </span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="co">#&gt;  [3] "finalize"              "format"               </span></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="co">#&gt;  [5] "get_cmdline"           "get_cpu_times"        </span></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="co">#&gt;  [7] "get_error_connection"  "get_error_file"       </span></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="co">#&gt;  [9] "get_exe"               "get_exit_status"      </span></span>
-<span id="cb23-6"><a href="#cb23-6"></a><span class="co">#&gt; [11] "get_input_connection"  "get_input_file"       </span></span>
-<span id="cb23-7"><a href="#cb23-7"></a><span class="co">#&gt; [13] "get_memory_info"       "get_name"             </span></span>
-<span id="cb23-8"><a href="#cb23-8"></a><span class="co">#&gt; [15] "get_output_connection" "get_output_file"      </span></span>
-<span id="cb23-9"><a href="#cb23-9"></a><span class="co">#&gt; [17] "get_pid"               "get_poll_connection"  </span></span>
-<span id="cb23-10"><a href="#cb23-10"></a><span class="co">#&gt; [19] "get_result"            "get_start_time"       </span></span>
-<span id="cb23-11"><a href="#cb23-11"></a><span class="co">#&gt; [21] "get_status"            "get_username"         </span></span>
-<span id="cb23-12"><a href="#cb23-12"></a><span class="co">#&gt; [23] "get_wd"                "has_error_connection" </span></span>
-<span id="cb23-13"><a href="#cb23-13"></a><span class="co">#&gt; [25] "has_input_connection"  "has_output_connection"</span></span>
-<span id="cb23-14"><a href="#cb23-14"></a><span class="co">#&gt; [27] "has_poll_connection"   "initialize"           </span></span>
-<span id="cb23-15"><a href="#cb23-15"></a><span class="co">#&gt; [29] "interrupt"             "is_alive"             </span></span>
-<span id="cb23-16"><a href="#cb23-16"></a><span class="co">#&gt; [31] "is_incomplete_error"   "is_incomplete_output" </span></span>
-<span id="cb23-17"><a href="#cb23-17"></a><span class="co">#&gt; [33] "is_supervised"         "kill"                 </span></span>
-<span id="cb23-18"><a href="#cb23-18"></a><span class="co">#&gt; [35] "kill_tree"             "poll_io"              </span></span>
-<span id="cb23-19"><a href="#cb23-19"></a><span class="co">#&gt; [37] "print"                 "read_all_error"       </span></span>
-<span id="cb23-20"><a href="#cb23-20"></a><span class="co">#&gt; [39] "read_all_error_lines"  "read_all_output"      </span></span>
-<span id="cb23-21"><a href="#cb23-21"></a><span class="co">#&gt; [41] "read_all_output_lines" "read_error"           </span></span>
-<span id="cb23-22"><a href="#cb23-22"></a><span class="co">#&gt; [43] "read_error_lines"      "read_output"          </span></span>
-<span id="cb23-23"><a href="#cb23-23"></a><span class="co">#&gt; [45] "read_output_lines"     "resume"               </span></span>
-<span id="cb23-24"><a href="#cb23-24"></a><span class="co">#&gt; [47] "signal"                "supervise"            </span></span>
-<span id="cb23-25"><a href="#cb23-25"></a><span class="co">#&gt; [49] "suspend"               "wait"                 </span></span>
-<span id="cb23-26"><a href="#cb23-26"></a><span class="co">#&gt; [51] "write_input"</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">#&gt;  [1] "as_ps_handle"          "clone"                 "finalize"             </span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="co">#&gt;  [4] "format"                "get_cmdline"           "get_cpu_times"        </span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="co">#&gt;  [7] "get_error_connection"  "get_error_file"        "get_exe"              </span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="co">#&gt; [10] "get_exit_status"       "get_input_connection"  "get_input_file"       </span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="co">#&gt; [13] "get_memory_info"       "get_name"              "get_output_connection"</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="co">#&gt; [16] "get_output_file"       "get_pid"               "get_poll_connection"  </span></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="co">#&gt; [19] "get_result"            "get_start_time"        "get_status"           </span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="co">#&gt; [22] "get_username"          "get_wd"                "has_error_connection" </span></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="co">#&gt; [25] "has_input_connection"  "has_output_connection" "has_poll_connection"  </span></span>
+<span id="cb23-10"><a href="#cb23-10"></a><span class="co">#&gt; [28] "initialize"            "interrupt"             "is_alive"             </span></span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="co">#&gt; [31] "is_incomplete_error"   "is_incomplete_output"  "is_supervised"        </span></span>
+<span id="cb23-12"><a href="#cb23-12"></a><span class="co">#&gt; [34] "kill"                  "kill_tree"             "poll_io"              </span></span>
+<span id="cb23-13"><a href="#cb23-13"></a><span class="co">#&gt; [37] "print"                 "read_all_error"        "read_all_error_lines" </span></span>
+<span id="cb23-14"><a href="#cb23-14"></a><span class="co">#&gt; [40] "read_all_output"       "read_all_output_lines" "read_error"           </span></span>
+<span id="cb23-15"><a href="#cb23-15"></a><span class="co">#&gt; [43] "read_error_lines"      "read_output"           "read_output_lines"    </span></span>
+<span id="cb23-16"><a href="#cb23-16"></a><span class="co">#&gt; [46] "resume"                "signal"                "supervise"            </span></span>
+<span id="cb23-17"><a href="#cb23-17"></a><span class="co">#&gt; [49] "suspend"               "wait"                  "write_input"</span></span></code></pre></div>
 <p>These include all methods of the <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> superclass and the new <code><a href="reference/get_result.html">get_result()</a></code> method, to retrieve the R object returned by the function call. Some of the handiest methods are:</p>
 <ul>
 <li>
@@ -326,17 +314,17 @@
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
 <span class="va">rs</span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#&gt; R SESSION, alive, idle, pid 32095.</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">#&gt; R SESSION, alive, idle, pid 32412.</span></span></code></pre></div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html">processx::process</a></code> objects.</p>
 <p>Once an R session is done with an asynchronous computation, its <code>poll_process()</code> method returns <code>"ready"</code> and the <code>r_session$read()</code> method can read out the result.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">#&gt;  [1] 0.7896924 0.1770236 0.9931798 0.2850374 0.8582676 0.4489599 0.1556783</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="co">#&gt;  [8] 0.4240582 0.4260408 0.5561292</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">#&gt;  [1] 0.75342837 0.12946532 0.98800304 0.09682751 0.23944882 0.99726443</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="co">#&gt;  [7] 0.91098802 0.61136112 0.51781725 0.53566166</span></span></code></pre></div>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 <span class="va">rs</span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#&gt; R SESSION, alive, busy, pid 32095.</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">#&gt; R SESSION, alive, busy, pid 32412.</span></span></code></pre></div>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">#&gt; [1] "ready"</span></span></code></pre></div>
@@ -346,11 +334,11 @@
 <span id="cb41-2"><a href="#cb41-2"></a><span class="co">#&gt; [1] 200</span></span>
 <span id="cb41-3"><a href="#cb41-3"></a><span class="co">#&gt; </span></span>
 <span id="cb41-4"><a href="#cb41-4"></a><span class="co">#&gt; $message</span></span>
-<span id="cb41-5"><a href="#cb41-5"></a><span class="co">#&gt; [1] "done file7ca436de78be"</span></span>
+<span id="cb41-5"><a href="#cb41-5"></a><span class="co">#&gt; [1] "done callr-rs-result-7de57e80bd54"</span></span>
 <span id="cb41-6"><a href="#cb41-6"></a><span class="co">#&gt; </span></span>
 <span id="cb41-7"><a href="#cb41-7"></a><span class="co">#&gt; $result</span></span>
-<span id="cb41-8"><a href="#cb41-8"></a><span class="co">#&gt;  [1] -1.0339966 -0.7015408  1.2220644 -0.9691123 -0.6991386  1.2698753</span></span>
-<span id="cb41-9"><a href="#cb41-9"></a><span class="co">#&gt;  [7]  0.2595250  1.0871667  0.5148076  0.4015015</span></span>
+<span id="cb41-8"><a href="#cb41-8"></a><span class="co">#&gt;  [1]  0.73848421 -0.07600563 -1.18598532  0.10692265 -0.11717386 -0.24769265</span></span>
+<span id="cb41-9"><a href="#cb41-9"></a><span class="co">#&gt;  [7] -0.13800969 -0.97854700 -0.30949881 -1.57689514</span></span>
 <span id="cb41-10"><a href="#cb41-10"></a><span class="co">#&gt; </span></span>
 <span id="cb41-11"><a href="#cb41-11"></a><span class="co">#&gt; $stdout</span></span>
 <span id="cb41-12"><a href="#cb41-12"></a><span class="co">#&gt; [1] ""</span></span>
@@ -374,7 +362,7 @@
 <span id="cb43-2"><a href="#cb43-2"></a><span class="co">#&gt; [1] 0</span></span>
 <span id="cb43-3"><a href="#cb43-3"></a><span class="co">#&gt; </span></span>
 <span id="cb43-4"><a href="#cb43-4"></a><span class="co">#&gt; $stdout</span></span>
-<span id="cb43-5"><a href="#cb43-5"></a><span class="co">#&gt; [1] "clang\n"</span></span>
+<span id="cb43-5"><a href="#cb43-5"></a><span class="co">#&gt; [1] "clang -mmacosx-version-min=10.13\n"</span></span>
 <span id="cb43-6"><a href="#cb43-6"></a><span class="co">#&gt; </span></span>
 <span id="cb43-7"><a href="#cb43-7"></a><span class="co">#&gt; $stderr</span></span>
 <span id="cb43-8"><a href="#cb43-8"></a><span class="co">#&gt; [1] ""</span></span>
@@ -383,9 +371,9 @@
 <span id="cb43-11"><a href="#cb43-11"></a><span class="co">#&gt; [1] FALSE</span></span>
 <span id="cb43-12"><a href="#cb43-12"></a><span class="co">#&gt; </span></span>
 <span id="cb43-13"><a href="#cb43-13"></a><span class="co">#&gt; $command</span></span>
-<span id="cb43-14"><a href="#cb43-14"></a><span class="co">#&gt; [1] "/Library/Frameworks/R.framework/Resources/bin/R"</span></span>
-<span id="cb43-15"><a href="#cb43-15"></a><span class="co">#&gt; [2] "CMD"                                            </span></span>
-<span id="cb43-16"><a href="#cb43-16"></a><span class="co">#&gt; [3] "config"                                         </span></span>
+<span id="cb43-14"><a href="#cb43-14"></a><span class="co">#&gt; [1] "/Library/Frameworks/R.framework/Versions/4.0/Resources/bin/R"</span></span>
+<span id="cb43-15"><a href="#cb43-15"></a><span class="co">#&gt; [2] "CMD"                                                         </span></span>
+<span id="cb43-16"><a href="#cb43-16"></a><span class="co">#&gt; [3] "config"                                                      </span></span>
 <span id="cb43-17"><a href="#cb43-17"></a><span class="co">#&gt; [4] "CC"</span></span></code></pre></div>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#&gt;$stdout</span>

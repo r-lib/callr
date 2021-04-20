@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">callr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.7.0</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ specified, this is the R function to run in the background.</p>
 #&gt; list()
 #&gt; 
 #&gt; $libpath
-#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.4/lib/R/library"     
+#&gt; [1] "/home/runner/work/_temp/Library" "/opt/R/4.0.5/lib/R/library"     
 #&gt; 
 #&gt; $repos
 #&gt;                                                              RSPM 
@@ -203,11 +203,11 @@ specified, this is the R function to run in the background.</p>
 #&gt; $load_hook
 #&gt;  [1] "{\n"                                                                                  
 #&gt;  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  
-#&gt;  [3] "    env &lt;- readRDS(\"/tmp/RtmpvqUpl7/callr-env-36616e391160\")\n"                     
+#&gt;  [3] "    env &lt;- readRDS(\"/tmp/RtmpT26Aod/callr-env-2d92556c912c\")\n"                     
 #&gt;  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
 #&gt;  [5] "    data &lt;- env$`__callr_data__`\n"                                                   
 #&gt;  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             
-#&gt;  [7] "        .Platform$r_arch)]])\n"                                                       
+#&gt;  [7] "        .Platform$r_arch)]], data$pxdir)\n"                                           
 #&gt;  [8] "    options(error = function() invokeRestart(\"abort\"))\n"                           
 #&gt;  [9] "    rm(list = c(\"data\", \"env\"))\n"                                                
 #&gt; [10] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"
