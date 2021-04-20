@@ -462,6 +462,20 @@ object, to clean up temporary files.</p><h4 class='hasAnchor' id='arguments'><a 
 
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>rs</span> <span class='op'>&lt;-</span> <span class='va'>r_ression</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>run</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>2</span><span class='op'>)</span>
+
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>call</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.sleep.html'>Sys.sleep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>get_state</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>poll_process</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>get_state</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>read</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

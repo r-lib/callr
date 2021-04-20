@@ -251,6 +251,18 @@ handle is garbage collected.</p><h4 class='hasAnchor' id='arguments'><a class='a
 
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'>## List all options and their default values:</span>
+<span class='fu'><a href='r_process_options.html'>r_process_options</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'>## Start an R process in the background, wait for it, get result</span>
+<span class='va'>opts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='r_process_options.html'>r_process_options</a></span><span class='op'>(</span>func <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>rp</span> <span class='op'>&lt;-</span> <span class='va'>r_process</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>opts</span><span class='op'>)</span>
+<span class='va'>rp</span><span class='op'>$</span><span class='fu'>wait</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>rp</span><span class='op'>$</span><span class='fu'>get_result</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
