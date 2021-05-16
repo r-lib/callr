@@ -73,6 +73,8 @@ setup_context <- function(options) {
     if (is.na(env["R_LIBS"])) env["R_LIBS"] <- make_path(libpath)
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- make_path(libpath)
     if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- make_path(.Library.site)
+
+    env["CALLR_IS_RUNNING"] <- "true"
   })
 
   call_user_hooks(options)
