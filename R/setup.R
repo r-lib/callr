@@ -42,7 +42,7 @@ setup_context <- function(options) {
 
   make_path <- function(x) paste(x, collapse = .Platform$path.sep)
 
-  within(options, {
+  options <- within(options, {
     ## profiles
     profiles <- make_profiles(system_profile, user_profile, repos, libpath,
                              load_hook, env)
@@ -74,6 +74,8 @@ setup_context <- function(options) {
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- make_path(libpath)
     if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- make_path(.Library.site)
   })
+
+  call_user_hooks(options)
 }
 
 make_profiles <- function(system, user, repos, libpath, load_hook, env) {

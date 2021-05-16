@@ -59,6 +59,7 @@ reference:
   contents:
   - default_repos
   - supported_archs
+  - add_hook
 
 - title: Re-exported functions
   contents:
