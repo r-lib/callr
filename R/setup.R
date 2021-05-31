@@ -95,7 +95,10 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
       )
     }
     sys <- path.expand(sys)
-    if (file.exists(sys)) file.append(profile_system, sys)
+    if (file.exists(sys)) {
+      file.append(profile_system, sys)
+      cat("\n", file = profile_system, append = TRUE)
+    }
   }
 
   if (identical(user, "project")) {
@@ -158,7 +161,10 @@ make_environ <- function(profiles, libpath, env) {
   sys <- env["R_ENVIRON"]
   if (is.na(sys)) sys <- Sys.getenv("R_ENVIRON", NA_character_)
   if (is.na(sys)) sys <- file.path(R.home("etc"), "Renviron.site")
-  if (!is.na(sys) && file.exists(sys)) file.append(env_sys, sys)
+  if (!is.na(sys) && file.exists(sys)) {
+    file.append(env_sys, sys)
+    cat("\n", file = env_sys, append = TRUE)
+  }
 
   user <- env["R_ENVIRON_USER"]
   if (is.na(user)) user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
@@ -166,7 +172,10 @@ make_environ <- function(profiles, libpath, env) {
   home <- "~/.Renviron"
   if (is.na(user) && file.exists(local)) user <- local
   if (is.na(user) && file.exists(home)) user <- home
-  if (!is.na(user) && file.exists(user)) file.append(env_user, user)
+  if (!is.na(user) && file.exists(user)) {
+    file.append(env_user, user)
+    cat("\n", file = env_user, append = TRUE)
+  }
 
   for (ef in c(env_sys, env_user)) {
     cat("R_PROFILE=\"", profiles[[1]], "\"\n", file = ef,
