@@ -1,7 +1,9 @@
 
 # callr development version
 
-* When copying existing startup files, an additional newline is appended to protect against a missing newline at EOF (#205).
+* When copying existing startup files, an additional newline is appended to
+  protect against a missing newline at the end of the file. This would
+  cause R ignore that line (#205).
 
 # callr 3.7.0
 
