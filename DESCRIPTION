@@ -21,7 +21,7 @@ Imports:
     R6,
     utils
 Suggests:
-    cli,
+    cli (>= 1.1.0),
     covr,
     ps,
     rprojroot,
