@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://callr.r-lib.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://callr.r-lib.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://callr.r-lib.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://callr.r-lib.org/news/index.html</loc>
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/callr.html</loc>
@@ -14,6 +23,9 @@
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/get_result.html</loc>
+  </url>
+  <url>
+    <loc>https://callr.r-lib.org/reference/index.html</loc>
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/new_callr_error.html</loc>
