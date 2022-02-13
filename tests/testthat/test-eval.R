@@ -264,7 +264,7 @@ test_that("local .Rprofile is not loaded recursively", {
     aa <- 123
   })
   cat(deparse(expr), file = ".Rprofile", sep = "\n")
-  out <- callr::r(function () aa)
+  out <- callr::r(function() aa)
   expect_equal(out, 123)
 })
 
