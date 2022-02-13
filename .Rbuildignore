@@ -19,3 +19,4 @@
 ^\.Rprofile$
 ^\.github$
 ^dev-lib$
+^codecov\.yml$
