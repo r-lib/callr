@@ -842,8 +842,10 @@ rs__handle_condition <- function(cond) {
   }
   withRestarts({
     signalCondition(cond)
-    default_handler(cond)
-  }, callr_r_session_muffle = function() NULL)
+    default_handler(cond) },
+    callr_r_session_muffle = function() NULL,
+    muffleMessage = function() NULL
+  )
 
   invisible()
 }
