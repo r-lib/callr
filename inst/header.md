@@ -10,7 +10,7 @@
 [![R build status](https://github.com/r-lib/callr/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/callr/actions)
 [![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/callr/master.svg)](https://codecov.io/github/r-lib/callr?branch=master)
+[![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/callr/main.svg)](https://codecov.io/github/r-lib/callr?branch=main)
 <!-- badges: end -->
 
 It is sometimes useful to perform a computation in a separate R process,
