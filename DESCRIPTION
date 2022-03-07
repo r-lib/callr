@@ -30,3 +30,4 @@ Suggests:
     withr (>= 2.3.0)
 Encoding: UTF-8
 Language: en-US
+Config/Needs/website: tidyverse/tidytemplate
