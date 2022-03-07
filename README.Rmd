@@ -9,8 +9,8 @@ output:
   html_document:
     toc: true
     toc_depth: 3
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: sentence
 ---
 
@@ -225,6 +225,12 @@ rcmd("config", "CC")
 ```
 
 This returns a list with three components: the standard output, the standard error, and the exit (status) code of the `R CMD` command.
+
+## Code of Conduct
+
+Please note that the callr project is released with a
+[Contributor Code of Conduct](https://callr.r-lib.org/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
 
 ## License
 
