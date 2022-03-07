@@ -1,6 +1,4 @@
 
-context("utils")
-
 test_that("is_complete_expression", {
   do_tests <- function() {
     expect_true(is_complete_expression(""))

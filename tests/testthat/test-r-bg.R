@@ -1,6 +1,4 @@
 
-context("r_bg")
-
 test_that("r_bg runs", {
   x <- r_bg(function() 1 + 1)
   x$wait()

@@ -1,6 +1,4 @@
 
-context("rcmd_process")
-
 test_that("create and run rcmd_process", {
   opts <- rcmd_process_options(cmd = "config", cmdargs = "CC")
   x <- rcmd_process$new(opts)

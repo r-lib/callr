@@ -1,6 +1,4 @@
 
-context("messages")
-
 test_that("messages in callr::r do not crash session", {
   ret <- r(function() { cli::cli_text("fooobar"); 1 + 1 })
   expect_identical(ret, 2)

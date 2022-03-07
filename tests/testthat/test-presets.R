@@ -1,6 +1,4 @@
 
-context("presets")
-
 test_that("r", {
 
   withr::with_options(

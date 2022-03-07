@@ -1,6 +1,4 @@
 
-context("calling quit()")
-
 test_that("quit() in the function", {
   x <- r(function() quit())
   expect_null(x)

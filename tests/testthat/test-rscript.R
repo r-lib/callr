@@ -1,6 +1,4 @@
 
-context("rscript")
-
 test_that("rscript", {
   out <- rscript("fixtures/script.R", show = FALSE)
   expect_equal(out$status, 0L)

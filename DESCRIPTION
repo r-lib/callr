@@ -24,9 +24,10 @@ Suggests:
     ps,
     rprojroot,
     spelling,
-    testthat,
+    testthat (>= 3.0.0),
     withr (>= 2.3.0)
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+Config/testthat/edition: 3

@@ -1,6 +1,4 @@
 
-context("errors")
-
 test_that("error is propagated", {
   expect_error(
     r(function() 1 + "A", error = "error"),
