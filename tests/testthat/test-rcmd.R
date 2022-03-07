@@ -1,6 +1,4 @@
 
-context("rcmd")
-
 test_that("rcmd works", {
   expect_equal(rcmd("config", "CC")$status, 0)
   expect_match(rcmd("config", "CC")$stdout, ".")

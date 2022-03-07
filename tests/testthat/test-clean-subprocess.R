@@ -1,6 +1,4 @@
 
-context("clean-subprocess")
-
 test_that("r() does not load anything", {
   skip_in_covr()
   pkgs <- withr::with_envvar(

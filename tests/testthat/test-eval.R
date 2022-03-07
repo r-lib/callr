@@ -1,6 +1,4 @@
 
-context("r")
-
 test_that("basic r", {
   expect_equal(r(function() 1 + 1), 2)
   expect_equal(r(function(x) 1 + x, list(5)), 6)

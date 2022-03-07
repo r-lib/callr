@@ -1,6 +1,4 @@
 
-context("r_session messages")
-
 test_that("callr_message, then error", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)

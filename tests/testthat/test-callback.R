@@ -1,6 +1,4 @@
 
-context("callbacks")
-
 test_that("show option works", {
 
   expect_output(

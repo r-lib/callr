@@ -7,11 +7,12 @@
 
 <!-- badges: start -->
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R build status](https://github.com/r-lib/callr/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/callr/actions)
+[![R-CMD-check](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml)
 [![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/callr/main.svg)](https://codecov.io/github/r-lib/callr?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/callr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/callr?branch=main)
 <!-- badges: end -->
+
 
 It is sometimes useful to perform a computation in a separate R process,
 without affecting the current R process at all. This packages does exactly

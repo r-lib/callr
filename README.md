@@ -7,11 +7,12 @@
 
 <!-- badges: start -->
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R build status](https://github.com/r-lib/callr/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/callr/actions)
+[![R-CMD-check](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml)
 [![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
 [![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/callr/main.svg)](https://codecov.io/github/r-lib/callr?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/callr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/callr?branch=main)
 <!-- badges: end -->
+
 
 It is sometimes useful to perform a computation in a separate R process,
 without affecting the current R process at all. This packages does exactly
@@ -31,10 +32,10 @@ that.
     `poll()`](#multiple-background-r-processes-and-poll)
 -   [Persistent R sessions](#persistent-r-sessions)
 -   [Running `R CMD` commands](#running-r-cmd-commands)
+-   [Code of Conduct](#code-of-conduct)
 -   [License](#license)
 
-Features
---------
+## Features
 
 -   Calls an R function, with arguments, in a subprocess.
 -   Copies function arguments to the subprocess and copies the return
@@ -51,8 +52,7 @@ Features
 -   Provides extensible `r_process`, `rcmd_process` and
     `rscript_process` R6 classes, based on `processx::process`.
 
-Installation
-------------
+## Installation
 
 Install the stable version from CRAN:
 
@@ -60,8 +60,7 @@ Install the stable version from CRAN:
 install.packages("callr")
 ```
 
-Synchronous, one-off R processes
---------------------------------
+## Synchronous, one-off R processes
 
 Use `r()` to run an R function in a new R process. The results are
 passed back seamlessly:
@@ -120,7 +119,7 @@ child, and calculates some metrics of it.
 r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-    #> [1] 14
+    #> [1] 12
 
 ### Error handling
 
@@ -144,7 +143,7 @@ both from the main R process and the subprocess.
     #> -->
     #> <callr_remote_error in 1 + "A":
     #>  non-numeric argument to binary operator>
-    #>  in process 32341
+    #>  in process 29974
 
 The error objects has two parts. The first belongs to the main process,
 and the second belongs to the subprocess.
@@ -159,17 +158,17 @@ process and the subprocess:
     #> 
     #>  Stack trace:
     #> 
-    #>  Process 32229:
-    #>  36. callr:::r(function() 1 + "A")
-    #>  37. callr:::get_result(output = out, options)
-    #>  38. throw(newerr, parent = remerr[[2]])
+    #>  Process 29917:
+    #>  26. callr:::r(function() 1 + "A")
+    #>  27. callr:::get_result(output = out, options)
+    #>  28. throw(newerr, parent = remerr[[2]])
     #> 
     #>  x callr subprocess failed: non-numeric argument to binary operator 
     #> 
-    #>  Process 32341:
-    #>  50. (function ()  ...
-    #>  51. base:::.handleSimpleError(function (e)  ...
-    #>  52. h(simpleError(msg, call))
+    #>  Process 29974:
+    #>  40. (function ()  ...
+    #>  41. base:::.handleSimpleError(function (e)  ...
+    #>  42. h(simpleError(msg, call))
     #> 
     #>  x non-numeric argument to binary operator
 
@@ -203,8 +202,7 @@ examined once the child process finished. The `show = TRUE` options will
 also show the output of the child, as it is printed, on the console of
 the parent.
 
-Background R processes
-----------------------
+## Background R processes
 
 `r_bg()` is similar to `r()` but it starts the R process in the
 background. It returns an `r_process` R6 object, that provides a rich
@@ -215,7 +213,7 @@ rp <- r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-    #> PROCESS 'R', running, pid 32379.
+    #> PROCESS 'R', running, pid 29996.
 
 This is a list of all `r_process` methods:
 
@@ -258,8 +256,7 @@ function call. Some of the handiest methods are:
 -   `suspend()` and `resume()` to stop and continue a process.
 -   `wait()` to wait for the completion of the process, with a timeout.
 
-Multiple background R processes and `poll()`
---------------------------------------------
+## Multiple background R processes and `poll()`
 
 Multiple background R processes are best managed with the
 `processx::poll()` function that waits for events (standard output/error
@@ -278,8 +275,8 @@ processx::poll(list(rp1, rp2), 1000)
     #> "silent" "silent" "silent" 
     #> 
     #> [[2]]
-    #>   output    error  process 
-    #> "silent" "silent"  "ready"
+    #>  output   error process 
+    #> "ready" "ready" "ready"
 
 ``` r
 rp2$get_result()
@@ -292,8 +289,8 @@ processx::poll(list(rp1), 1000)
 ```
 
     #> [[1]]
-    #>   output    error  process 
-    #> "silent" "silent"  "ready"
+    #>  output   error process 
+    #> "ready" "ready" "ready"
 
 ``` r
 rp1$get_result()
@@ -301,8 +298,7 @@ rp1$get_result()
 
     #> [1] "1 done"
 
-Persistent R sessions
----------------------
+## Persistent R sessions
 
 `r_session` is another `processx::process` subclass that represents a
 persistent background R session:
@@ -312,7 +308,7 @@ rs <- r_session$new()
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 32412.
+    #> R SESSION, alive, idle, pid 30029.
 
 `r_session$run()` is a synchronous call, that works similarly to `r()`,
 but uses the persistent session. `r_session$call()` starts the function
@@ -329,15 +325,15 @@ method can read out the result.
 rs$run(function() runif(10))
 ```
 
-    #>  [1] 0.75342837 0.12946532 0.98800304 0.09682751 0.23944882 0.99726443
-    #>  [7] 0.91098802 0.61136112 0.51781725 0.53566166
+    #>  [1] 0.14802338 0.76888048 0.31340572 0.42640940 0.43011468 0.98472154
+    #>  [7] 0.94890236 0.08238474 0.66078638 0.50972457
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-    #> R SESSION, alive, busy, pid 32412.
+    #> R SESSION, alive, busy, pid 30029.
 
 ``` r
 rs$poll_process(2000)
@@ -353,11 +349,11 @@ rs$read()
     #> [1] 200
     #> 
     #> $message
-    #> [1] "done callr-rs-result-7de57e80bd54"
+    #> [1] "done callr-rs-result-74dd1ed4711b"
     #> 
     #> $result
-    #>  [1]  0.73848421 -0.07600563 -1.18598532  0.10692265 -0.11717386 -0.24769265
-    #>  [7] -0.13800969 -0.97854700 -0.30949881 -1.57689514
+    #>  [1]  0.2118055  0.2506984  0.8489311 -0.5064482  0.3520195  1.9273044
+    #>  [7] -1.6030457  0.1218903 -1.4990057 -0.3748555
     #> 
     #> $stdout
     #> [1] ""
@@ -371,8 +367,7 @@ rs$read()
     #> attr(,"class")
     #> [1] "callr_session_result"
 
-Running `R CMD` commands
-------------------------
+## Running `R CMD` commands
 
 The `rcmd()` function calls an `R CMD` command. For example, you can
 call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
@@ -385,7 +380,7 @@ rcmd("config", "CC")
     #> [1] 0
     #> 
     #> $stdout
-    #> [1] "clang -mmacosx-version-min=10.13\n"
+    #> [1] "clang -arch arm64\n"
     #> 
     #> $stderr
     #> [1] ""
@@ -394,9 +389,9 @@ rcmd("config", "CC")
     #> [1] FALSE
     #> 
     #> $command
-    #> [1] "/Library/Frameworks/R.framework/Versions/4.0/Resources/bin/R"
-    #> [2] "CMD"                                                         
-    #> [3] "config"                                                      
+    #> [1] "/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/bin/R"
+    #> [2] "CMD"                                                               
+    #> [3] "config"                                                            
     #> [4] "CC"
 
 ``` r
@@ -413,7 +408,12 @@ rcmd("config", "CC")
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
 
-License
--------
+## Code of Conduct
+
+Please note that the callr project is released with a [Contributor Code
+of Conduct](https://callr.r-lib.org/CODE_OF_CONDUCT.html). By
+contributing to this project, you agree to abide by its terms.
+
+## License
 
 MIT © Mango Solutions, RStudio

@@ -1,6 +1,4 @@
 
-context("r_session")
-
 test_that("regular use", {
   rs <- r_session$new()
   on.exit(rs$kill())
