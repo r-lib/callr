@@ -14,6 +14,7 @@ Description: It is sometimes useful to perform a computation in a separate
 License: MIT + file LICENSE
 URL: https://callr.r-lib.org, https://github.com/r-lib/callr#readme
 BugReports: https://github.com/r-lib/callr/issues
+Depends: R (>= 3.4)
 Imports:
     processx (>= 3.5.0),
     R6,
