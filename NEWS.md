@@ -5,6 +5,10 @@
   protect against a missing newline at the end of the file. This would
   cause R ignore that line (#205).
 
+* Serialization of objects passed between sessions now uses `compress=FALSE`
+  by default. The default can be changed by setting the 
+  `callr.compress_transport` option (#223, @dfalbel).
+
 # callr 3.7.0
 
 * Reporting errors is much faster now (#185).
