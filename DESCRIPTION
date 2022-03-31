@@ -16,7 +16,7 @@ URL: https://callr.r-lib.org, https://github.com/r-lib/callr#readme
 BugReports: https://github.com/r-lib/callr/issues
 Depends: R (>= 3.4)
 Imports:
-    processx (>= 3.5.0),
+    processx (>= 3.5.3),
     R6,
     utils
 Suggests:
