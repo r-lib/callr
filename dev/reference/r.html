@@ -286,6 +286,21 @@ subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.</p>
     </div>
     <div class="section level2">
+    <h2 id="transporting-objects">Transporting objects<a class="anchor" aria-label="anchor" href="#transporting-objects"></a></h2>
+    
+
+
+<p><code>func</code> and <code>args</code> are copied to the child process by first serializing them
+into a temporary file using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> and then loading them back into the
+child session using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code>. The same strategy is used to copy the result
+of calling <code>func(args)</code> to the main session. Note that some objects, notably
+those with <code>externalptr</code> type, won't work as expected after being
+saved to a file and loaded back.</p>
+<p>For performance reasons <code>compress=FALSE</code> is used when serializing with
+<code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>, this can be disabled by setting
+<code>options(callr.compress_transport = TRUE)</code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other callr functions: 
 <code><a href="r_copycat.html">r_copycat</a>()</code>,
