@@ -14,7 +14,9 @@ save_function_to_temp <- function(options) {
   options$func <- transport_fun(options$func, options$package)
   # Once we start saving the function environments, we might get
   # "'package:x' may not be available when loading" warnings
-  suppressWarnings(saveRDS(list(options$func, options$args), file = tmp))
+  suppressWarnings(saveRDS(
+    list(options$func, options$args), file = tmp,
+    compress = getOption("callr.compress_transport", FALSE)))
   tmp
 }
 

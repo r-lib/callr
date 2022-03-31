@@ -108,7 +108,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
                 envir = .GlobalEnv,
                 quote = TRUE
               ),
-              file = `__res__`
+              file = `__res__`,
+              compress = `__compress__`
             )
             flush(stdout())
             flush(stderr())
@@ -133,7 +134,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res,
          `__pre_hook__` = pre_hook, `__post_hook__` = post_hook,
-         `__message__` = message())
+         `__message__` = message(),
+         `__compress__` = getOption("callr.compress_transport", FALSE))
   )
 }
 
