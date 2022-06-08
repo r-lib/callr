@@ -23,7 +23,9 @@ To exit the debugger, press the usual interrupt key, i.e. \code{CTRL+c} or
 \code{ESC} in some GUIs.
 
 Here is an example session that uses \verb{$debug()} (some output is omitted
-for brevity):\preformatted{# ----------------------------------------------------------------------
+for brevity):
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# ----------------------------------------------------------------------
 > rs <- r_session$new()
 > rs$run(function() knitr::knit("no-such-file"))
 Error in rs_run(self, private, func, args) :
@@ -56,5 +58,5 @@ RS 87361 (frame 1) > file.exists(input)
 
 RS 87361 (frame 1) > # <CTRL + C>
 # ----------------------------------------------------------------------
-}
+}\if{html}{\out{</div>}}
 }

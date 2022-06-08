@@ -32,12 +32,16 @@ is set to \code{.GlobalEnv} before passing it to the child process.
 (See the \code{package} option if you want to keep the environment.)
 Because of this, it is good practice to create an anonymous
 function and pass that to \code{callr}, instead of passing
-a function object from a (base or other) package. In particular\preformatted{r(.libPaths)
-}
+a function object from a (base or other) package. In particular
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{r(.libPaths)
+}\if{html}{\out{</div>}}
 
 does not work, because \code{.libPaths} is defined in a special
-environment, but\preformatted{r(function() .libPaths())
-}
+environment, but
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{r(function() .libPaths())
+}\if{html}{\out{</div>}}
 
 works just fine.}
 

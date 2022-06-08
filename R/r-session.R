@@ -538,10 +538,14 @@ rs_poll_process <- function(self, private, timeout) {
 }
 
 rs_traceback <- function(self, private) {
-  ## TODO: get rid of magic number 12
-  traceback(utils::head(self$run(function() {
+  tb <- self$run(function() {
     traceback(as.environment("tools:callr")$`__callr_data__`$.Traceback, 10)
-  }), -12))
+  })
+  if (is.null(tb)) {
+    throw(new_error("No traceback was recorded in the subprocess (yet?)"))
+  } else {
+    traceback(utils::head(tb, -12))
+  }
 }
 
 rs_debug <- function(self, private) {
