@@ -37,79 +37,79 @@ rs$read()
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{r_session$new()}}
-\item \href{#method-run}{\code{r_session$run()}}
-\item \href{#method-run_with_output}{\code{r_session$run_with_output()}}
-\item \href{#method-call}{\code{r_session$call()}}
-\item \href{#method-poll_process}{\code{r_session$poll_process()}}
-\item \href{#method-get_state}{\code{r_session$get_state()}}
-\item \href{#method-get_running_time}{\code{r_session$get_running_time()}}
-\item \href{#method-read}{\code{r_session$read()}}
-\item \href{#method-close}{\code{r_session$close()}}
-\item \href{#method-traceback}{\code{r_session$traceback()}}
-\item \href{#method-debug}{\code{r_session$debug()}}
-\item \href{#method-attach}{\code{r_session$attach()}}
-\item \href{#method-finalize}{\code{r_session$finalize()}}
-\item \href{#method-print}{\code{r_session$print()}}
-\item \href{#method-clone}{\code{r_session$clone()}}
+\item \href{#method-r_session-new}{\code{r_session$new()}}
+\item \href{#method-r_session-run}{\code{r_session$run()}}
+\item \href{#method-r_session-run_with_output}{\code{r_session$run_with_output()}}
+\item \href{#method-r_session-call}{\code{r_session$call()}}
+\item \href{#method-r_session-poll_process}{\code{r_session$poll_process()}}
+\item \href{#method-r_session-get_state}{\code{r_session$get_state()}}
+\item \href{#method-r_session-get_running_time}{\code{r_session$get_running_time()}}
+\item \href{#method-r_session-read}{\code{r_session$read()}}
+\item \href{#method-r_session-close}{\code{r_session$close()}}
+\item \href{#method-r_session-traceback}{\code{r_session$traceback()}}
+\item \href{#method-r_session-debug}{\code{r_session$debug()}}
+\item \href{#method-r_session-attach}{\code{r_session$attach()}}
+\item \href{#method-r_session-finalize}{\code{r_session$finalize()}}
+\item \href{#method-r_session-print}{\code{r_session$print()}}
+\item \href{#method-r_session-clone}{\code{r_session$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle">}\href{../../processx/html/process.html#method-as_ps_handle}{\code{processx::process$as_ps_handle()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format">}\href{../../processx/html/process.html#method-format}{\code{processx::process$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline">}\href{../../processx/html/process.html#method-get_cmdline}{\code{processx::process$get_cmdline()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times">}\href{../../processx/html/process.html#method-get_cpu_times}{\code{processx::process$get_cpu_times()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_error_connection">}\href{../../processx/html/process.html#method-get_error_connection}{\code{processx::process$get_error_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_error_file">}\href{../../processx/html/process.html#method-get_error_file}{\code{processx::process$get_error_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_exe">}\href{../../processx/html/process.html#method-get_exe}{\code{processx::process$get_exe()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_exit_status">}\href{../../processx/html/process.html#method-get_exit_status}{\code{processx::process$get_exit_status()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_input_connection">}\href{../../processx/html/process.html#method-get_input_connection}{\code{processx::process$get_input_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_input_file">}\href{../../processx/html/process.html#method-get_input_file}{\code{processx::process$get_input_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_memory_info">}\href{../../processx/html/process.html#method-get_memory_info}{\code{processx::process$get_memory_info()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_name">}\href{../../processx/html/process.html#method-get_name}{\code{processx::process$get_name()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_output_connection">}\href{../../processx/html/process.html#method-get_output_connection}{\code{processx::process$get_output_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_output_file">}\href{../../processx/html/process.html#method-get_output_file}{\code{processx::process$get_output_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_pid">}\href{../../processx/html/process.html#method-get_pid}{\code{processx::process$get_pid()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_poll_connection">}\href{../../processx/html/process.html#method-get_poll_connection}{\code{processx::process$get_poll_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_result">}\href{../../processx/html/process.html#method-get_result}{\code{processx::process$get_result()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_start_time">}\href{../../processx/html/process.html#method-get_start_time}{\code{processx::process$get_start_time()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_status">}\href{../../processx/html/process.html#method-get_status}{\code{processx::process$get_status()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_username">}\href{../../processx/html/process.html#method-get_username}{\code{processx::process$get_username()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_wd">}\href{../../processx/html/process.html#method-get_wd}{\code{processx::process$get_wd()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_error_connection">}\href{../../processx/html/process.html#method-has_error_connection}{\code{processx::process$has_error_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_input_connection">}\href{../../processx/html/process.html#method-has_input_connection}{\code{processx::process$has_input_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_output_connection">}\href{../../processx/html/process.html#method-has_output_connection}{\code{processx::process$has_output_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_poll_connection">}\href{../../processx/html/process.html#method-has_poll_connection}{\code{processx::process$has_poll_connection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="interrupt">}\href{../../processx/html/process.html#method-interrupt}{\code{processx::process$interrupt()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_alive">}\href{../../processx/html/process.html#method-is_alive}{\code{processx::process$is_alive()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_incomplete_error">}\href{../../processx/html/process.html#method-is_incomplete_error}{\code{processx::process$is_incomplete_error()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_incomplete_output">}\href{../../processx/html/process.html#method-is_incomplete_output}{\code{processx::process$is_incomplete_output()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_supervised">}\href{../../processx/html/process.html#method-is_supervised}{\code{processx::process$is_supervised()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="kill">}\href{../../processx/html/process.html#method-kill}{\code{processx::process$kill()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="kill_tree">}\href{../../processx/html/process.html#method-kill_tree}{\code{processx::process$kill_tree()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="poll_io">}\href{../../processx/html/process.html#method-poll_io}{\code{processx::process$poll_io()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_error">}\href{../../processx/html/process.html#method-read_all_error}{\code{processx::process$read_all_error()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_error_lines">}\href{../../processx/html/process.html#method-read_all_error_lines}{\code{processx::process$read_all_error_lines()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_output">}\href{../../processx/html/process.html#method-read_all_output}{\code{processx::process$read_all_output()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_output_lines">}\href{../../processx/html/process.html#method-read_all_output_lines}{\code{processx::process$read_all_output_lines()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_error">}\href{../../processx/html/process.html#method-read_error}{\code{processx::process$read_error()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_error_lines">}\href{../../processx/html/process.html#method-read_error_lines}{\code{processx::process$read_error_lines()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_output">}\href{../../processx/html/process.html#method-read_output}{\code{processx::process$read_output()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_output_lines">}\href{../../processx/html/process.html#method-read_output_lines}{\code{processx::process$read_output_lines()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="resume">}\href{../../processx/html/process.html#method-resume}{\code{processx::process$resume()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="signal">}\href{../../processx/html/process.html#method-signal}{\code{processx::process$signal()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="supervise">}\href{../../processx/html/process.html#method-supervise}{\code{processx::process$supervise()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="suspend">}\href{../../processx/html/process.html#method-suspend}{\code{processx::process$suspend()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="wait">}\href{../../processx/html/process.html#method-wait}{\code{processx::process$wait()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="processx" data-topic="process" data-id="write_input">}\href{../../processx/html/process.html#method-write_input}{\code{processx::process$write_input()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href='../../processx/html/process.html#method-process-as_ps_handle'><code>processx::process$as_ps_handle()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href='../../processx/html/process.html#method-process-format'><code>processx::process$format()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline"><a href='../../processx/html/process.html#method-process-get_cmdline'><code>processx::process$get_cmdline()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times"><a href='../../processx/html/process.html#method-process-get_cpu_times'><code>processx::process$get_cpu_times()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_error_connection"><a href='../../processx/html/process.html#method-process-get_error_connection'><code>processx::process$get_error_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_error_file"><a href='../../processx/html/process.html#method-process-get_error_file'><code>processx::process$get_error_file()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_exe"><a href='../../processx/html/process.html#method-process-get_exe'><code>processx::process$get_exe()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_exit_status"><a href='../../processx/html/process.html#method-process-get_exit_status'><code>processx::process$get_exit_status()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_input_connection"><a href='../../processx/html/process.html#method-process-get_input_connection'><code>processx::process$get_input_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_input_file"><a href='../../processx/html/process.html#method-process-get_input_file'><code>processx::process$get_input_file()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_memory_info"><a href='../../processx/html/process.html#method-process-get_memory_info'><code>processx::process$get_memory_info()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_name"><a href='../../processx/html/process.html#method-process-get_name'><code>processx::process$get_name()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_output_connection"><a href='../../processx/html/process.html#method-process-get_output_connection'><code>processx::process$get_output_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_output_file"><a href='../../processx/html/process.html#method-process-get_output_file'><code>processx::process$get_output_file()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_pid"><a href='../../processx/html/process.html#method-process-get_pid'><code>processx::process$get_pid()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_poll_connection"><a href='../../processx/html/process.html#method-process-get_poll_connection'><code>processx::process$get_poll_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_result"><a href='../../processx/html/process.html#method-process-get_result'><code>processx::process$get_result()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_start_time"><a href='../../processx/html/process.html#method-process-get_start_time'><code>processx::process$get_start_time()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_status"><a href='../../processx/html/process.html#method-process-get_status'><code>processx::process$get_status()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_username"><a href='../../processx/html/process.html#method-process-get_username'><code>processx::process$get_username()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_wd"><a href='../../processx/html/process.html#method-process-get_wd'><code>processx::process$get_wd()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_error_connection"><a href='../../processx/html/process.html#method-process-has_error_connection'><code>processx::process$has_error_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_input_connection"><a href='../../processx/html/process.html#method-process-has_input_connection'><code>processx::process$has_input_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_output_connection"><a href='../../processx/html/process.html#method-process-has_output_connection'><code>processx::process$has_output_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="has_poll_connection"><a href='../../processx/html/process.html#method-process-has_poll_connection'><code>processx::process$has_poll_connection()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="interrupt"><a href='../../processx/html/process.html#method-process-interrupt'><code>processx::process$interrupt()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_alive"><a href='../../processx/html/process.html#method-process-is_alive'><code>processx::process$is_alive()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_incomplete_error"><a href='../../processx/html/process.html#method-process-is_incomplete_error'><code>processx::process$is_incomplete_error()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_incomplete_output"><a href='../../processx/html/process.html#method-process-is_incomplete_output'><code>processx::process$is_incomplete_output()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="is_supervised"><a href='../../processx/html/process.html#method-process-is_supervised'><code>processx::process$is_supervised()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="kill"><a href='../../processx/html/process.html#method-process-kill'><code>processx::process$kill()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="kill_tree"><a href='../../processx/html/process.html#method-process-kill_tree'><code>processx::process$kill_tree()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="poll_io"><a href='../../processx/html/process.html#method-process-poll_io'><code>processx::process$poll_io()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_error"><a href='../../processx/html/process.html#method-process-read_all_error'><code>processx::process$read_all_error()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_error_lines"><a href='../../processx/html/process.html#method-process-read_all_error_lines'><code>processx::process$read_all_error_lines()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_output"><a href='../../processx/html/process.html#method-process-read_all_output'><code>processx::process$read_all_output()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_all_output_lines"><a href='../../processx/html/process.html#method-process-read_all_output_lines'><code>processx::process$read_all_output_lines()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_error"><a href='../../processx/html/process.html#method-process-read_error'><code>processx::process$read_error()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_error_lines"><a href='../../processx/html/process.html#method-process-read_error_lines'><code>processx::process$read_error_lines()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_output"><a href='../../processx/html/process.html#method-process-read_output'><code>processx::process$read_output()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="read_output_lines"><a href='../../processx/html/process.html#method-process-read_output_lines'><code>processx::process$read_output_lines()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="resume"><a href='../../processx/html/process.html#method-process-resume'><code>processx::process$resume()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="signal"><a href='../../processx/html/process.html#method-process-signal'><code>processx::process$signal()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="supervise"><a href='../../processx/html/process.html#method-process-supervise'><code>processx::process$supervise()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="suspend"><a href='../../processx/html/process.html#method-process-suspend'><code>processx::process$suspend()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="wait"><a href='../../processx/html/process.html#method-process-wait'><code>processx::process$wait()</code></a></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="write_input"><a href='../../processx/html/process.html#method-process-write_input'><code>processx::process$write_input()</code></a></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-r_session-new"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-new}{}}}
 \subsection{Method \code{new()}}{
 creates a new R background process. It can wait for the process to
 start up (\code{wait = TRUE}), or return immediately, i.e. before
@@ -137,8 +137,8 @@ An \code{r_session} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-run"></a>}}
-\if{latex}{\out{\hypertarget{method-run}{}}}
+\if{html}{\out{<a id="method-r_session-run"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-run}{}}}
 \subsection{Method \code{run()}}{
 Similar to \code{\link[=r]{r()}}, but runs the function in a permanent background
 R session. It throws an error if the function call generated an
@@ -170,8 +170,8 @@ The return value of the R expression.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-run_with_output"></a>}}
-\if{latex}{\out{\hypertarget{method-run_with_output}{}}}
+\if{html}{\out{<a id="method-r_session-run_with_output"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-run_with_output}{}}}
 \subsection{Method \code{run_with_output()}}{
 Similar to \verb{$run()}, but returns the standard output and error of
 the child process as well. It does not throw on errors, but
@@ -213,8 +213,8 @@ you can ignore them.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-call"></a>}}
-\if{latex}{\out{\hypertarget{method-call}{}}}
+\if{html}{\out{<a id="method-r_session-call"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-call}{}}}
 \subsection{Method \code{call()}}{
 Starts running a function in the background R session, and
 returns immediately. To check if the function is done, call the
@@ -243,8 +243,8 @@ it to the other package. Possible values are:
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-poll_process"></a>}}
-\if{latex}{\out{\hypertarget{method-poll_process}{}}}
+\if{html}{\out{<a id="method-r_session-poll_process"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-poll_process}{}}}
 \subsection{Method \code{poll_process()}}{
 Poll the R session with a timeout. If the session has finished the
 computation, it returns with \code{"ready"}. If the timeout
@@ -265,8 +265,8 @@ Character string \code{"ready"} or \code{"timeout"}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_state"></a>}}
-\if{latex}{\out{\hypertarget{method-get_state}{}}}
+\if{html}{\out{<a id="method-r_session-get_state"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-get_state}{}}}
 \subsection{Method \code{get_state()}}{
 Return the state of the R session.
 \subsection{Usage}{
@@ -284,8 +284,8 @@ Possible values:
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_running_time"></a>}}
-\if{latex}{\out{\hypertarget{method-get_running_time}{}}}
+\if{html}{\out{<a id="method-r_session-get_running_time"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-get_running_time}{}}}
 \subsection{Method \code{get_running_time()}}{
 Returns the elapsed time since the R process has started, and the
 elapsed time since the current computation has started. The latter
@@ -300,8 +300,8 @@ and \code{"current"}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read"></a>}}
-\if{latex}{\out{\hypertarget{method-read}{}}}
+\if{html}{\out{<a id="method-r_session-read"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-read}{}}}
 \subsection{Method \code{read()}}{
 Reads an event from the child process, if there is one available.
 Events might signal that the function call has finished, or they
@@ -338,8 +338,8 @@ that callr uses for communication.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-close"></a>}}
-\if{latex}{\out{\hypertarget{method-close}{}}}
+\if{html}{\out{<a id="method-r_session-close"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-close}{}}}
 \subsection{Method \code{close()}}{
 Terminate the current computation and the R process.
 The session object will be in \code{"finished"} state after this.
@@ -359,12 +359,17 @@ killed.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-traceback"></a>}}
-\if{latex}{\out{\hypertarget{method-traceback}{}}}
+\if{html}{\out{<a id="method-r_session-traceback"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-traceback}{}}}
 \subsection{Method \code{traceback()}}{
 The \code{traceback()} method can be used after an error in the R
 subprocess. It is equivalent to the \code{\link[base:traceback]{base::traceback()}} call, in
 the subprocess.
+
+On callr version 3.8.0 and above, you need to set the
+\code{callr.traceback} option to \code{TRUE} (in the main process) to make
+the subprocess save the trace on error. This is because saving
+the trace can be costly for large objects passed as arguments.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{r_session$traceback()}\if{html}{\out{</div>}}
 }
@@ -374,19 +379,24 @@ The same output as from \code{\link[base:traceback]{base::traceback()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-debug"></a>}}
-\if{latex}{\out{\hypertarget{method-debug}{}}}
+\if{html}{\out{<a id="method-r_session-debug"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-debug}{}}}
 \subsection{Method \code{debug()}}{
 Interactive debugger to inspect the dumped frames in the subprocess,
 after an error. See more at \link{r_session_debug}.
+
+On callr version 3.8.0 and above, you need to set the
+\code{callr.traceback} option to \code{TRUE} (in the main process) to make
+the subprocess dump frames on error. This is because saving
+the frames can be costly for large objects passed as arguments.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{r_session$debug()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-attach"></a>}}
-\if{latex}{\out{\hypertarget{method-attach}{}}}
+\if{html}{\out{<a id="method-r_session-attach"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-attach}{}}}
 \subsection{Method \code{attach()}}{
 Experimental function that provides a REPL
 (Read-Eval-Print-Loop) to the subprocess.
@@ -396,8 +406,8 @@ Experimental function that provides a REPL
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
+\if{html}{\out{<a id="method-r_session-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 Finalizer that is called when garbage collecting an \code{r_session}
 object, to clean up temporary files.
@@ -407,8 +417,8 @@ object, to clean up temporary files.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-r_session-print"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-print}{}}}
 \subsection{Method \code{print()}}{
 Print method for an \code{r_session}.
 \subsection{Usage}{
@@ -424,8 +434,8 @@ Print method for an \code{r_session}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-r_session-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

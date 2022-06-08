@@ -8,6 +8,11 @@ The \code{r_session$debug()} method is an interactive debugger to inspect
 the stack of the background process after an error.
 }
 \details{
+Note that on callr version 3.8.0 and above, you need to set the
+\code{callr.traceback} option to \code{TRUE} (in the main process) to make
+the subprocess dump the frames on error. This is because saving
+the frames can be costly for large objects passed as arguments.
+
 \verb{$debug()} starts a REPL (Read-Eval-Print-Loop), that evaluates R
 expressions in the subprocess. It is similar to \code{\link[=browser]{browser()}} and
 \code{\link[=debugger]{debugger()}} and also has some extra commands:
@@ -23,7 +28,9 @@ To exit the debugger, press the usual interrupt key, i.e. \code{CTRL+c} or
 \code{ESC} in some GUIs.
 
 Here is an example session that uses \verb{$debug()} (some output is omitted
-for brevity):\preformatted{# ----------------------------------------------------------------------
+for brevity):
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# ----------------------------------------------------------------------
 > rs <- r_session$new()
 > rs$run(function() knitr::knit("no-such-file"))
 Error in rs_run(self, private, func, args) :
@@ -56,5 +63,5 @@ RS 87361 (frame 1) > file.exists(input)
 
 RS 87361 (frame 1) > # <CTRL + C>
 # ----------------------------------------------------------------------
-}
+}\if{html}{\out{</div>}}
 }
