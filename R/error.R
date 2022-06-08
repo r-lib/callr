@@ -72,7 +72,7 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
 
   cond <- x
   while (trace && !is.null(cond$parent_trace)) {
-    lines <- c(lines, c("---", "Subprocess trace:", format(cond$parent_trace)))
+    lines <- c(lines, c("---", "Subprocess backtrace:", format(cond$parent_trace)))
     cond <- cond$parent
   }
 
