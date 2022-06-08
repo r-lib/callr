@@ -365,6 +365,11 @@ killed.}
 The \code{traceback()} method can be used after an error in the R
 subprocess. It is equivalent to the \code{\link[base:traceback]{base::traceback()}} call, in
 the subprocess.
+
+On callr version 3.8.0 and above, you need to set the
+\code{callr.traceback} option to \code{TRUE} (in the main process) to make
+the subprocess save the trace on error. This is because saving
+the trace can be costly for large objects passed as arguments.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{r_session$traceback()}\if{html}{\out{</div>}}
 }
@@ -379,6 +384,11 @@ The same output as from \code{\link[base:traceback]{base::traceback()}}
 \subsection{Method \code{debug()}}{
 Interactive debugger to inspect the dumped frames in the subprocess,
 after an error. See more at \link{r_session_debug}.
+
+On callr version 3.8.0 and above, you need to set the
+\code{callr.traceback} option to \code{TRUE} (in the main process) to make
+the subprocess dump frames on error. This is because saving
+the frames can be costly for large objects passed as arguments.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{r_session$debug()}\if{html}{\out{</div>}}
 }

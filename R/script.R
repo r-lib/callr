@@ -14,13 +14,15 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       callr_data <- as.environment("tools:callr")$`__callr_data__`
       err <- callr_data$err
 
-      # This might be quieried for R sessions with $traceback()
-      assign(".Traceback", .traceback(4), envir = callr_data)
+      if (`__traceback__`) {
+        # This might be quieried for R sessions with $traceback()
+        assign(".Traceback", .traceback(4), envir = callr_data)
 
-      # Also dump frames, this might be queried as well with $debug()
-      dump.frames("__callr_dump__")
-      assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
-      rm("__callr_dump__", envir = .GlobalEnv)
+        # Also dump frames, this might be queried as well with $debug()
+        dump.frames("__callr_dump__")
+        assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
+        rm("__callr_dump__", envir = .GlobalEnv)
+      }
 
       e <- err$process_call(e)
       e2 <- err$new_error("error in callr subprocess")
@@ -32,7 +34,11 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       }
 
       saveRDS(list("error", e2, e), file = paste0(`__res__`, ".error"))
-    }, list(`__res__` = res))
+    }, list(
+         `__res__` = res,
+         `__traceback__` = getOption("callr.traceback", FALSE)
+       )
+    )
 
   } else if (error %in% c("stack", "debugger")) {
     substitute(

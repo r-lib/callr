@@ -172,6 +172,11 @@ r_session <- R6::R6Class(
     #' The `traceback()` method can be used after an error in the R
     #' subprocess. It is equivalent to the [base::traceback()] call, in
     #' the subprocess.
+    #'
+    #' On callr version 3.8.0 and above, you need to set the
+    #' `callr.traceback` option to `TRUE` (in the main process) to make
+    #' the subprocess save the trace on error. This is because saving
+    #' the trace can be costly for large objects passed as arguments.
     #' @return The same output as from [base::traceback()]
     traceback = function()
       rs_traceback(self, private),
@@ -179,6 +184,11 @@ r_session <- R6::R6Class(
     #' @description
     #' Interactive debugger to inspect the dumped frames in the subprocess,
     #' after an error. See more at [r_session_debug].
+    #'
+    #' On callr version 3.8.0 and above, you need to set the
+    #' `callr.traceback` option to `TRUE` (in the main process) to make
+    #' the subprocess dump frames on error. This is because saving
+    #' the frames can be costly for large objects passed as arguments.
     debug = function()
       rs_debug(self, private),
 
@@ -923,6 +933,11 @@ r_session_options_default <- function() {
 #'
 #' The `r_session$debug()` method is an interactive debugger to inspect
 #' the stack of the background process after an error.
+#'
+#' Note that on callr version 3.8.0 and above, you need to set the
+#' `callr.traceback` option to `TRUE` (in the main process) to make
+#' the subprocess dump the frames on error. This is because saving
+#' the frames can be costly for large objects passed as arguments.
 #'
 #' `$debug()` starts a REPL (Read-Eval-Print-Loop), that evaluates R
 #' expressions in the subprocess. It is similar to [browser()] and

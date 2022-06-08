@@ -256,6 +256,7 @@ test_that("custom load hook", {
 })
 
 test_that("traceback", {
+  withr::local_options(callr.traceback = TRUE)
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 
