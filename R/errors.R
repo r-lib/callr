@@ -128,6 +128,11 @@
 # ### 3.0.0 -- 2022-04-19
 #
 # * Major rewrite, use rlang compatible error objects. New API.
+#
+# ##3 3.0.1 -- 2022-06-17
+#
+# * Remove the `rlang_error` and `rlang_trace` classes, because our new
+#   deparsed `call` column in the trace is not compatible with rlang.
 
 err <- local({
 
@@ -174,7 +179,7 @@ err <- local({
 
   new_error <- function(..., call. = TRUE, srcref = NULL, domain = NA) {
     cond <- new_cond(..., call. = call., domain = domain, srcref = srcref)
-    class(cond) <- c("rlib_error_3_0", "rlib_error", "rlang_error", "error", "condition")
+    class(cond) <- c("rlib_error_3_0", "rlib_error", "error", "condition")
     cond
   }
 
@@ -341,7 +346,7 @@ err <- local({
         name <- native_name(.NAME)
         err <- new_error("Native call to `", name, "` failed", call. = call1)
         cerror <- if (inherits(e, "simpleError")) "c_error"
-        class(err) <- c(cerror, "rlib_error_3_0", "rlib_error", "rlang_error", "error", "condition")
+        class(err) <- c(cerror, "rlib_error_3_0", "rlib_error", "error", "condition")
         throw_error(err, parent = e)
       }
     )
@@ -375,7 +380,7 @@ err <- local({
         name <- native_name(.NAME)
         err <- new_error("Native call to `", name, "` failed", call. = call1)
         cerror <- if (inherits(e, "simpleError")) "c_error"
-        class(err) <- c(cerror, "rlib_error_3_0", "rlib_error", "rlang_error", "error", "condition")
+        class(err) <- c(cerror, "rlib_error_3_0", "rlib_error", "error", "condition")
         throw_error(err, parent = e)
       }
     )
@@ -488,7 +493,7 @@ err <- local({
     if (is.call(x)) {
       if (is.symbol(x[[1]])) {
         as.character(x[[1]])
-      } else if (x[[1]][[1]] == quote(`::`)) {
+      } else if (x[[1]][[1]] == quote(`::`) || x[[1]][[1]] == quote(`:::`)) {
         as.character(x[[1]][[2]])
       } else {
         NULL
@@ -501,9 +506,10 @@ err <- local({
   get_call_scope <- function(call, ns) {
     if (is.na(ns)) return("global")
     if (!is.call(call)) return("")
+    if (is.call(call[[1]]) &&
+        (call[[1]][[1]] == quote(`::`) || call[[1]][[1]] == quote(`:::`))) return("")
     if (ns == "base") return("::")
     if (! ns %in% loadedNamespaces()) return("")
-    if (is.call(call[[1]]) && call[[1]][[1]] == quote(`::`)) return("")
     name <- call_name(call)
     nsenv <- asNamespace(ns)$.__NAMESPACE__.
     if (is.null(nsenv)) return("::")
@@ -533,7 +539,7 @@ err <- local({
     )
     trace$call <- calls
 
-    class(trace) <- c("rlib_trace_3_0", "rlang_trace", "rlib_trace", "tbl", "data.frame")
+    class(trace) <- c("rlib_trace_3_0", "rlib_trace", "tbl", "data.frame")
     trace
   }
 
@@ -752,7 +758,7 @@ err <- local({
     p_error <- format_error_heading_cli(x, prefix)
     p_call <- format_call_cli(x$call)
     p_srcref <- format_srcref_cli(conditionCall(x), x$srcref)
-    paste0(p_error, p_call, p_srcref, ":")
+    paste0(p_error, p_call, p_srcref, if (!is.null(conditionCall(x))) ":")
   }
 
   format_class_cli <- function(x) {
@@ -920,7 +926,7 @@ err <- local({
     p_error <- format_error_heading_plain(x, prefix)
     p_call <- format_call_plain(x$call)
     p_srcref <- format_srcref_plain(conditionCall(x), x$srcref)
-    paste0(p_error, p_call, p_srcref, ":")
+    paste0(p_error, p_call, p_srcref, if (!is.null(conditionCall(x))) ":")
   }
 
   format_error_heading_plain <- function(x, prefix = NULL) {
