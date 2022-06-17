@@ -91,75 +91,114 @@ to run the script. It streams <code>stdout</code> and <code>stderr</code> of the
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>script</dt>
 <dd><p>Path of the script to run.</p></dd>
+
+
 <dt>cmdargs</dt>
 <dd><p>Command line arguments.</p></dd>
+
+
 <dt>libpath</dt>
 <dd><p>The library path.</p></dd>
+
+
 <dt>repos</dt>
 <dd><p>The <code>repos</code> option. If <code>NULL</code>, then no
 <code>repos</code> option is set. This options is only used if
 <code>user_profile</code> or <code>system_profile</code> is set <code>FALSE</code>,
 as it is set using the system or the user profile.</p></dd>
+
+
 <dt>stdout</dt>
 <dd><p>Optionally a file name to send the standard output to.</p></dd>
+
+
 <dt>stderr</dt>
 <dd><p>Optionally a file name to send the standard error to.
 It may be the same as <code>stdout</code>, in which case standard error is
 redirected to standard output. It can also be the special string
 <code>"2&gt;&amp;1"</code>, in which case standard error will be redirected to standard
 output.</p></dd>
+
+
 <dt>poll_connection</dt>
 <dd><p>Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess
 to the parent.</p></dd>
+
+
 <dt>echo</dt>
 <dd><p>Whether to echo the complete command run by <code>rcmd</code>.</p></dd>
+
+
 <dt>show</dt>
 <dd><p>Logical, whether to show the standard output on the screen
 while the child process is running. Note that this is independent
 of the <code>stdout</code> and <code>stderr</code> arguments. The standard
 error is not shown currently.</p></dd>
+
+
 <dt>callback</dt>
 <dd><p>A function to call for each line of the standard
 output and standard error from the child process. It works together
 with the <code>show</code> option; i.e. if <code>show = TRUE</code>, and a
 callback is provided, then the output is shown of the screen, and the
 callback is also called.</p></dd>
+
+
 <dt>block_callback</dt>
 <dd><p>A function to call for each block of the standard
 output and standard error. This callback is not line oriented, i.e.
 multiple lines or half a line can be passed to the callback.</p></dd>
+
+
 <dt>spinner</dt>
 <dd><p>Whether to show a calming spinner on the screen while
 the child R session is running. By default it is shown if
 <code>show = TRUE</code> and the R session is interactive.</p></dd>
+
+
 <dt>system_profile</dt>
 <dd><p>Whether to use the system profile file.</p></dd>
+
+
 <dt>user_profile</dt>
 <dd><p>Whether to use the user's profile file.
 If this is <code>"project"</code>, then only the profile from the working
 directory is used, but the <code>R_PROFILE_USER</code> environment variable
 and the user level profile are not. See also "Security considerations"
 below.</p></dd>
+
+
 <dt>env</dt>
 <dd><p>Environment variables to set for the child process.</p></dd>
+
+
 <dt>timeout</dt>
 <dd><p>Timeout for the function call to finish. It can be a
 <a href="https://rdrr.io/r/base/difftime.html" class="external-link">base::difftime</a> object, or a real number, meaning seconds.
 If the process does not finish before the timeout period expires,
 then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
 means no timeout.</p></dd>
+
+
 <dt>wd</dt>
 <dd><p>Working directory to use for running the command. Defaults
 to the current working directory.</p></dd>
+
+
 <dt>fail_on_status</dt>
 <dd><p>Whether to throw an R error if the command returns
 with a non-zero status code. By default no error is thrown.</p></dd>
+
+
 <dt>color</dt>
 <dd><p>Whether to use terminal colors in the child process,
 assuming they are active in the parent process.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Extra arguments are passed to <code><a href="http://processx.r-lib.org/reference/run.html" class="external-link">processx::run()</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="security-considerations">Security considerations<a class="anchor" aria-label="anchor" href="#security-considerations"></a></h2>
@@ -186,7 +225,7 @@ in plain files.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
   </div></footer></body></html>
