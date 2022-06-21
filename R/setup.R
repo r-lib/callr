@@ -116,8 +116,8 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
   }
 
   # Prevent circular inclusion of .Rprofile.
-  cat("if (!exists(\".__CALLR_RPROFILE_RUN__\")) {",
-      "  `.__CALLR_RPROFILE_RUN__` <- TRUE", file = profile_user, append = TRUE,
+  cat("if (is.null(getOption(\"callr.rprofile_loaded\"))) {",
+      "  options(callr.rprofile_loaded = TRUE)", file = profile_user, append = TRUE,
       sep = "\n")
 
   if (!is.na(user) && file.exists(user)) {
