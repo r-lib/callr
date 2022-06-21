@@ -70,7 +70,7 @@ passed back seamlessly:
 callr::r(function() var(iris[, 1:4]))
 ```
 
-![](man/figures/README/simple.svg)<!-- -->
+![](man/figures/simple.svg)<!-- -->
 
 ### Passing arguments
 
@@ -84,7 +84,7 @@ mycars <- cars
 callr::r(function() summary(mycars))
 ```
 
-![](man/figures/README/passargsfail.svg)<!-- -->
+![](man/figures/passargsfail.svg)<!-- -->
 
 But this does:
 
@@ -93,7 +93,7 @@ mycars <- cars
 callr::r(function(x) summary(x), args = list(mycars))
 ```
 
-![](man/figures/README/passargsok.svg)<!-- -->
+![](man/figures/passargsok.svg)<!-- -->
 
 Note that the arguments will be serialized and saved to a file, so if
 they are large R objects, it might take a long time for the child
@@ -110,7 +110,7 @@ child, and calculates some metrics of it.
 callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-![](man/figures/README/packages.svg)<!-- -->
+![](man/figures/packages.svg)<!-- -->
 
 ### Error handling
 
@@ -120,7 +120,7 @@ callr copies errors from the child process back to the main R session:
 callr::r(function() 1 + "A")
 ```
 
-![](man/figures/README/error1.svg)<!-- --> callr sets the `.Last.error`
+![](man/figures/error1.svg)<!-- --> callr sets the `.Last.error`
 variable, and after an error you can inspect this for more details about
 the error, including stack traces both from the main R process and the
 subprocess.
@@ -129,7 +129,7 @@ subprocess.
 .Last.error
 ```
 
-![](man/figures/README/error2-2.svg)<!-- -->
+![](man/figures/error2-2.svg)<!-- -->
 
 The error objects has two parts. The first belongs to the main process,
 and the second belongs to the subprocess.
@@ -154,13 +154,13 @@ x <- callr::r(function() { print("hello world!"); message("hello again!") },
 readLines("/tmp/out")
 ```
 
-![](man/figures/README/io.svg)<!-- -->
+![](man/figures/io.svg)<!-- -->
 
 ``` r
 readLines("/tmp/err")
 ```
 
-![](man/figures/README/unnamed-chunk-2.svg)<!-- -->
+![](man/figures/unnamed-chunk-2.svg)<!-- -->
 
 With the `stdout` option, the standard output is collected and can be
 examined once the child process finished. The `show = TRUE` options will
@@ -178,7 +178,7 @@ rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-![](man/figures/README/bg.svg)<!-- -->
+![](man/figures/bg.svg)<!-- -->
 
 This is a list of all `r_process` methods:
 
@@ -186,7 +186,7 @@ This is a list of all `r_process` methods:
 ls(rp)
 ```
 
-![](man/figures/README/bg-methods.svg)<!-- -->
+![](man/figures/bg-methods.svg)<!-- -->
 
 These include all methods of the `processx::process` superclass and the
 new `get_result()` method, to retrieve the R object returned by the
@@ -219,25 +219,25 @@ rp2 <- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
 processx::poll(list(rp1, rp2), 1000)
 ```
 
-![](man/figures/README/poll.svg)<!-- -->
+![](man/figures/poll.svg)<!-- -->
 
 ``` r
 rp2$get_result()
 ```
 
-![](man/figures/README/poll-2.svg)<!-- -->
+![](man/figures/poll-2.svg)<!-- -->
 
 ``` r
 processx::poll(list(rp1), 1000)
 ```
 
-![](man/figures/README/poll-3.svg)<!-- -->
+![](man/figures/poll-3.svg)<!-- -->
 
 ``` r
 rp1$get_result()
 ```
 
-![](man/figures/README/poll-4.svg)<!-- -->
+![](man/figures/poll-4.svg)<!-- -->
 
 ## Persistent R sessions
 
@@ -249,7 +249,7 @@ rs <- callr::r_session$new()
 rs
 ```
 
-![](man/figures/README/rsession.svg)<!-- -->
+![](man/figures/rsession.svg)<!-- -->
 
 `r_session$run()` is a synchronous call, that works similarly to `r()`,
 but uses the persistent session. `r_session$call()` starts the function
@@ -267,26 +267,26 @@ rs <- callr::r_session$new()
 rs$run(function() runif(10))
 ```
 
-![](man/figures/README/rsession2.svg)<!-- -->
+![](man/figures/rsession2.svg)<!-- -->
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-![](man/figures/README/rsession2-2.svg)<!-- -->
+![](man/figures/rsession2-2.svg)<!-- -->
 
 ``` r
 rs$poll_process(2000)
 ```
 
-![](man/figures/README/rsession-4.svg)<!-- -->
+![](man/figures/rsession-4.svg)<!-- -->
 
 ``` r
 rs$read()
 ```
 
-![](man/figures/README/rsession-5.svg)<!-- -->
+![](man/figures/rsession-5.svg)<!-- -->
 
 ## Running `R CMD` commands
 
@@ -297,7 +297,7 @@ call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
 callr::rcmd("config", "CC")
 ```
 
-![](man/figures/README/rcmd.svg)<!-- -->
+![](man/figures/rcmd.svg)<!-- -->
 
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.

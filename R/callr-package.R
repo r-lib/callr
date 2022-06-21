@@ -1,3 +1,7 @@
+
+#' ```{r child = "README.Rmd"}
+#' ```
+#'
 #' @keywords internal
 "_PACKAGE"
 

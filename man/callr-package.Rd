@@ -4,7 +4,242 @@
 \name{callr-package}
 \alias{callr}
 \alias{callr-package}
-\title{callr: Call R from R}
+\title{\subsection{Features}{
+\itemize{
+\item Calls an R function, with arguments, in a subprocess.
+\item Copies function arguments to the subprocess and copies the return value of the function back, seamlessly.
+\item Copies error objects back from the subprocess, including a stack trace.
+\item Shows and/or collects the standard output and standard error of the subprocess.
+\item Supports both one-off and persistent R subprocesses.
+\item Calls the function synchronously or asynchronously (in the background).
+\item Can call \verb{R CMD} commands, synchronously or asynchronously.
+\item Can call R scripts, synchronously or asynchronously.
+\item Provides extensible \code{r_process}, \code{rcmd_process} and \code{rscript_process} R6 classes, based on \code{processx::process}.
+}
+}
+
+\subsection{Installation}{
+
+Install the stable version from CRAN:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{install.packages("callr")
+}\if{html}{\out{</div>}}
+}
+
+\subsection{Synchronous, one-off R processes}{
+
+Use \code{r()} to run an R function in a new R process.
+The results are passed back seamlessly:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() var(iris[, 1:4]))
+}\if{html}{\out{</div>}}
+
+\figure{simple.svg}
+\subsection{Passing arguments}{
+
+You can pass arguments to the function by setting \code{args} to the list of arguments.
+This is often necessary as these arguments are explicitly copied to the child process, whereas the evaluated function cannot refer to variables in the parent.
+For example, the following does not work:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{mycars <- cars
+callr::r(function() summary(mycars))
+}\if{html}{\out{</div>}}
+
+\figure{passargsfail.svg}
+
+But this does:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{mycars <- cars
+callr::r(function(x) summary(x), args = list(mycars))
+}\if{html}{\out{</div>}}
+
+\figure{passargsok.svg}
+
+Note that the arguments will be serialized and saved to a file, so if they are large R objects, it might take a long time for the child process to start up.
+}
+
+\subsection{Using packages}{
+
+You can use any R package in the child process, just make sure to refer to it explicitly with the \code{::} operator.
+For example, the following code creates an \href{https://github.com/igraph/rigraph}{igraph} graph in the child, and calculates some metrics of it.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() \{ g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) \})
+}\if{html}{\out{</div>}}
+
+\figure{packages.svg}
+}
+
+\subsection{Error handling}{
+
+callr copies errors from the child process back to the main R session:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() 1 + "A")
+}\if{html}{\out{</div>}}
+
+\figure{error1.svg}
+callr sets the \code{.Last.error} variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{.Last.error
+}\if{html}{\out{</div>}}
+
+\figure{error2-2.svg}
+
+The error objects has two parts.
+The first belongs to the main process, and the second belongs to the subprocess.
+
+\code{.Last.error} also includes a stack trace, that includes both the main R process and the subprocess:
+
+The top part of the trace contains the frames in the main process, and the bottom part contains the frames in the subprocess, starting with the anonymous function.
+}
+
+\subsection{Standard output and error}{
+
+By default, the standard output and error of the child is lost, but you can request callr to redirect them to files, and then inspect the files in the parent:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- callr::r(function() \{ print("hello world!"); message("hello again!") \},
+  stdout = "/tmp/out", stderr = "/tmp/err"
+)
+readLines("/tmp/out")
+}\if{html}{\out{</div>}}
+
+\figure{io.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{readLines("/tmp/err")
+}\if{html}{\out{</div>}}
+
+\figure{unnamed-chunk-3.svg}
+
+With the \code{stdout} option, the standard output is collected and can be examined once the child process finished.
+The \code{show = TRUE} options will also show the output of the child, as it is printed, on the console of the parent.
+}
+
+}
+
+\subsection{Background R processes}{
+
+\code{r_bg()} is similar to \code{r()} but it starts the R process in the background.
+It returns an \code{r_process} R6 object, that provides a rich API:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rp <- callr::r_bg(function() Sys.sleep(.2))
+rp
+}\if{html}{\out{</div>}}
+
+\figure{bg.svg}
+
+This is a list of all \code{r_process} methods:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{ls(rp)
+}\if{html}{\out{</div>}}
+
+\figure{bg-methods.svg}
+
+These include all methods of the \code{processx::process} superclass and the new \code{get_result()} method, to retrieve the R object returned by the function call.
+Some of the handiest methods are:
+\itemize{
+\item \code{get_exit_status()} to query the exit status of a finished process.
+\item \code{get_result()} to collect the return value of the R function call.
+\item \code{interrupt()} to send an interrupt to the process. This is equivalent to a \code{CTRL+C} key press, and the R process might ignore it.
+\item \code{is_alive()} to check if the process is alive.
+\item \code{kill()} to terminate the process.
+\item \code{poll_io()} to wait for any standard output, standard error, or the completion of the process, with a timeout.
+\item \verb{read_*()} to read the standard output or error.
+\item \code{suspend()} and \code{resume()} to stop and continue a process.
+\item \code{wait()} to wait for the completion of the process, with a timeout.
+}
+}
+
+\subsection{Multiple background R processes and \code{poll()}}{
+
+Multiple background R processes are best managed with the \code{processx::poll()} function that waits for events (standard output/error or termination) from multiple processes.
+It returns as soon as one process has generated an event, or if its timeout has expired.
+The timeout is in milliseconds.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rp1 <- callr::r_bg(function() \{ Sys.sleep(1/2); "1 done" \})
+rp2 <- callr::r_bg(function() \{ Sys.sleep(1/1000); "2 done" \})
+processx::poll(list(rp1, rp2), 1000)
+}\if{html}{\out{</div>}}
+
+\figure{poll.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rp2$get_result()
+}\if{html}{\out{</div>}}
+
+\figure{poll-2.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{processx::poll(list(rp1), 1000)
+}\if{html}{\out{</div>}}
+
+\figure{poll-3.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rp1$get_result()
+}\if{html}{\out{</div>}}
+
+\figure{poll-4.svg}
+}
+
+\subsection{Persistent R sessions}{
+
+\code{r_session} is another \code{processx::process} subclass that represents a persistent background R session:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rs <- callr::r_session$new()
+rs
+}\if{html}{\out{</div>}}
+
+\figure{rsession.svg}
+
+\code{r_session$run()} is a synchronous call, that works similarly to \code{r()}, but uses the persistent session.
+\code{r_session$call()} starts the function call and returns immediately.
+The \code{r_session$poll_process()} method or \code{processx::poll()} can then be used to wait for the completion or other events from one or more R sessions, R processes or other \code{processx::process} objects.
+
+Once an R session is done with an asynchronous computation, its \code{poll_process()} method returns \code{"ready"} and the \code{r_session$read()} method can read out the result.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rs <- callr::r_session$new()
+rs$run(function() runif(10))
+}\if{html}{\out{</div>}}
+
+\figure{rsession2.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$call(function() rnorm(10))
+rs
+}\if{html}{\out{</div>}}
+
+\figure{rsession2-2.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$poll_process(2000)
+}\if{html}{\out{</div>}}
+
+\figure{rsession-4.svg}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$read()
+}\if{html}{\out{</div>}}
+
+\figure{rsession-5.svg}
+}
+
+\subsection{Running \verb{R CMD} commands}{
+
+The \code{rcmd()} function calls an \verb{R CMD} command.
+For example, you can call \verb{R CMD INSTALL}, \verb{R CMD check} or \verb{R CMD config} this way:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::rcmd("config", "CC")
+}\if{html}{\out{</div>}}
+
+\figure{rcmd.svg}
+
+This returns a list with three components: the standard output, the standard error, and the exit (status) code of the \verb{R CMD} command.
+}
+
+\subsection{Code of Conduct}{
+
+Please note that the callr project is released with a
+\href{https://callr.r-lib.org/CODE_OF_CONDUCT.html}{Contributor Code of Conduct}.
+By contributing to this project, you agree to abide by its terms.
+}
+
+\subsection{License}{
+
+MIT © Mango Solutions, RStudio
+}}
 \description{
 It is sometimes useful to perform a computation in a separate R process, without affecting the current R process at all. This packages does exactly that.
 }
