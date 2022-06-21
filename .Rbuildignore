@@ -20,3 +20,4 @@
 ^\.github$
 ^dev-lib$
 ^codecov\.yml$
+^README_files$

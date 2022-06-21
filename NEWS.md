@@ -9,6 +9,9 @@
   by default. The default can be changed by setting the 
   `callr.compress_transport` option (#223, @dfalbel).
 
+* We have revamped callr's error objects, with lots of improvements to the
+  output.
+
 # callr 3.7.0
 
 * Reporting errors is much faster now (#185).

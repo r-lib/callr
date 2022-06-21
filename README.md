@@ -1,4 +1,5 @@
 
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # callr
@@ -66,15 +67,10 @@ Use `r()` to run an R function in a new R process. The results are
 passed back seamlessly:
 
 ``` r
-library(callr)
-r(function() var(iris[, 1:4]))
+callr::r(function() var(iris[, 1:4]))
 ```
 
-    #>              Sepal.Length Sepal.Width Petal.Length Petal.Width
-    #> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
-    #> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
-    #> Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094
-    #> Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063
+![](man/figures/README/simple.svg)<!-- -->
 
 ### Passing arguments
 
@@ -85,24 +81,19 @@ to variables in the parent. For example, the following does not work:
 
 ``` r
 mycars <- cars
-r(function() summary(mycars))
+callr::r(function() summary(mycars))
 ```
 
-    #> Error: callr subprocess failed: object 'mycars' not found
+![](man/figures/README/passargsfail.svg)<!-- -->
 
 But this does:
 
 ``` r
-r(function(x) summary(x), args = list(mycars))
+mycars <- cars
+callr::r(function(x) summary(x), args = list(mycars))
 ```
 
-    #>      speed           dist       
-    #>  Min.   : 4.0   Min.   :  2.00  
-    #>  1st Qu.:12.0   1st Qu.: 26.00  
-    #>  Median :15.0   Median : 36.00  
-    #>  Mean   :15.4   Mean   : 42.98  
-    #>  3rd Qu.:19.0   3rd Qu.: 56.00  
-    #>  Max.   :25.0   Max.   :120.00
+![](man/figures/README/passargsok.svg)<!-- -->
 
 Note that the arguments will be serialized and saved to a file, so if
 they are large R objects, it might take a long time for the child
@@ -116,61 +107,35 @@ creates an [igraph](https://github.com/igraph/rigraph) graph in the
 child, and calculates some metrics of it.
 
 ``` r
-r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
+callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-    #> [1] 12
+![](man/figures/README/packages.svg)<!-- -->
 
 ### Error handling
 
 callr copies errors from the child process back to the main R session:
 
 ``` r
-r(function() 1 + "A")
+callr::r(function() 1 + "A")
 ```
 
-    #> Error: callr subprocess failed: non-numeric argument to binary operator
-
-callr sets the `.Last.error` variable, and after an error you can
-inspect this for more details about the error, including stack traces
-both from the main R process and the subprocess.
+![](man/figures/README/error1.svg)<!-- --> callr sets the `.Last.error`
+variable, and after an error you can inspect this for more details about
+the error, including stack traces both from the main R process and the
+subprocess.
 
 ``` r
 .Last.error
 ```
 
-    #> <callr_status_error: callr subprocess failed: non-numeric argument to binary operator>
-    #> -->
-    #> <callr_remote_error in 1 + "A":
-    #>  non-numeric argument to binary operator>
-    #>  in process 29974
+![](man/figures/README/error2-2.svg)<!-- -->
 
 The error objects has two parts. The first belongs to the main process,
 and the second belongs to the subprocess.
 
 `.Last.error` also includes a stack trace, that includes both the main R
 process and the subprocess:
-
-``` r
-.Last.error.trace
-```
-
-    #> 
-    #>  Stack trace:
-    #> 
-    #>  Process 29917:
-    #>  26. callr:::r(function() 1 + "A")
-    #>  27. callr:::get_result(output = out, options)
-    #>  28. throw(newerr, parent = remerr[[2]])
-    #> 
-    #>  x callr subprocess failed: non-numeric argument to binary operator 
-    #> 
-    #>  Process 29974:
-    #>  40. (function ()  ...
-    #>  41. base:::.handleSimpleError(function (e)  ...
-    #>  42. h(simpleError(msg, call))
-    #> 
-    #>  x non-numeric argument to binary operator
 
 The top part of the trace contains the frames in the main process, and
 the bottom part contains the frames in the subprocess, starting with the
@@ -183,19 +148,19 @@ can request callr to redirect them to files, and then inspect the files
 in the parent:
 
 ``` r
-x <- r(function() { print("hello world!"); message("hello again!") },
+x <- callr::r(function() { print("hello world!"); message("hello again!") },
   stdout = "/tmp/out", stderr = "/tmp/err"
 )
 readLines("/tmp/out")
 ```
 
-    #> [1] "[1] \"hello world!\""
+![](man/figures/README/io.svg)<!-- -->
 
 ``` r
 readLines("/tmp/err")
 ```
 
-    #> [1] "hello again!"
+![](man/figures/README/unnamed-chunk-2.svg)<!-- -->
 
 With the `stdout` option, the standard output is collected and can be
 examined once the child process finished. The `show = TRUE` options will
@@ -209,11 +174,11 @@ background. It returns an `r_process` R6 object, that provides a rich
 API:
 
 ``` r
-rp <- r_bg(function() Sys.sleep(.2))
+rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-    #> PROCESS 'R', running, pid 29996.
+![](man/figures/README/bg.svg)<!-- -->
 
 This is a list of all `r_process` methods:
 
@@ -221,23 +186,7 @@ This is a list of all `r_process` methods:
 ls(rp)
 ```
 
-    #>  [1] "as_ps_handle"          "clone"                 "finalize"             
-    #>  [4] "format"                "get_cmdline"           "get_cpu_times"        
-    #>  [7] "get_error_connection"  "get_error_file"        "get_exe"              
-    #> [10] "get_exit_status"       "get_input_connection"  "get_input_file"       
-    #> [13] "get_memory_info"       "get_name"              "get_output_connection"
-    #> [16] "get_output_file"       "get_pid"               "get_poll_connection"  
-    #> [19] "get_result"            "get_start_time"        "get_status"           
-    #> [22] "get_username"          "get_wd"                "has_error_connection" 
-    #> [25] "has_input_connection"  "has_output_connection" "has_poll_connection"  
-    #> [28] "initialize"            "interrupt"             "is_alive"             
-    #> [31] "is_incomplete_error"   "is_incomplete_output"  "is_supervised"        
-    #> [34] "kill"                  "kill_tree"             "poll_io"              
-    #> [37] "print"                 "read_all_error"        "read_all_error_lines" 
-    #> [40] "read_all_output"       "read_all_output_lines" "read_error"           
-    #> [43] "read_error_lines"      "read_output"           "read_output_lines"    
-    #> [46] "resume"                "signal"                "supervise"            
-    #> [49] "suspend"               "wait"                  "write_input"
+![](man/figures/README/bg-methods.svg)<!-- -->
 
 These include all methods of the `processx::process` superclass and the
 new `get_result()` method, to retrieve the R object returned by the
@@ -265,38 +214,30 @@ process has generated an event, or if its timeout has expired. The
 timeout is in milliseconds.
 
 ``` r
-rp1 <- r_bg(function() { Sys.sleep(1/2); "1 done" })
-rp2 <- r_bg(function() { Sys.sleep(1/1000); "2 done" })
+rp1 <- callr::r_bg(function() { Sys.sleep(1/2); "1 done" })
+rp2 <- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
 processx::poll(list(rp1, rp2), 1000)
 ```
 
-    #> [[1]]
-    #>   output    error  process 
-    #> "silent" "silent" "silent" 
-    #> 
-    #> [[2]]
-    #>  output   error process 
-    #> "ready" "ready" "ready"
+![](man/figures/README/poll.svg)<!-- -->
 
 ``` r
 rp2$get_result()
 ```
 
-    #> [1] "2 done"
+![](man/figures/README/poll-2.svg)<!-- -->
 
 ``` r
 processx::poll(list(rp1), 1000)
 ```
 
-    #> [[1]]
-    #>  output   error process 
-    #> "ready" "ready" "ready"
+![](man/figures/README/poll-3.svg)<!-- -->
 
 ``` r
 rp1$get_result()
 ```
 
-    #> [1] "1 done"
+![](man/figures/README/poll-4.svg)<!-- -->
 
 ## Persistent R sessions
 
@@ -304,11 +245,11 @@ rp1$get_result()
 persistent background R session:
 
 ``` r
-rs <- r_session$new()
+rs <- callr::r_session$new()
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 30029.
+![](man/figures/README/rsession.svg)<!-- -->
 
 `r_session$run()` is a synchronous call, that works similarly to `r()`,
 but uses the persistent session. `r_session$call()` starts the function
@@ -322,50 +263,30 @@ Once an R session is done with an asynchronous computation, its
 method can read out the result.
 
 ``` r
+rs <- callr::r_session$new()
 rs$run(function() runif(10))
 ```
 
-    #>  [1] 0.14802338 0.76888048 0.31340572 0.42640940 0.43011468 0.98472154
-    #>  [7] 0.94890236 0.08238474 0.66078638 0.50972457
+![](man/figures/README/rsession2.svg)<!-- -->
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-    #> R SESSION, alive, busy, pid 30029.
+![](man/figures/README/rsession2-2.svg)<!-- -->
 
 ``` r
 rs$poll_process(2000)
 ```
 
-    #> [1] "ready"
+![](man/figures/README/rsession-4.svg)<!-- -->
 
 ``` r
 rs$read()
 ```
 
-    #> $code
-    #> [1] 200
-    #> 
-    #> $message
-    #> [1] "done callr-rs-result-74dd1ed4711b"
-    #> 
-    #> $result
-    #>  [1]  0.2118055  0.2506984  0.8489311 -0.5064482  0.3520195  1.9273044
-    #>  [7] -1.6030457  0.1218903 -1.4990057 -0.3748555
-    #> 
-    #> $stdout
-    #> [1] ""
-    #> 
-    #> $stderr
-    #> [1] ""
-    #> 
-    #> $error
-    #> NULL
-    #> 
-    #> attr(,"class")
-    #> [1] "callr_session_result"
+![](man/figures/README/rsession-5.svg)<!-- -->
 
 ## Running `R CMD` commands
 
@@ -373,37 +294,10 @@ The `rcmd()` function calls an `R CMD` command. For example, you can
 call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
 
 ``` r
-rcmd("config", "CC")
+callr::rcmd("config", "CC")
 ```
 
-    #> $status
-    #> [1] 0
-    #> 
-    #> $stdout
-    #> [1] "clang -arch arm64\n"
-    #> 
-    #> $stderr
-    #> [1] ""
-    #> 
-    #> $timeout
-    #> [1] FALSE
-    #> 
-    #> $command
-    #> [1] "/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/bin/R"
-    #> [2] "CMD"                                                               
-    #> [3] "config"                                                            
-    #> [4] "CC"
-
-``` r
-#>$stdout
-#>[1] "clang\n"
-#>
-#>$stderr
-#>[1] ""
-#>
-#>$status
-#>[1] 0
-```
+![](man/figures/README/rcmd.svg)<!-- -->
 
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
