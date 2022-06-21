@@ -67,7 +67,211 @@
           
           <code><a href="callr-package.html">callr-package</a></code> 
         </dt>
-        <dd>callr: Call R from R</dd>
+        <dd><div class="section">
+<h3 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a></h3>
+
+<ul><li><p>Calls an R function, with arguments, in a subprocess.</p></li>
+<li><p>Copies function arguments to the subprocess and copies the return value of the function back, seamlessly.</p></li>
+<li><p>Copies error objects back from the subprocess, including a stack trace.</p></li>
+<li><p>Shows and/or collects the standard output and standard error of the subprocess.</p></li>
+<li><p>Supports both one-off and persistent R subprocesses.</p></li>
+<li><p>Calls the function synchronously or asynchronously (in the background).</p></li>
+<li><p>Can call <code>R CMD</code> commands, synchronously or asynchronously.</p></li>
+<li><p>Can call R scripts, synchronously or asynchronously.</p></li>
+<li><p>Provides extensible <code>r_process</code>, <code>rcmd_process</code> and <code>rscript_process</code> R6 classes, based on <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code>.</p></li>
+</ul></div>
+
+<div class="section">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a></h3>
+
+
+<p>Install the stable version from CRAN:</p>
+<p></p><div class="sourceCode r"><pre><code>install.packages("callr")
+</code></pre><p></p></div>
+</div>
+
+<div class="section">
+<h3 id="synchronous-one-off-r-processes">Synchronous, one-off R processes<a class="anchor" aria-label="anchor" href="#synchronous-one-off-r-processes"></a></h3>
+
+
+<p>Use <code><a href="../reference/r.html">r()</a></code> to run an R function in a new R process.
+The results are passed back seamlessly:</p>
+<p></p><div class="sourceCode r"><pre><code>callr::r(function() var(iris[, 1:4]))
+</code></pre><p></p></div>
+<p><img src="figures/simple.svg" alt=""></p><div class="section">
+<h4 id="passing-arguments">Passing arguments<a class="anchor" aria-label="anchor" href="#passing-arguments"></a></h4>
+
+
+<p>You can pass arguments to the function by setting <code>args</code> to the list of arguments.
+This is often necessary as these arguments are explicitly copied to the child process, whereas the evaluated function cannot refer to variables in the parent.
+For example, the following does not work:</p>
+<p></p><div class="sourceCode r"><pre><code>mycars &lt;- cars
+callr::r(function() summary(mycars))
+</code></pre><p></p></div>
+<p><img src="figures/passargsfail.svg" alt=""></p>
+<p>But this does:</p>
+<p></p><div class="sourceCode r"><pre><code>mycars &lt;- cars
+callr::r(function(x) summary(x), args = list(mycars))
+</code></pre><p></p></div>
+<p><img src="figures/passargsok.svg" alt=""></p>
+<p>Note that the arguments will be serialized and saved to a file, so if they are large R objects, it might take a long time for the child process to start up.</p>
+</div>
+
+<div class="section">
+<h4 id="using-packages">Using packages<a class="anchor" aria-label="anchor" href="#using-packages"></a></h4>
+
+
+<p>You can use any R package in the child process, just make sure to refer to it explicitly with the <code>::</code> operator.
+For example, the following code creates an <a href="https://github.com/igraph/rigraph" class="external-link">igraph</a> graph in the child, and calculates some metrics of it.</p>
+<p></p><div class="sourceCode r"><pre><code>callr::r(function() { g &lt;- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
+</code></pre><p></p></div>
+<p><img src="figures/packages.svg" alt=""></p>
+</div>
+
+<div class="section">
+<h4 id="error-handling">Error handling<a class="anchor" aria-label="anchor" href="#error-handling"></a></h4>
+
+
+<p>callr copies errors from the child process back to the main R session:</p>
+<p></p><div class="sourceCode r"><pre><code>callr::r(function() 1 + "A")
+</code></pre><p></p></div>
+<p><img src="figures/error1.svg" alt="">
+callr sets the <code>.Last.error</code> variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.</p>
+<p></p><div class="sourceCode r"><pre><code>.Last.error
+</code></pre><p></p></div>
+<p><img src="figures/error2-2.svg" alt=""></p>
+<p>The error objects has two parts.
+The first belongs to the main process, and the second belongs to the subprocess.</p>
+<p><code>.Last.error</code> also includes a stack trace, that includes both the main R process and the subprocess:</p>
+<p>The top part of the trace contains the frames in the main process, and the bottom part contains the frames in the subprocess, starting with the anonymous function.</p>
+</div>
+
+<div class="section">
+<h4 id="standard-output-and-error">Standard output and error<a class="anchor" aria-label="anchor" href="#standard-output-and-error"></a></h4>
+
+
+<p>By default, the standard output and error of the child is lost, but you can request callr to redirect them to files, and then inspect the files in the parent:</p>
+<p></p><div class="sourceCode r"><pre><code>x &lt;- callr::r(function() { print("hello world!"); message("hello again!") },
+  stdout = "/tmp/out", stderr = "/tmp/err"
+)
+readLines("/tmp/out")
+</code></pre><p></p></div>
+<p><img src="figures/io.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>readLines("/tmp/err")
+</code></pre><p></p></div>
+<p><img src="figures/unnamed-chunk-3.svg" alt=""></p>
+<p>With the <code>stdout</code> option, the standard output is collected and can be examined once the child process finished.
+The <code>show = TRUE</code> options will also show the output of the child, as it is printed, on the console of the parent.</p>
+</div>
+
+
+</div>
+
+<div class="section">
+<h3 id="background-r-processes">Background R processes<a class="anchor" aria-label="anchor" href="#background-r-processes"></a></h3>
+
+
+<p><code><a href="../reference/r_bg.html">r_bg()</a></code> is similar to <code><a href="../reference/r.html">r()</a></code> but it starts the R process in the background.
+It returns an <code>r_process</code> R6 object, that provides a rich API:</p>
+<p></p><div class="sourceCode r"><pre><code>rp &lt;- callr::r_bg(function() Sys.sleep(.2))
+rp
+</code></pre><p></p></div>
+<p><img src="figures/bg.svg" alt=""></p>
+<p>This is a list of all <code>r_process</code> methods:</p>
+<p></p><div class="sourceCode r"><pre><code>ls(rp)
+</code></pre><p></p></div>
+<p><img src="figures/bg-methods.svg" alt=""></p>
+<p>These include all methods of the <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> superclass and the new <code><a href="../reference/get_result.html">get_result()</a></code> method, to retrieve the R object returned by the function call.
+Some of the handiest methods are:</p><ul><li><p><code>get_exit_status()</code> to query the exit status of a finished process.</p></li>
+<li><p><code><a href="../reference/get_result.html">get_result()</a></code> to collect the return value of the R function call.</p></li>
+<li><p><code>interrupt()</code> to send an interrupt to the process. This is equivalent to a <code>CTRL+C</code> key press, and the R process might ignore it.</p></li>
+<li><p><code>is_alive()</code> to check if the process is alive.</p></li>
+<li><p><code>kill()</code> to terminate the process.</p></li>
+<li><p><code>poll_io()</code> to wait for any standard output, standard error, or the completion of the process, with a timeout.</p></li>
+<li><p><code>read_*()</code> to read the standard output or error.</p></li>
+<li><p><code>suspend()</code> and <code>resume()</code> to stop and continue a process.</p></li>
+<li><p><code>wait()</code> to wait for the completion of the process, with a timeout.</p></li>
+</ul></div>
+
+<div class="section">
+<h3 id="multiple-background-r-processes-and-poll-">Multiple background R processes and <code>poll()</code><a class="anchor" aria-label="anchor" href="#multiple-background-r-processes-and-poll-"></a></h3>
+
+
+<p>Multiple background R processes are best managed with the <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> function that waits for events (standard output/error or termination) from multiple processes.
+It returns as soon as one process has generated an event, or if its timeout has expired.
+The timeout is in milliseconds.</p>
+<p></p><div class="sourceCode r"><pre><code>rp1 &lt;- callr::r_bg(function() { Sys.sleep(1/2); "1 done" })
+rp2 &lt;- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
+processx::poll(list(rp1, rp2), 1000)
+</code></pre><p></p></div>
+<p><img src="figures/poll.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>rp2$get_result()
+</code></pre><p></p></div>
+<p><img src="figures/poll-2.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>processx::poll(list(rp1), 1000)
+</code></pre><p></p></div>
+<p><img src="figures/poll-3.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>rp1$get_result()
+</code></pre><p></p></div>
+<p><img src="figures/poll-4.svg" alt=""></p>
+</div>
+
+<div class="section">
+<h3 id="persistent-r-sessions">Persistent R sessions<a class="anchor" aria-label="anchor" href="#persistent-r-sessions"></a></h3>
+
+
+<p><code>r_session</code> is another <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> subclass that represents a persistent background R session:</p>
+<p></p><div class="sourceCode r"><pre><code>rs &lt;- callr::r_session$new()
+rs
+</code></pre><p></p></div>
+<p><img src="figures/rsession.svg" alt=""></p>
+<p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="../reference/r.html">r()</a></code>, but uses the persistent session.
+<code>r_session$call()</code> starts the function call and returns immediately.
+The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
+<p>Once an R session is done with an asynchronous computation, its <code>poll_process()</code> method returns <code>"ready"</code> and the <code>r_session$read()</code> method can read out the result.</p>
+<p></p><div class="sourceCode r"><pre><code>rs &lt;- callr::r_session$new()
+rs$run(function() runif(10))
+</code></pre><p></p></div>
+<p><img src="figures/rsession2.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>rs$call(function() rnorm(10))
+rs
+</code></pre><p></p></div>
+<p><img src="figures/rsession2-2.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>rs$poll_process(2000)
+</code></pre><p></p></div>
+<p><img src="figures/rsession-4.svg" alt=""></p>
+<p></p><div class="sourceCode r"><pre><code>rs$read()
+</code></pre><p></p></div>
+<p><img src="figures/rsession-5.svg" alt=""></p>
+</div>
+
+<div class="section">
+<h3 id="running-r-cmd-commands">Running <code>R CMD</code> commands<a class="anchor" aria-label="anchor" href="#running-r-cmd-commands"></a></h3>
+
+
+<p>The <code><a href="../reference/rcmd.html">rcmd()</a></code> function calls an <code>R CMD</code> command.
+For example, you can call <code>R CMD INSTALL</code>, <code>R CMD check</code> or <code>R CMD config</code> this way:</p>
+<p></p><div class="sourceCode r"><pre><code>callr::rcmd("config", "CC")
+</code></pre><p></p></div>
+<p><img src="figures/rcmd.svg" alt=""></p>
+<p>This returns a list with three components: the standard output, the standard error, and the exit (status) code of the <code>R CMD</code> command.</p>
+</div>
+
+<div class="section">
+<h3 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a></h3>
+
+
+<p>Please note that the callr project is released with a
+<a href="https://callr.r-lib.org/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>.
+By contributing to this project, you agree to abide by its terms.</p>
+</div>
+
+<div class="section">
+<h3 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a></h3>
+
+
+<p>MIT © Mango Solutions, RStudio</p>
+</div></dd>
       </dl></div><div class="section level2">
       <h2 id="run-r">Run R<a class="anchor" aria-label="anchor" href="#run-r"></a></h2>
       
