@@ -60,7 +60,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">r_process_options</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">r_process_options</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,8 +85,8 @@ specified, this is the R function to run in the background.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## List all options and their default values:</span></span>
-<span class="r-in"><span class="fu">r_process_options</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## List all options and their default values:</span></span></span>
+<span class="r-in"><span><span class="fu">r_process_options</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $func</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -132,7 +132,7 @@ specified, this is the R function to run in the background.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $load_hook</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "{\n"                                                                                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "    env &lt;- readRDS(\"/tmp/RtmpSfhRCx/callr-env-27a43e00a967\")\n"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "    env &lt;- readRDS(\"/tmp/RtmpFTuqGq/callr-env-2c634902c7f4\")\n"                     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "    data &lt;- env$`__callr_data__`\n"                                                   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             </span>
@@ -178,7 +178,7 @@ specified, this is the R function to run in the background.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
   </div></footer></body></html>

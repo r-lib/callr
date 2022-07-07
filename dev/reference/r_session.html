@@ -155,7 +155,7 @@ start up (<code>wait = TRUE</code>), or return immediately, i.e. before
 the process is actually ready to run. In the latter case you may call
 the <code>poll_process()</code> method to make sure it is ready.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>options <span class="op">=</span> <span class="fu"><a href="../reference/r_session_options.html">r_session_options</a></span><span class="op">(</span><span class="op">)</span>, wait <span class="op">=</span> <span class="cn">TRUE</span>, wait_timeout <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>options <span class="op">=</span> <span class="fu"><a href="../reference/r_session_options.html">r_session_options</a></span><span class="op">(</span><span class="op">)</span>, wait <span class="op">=</span> <span class="cn">TRUE</span>, wait_timeout <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -187,7 +187,7 @@ in milliseconds.</p></dd>
 R session. It throws an error if the function call generated an
 error in the child process.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="va">func</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, package <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="va">func</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, package <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -222,7 +222,7 @@ it to the other package. Possible values are:</p><ul><li><p><code>FALSE</code>: 
 the child process as well. It does not throw on errors, but
 returns a non-<code>NULL</code> <code>error</code> member in the result list.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">run_with_output</span><span class="op">(</span><span class="va">func</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, package <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">run_with_output</span><span class="op">(</span><span class="va">func</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, package <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -264,7 +264,7 @@ you can ignore them.</p></li>
 returns immediately. To check if the function is done, call the
 <code>poll_process()</code> method.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">func</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, package <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">func</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, package <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -295,7 +295,7 @@ it to the other package. Possible values are:</p><ul><li><p><code>FALSE</code>: 
 computation, it returns with <code>"ready"</code>. If the timeout
 is reached, it returns with <code>"timeout"</code>.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="va">timeout</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="va">timeout</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -315,7 +315,7 @@ is reached, it returns with <code>"timeout"</code>.</p><div class="section">
 <h3 id="method-get-state-">Method <code>get_state()</code><a class="anchor" aria-label="anchor" href="#method-get-state-"></a></h3>
 <p>Return the state of the R session.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">get_state</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">get_state</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -332,7 +332,7 @@ is reached, it returns with <code>"timeout"</code>.</p><div class="section">
 elapsed time since the current computation has started. The latter
 is <code>NA</code> if there is no active computation.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">get_running_time</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">get_running_time</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -349,7 +349,7 @@ can be progress report events.</p>
 <p>This is a low level function that you only need to use if you
 want to process events (messages) from the R session manually.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -379,7 +379,7 @@ that callr uses for communication.</p></li>
 <p>Terminate the current computation and the R process.
 The session object will be in <code>"finished"</code> state after this.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">close</span><span class="op">(</span>grace <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">close</span><span class="op">(</span>grace <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -404,7 +404,7 @@ the subprocess.</p>
 the subprocess save the trace on error. This is because saving
 the trace can be costly for large objects passed as arguments.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">traceback</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">traceback</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -421,7 +421,7 @@ after an error. See more at <a href="r_session_debug.html">r_session_debug</a>.<
 the subprocess dump frames on error. This is because saving
 the frames can be costly for large objects passed as arguments.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -430,7 +430,7 @@ the frames can be costly for large objects passed as arguments.</p><div class="s
 <p>Experimental function that provides a REPL
 (Read-Eval-Print-Loop) to the subprocess.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="kw">attach</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="kw">attach</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -439,7 +439,7 @@ the frames can be costly for large objects passed as arguments.</p><div class="s
 <p>Finalizer that is called when garbage collecting an <code>r_session</code>
 object, to clean up temporary files.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">finalize</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">finalize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
@@ -447,7 +447,7 @@ object, to clean up temporary files.</p><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Print method for an <code>r_session</code>.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -463,7 +463,7 @@ object, to clean up temporary files.</p><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">r_session</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -481,18 +481,18 @@ object, to clean up temporary files.</p><div class="section">
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va">r_ression</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">get_state</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">get_state</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va">r_ression</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">get_state</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">get_state</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -506,7 +506,7 @@ object, to clean up temporary files.</p><div class="section">
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
   </div></footer></body></html>
