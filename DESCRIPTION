@@ -22,6 +22,7 @@ Imports:
 Suggests:
     cli (>= 1.1.0),
     covr,
+    mockery,
     ps,
     rprojroot,
     spelling,

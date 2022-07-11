@@ -4,7 +4,14 @@
 \name{callr-package}
 \alias{callr}
 \alias{callr-package}
-\title{\subsection{Features}{
+\title{Call R from R}
+\description{
+It is sometimes useful to perform a computation in a separate
+R process, without affecting the current R process at all.  This
+packages does exactly that.
+}
+\details{
+\subsection{Features}{
 \itemize{
 \item Calls an R function, with arguments, in a subprocess.
 \item Copies function arguments to the subprocess and copies the return value of the function back, seamlessly.
@@ -239,9 +246,7 @@ By contributing to this project, you agree to abide by its terms.
 \subsection{License}{
 
 MIT © Mango Solutions, RStudio
-}}
-\description{
-It is sometimes useful to perform a computation in a separate R process, without affecting the current R process at all. This packages does exactly that.
+}
 }
 \seealso{
 Useful links:

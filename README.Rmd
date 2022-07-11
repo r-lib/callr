@@ -27,7 +27,7 @@ options(
   asciicast_knitr_svg = TRUE,
   asciicast_end_wait = 3,
   asciicast_echo = FALSE,
-  asciicast_theme = "solarized-light"
+  asciicast_theme = "github-light"
 )
 ```
 
