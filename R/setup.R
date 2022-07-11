@@ -117,6 +117,15 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
     user <- NA_character_
   }
 
+  # Prevent circular inclusion of .Rprofile.
+  cat(
+    "if (is.null(getOption(\"callr.rprofile_loaded\"))) {",
+    "  options(callr.rprofile_loaded = TRUE)",
+    sep = "\n",
+    file = profile_user,
+    append = TRUE
+  )
+
   if (!is.na(user) && file.exists(user)) {
     xpr <- substitute(
       if (file.exists(user)) source(user, local = TRUE),
@@ -144,6 +153,9 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
   if (!is.null(load_hook)) {
     cat(load_hook, sep = "",  file = profile_user, append = TRUE)
   }
+
+  # End of include guard.
+  cat("\n}\n", file = profile_user, append = TRUE)
 
   c(profile_system, profile_user)
 }

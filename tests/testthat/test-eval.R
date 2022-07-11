@@ -247,6 +247,25 @@ test_that("local .Rprofile is not loaded from actual wd", {
   expect_equal(out, character())
 })
 
+test_that("local .Rprofile is not loaded recursively", {
+  tmp <- tempfile()
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  dir.create(tmp)
+  wd <- getwd()
+  on.exit(setwd(wd), add = TRUE)
+  setwd(tmp)
+
+  expr <- quote({
+    rprofile <- Sys.getenv("R_PROFILE_USER", "~/.Rprofile")
+    if (file.exists(rprofile)) source(rprofile)
+    rm(rprofile)
+    aa <- 123
+  })
+  cat(deparse(expr), file = ".Rprofile", sep = "\n")
+  out <- callr::r(function() aa)
+  expect_equal(out, 123)
+})
+
 test_that("symbolic arguments are protected", {
   expect_equal(
     callr::r(function(x) x, list(x = quote(foobar))),
