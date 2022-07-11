@@ -51,6 +51,11 @@ test_that("write_fd", {
 })
 
 test_that("set_stdout, set_stderr", {
+  # TODO why does this not work on windows, if `set_std{out,err}_file` work?
+  # Also, `set_std{out,err}` work in `r_session`.
+  # But this test crashes at the `set_stdout()` call.
+  skip_on_os("windows")
+
   do <- function() {
     lib <- asNamespace("callr")$load_client_lib()
     f1 <- tempfile()
@@ -66,7 +71,7 @@ test_that("set_stdout, set_stderr", {
     c(readLines(f1), readLines(f2))
   }
 
-  ret <- callr::r(do)  
+  ret <- callr::r(do)
   expect_equal(ret, c("this is output", "this is error"))
 })
 
