@@ -382,15 +382,15 @@ including the the frames.
 You can then inspect these frames with the `$debug()` method.
 We can use it to debug the previous error:
 
-```r
-rs$debug()
-```
-
 ```{asciicast debug}
 #| R.options = utils::modifyList(asciicast::asciicast_knitr_options(),
 #|                               list(asciicast_at = NULL,
 #|                                    asciicast_empty_wait = 5,
 #|                                    asciicast_end_wait = 20,
+#|                                    asciicast_omit_last_line = TRUE,
+#|                                    asciicast_cols = 80,
+#|                                    width = 80,
+#|                                    asciicast_cursor = TRUE,
 #|                                    asciicast_incomplete_error = FALSE)
 #|                              ),
 #| echo = FALSE,
@@ -426,6 +426,10 @@ rs$run(function() { .GlobalEnv$data <- mtcars; NULL })
 #|                               list(asciicast_at = NULL,
 #|                                    asciicast_empty_wait = 5,
 #|                                    asciicast_end_wait = 20,
+#|                                    asciicast_omit_last_line = TRUE,
+#|                                    asciicast_cols = 80,
+#|                                    width = 80,
+#|                                    asciicast_cursor = TRUE,
 #|                                    asciicast_incomplete_error = FALSE)
 #|                              ),
 #| echo = FALSE,
