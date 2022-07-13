@@ -328,8 +328,6 @@
 <h3 id="inspecting-frames-of-a-stack-trace">Inspecting frames of a stack trace<a class="anchor" aria-label="anchor" href="#inspecting-frames-of-a-stack-trace"></a>
 </h3>
 <p>If the <code>callr.traceback</code> is <code>TRUE</code>, then callr saves the full trace, including the the frames. You can then inspect these frames with the <code>$debug()</code> method. We can use it to debug the previous error:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/debug.svg" width="100%"></p>
 </div>
 <div class="section level3">
@@ -338,7 +336,7 @@
 <p>You can use the <code>$attach</code> method to start a REPL (read-eval-print loop) that runs in the subprocess. It is best to do this when the subprocess is idle.</p>
 <p>Press CTRL+C or ESC or type <code>.q</code> and press ENTER to quit the REPL.</p>
 <p>Here is an example:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">.GlobalEnv</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>; <span class="cn">NULL</span> <span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/attach.svg" width="100%"></p>
