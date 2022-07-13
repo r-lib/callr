@@ -1,5 +1,5 @@
 
-# callr development version
+# callr 3.7.1
 
 * When copying existing startup files, an additional newline is appended to
   protect against a missing newline at the end of the file. This would
