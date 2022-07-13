@@ -425,6 +425,7 @@ rs_close <- function(self, private, grace) {
   processx::processx_conn_close(private$pipe)
   processx::processx_conn_close(self$get_output_connection())
   processx::processx_conn_close(self$get_error_connection())
+  invisible()
 }
 
 rs_call <- function(self, private, func, args, package) {
@@ -474,8 +475,6 @@ rs_call <- function(self, private, func, args, package) {
   private$report_back(200, report_str)
 
   private$state <- "busy"
-
-
 }
 
 rs_run_with_output <- function(self, private, func, args, package) {
@@ -566,13 +565,15 @@ rs_debug <- function(self, private) {
 
   help <- function() {
     cat("Debugging in process ", self$get_pid(),
-        ", press CTRL+C (ESC) to quit. Commands:\n", sep = "")
+        ", press CTRL+C (ESC) or type .q to quit. Commands:\n", sep = "")
     cat("  .where       -- print stack trace\n",
         "  .inspect <n> -- inspect a frame, 0 resets to .GlobalEnv\n",
         "  .help        -- print this message\n",
+        "  .q           -- quit debugger\n",
         "  <cmd>        -- run <cmd> in frame or .GlobalEnv\n\n", sep = "")
   }
 
+  should_quit <- FALSE
   translate_cmd <- function(cmd) {
     if (cmd == ".where") {
       traceback(tb)
@@ -592,6 +593,10 @@ rs_debug <- function(self, private) {
       }
       NULL
 
+    } else if (cmd == ".q") {
+      should_quit <<- TRUE
+      NULL
+
     } else {
       cmd
     }
@@ -608,9 +613,10 @@ rs_debug <- function(self, private) {
       if (frame) paste0(" (frame ", frame, ")"), " > ")
     cmd <- rs__attach_get_input(prompt)
     cmd2 <- translate_cmd(cmd)
+    if (should_quit) break
     if (is.null(cmd2)) next
 
-    update_history(cmd)
+    try(update_history(cmd), silent = TRUE)
 
     ret <- self$run_with_output(function(cmd, frame) {
       dump <- as.environment("tools:callr")$`__callr_data__`$.Last.dump
@@ -619,8 +625,11 @@ rs_debug <- function(self, private) {
     }, list(cmd = cmd, frame = frame))
     cat(ret$stdout)
     cat(ret$stderr)
-    if (!is.null(ret$error)) print(ret$error)
-    print(ret$result)
+    if (!is.null(ret$error)) {
+      print(ret$error)
+    } else {
+      print(ret$result)
+    }
   }
   invisible()
 }
@@ -633,7 +642,8 @@ rs_attach <- function(self, private) {
   tryCatch({
     while (TRUE) {
       cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
-      update_history(cmd)
+      if (cmd == ".q") break
+      try(update_history(cmd), silent = TRUE)
       private$write_for_sure(paste0(cmd, "\n"))
       private$report_back(202, "done")
       private$attach_wait()
@@ -880,8 +890,11 @@ rs__handle_condition <- function(cond) {
 #' * `stdout`: Standard output of the sub-process. This can be `NULL` or
 #'   a pipe: `"|"`. If it is a pipe then the output of the subprocess is
 #'   not included in the responses, but you need to poll and read it
-#'   manually. This is for exports.
-#' * `stderr`: Similar to `stdout`, but for the standard error.
+#'   manually. This is for experts. Note that this option is not used
+#'   for the starup phase that currently always runs with `stdout = "|"`.
+#' * `stderr`: Similar to `stdout`, but for the standard error. Like
+#'   `stdout`, it is not used for the startup phase, which runs with
+#'   `stderr = "|"`.
 #' * `error`: See 'Error handling' in [r()].
 #' * `cmdargs`: See the same argument of [r()]. (Its default might be
 #'   different, though.)
