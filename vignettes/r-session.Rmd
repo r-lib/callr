@@ -13,18 +13,22 @@ editor_options:
 ```{r, setup, include = FALSE}
 knitr::opts_chunk$set(
   comment = "#>",
-  cache = FALSE
+  cache = FALSE,
+  out.width = "100%"
 )
 asciicast::init_knitr_engine(
   echo = TRUE,
   echo_input = FALSE,
   startup = quote(library(cli)),
   options = list(
-    asciicast_omit_last_line = TRUE
+    asciicast_omit_last_line = TRUE,
+    asciicast_cols= 80,
+    width = 80
   )
 )
 options(
-  asciicast_theme = "github-light"
+  asciicast_theme = "pkgdown",
+  asciicast_cols = 80
 )
 ```
 
