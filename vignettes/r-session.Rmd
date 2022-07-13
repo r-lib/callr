@@ -60,7 +60,7 @@ rs
 rs$get_state()
 ```
 
-To terminate an R sssion, call its `$close()` method:
+To terminate an R session, call its `$close()` method:
 
 ```{asciicast close}
 rs$close()
@@ -90,12 +90,12 @@ rs2
 rs2$get_state()
 ```
 
-You can use `processx::poll()` to wait for the R sesion being ready, with a
+You can use `processx::poll()` to wait for the R session being ready, with a
 timeout.
 The timeout can also be 0ms for a quick check without waiting.
 This lets you do extra work in the main process while the R process is
 starting up.
-It also lets you start up multiple processes concurently, see the next
+It also lets you start up multiple processes concurrently, see the next
 section.
 
 ```{asciicast start-bg-3}
@@ -164,7 +164,7 @@ stop running, until the main process reads the pipe.
 rs3$close()
 ```
 
-## Running multipe R sessions
+## Running multiple R sessions
 
 If you need to start several R sessions quickly, then it is best to use
 `wait = FALSE` and then `poll()` for all processes until they are all
@@ -451,7 +451,7 @@ The `$read()` method can return messages with the following `code`s:
 * `202`: attach is done. This is used internally by the `$attach()` method,
   see the section about debugging below.
 * `301`: message from the subprocess. E.g. the cli package can generate
-  sucg messages, see
+  such messages, see
   [the cli documentation](https://cli.r-lib.org/articles/semantic-cli.html#sub-processes).
 * `500`: the R session exited cleanly. This means that the evaluated
   expression quit R.

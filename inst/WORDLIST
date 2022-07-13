@@ -1,5 +1,7 @@
 CMD
+CTRL
 Codecov
+ESC
 Eval
 Finalizer
 ORCID
@@ -8,6 +10,8 @@ callr's
 cli
 cliapp
 cloneable
+eval
+finalizer
 funder
 igraph
 interruptible
@@ -18,6 +22,7 @@ packrat
 pkgdown
 processx
 renv
+stderr
 subcommand
 subprocess
 subprocesses
