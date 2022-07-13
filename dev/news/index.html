@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">callr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.7.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.7.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,13 @@
       <small>Source: <a href="https://github.com/r-lib/callr/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2"><h2 class="pkg-version" data-toc-text="development version" id="callr-development-version">callr (development version)<a class="anchor" aria-label="anchor" href="#callr-development-version"></a></h2></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.7.1" id="callr-371">callr 3.7.1<a class="anchor" aria-label="anchor" href="#callr-371"></a></h2><p class="text-muted">CRAN release: 2022-07-13</p>
+<ul><li><p>When copying existing startup files, an additional newline is appended to protect against a missing newline at the end of the file. This would cause R ignore that line (<a href="https://github.com/r-lib/callr/issues/205" class="external-link">#205</a>).</p></li>
+<li><p>Serialization of objects passed between sessions now uses <code>compress=FALSE</code> by default. The default can be changed by setting the <code>callr.compress_transport</code> option (<a href="https://github.com/r-lib/callr/issues/223" class="external-link">#223</a>, <a href="https://github.com/dfalbel" class="external-link">@dfalbel</a>).</p></li>
+<li><p>We have revamped callr’s error objects, with lots of improvements to the output.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.7.0" id="callr-370">callr 3.7.0<a class="anchor" aria-label="anchor" href="#callr-370"></a></h2><p class="text-muted">CRAN release: 2021-04-20</p>
 <ul><li><p>Reporting errors is much faster now (<a href="https://github.com/r-lib/callr/issues/185" class="external-link">#185</a>).</p></li>
