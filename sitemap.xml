@@ -10,6 +10,12 @@
     <loc>https://callr.r-lib.org/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>https://callr.r-lib.org/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://callr.r-lib.org/articles/r-session.html</loc>
+  </url>
+  <url>
     <loc>https://callr.r-lib.org/authors.html</loc>
   </url>
   <url>
@@ -19,7 +25,7 @@
     <loc>https://callr.r-lib.org/news/index.html</loc>
   </url>
   <url>
-    <loc>https://callr.r-lib.org/reference/callr.html</loc>
+    <loc>https://callr.r-lib.org/reference/callr-package.html</loc>
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/convert_and_check_my_args.html</loc>
