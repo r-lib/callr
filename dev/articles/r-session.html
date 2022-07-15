@@ -76,7 +76,7 @@
 
 
 <script src="r-session_files/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="r-session_files/asciinema_player-2.6.1/asciinema-player.css" rel="stylesheet">
-<script src="r-session_files/asciinema_player-2.6.1/asciinema-player.js"></script><script src="r-session_files/asciinema_player-binding-1.0.0.9001/asciinema_player.js"></script><div class="row">
+<script src="r-session_files/asciinema_player-2.6.1/asciinema-player.js"></script><script src="r-session_files/asciinema_player-binding-2.0.0.9000/asciinema_player.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Persistent External R Sessions</h1>
             
@@ -95,7 +95,7 @@
 <div class="section level2">
 <h2 id="starting-and-terminating-an-r-session">Starting and terminating an R session<a class="anchor" aria-label="anchor" href="#starting-and-terminating-an-r-session"></a>
 </h2>
-<p>Use <code>r_session$new()</code> to start an R session. By default <code>r_sessiob$new()</code> blocks, i.e. it does not return until the R session is up and running and ready to run R commands. If an error happens when starting the process, including an R error, then <code>r_session$new()</code> throws an error. A blocking <code>r_session$new()</code> waits at most <code>wait_timeout</code> milliseconds for R to start up. <code>wait_timeout</code> is by default 3000 milliseconds, which should be plenty. Typically R starts up in about 100-300 milliseconds.</p>
+<p>Use <code>r_session$new()</code> to start an R session. By default <code>r_session$new()</code> blocks, it does not return until the R session is up and running and ready to run R commands. If an error happens during process startup, including an R error, then <code>r_session$new()</code> throws an error. A blocking <code>r_session$new()</code> waits at most <code>wait_timeout</code> milliseconds for R to start up. <code>wait_timeout</code> is by default 3000 milliseconds, which should be plenty. Typically R starts up in about 100-300 milliseconds.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://callr.r-lib.org">callr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -111,7 +111,7 @@
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">close</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rs</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/close.svg" width="100%"></p>
-<p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects, <code>r_session</code> objects have a finalizer, and they will be terminated when R object that represents them is garbage collected.</p>
+<p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects, <code>r_session</code> objects have a finalizer, and they will be terminated when the R object that represents them is garbage collected.</p>
 <div class="section level3">
 <h3 id="non-blocking-startup">Non-blocking startup<a class="anchor" aria-label="anchor" href="#non-blocking-startup"></a>
 </h3>
@@ -130,8 +130,8 @@
 <code class="sourceCode R"><span><span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">rs2</span><span class="op">)</span>, <span class="fl">3000</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/start-bg-3.svg" width="100%"></p>
 <p>The important part of the output is the <code>process</code> connection. This will be <code>"ready"</code> if the R process is up and running, or if an error happened. It will be <code>"timeout"</code> if it is not yet ready.</p>
-<p><code>output</code> and <code>error</code> will be <code>"ready"</code> if the R process emitted something to its standard output and standard error, respectively. By default these will be <code>"silent"</code> because the standard output and error is ignored. This can be changed via the <code>options</code> argument and <code><a href="../reference/r_session_options.html">r_session_options()</a></code>.</p>
-<p>Once <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">poll()</a></code> reports a <code>"ready"</code> <code>process</code> connection, you can call the <code>r_session$read()</code> method to see if the startup was successful.</p>
+<p><code>output</code> and <code>error</code> will be <code>"ready"</code> if the R process emitted something to its standard output and standard error, respectively. Usually these will be <code>"silent"</code> because we suppress R output during startup with command line options. This can be changed via the <code>options</code> argument and <code><a href="../reference/r_session_options.html">r_session_options()</a></code>.</p>
+<p>Once <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> reports a <code>"ready"</code> <code>process</code> connection, you can call the <code>r_session$read()</code> method to see if the startup was successful.</p>
 <p>If <code>r_session$$read()</code> reports “201 STARTED”, it is ready to run R code:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs2</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -159,12 +159,12 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs3</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/options-4.svg" width="100%"></p>
-<p>Use the <code>$poll_process()</code> method to poll only the process for being ready, without polling the standard output and error. Note, however, that if the process may generate enough output on stderr or stderr that fills the pipe buffer between the processes, then it will stop running, until the main process reads the pipe.</p>
+<p>Use the <code>$poll_process()</code> method to poll only the process for being ready, without polling the standard output and error. Note, however, that if the process generates enough output on stdout or stderr that fills the pipe buffer between the processes, then it will stop running, until the main process reads the pipe.</p>
 </div>
 <div class="section level2">
 <h2 id="running-multiple-r-sessions">Running multiple R sessions<a class="anchor" aria-label="anchor" href="#running-multiple-r-sessions"></a>
 </h2>
-<p>If you need to start several R sessions quickly, then it is best to use <code>wait = FALSE</code> and then <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">poll()</a></code> for all processes until they are all ready.</p>
+<p>If you need to start several R sessions quickly, then it is best to use <code>wait = FALSE</code> and then <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> for all processes until they are all ready.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">num_procs</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
 <span><span class="va">procs</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -195,25 +195,25 @@
 <p><code>r_session</code> objects have three methods to run R code:</p>
 <ul>
 <li>
-<code><a href="http://processx.r-lib.org/reference/run.html" class="external-link">run()</a></code> is synchronous and omits standard output and error.</li>
+<code>$run()</code> is synchronous and omits standard output and error.</li>
 <li>
-<code>run_with_output()</code> is synchronous and collects standard output and error.</li>
+<code>$run_with_output()</code> is synchronous and collects standard output and error.</li>
 <li>
-<code><a href="https://rdrr.io/r/base/call.html" class="external-link">call()</a></code> is asynchronous and collects standard output and error.</li>
+<code>$call()</code> is asynchronous and collects standard output and error.</li>
 </ul>
 <p>Let’s use the 4 R sessions created above to demonstrate them.</p>
-<p><code><a href="http://processx.r-lib.org/reference/run.html" class="external-link">run()</a></code> is the simplest:</p>
+<p><code>$run()</code> is the simplest:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"I am process {Sys.getpid()}."</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/run.svg" width="100%"></p>
-<p><code>run_with_output()</code> has the output as well:</p>
+<p><code>$run_with_output()</code> has the output as well:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">run_with_output</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"I am process "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"."</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/run-with-output.svg" width="100%"></p>
-<p><code><a href="https://rdrr.io/r/base/call.html" class="external-link">call()</a></code> starts running the function, but does not wait for the result:</p>
+<p><code>$call()</code> starts running the function, but does not wait for the result:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">procs</span><span class="op">$</span><span class="va">session</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">p</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -228,7 +228,7 @@
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">poll</a></span><span class="op">(</span><span class="va">procs</span><span class="op">$</span><span class="va">session</span>, <span class="fl">5000</span><span class="op">)</span></span>
 <span><span class="va">pr</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/call-1.svg" width="100%"></p>
-<p>Then you can either use the <code>$read()</code> method to read out the result (or error, if a failure happened):</p>
+<p>Then you can use the <code>$read()</code> method to read out the result (or error, if a failure happened):</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">pr</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"process"</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"ready"</span><span class="op">)</span> <span class="op">{</span></span>
@@ -258,7 +258,7 @@
 <span><span class="op">}</span></span>
 <span><span class="fu">wait_for_sessions</span><span class="op">(</span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/call-3.svg" width="100%"></p>
-<p>Errors from a <code><a href="http://processx.r-lib.org/reference/run.html" class="external-link">run()</a></code> are turned into errors in the main process:</p>
+<p>Errors from a <code>$run()</code> are turned into errors in the main process:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"not-a-package"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -267,7 +267,7 @@
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">.Last.error</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/last-error.svg" width="100%"></p>
-<p>Errors from a <code><a href="https://rdrr.io/r/base/call.html" class="external-link">call()</a></code> are returned in the <code>error</code> entry of the result:</p>
+<p>Errors from a <code>$call()</code> are returned in the <code>error</code> entry of the result:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"still-not"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span>
@@ -327,21 +327,21 @@
 <div class="section level3">
 <h3 id="inspecting-frames-of-a-stack-trace">Inspecting frames of a stack trace<a class="anchor" aria-label="anchor" href="#inspecting-frames-of-a-stack-trace"></a>
 </h3>
-<p>If the <code>callr.traceback</code> is <code>TRUE</code>, then callr saves the full trace, including the the frames. You can then inspect these frames with the <code>$debug()</code> method. We can use it to debug the previous error:</p>
+<p>If the <code>callr.traceback</code> option is <code>TRUE</code>, then callr saves the full trace, including the frames. You can then inspect these frames with the <code>$debug()</code> method. We can use it here to debug the previous error:</p>
 <p><img src="r-session_files/figure-html/debug.svg" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="interactive-debugging">Interactive debugging<a class="anchor" aria-label="anchor" href="#interactive-debugging"></a>
 </h3>
-<p>You can use the <code>$attach</code> method to start a REPL (read-eval-print loop) that runs in the subprocess. It is best to do this when the subprocess is idle.</p>
-<p>Press CTRL+C or ESC or type <code>.q</code> and press ENTER to quit the REPL.</p>
+<p>You can use the <code>$attach</code> method to start a REPL (read-eval-print loop) that runs in the subprocess. It is best to do this when the subprocess is idle, otherwise it is probably not responsive.</p>
+<p>Press CTRL+C or ESC, or type <code>.q</code> and press ENTER to quit the REPL.</p>
 <p>Here is an example:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">.GlobalEnv</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>; <span class="cn">NULL</span> <span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p><img src="r-session_files/figure-html/attach.svg" width="100%"></p>
 <p><img src="r-session_files/figure-html/attach-1.svg" width="100%"></p>
-<p>This is an experimental feature and it does not always print the output properly, but nevertheless it can be already useful.</p>
+<p>This is an experimental feature and it does not always print the output properly, e.g. sometimes you need to press ENTER twice, but nevertheless it can be useful at times.</p>
 </div>
 </div>
 <div class="section level2">
