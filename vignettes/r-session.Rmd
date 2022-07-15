@@ -42,9 +42,9 @@ still available for use.
 ## Starting and terminating an R session
 
 Use `r_session$new()` to start an R session.
-By default `r_sessiob$new()` blocks, i.e. it does not return until the R
+By default `r_session$new()` blocks, it does not return until the R
 session is up and running and ready to run R commands.
-If an error happens when starting the process, including an R error, then
+If an error happens during process startup, including an R error, then
 `r_session$new()` throws an error.
 A blocking `r_session$new()` waits at most `wait_timeout` milliseconds for R
 to start up.
@@ -72,7 +72,7 @@ rs
 ```
 
 Just like `processx::process` objects, `r_session` objects have a finalizer,
-and they will be terminated when R object that represents them is garbage
+and they will be terminated when the R object that represents them is garbage
 collected.
 
 ### Non-blocking startup
@@ -112,11 +112,11 @@ It will be `"timeout"` if it is not yet ready.
 
 `output` and `error` will be `"ready"` if the R process emitted something to
 its standard output and standard error, respectively.
-By default these will be `"silent"` because the standard output and error
-is ignored.
+Usually these will be `"silent"` because we suppress R output during startup
+with command line options.
 This can be changed via the `options` argument and `r_session_options()`.
 
-Once `poll()` reports a `"ready"` `process` connection, you can call the
+Once `processx::poll()` reports a `"ready"` `process` connection, you can call the
 `r_session$read()` method to see if the startup was successful.
 
 If `r_session$$read()` reports "201 STARTED", it is ready to run R code:
@@ -160,7 +160,7 @@ rs3$read()
 
 Use the `$poll_process()` method to poll only the process for being ready,
 without polling the standard output and error.
-Note, however, that if the process may generate enough output on stderr
+Note, however, that if the process generates enough output on stdout
 or stderr that fills the pipe buffer between the processes, then it will
 stop running, until the main process reads the pipe.
 
@@ -171,8 +171,8 @@ rs3$close()
 ## Running multiple R sessions
 
 If you need to start several R sessions quickly, then it is best to use
-`wait = FALSE` and then `poll()` for all processes until they are all
-ready.
+`wait = FALSE` and then `processx::poll()` for all processes until they are
+all ready.
 
 ```{r include = FALSE}
 num_procs <- 4
@@ -207,19 +207,19 @@ procs$start_result
 
 `r_session` objects have three methods to run R code:
 
-* `run()` is synchronous and omits standard output and error.
-* `run_with_output()` is synchronous and collects standard output and error.
-* `call()` is asynchronous and collects standard output and error.
+* `$run()` is synchronous and omits standard output and error.
+* `$run_with_output()` is synchronous and collects standard output and error.
+* `$call()` is asynchronous and collects standard output and error.
 
 Let's use the `r num_procs` R sessions created above to demonstrate them.
 
-`run()` is the simplest:
+`$run()` is the simplest:
 
 ```{asciicast run}
 procs$session[[1]]$run(function() glue::glue("I am process {Sys.getpid()}."))
 ```
 
-`run_with_output()` has the output as well:
+`$run_with_output()` has the output as well:
 
 ```{asciicast run-with-output}
 procs$session[[1]]$run_with_output(function() {
@@ -228,7 +228,7 @@ procs$session[[1]]$run_with_output(function() {
 })
 ```
 
-`call()` starts running the function, but does not wait for the result:
+`$call()` starts running the function, but does not wait for the result:
 
 ```{asciicast call}
 invisible(lapply(procs$session, function(p) {
@@ -248,7 +248,7 @@ pr <- processx::poll(procs$session, 5000)
 pr
 ```
 
-Then you can either use the `$read()` method to read out the result
+Then you can use the `$read()` method to read out the result
 (or error, if a failure happened):
 
 ```{asciicast call-2}
@@ -286,7 +286,7 @@ wait_for_sessions(procs$session)
 ```
 
 
-Errors from a `run()` are turned into errors in the main process:
+Errors from a `$run()` are turned into errors in the main process:
 
 ```{asciicast error}
 rs <- r_session$new()
@@ -300,7 +300,7 @@ and one for the subprocess:
 .Last.error
 ```
 
-Errors from a `call()` are returned in the `error` entry of the result:
+Errors from a `$call()` are returned in the `error` entry of the result:
 
 ```{asciicast error-call}
 rs$call(function() library("still-not"))
@@ -377,10 +377,10 @@ rs$traceback()
 
 ### Inspecting frames of a stack trace
 
-If the `callr.traceback` is `TRUE`, then callr saves the full trace,
-including the the frames.
+If the `callr.traceback` option is `TRUE`, then callr saves the full trace,
+including the frames.
 You can then inspect these frames with the `$debug()` method.
-We can use it to debug the previous error:
+We can use it here to debug the previous error:
 
 ```{asciicast debug}
 #| R.options = utils::modifyList(asciicast::asciicast_knitr_options(),
@@ -410,9 +410,10 @@ vec
 
 You can use the `$attach` method to start a REPL (read-eval-print loop)
 that runs in the subprocess.
-It is best to do this when the subprocess is idle.
+It is best to do this when the subprocess is idle, otherwise it is
+probably not responsive.
 
-Press CTRL+C or ESC or type `.q` and press ENTER to quit the REPL.
+Press CTRL+C or ESC, or type `.q` and press ENTER to quit the REPL.
 
 Here is an example:
 
@@ -446,7 +447,8 @@ head(data)
 
 
 This is an experimental feature and it does not always print the output
-properly, but nevertheless it can be already useful.
+properly, e.g. sometimes you need to press ENTER twice, but nevertheless
+it can be useful at times.
 
 ## Communication protocol
 

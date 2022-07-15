@@ -23,6 +23,7 @@ pkgdown
 processx
 renv
 stderr
+stdout
 subcommand
 subprocess
 subprocesses
