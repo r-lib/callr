@@ -37,5 +37,6 @@ Config/Needs/website:
     r-lib/asciicast,
     glue,
     htmlwidgets,
+    igraph,
     tibble,
     tidyverse/tidytemplate
