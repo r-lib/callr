@@ -891,7 +891,7 @@ rs__handle_condition <- function(cond) {
 #'   a pipe: `"|"`. If it is a pipe then the output of the subprocess is
 #'   not included in the responses, but you need to poll and read it
 #'   manually. This is for experts. Note that this option is not used
-#'   for the starup phase that currently always runs with `stdout = "|"`.
+#'   for the startup phase that currently always runs with `stdout = "|"`.
 #' * `stderr`: Similar to `stdout`, but for the standard error. Like
 #'   `stdout`, it is not used for the startup phase, which runs with
 #'   `stderr = "|"`.
