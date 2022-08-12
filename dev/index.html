@@ -2261,7 +2261,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace, line-height: 1.300000 }
 </style>
 <div class="asciicast"><pre>
-#&gt; [1] 12                                                                                              
+#&gt; [1] 13                                                                                              
 </pre></div>
 </div>
 <div class="section level3">
@@ -4940,7 +4940,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace, line-height: 1.300000 }
 </style>
 <div class="asciicast"><pre>
-#&gt; PROCESS 'R', running, pid 12434.                                                                    
+#&gt; PROCESS 'R', running, pid 11903.                                                                    
 </pre></div>
 <p>This is a list of all <code>r_process</code> methods:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -8164,7 +8164,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace, line-height: 1.300000 }
 </style>
 <div class="asciicast"><pre>
-#&gt; R SESSION, alive, idle, pid 12476.                                                                  
+#&gt; R SESSION, alive, idle, pid 11946.                                                                  
 </pre></div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
 <p>Once an R session is done with an asynchronous computation, its <code>poll_process()</code> method returns <code>"ready"</code> and the <code>r_session$read()</code> method can read out the result.</p>
@@ -8694,8 +8694,8 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace, line-height: 1.300000 }
 </style>
 <div class="asciicast"><pre>
-#&gt;  [1] 0.3403476 0.5176025 0.3318240 0.8421535 0.5304227 0.6316170 0.5773959                          
-#&gt;  [8] 0.7406016 0.3957294 0.5528146                                                                  
+#&gt;  [1] 0.35569086 0.02316742 0.03296161 0.39898935 0.84494513 0.24930484                              
+#&gt;  [7] 0.83084906 0.93932564 0.95625386 0.17607553                                                    
 </pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
@@ -9223,7 +9223,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace, line-height: 1.300000 }
 </style>
 <div class="asciicast"><pre>
-#&gt; R SESSION, alive, busy, pid 12482.                                                                  
+#&gt; R SESSION, alive, busy, pid 11952.                                                                  
 </pre></div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
@@ -10281,11 +10281,11 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt; [1] 200                                                                                             
 #&gt;                                                                                                     
 #&gt; $message                                                                                            
-#&gt; [1] "done callr-rs-result-303453b20b9"                                                              
+#&gt; [1] "done callr-rs-result-2e22c4699fa"                                                              
 #&gt;                                                                                                     
 #&gt; $result                                                                                             
-#&gt;  [1] -0.608059640  0.843211374 -1.308925541  0.003599485 -0.480214214                               
-#&gt;  [6]  0.646511920 -0.347774168  0.192867088  2.022307954  0.215217220                               
+#&gt;  [1]  0.2392251  0.7012513 -0.8130595 -0.3169331 -1.2974869 -0.2047362                              
+#&gt;  [7] -1.1144107 -2.0050796  0.3167349  0.2435016                                                    
 #&gt;                                                                                                     
 #&gt; $stdout                                                                                             
 #&gt; [1] ""                                                                                              

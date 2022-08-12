@@ -624,7 +624,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 <div class="asciicast">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.018   0.004   0.179                                                         
+#&gt;   0.025   0.004   0.222                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -1153,7 +1153,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 </style>
 <div class="asciicast">
 <pre>
-#&gt; R SESSION, alive, idle, pid 13722.                                              
+#&gt; R SESSION, alive, idle, pid 13193.                                              
 </pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -2213,7 +2213,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 </style>
 <div class="asciicast">
 <pre>
-#&gt; R SESSION, finished, pid 13722.                                                 
+#&gt; R SESSION, finished, pid 13193.                                                 
 </pre>
 </div>
 <p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects, <code>r_session</code> objects have a finalizer, and they will be terminated when the R object that represents them is garbage collected.</p>
@@ -2748,7 +2748,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 <div class="asciicast">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.001   0.004   0.006                                                         
+#&gt;   0.003   0.004   0.008                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -3277,7 +3277,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 </style>
 <div class="asciicast">
 <pre>
-#&gt; R SESSION, alive, starting, pid 13731.                                          
+#&gt; R SESSION, alive, starting, pid 13203.                                          
 </pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -7569,7 +7569,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 <div class="asciicast">
 <pre>
 #&gt; Time differences in secs                                                        
-#&gt; [1] 0.3177619 0.3177619 0.3177619 0.3177619                                     
+#&gt; [1] 0.3749413 0.3749413 0.3749413 0.3749413                                     
 </pre>
 </div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -8681,7 +8681,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 </style>
 <div class="asciicast">
 <pre>
-#&gt; I am process 13747.                                                             
+#&gt; I am process 13218.                                                             
 </pre>
 </div>
 <p><code>$run_with_output()</code> has the output as well:</p>
@@ -9218,7 +9218,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-359479e53b45"                                         
+#&gt; [1] "done callr-rs-result-33824f736f15"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt;                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -9233,7 +9233,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt; [1] ""                                                                          
 #&gt;                                                                                 
 #&gt; $stderr                                                                         
-#&gt; [1] "I am process 13747.\n"                                                     
+#&gt; [1] "I am process 13218.\n"                                                     
 #&gt;                                                                                 
 #&gt; $error                                                                          
 #&gt; NULL                                                                            
@@ -9776,16 +9776,16 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 <div class="asciicast">
 <pre>
 #&gt; [[1]]                                                                           
-#&gt; R SESSION, alive, busy, pid 13747.                                              
+#&gt; R SESSION, alive, busy, pid 13218.                                              
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
-#&gt; R SESSION, alive, busy, pid 13749.                                              
+#&gt; R SESSION, alive, busy, pid 13220.                                              
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
-#&gt; R SESSION, alive, busy, pid 13750.                                              
+#&gt; R SESSION, alive, busy, pid 13222.                                              
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; R SESSION, alive, busy, pid 13752.                                              
+#&gt; R SESSION, alive, busy, pid 13224.                                              
 #&gt;                                                                                 
 </pre>
 </div>
@@ -10323,7 +10323,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent" "silent"                                                      
+#&gt; "silent" "silent"  "ready"                                                      
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
 #&gt;   output    error  process                                                      
@@ -10867,15 +10867,36 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 </style>
 <div class="asciicast">
 <pre>
+#&gt; Process  2  is ready:                                                           
+#&gt; $code                                                                           
+#&gt; [1] 200                                                                         
+#&gt;                                                                                 
+#&gt; $message                                                                        
+#&gt; [1] "done callr-rs-result-338261d33ea9"                                         
+#&gt;                                                                                 
+#&gt; $result                                                                         
+#&gt; I am process 13220.                                                             
+#&gt;                                                                                 
+#&gt; $stdout                                                                         
+#&gt; [1] ""                                                                          
+#&gt;                                                                                 
+#&gt; $stderr                                                                         
+#&gt; [1] ""                                                                          
+#&gt;                                                                                 
+#&gt; $error                                                                          
+#&gt; NULL                                                                            
+#&gt;                                                                                 
+#&gt; attr(,"class")                                                                  
+#&gt; [1] "callr_session_result"                                                      
 #&gt; Process  4  is ready:                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-359456c545c6"                                         
+#&gt; [1] "done callr-rs-result-33822ce6bf63"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 13752.                                                             
+#&gt; I am process 13224.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -11439,10 +11460,10 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-359478761caf"                                         
+#&gt; [1] "done callr-rs-result-3382433da1eb"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 13747.                                                             
+#&gt; I am process 13218.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -11457,36 +11478,17 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
-#&gt; $code                                                                           
-#&gt; [1] 200                                                                         
-#&gt;                                                                                 
-#&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-35943644c4f1"                                         
-#&gt;                                                                                 
-#&gt; $result                                                                         
-#&gt; I am process 13749.                                                             
-#&gt;                                                                                 
-#&gt; $stdout                                                                         
-#&gt; [1] ""                                                                          
-#&gt;                                                                                 
-#&gt; $stderr                                                                         
-#&gt; [1] ""                                                                          
-#&gt;                                                                                 
-#&gt; $error                                                                          
 #&gt; NULL                                                                            
-#&gt;                                                                                 
-#&gt; attr(,"class")                                                                  
-#&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3594719d7e28"                                         
+#&gt; [1] "done callr-rs-result-33823cc1e944"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 13750.                                                             
+#&gt; I am process 13222.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -13118,7 +13120,7 @@ div.asciicast      { color: #172431, font-family: 'Fira Code',Monaco,Consolas,Me
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-35947b4f2828"                                         
+#&gt; [1] "done callr-rs-result-3382256d0e24"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt; NULL                                                                            
