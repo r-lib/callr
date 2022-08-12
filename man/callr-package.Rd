@@ -41,7 +41,7 @@ The results are passed back seamlessly:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() var(iris[, 1:4]))
 }\if{html}{\out{</div>}}
 
-\figure{simple.svg}
+\if{html}{\figure{simple.svg}}
 \subsection{Passing arguments}{
 
 You can pass arguments to the function by setting \code{args} to the list of arguments.
@@ -52,7 +52,7 @@ For example, the following does not work:
 callr::r(function() summary(mycars))
 }\if{html}{\out{</div>}}
 
-\figure{passargsfail.svg}
+\if{html}{\figure{passargsfail.svg}}
 
 But this does:
 
@@ -60,7 +60,7 @@ But this does:
 callr::r(function(x) summary(x), args = list(mycars))
 }\if{html}{\out{</div>}}
 
-\figure{passargsok.svg}
+\if{html}{\figure{passargsok.svg}}
 
 Note that the arguments will be serialized and saved to a file, so if they are large R objects, it might take a long time for the child process to start up.
 }
@@ -73,7 +73,7 @@ For example, the following code creates an \href{https://github.com/igraph/rigra
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() \{ g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) \})
 }\if{html}{\out{</div>}}
 
-\figure{packages.svg}
+\if{html}{\figure{packages.svg}}
 }
 
 \subsection{Error handling}{
@@ -83,13 +83,13 @@ callr copies errors from the child process back to the main R session:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() 1 + "A")
 }\if{html}{\out{</div>}}
 
-\figure{error1.svg}
+\if{html}{\figure{error1.svg}}
 callr sets the \code{.Last.error} variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{.Last.error
 }\if{html}{\out{</div>}}
 
-\figure{error2-2.svg}
+\if{html}{\figure{error2-2.svg}}
 
 The error objects has two parts.
 The first belongs to the main process, and the second belongs to the subprocess.
@@ -109,12 +109,12 @@ By default, the standard output and error of the child is lost, but you can requ
 readLines("/tmp/out")
 }\if{html}{\out{</div>}}
 
-\figure{io.svg}
+\if{html}{\figure{io.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{readLines("/tmp/err")
 }\if{html}{\out{</div>}}
 
-\figure{unnamed-chunk-3.svg}
+\if{html}{\figure{unnamed-chunk-3.svg}}
 
 With the \code{stdout} option, the standard output is collected and can be examined once the child process finished.
 The \code{show = TRUE} options will also show the output of the child, as it is printed, on the console of the parent.
@@ -131,14 +131,14 @@ It returns an \code{r_process} R6 object, that provides a rich API:
 rp
 }\if{html}{\out{</div>}}
 
-\figure{bg.svg}
+\if{html}{\figure{bg.svg}}
 
 This is a list of all \code{r_process} methods:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{ls(rp)
 }\if{html}{\out{</div>}}
 
-\figure{bg-methods.svg}
+\if{html}{\figure{bg-methods.svg}}
 
 These include all methods of the \code{processx::process} superclass and the new \code{get_result()} method, to retrieve the R object returned by the function call.
 Some of the handiest methods are:
@@ -166,22 +166,22 @@ rp2 <- callr::r_bg(function() \{ Sys.sleep(1/1000); "2 done" \})
 processx::poll(list(rp1, rp2), 1000)
 }\if{html}{\out{</div>}}
 
-\figure{poll.svg}
+\if{html}{\figure{poll.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rp2$get_result()
 }\if{html}{\out{</div>}}
 
-\figure{poll-2.svg}
+\if{html}{\figure{poll-2.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{processx::poll(list(rp1), 1000)
 }\if{html}{\out{</div>}}
 
-\figure{poll-3.svg}
+\if{html}{\figure{poll-3.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rp1$get_result()
 }\if{html}{\out{</div>}}
 
-\figure{poll-4.svg}
+\if{html}{\figure{poll-4.svg}}
 }
 
 \subsection{Persistent R sessions}{
@@ -192,7 +192,7 @@ processx::poll(list(rp1, rp2), 1000)
 rs
 }\if{html}{\out{</div>}}
 
-\figure{rsession.svg}
+\if{html}{\figure{rsession.svg}}
 
 \code{r_session$run()} is a synchronous call, that works similarly to \code{r()}, but uses the persistent session.
 \code{r_session$call()} starts the function call and returns immediately.
@@ -204,23 +204,23 @@ Once an R session is done with an asynchronous computation, its \code{poll_proce
 rs$run(function() runif(10))
 }\if{html}{\out{</div>}}
 
-\figure{rsession2.svg}
+\if{html}{\figure{rsession2.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$call(function() rnorm(10))
 rs
 }\if{html}{\out{</div>}}
 
-\figure{rsession2-2.svg}
+\if{html}{\figure{rsession2-2.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$poll_process(2000)
 }\if{html}{\out{</div>}}
 
-\figure{rsession-4.svg}
+\if{html}{\figure{rsession-4.svg}}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$read()
 }\if{html}{\out{</div>}}
 
-\figure{rsession-5.svg}
+\if{html}{\figure{rsession-5.svg}}
 }
 
 \subsection{Running \verb{R CMD} commands}{
@@ -231,7 +231,7 @@ For example, you can call \verb{R CMD INSTALL}, \verb{R CMD check} or \verb{R CM
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::rcmd("config", "CC")
 }\if{html}{\out{</div>}}
 
-\figure{rcmd.svg}
+\if{html}{\figure{rcmd.svg}}
 
 This returns a list with three components: the standard output, the standard error, and the exit (status) code of the \verb{R CMD} command.
 }
