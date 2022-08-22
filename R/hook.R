@@ -72,3 +72,47 @@ session_load_hook <- function(user_hook = NULL) {
 
   paste0(deparse(hook), "\n")
 }
+
+user_hooks_env <- new.env(parent = emptyenv())
+
+#' Add a user hook to be executed before launching an R subprocess
+#'
+#' This function allows users of `callr` to specify functions that get invoked
+#' whenever an R session is launched. The function can modify the environment
+#' variables and command line arguments.
+#'
+#' The prototype of the hook function is `function (options)`, and it is
+#' expected to return the modified `options`.
+#' @param ... Named argument specifying a hook function to add, or `NULL` to
+#'   delete the named hook.
+#' @return `add_hook` is called for its side-effects.
+#' @export
+
+add_hook <- function(...) {
+  args <- list(...)
+  if (length(args) != 1L) {
+    stop("More than one argument passed to `add_hook`")
+  }
+
+  name <- names(args)
+  if (is.null(name)) {
+    stop("Argument passed to `add_hook` must be named")
+  }
+
+  hook <- args[[1]]
+  if (is.null(hook)) {
+    rm(list = name, envir = user_hooks_env)
+  } else {
+    assign(name, match.fun(hook), envir = user_hooks_env)
+  }
+
+  invisible()
+}
+
+call_user_hooks <- function(options) {
+  for (name in names(user_hooks_env)) {
+    hook <- user_hooks_env[[name]]
+    options <- tryCatch(hook(options), error = function (e) options)
+  }
+  options
+}
