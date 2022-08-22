@@ -1,13 +1,33 @@
 url: https://callr.r-lib.org
 
+template:
+  package: tidytemplate
+  bootstrap: 5
+  includes:
+    in_header: |
+      <script defer data-domain="callr.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+
 development:
   mode: auto
 
 authors:
-  "Gábor Csárdi":
-    href: https://github.com/gaborcsardi
   "Winston Chang":
     href: https://github.com/wch
+
+navbar:
+  structure:
+    left: [reference, articles, news]
+  components:
+    articles:
+     text: Articles
+     menu:
+     - text: Tutorials
+     - text: Persistent R sessions
+       href: articles/r-session.html
+     - text: -------
+     - text: Blog posts
+     - text: "A multi process task queue in 100 lines of R code"
+       href: https://www.tidyverse.org/blog/2019/09/callr-task-q
 
 reference:
 - title: Introduction
@@ -66,17 +86,3 @@ reference:
   - process
   - run
   - poll
-
-navbar:
-  type: default
-  left:
-  - text: Reference
-    href: reference/index.html
-  - text: Articles
-    menu:
-    - text: A multi process task queue in 100 lines of R code
-      href: https://www.tidyverse.org/blog/2019/09/callr-task-q
-  - text: News
-    menu:
-    - text: "Change log"
-      href: news/index.html

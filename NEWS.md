@@ -1,5 +1,18 @@
+# callr (development version)
 
-# callr development version
+
+# callr 3.7.1
+
+* When copying existing startup files, an additional newline is appended to
+  protect against a missing newline at the end of the file. This would
+  cause R ignore that line (#205).
+
+* Serialization of objects passed between sessions now uses `compress=FALSE`
+  by default. The default can be changed by setting the 
+  `callr.compress_transport` option (#223, @dfalbel).
+
+* We have revamped callr's error objects, with lots of improvements to the
+  output.
 
 # callr 3.7.0
 

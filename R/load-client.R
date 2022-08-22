@@ -17,7 +17,7 @@ load_client_lib <- function(sofile = NULL, pxdir = NULL) {
     sofile <- system.file(
       "src", paste0("client", ext),
       package = "processx")
-    if (sofile != "" && file.exists(sofile)) return(sofile)
+    if (sofile != "" && file.exists(sofile)) return(sofile)         # nocov
 
     # stop() here and not throw(), because this function should be standalone
     stop("Cannot find client file")
@@ -45,7 +45,7 @@ load_client_lib <- function(sofile = NULL, pxdir = NULL) {
   }
 
   # cleanup if setup fails
-  on.exit(dyn.unload(sofile))
+  on.exit(try(dyn.unload(sofile), silent = TRUE), add = TRUE)
 
   sym_encode <- getNativeSymbolInfo("processx_base64_encode", lib)
   sym_decode <- getNativeSymbolInfo("processx_base64_decode", lib)

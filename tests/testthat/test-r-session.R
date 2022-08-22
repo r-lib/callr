@@ -1,6 +1,4 @@
 
-context("r_session")
-
 test_that("regular use", {
   rs <- r_session$new()
   on.exit(rs$kill())
@@ -116,8 +114,7 @@ test_that("interrupt", {
   rs$interrupt()
   rs$poll_process(1000)
   res <- rs$read()
-  expect_s3_class(res$error, "rlib_error")
-  expect_s3_class(res$error$parent$error, "interrupt")
+  expect_s3_class(res$error, "callr_timeout_error")
   rs$close()
 })
 
@@ -259,6 +256,7 @@ test_that("custom load hook", {
 })
 
 test_that("traceback", {
+  withr::local_options(callr.traceback = TRUE)
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 

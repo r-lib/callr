@@ -1,6 +1,4 @@
 
-context("library path setup")
-
 test_that(".Library", {
   expect_equal(
     .Library,

@@ -1,6 +1,4 @@
 
-context("rcmd")
-
 test_that("rcmd works", {
   expect_equal(rcmd("config", "CC")$status, 0)
   expect_match(rcmd("config", "CC")$stdout, ".")
@@ -77,7 +75,7 @@ test_that("stderr -> stdout", {
   expect_match(
     out2$stdout,
     "installing.*No man pages found.*testing if installed package")
-  expect_equal(out2$stderr, "")
+  expect_null(out2$stderr)
 
   out3 <- test_temp_file(create = FALSE)
   rcmd("INSTALL", c("-l", lib, pkg), stdout = out3, stderr = out3)

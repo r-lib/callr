@@ -18,3 +18,10 @@
 ^r-packages$
 ^\.Rprofile$
 ^\.github$
+^dev-lib$
+^codecov\.yml$
+^README_files$
+^[.]covrignore$
+^vignettes$
+^man/_cache$
+^README_cache$

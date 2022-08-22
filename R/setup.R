@@ -14,7 +14,9 @@ save_function_to_temp <- function(options) {
   options$func <- transport_fun(options$func, options$package)
   # Once we start saving the function environments, we might get
   # "'package:x' may not be available when loading" warnings
-  suppressWarnings(saveRDS(list(options$func, options$args), file = tmp))
+  suppressWarnings(saveRDS(
+    list(options$func, options$args), file = tmp,
+    compress = getOption("callr.compress_transport", FALSE)))
   tmp
 }
 
@@ -99,7 +101,10 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
       )
     }
     sys <- path.expand(sys)
-    if (file.exists(sys)) file.append(profile_system, sys)
+    if (file.exists(sys)) {
+      file.append(profile_system, sys)
+      cat("\n", file = profile_system, append = TRUE)
+    }
   }
 
   if (identical(user, "project")) {
@@ -115,6 +120,15 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
   } else {
     user <- NA_character_
   }
+
+  # Prevent circular inclusion of .Rprofile.
+  cat(
+    "if (is.null(getOption(\"callr.rprofile_loaded\"))) {",
+    "  options(callr.rprofile_loaded = TRUE)",
+    sep = "\n",
+    file = profile_user,
+    append = TRUE
+  )
 
   if (!is.na(user) && file.exists(user)) {
     xpr <- substitute(
@@ -144,6 +158,9 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
     cat(load_hook, sep = "",  file = profile_user, append = TRUE)
   }
 
+  # End of include guard.
+  cat("\n}\n", file = profile_user, append = TRUE)
+
   c(profile_system, profile_user)
 }
 
@@ -162,7 +179,10 @@ make_environ <- function(profiles, libpath, env) {
   sys <- env["R_ENVIRON"]
   if (is.na(sys)) sys <- Sys.getenv("R_ENVIRON", NA_character_)
   if (is.na(sys)) sys <- file.path(R.home("etc"), "Renviron.site")
-  if (!is.na(sys) && file.exists(sys)) file.append(env_sys, sys)
+  if (!is.na(sys) && file.exists(sys)) {
+    file.append(env_sys, sys)
+    cat("\n", file = env_sys, append = TRUE)
+  }
 
   user <- env["R_ENVIRON_USER"]
   if (is.na(user)) user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
@@ -170,7 +190,10 @@ make_environ <- function(profiles, libpath, env) {
   home <- "~/.Renviron"
   if (is.na(user) && file.exists(local)) user <- local
   if (is.na(user) && file.exists(home)) user <- home
-  if (!is.na(user) && file.exists(user)) file.append(env_user, user)
+  if (!is.na(user) && file.exists(user)) {
+    file.append(env_user, user)
+    cat("\n", file = env_user, append = TRUE)
+  }
 
   for (ef in c(env_sys, env_user)) {
     cat("R_PROFILE=\"", profiles[[1]], "\"\n", file = ef,

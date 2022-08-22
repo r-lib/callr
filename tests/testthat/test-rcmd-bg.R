@@ -1,6 +1,4 @@
 
-context("rcmd_bg")
-
 test_that("rcmd_bg runs", {
   out1 <- gsub("\r?\n", "", rcmd("config", "CC")$stdout)
   x <- rcmd_bg("config", "CC")

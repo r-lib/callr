@@ -1,6 +1,4 @@
 
-context("options")
-
 test_that("error for unknown options", {
 
   expect_error(

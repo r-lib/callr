@@ -135,6 +135,19 @@
 #' subprocess finishes. You can use the keyring package to avoid passwords
 #' in plain files.
 #'
+#' @section Transporting objects:
+#'
+#' `func` and `args` are copied to the child process by first serializing them
+#' into a temporary file using [saveRDS()] and then loading them back into the
+#' child session using [readRDS()]. The same strategy is used to copy the result
+#' of calling `func(args)` to the main session. Note that some objects, notably
+#' those with `externalptr` type, won't work as expected after being
+#' saved to a file and loaded back.
+#'
+#' For performance reasons `compress=FALSE` is used when serializing with
+#' [saveRDS()], this can be disabled by setting
+#' `options(callr.compress_transport = TRUE)`.
+#'
 #' @family callr functions
 #' @examplesIf FALSE
 #' # Workspace is empty

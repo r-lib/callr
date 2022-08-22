@@ -1,6 +1,4 @@
 
-context("rscript")
-
 test_that("rscript", {
   out <- rscript("fixtures/script.R", show = FALSE)
   expect_equal(out$status, 0L)
@@ -33,7 +31,7 @@ test_that("stderr -> stdout", {
     "out1err1out2err2\n"
   }
   expect_equal(out$stdout, exp)
-  expect_equal(out$stderr, "")
+  expect_null(out$stderr)
 
   out2 <- test_temp_file(create = FALSE)
   rscript("fixtures/script2.R", show = FALSE, stdout = out2, stderr = out2)

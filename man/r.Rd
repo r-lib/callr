@@ -60,12 +60,16 @@ is set to \code{.GlobalEnv} before passing it to the child process.
 (See the \code{package} option if you want to keep the environment.)
 Because of this, it is good practice to create an anonymous
 function and pass that to \code{callr}, instead of passing
-a function object from a (base or other) package. In particular\preformatted{r(.libPaths)
-}
+a function object from a (base or other) package. In particular
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{r(.libPaths)
+}\if{html}{\out{</div>}}
 
 does not work, because \code{.libPaths} is defined in a special
-environment, but\preformatted{r(function() .libPaths())
-}
+environment, but
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{r(function() .libPaths())
+}\if{html}{\out{</div>}}
 
 works just fine.}
 
@@ -215,6 +219,21 @@ your environment file or your profile, otherwise this information will
 get scattered in various files, at least temporarily, until the
 subprocess finishes. You can use the keyring package to avoid passwords
 in plain files.
+}
+
+\section{Transporting objects}{
+
+
+\code{func} and \code{args} are copied to the child process by first serializing them
+into a temporary file using \code{\link[=saveRDS]{saveRDS()}} and then loading them back into the
+child session using \code{\link[=readRDS]{readRDS()}}. The same strategy is used to copy the result
+of calling \code{func(args)} to the main session. Note that some objects, notably
+those with \code{externalptr} type, won't work as expected after being
+saved to a file and loaded back.
+
+For performance reasons \code{compress=FALSE} is used when serializing with
+\code{\link[=saveRDS]{saveRDS()}}, this can be disabled by setting
+\code{options(callr.compress_transport = TRUE)}.
 }
 
 \examples{

@@ -1,6 +1,4 @@
 
-context("spelling")
-
 test_that("spell check", {
   skip_on_cran()
   skip_in_covr()

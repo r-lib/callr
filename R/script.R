@@ -5,42 +5,39 @@ make_vanilla_script_expr <- function(expr_file, res, error,
 
   ## Code to handle errors in the child
   ## This will inserted into the main script
+  if (! error %in% c("error", "stack", "debugger")) {
+    throw(new_error("Unknown `error` argument: `", error, "`"))
+  }
+
   err <- if (error == "error") {
     substitute({
       callr_data <- as.environment("tools:callr")$`__callr_data__`
       err <- callr_data$err
 
-      assign(".Traceback", .traceback(4), envir = callr_data)
+      if (`__traceback__`) {
+        # This might be quieried for R sessions with $traceback()
+        assign(".Traceback", .traceback(4), envir = callr_data)
 
-      dump.frames("__callr_dump__")
-      assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
-      rm("__callr_dump__", envir = .GlobalEnv)
+        # Also dump frames, this might be queried as well with $debug()
+        dump.frames("__callr_dump__")
+        assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)
+        rm("__callr_dump__", envir = .GlobalEnv)
+      }
 
-      # callr_remote_error does have conditionMessage and conditionCall
-      # methods that refer to $error, but in the subprocess callr is not
-      # loaded, maybe, and these methods are not defined. So we do add
-      # the message and call of the original error
-      e$call <- deparse(conditionCall(e), nlines = 6)
-      e2 <- err$new_error(conditionMessage(e), call. = conditionCall(e))
+      e <- err$process_call(e)
+      e2 <- err$new_error("error in callr subprocess")
       class(e2) <- c("callr_remote_error", class(e2))
-      e2$error <- e
-      # To find the frame of the evaluated function, we search for
-      # do.call in the stack, and then skip one more frame, the other
-      # do.call. This method only must change if the eval code changes,
-      # obviously. Also, it might fail if the pre-hook has do.call() at
-      # the top level.
-      calls <- sys.calls()
-      dcframe <- which(vapply(
-        calls,
-        function(x) length(x) >= 1 && identical(x[[1]], quote(do.call)),
-        logical(1)))[1]
-      if (!is.na(dcframe)) e2$`_ignore` <- list(c(1, dcframe + 1L))
-      e2$`_pid` <- Sys.getpid()
-      e2$`_timestamp` <- Sys.time()
-      if (inherits(e, "rlib_error_2_0")) e2$parent <- e$parent
-      e2 <- err$add_trace_back(e2, embed = FALSE)
-      saveRDS(list("error", e2), file = paste0(`__res__`, ".error")) },
-      list(`__res__` = res)
+      e2 <- err$add_trace_back(e2)
+      cut <- which(e2$trace$scope == "global")[1]
+      if (!is.na(cut)) {
+        e2$trace <- e2$trace[-(1:cut), ]
+      }
+
+      saveRDS(list("error", e2, e), file = paste0(`__res__`, ".error"))
+    }, list(
+         `__res__` = res,
+         `__traceback__` = getOption("callr.traceback", FALSE)
+       )
     )
 
   } else if (error %in% c("stack", "debugger")) {
@@ -59,8 +56,6 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         "__res__" = res
       )
     )
-  } else {
-    throw(new_error("Unknown `error` argument: `", error, "`"))
   }
 
   if (messages) {
@@ -108,7 +103,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
                 envir = .GlobalEnv,
                 quote = TRUE
               ),
-              file = `__res__`
+              file = `__res__`,
+              compress = `__compress__`
             )
             flush(stdout())
             flush(stderr())
@@ -133,7 +129,8 @@ make_vanilla_script_expr <- function(expr_file, res, error,
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res,
          `__pre_hook__` = pre_hook, `__post_hook__` = post_hook,
-         `__message__` = message())
+         `__message__` = message(),
+         `__compress__` = getOption("callr.compress_transport", FALSE))
   )
 }
 

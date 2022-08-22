@@ -22,8 +22,11 @@ value of the main process.
 \item \code{stdout}: Standard output of the sub-process. This can be \code{NULL} or
 a pipe: \code{"|"}. If it is a pipe then the output of the subprocess is
 not included in the responses, but you need to poll and read it
-manually. This is for exports.
-\item \code{stderr}: Similar to \code{stdout}, but for the standard error.
+manually. This is for experts. Note that this option is not used
+for the startup phase that currently always runs with \code{stdout = "|"}.
+\item \code{stderr}: Similar to \code{stdout}, but for the standard error. Like
+\code{stdout}, it is not used for the startup phase, which runs with
+\code{stderr = "|"}.
 \item \code{error}: See 'Error handling' in \code{\link[=r]{r()}}.
 \item \code{cmdargs}: See the same argument of \code{\link[=r]{r()}}. (Its default might be
 different, though.)

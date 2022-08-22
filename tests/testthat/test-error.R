@@ -1,9 +1,15 @@
 
-context("errors")
-
 test_that("error is propagated", {
-  expect_error(
+  err <- tryCatch(
     r(function() 1 + "A", error = "error"),
+    error = function(e) e
+  )
+  expect_match(
+    paste(conditionMessage(err), collapse = "\n"),
+    "error in callr subprocess"
+  )
+  expect_match(
+    paste(conditionMessage(err$parent), collapse = "\n"),
     "non-numeric argument to binary operator"
   )
   gc()
@@ -78,11 +84,10 @@ test_that("parent errors", {
     error = function(e) e)
 
   expect_s3_class(err, "rlib_error")
-  expect_s3_class(err$parent, "callr_remote_error")
-  expect_s3_class(err$parent$error, "simpleError")
+  expect_s3_class(err$parent, "simpleError")
   expect_match(
     conditionMessage(err),
-    "callr subprocess failed: non-numeric argument")
+    "error in callr subprocess")
   expect_match(
     conditionMessage(err$parent),
     "non-numeric argument")
@@ -98,16 +103,15 @@ test_that("parent errors, another level", {
     error = function(e) e)
 
   expect_s3_class(err, "rlib_error")
-  expect_s3_class(err$parent, "rlib_error")
-  expect_s3_class(err$parent$parent, "callr_remote_error")
-  expect_s3_class(err$parent$parent$error, "simpleError")
+  expect_s3_class(err$parent, "callr_status_error")
+  expect_s3_class(err$parent$parent, "simpleError")
 
   expect_match(
     conditionMessage(err),
-    "callr subprocess failed: callr subprocess failed: non-numeric")
+    "error in callr subprocess")
   expect_match(
     conditionMessage(err$parent),
-    "callr subprocess failed: non-numeric argument")
+    "error in callr subprocess")
   expect_match(
     conditionMessage(err$parent$parent),
     "non-numeric argument")
@@ -141,11 +145,6 @@ test_that("error traces are merged", {
   expect_s3_class(cond, "rlib_error")
   expect_s3_class(cond$parent, "error")
   expect_s3_class(cond$trace, "rlib_trace")
-
-  expect_equal(length(cond$trace$nframes), 2)
-  expect_true(cond$trace$nframe[1] < cond$trace$nframe[2])
-  expect_match(cond$trace$messages[[1]], "subprocess failed: non-numeric")
-  expect_match(cond$trace$messages[[2]], "non-numeric argument")
 })
 
 test_that("errors in r_bg() are merged", {
@@ -161,12 +160,11 @@ test_that("errors in r_bg() are merged", {
     p$get_result(),
     error = function(e) e)
 
-  expect_s3_class(err, "rlib_error")
-  expect_s3_class(err$parent, "callr_remote_error")
-  expect_s3_class(err$parent$error, "simpleError")
+  expect_s3_class(err, "callr_status_error")
+  expect_s3_class(err$parent, "simpleError")
   expect_match(
     conditionMessage(err),
-    "callr subprocess failed: non-numeric argument")
+    "error in callr subprocess.*non-numeric argument to")
   expect_match(
     conditionMessage(err$parent),
     "non-numeric argument")
@@ -185,12 +183,11 @@ test_that("errors in r_process are merged", {
     p$get_result(),
     error = function(e) e)
 
-  expect_s3_class(err, "rlib_error")
-  expect_s3_class(err$parent, "callr_remote_error")
-  expect_s3_class(err$parent$error, "simpleError")
+  expect_s3_class(err, "callr_status_error")
+  expect_s3_class(err$parent, "simpleError")
   expect_match(
     conditionMessage(err),
-    "callr subprocess failed: non-numeric argument")
+    "error in callr subprocess.*non-numeric argument to")
   expect_match(
     conditionMessage(err$parent),
     "non-numeric argument")
@@ -209,12 +206,11 @@ test_that("errors in r_session$run() are merged", {
   err <- list(err1, err2)
 
   for (i in seq_along(err)) {
-    expect_s3_class(err[[i]], "rlib_error")
-    expect_s3_class(err[[i]]$parent, "callr_remote_error")
-    expect_s3_class(err[[i]]$parent$error, "simpleError")
+    expect_s3_class(err[[i]], "callr_status_error")
+    expect_s3_class(err[[i]]$parent, "simpleError")
     expect_match(
       conditionMessage(err[[i]]),
-      "callr subprocess failed: non-numeric argument")
+      "error in callr subprocess.*non-numeric argument to")
     expect_match(
       conditionMessage(err[[i]]$parent),
       "non-numeric argument")
@@ -236,12 +232,11 @@ test_that("errors in r_session$call() are merged", {
   err <- list(err1, err2)
 
   for (i in seq_along(err)) {
-    expect_s3_class(err[[i]], "rlib_error")
-    expect_s3_class(err[[i]]$parent, "callr_remote_error")
-    expect_s3_class(err[[i]]$parent$error, "simpleError")
+    expect_s3_class(err[[i]], "callr_status_error")
+    expect_s3_class(err[[i]]$parent, "simpleError")
     expect_match(
       conditionMessage(err[[i]]),
-      "callr subprocess failed: non-numeric argument")
+      "error in callr subprocess.*non-numeric argument to")
     expect_match(
       conditionMessage(err[[i]]$parent),
       "non-numeric argument")
@@ -251,7 +246,7 @@ test_that("errors in r_session$call() are merged", {
 test_that("child error is not modified", {
   err <- tryCatch(callr::r(function() stop("foobar")), error = function(e) e)
   expect_identical(
-    class(err$parent$error),
+    class(err$parent),
     c("simpleError", "error", "condition")
   )
   expect_null(err$parent$error$trace)

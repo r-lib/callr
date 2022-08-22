@@ -30,9 +30,58 @@ new_callr_error <- function(out, msg = NULL) {
   cond
 }
 
+callr_remote_error <- function(remerr) {
+  if (inherits(remerr[[3]], "interrupt")) {
+    err <- new_error("timeout in callr subprocess", call. = FALSE)
+    class(err) <- c("callr_timeout_error", "callr_error", class(err))
+    remerr[[3]]$message <- "interrupt"
+  } else {
+    err <- new_error("error in callr subprocess", call. = FALSE)
+    class(err) <- c("callr_status_error", "callr_error", class(err))
+  }
+
+  err$parent_trace <- remerr[[2]]$trace
+  throw(err, parent = remerr[[3]])
+}
+
 #' @export
 
-print.callr_error <- function(x, ...) {
-  err$.internal$print_rlib_error_2_0(x)
-  invisible(x)
+format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
+                                      advice = !trace, ...) {
+  class(x) <- setdiff(class(x), "callr_status_error")
+
+  lines <- NextMethod(
+    object = x,
+    trace = FALSE,
+    class = class,
+    advice = FALSE,
+    ...
+  )
+
+  lines <- c(
+    lines,
+    if (advice) err$format$advice(),
+    if (trace && !is.null(x$trace)) {
+      c(
+        "---",
+        "Backtrace:",
+        err$format$trace(x$trace)
+      )
+    }
+  )
+
+  cond <- x
+  while (trace && !is.null(cond$parent_trace)) {
+    lines <- c(lines, c("---", "Subprocess backtrace:", format(cond$parent_trace)))
+    cond <- cond$parent
+  }
+
+  lines
+}
+
+#' @export
+
+print.callr_status_error <- function(x, trace = TRUE, class = TRUE,
+                                     advice = !trace, ...) {
+  writeLines(format(x, trace = trace, class = class, advice = advice, ...))
 }
