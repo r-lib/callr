@@ -19,17 +19,16 @@ knitr::opts_chunk$set(
 asciicast::init_knitr_engine(
   echo = TRUE,
   echo_input = FALSE,
-  startup = quote(library(cli)),
-  options = list(
-    asciicast_omit_last_line = TRUE,
-    asciicast_cols= 80,
-    width = 80
-  )
+  startup = quote(library(cli))
 )
 options(
   asciicast_theme = "pkgdown",
   asciicast_cols = 80
 )
+```
+
+```{asciicast include = FALSE}
+options(width = 80)
 ```
 
 ## Introduction
@@ -383,16 +382,14 @@ You can then inspect these frames with the `$debug()` method.
 We can use it here to debug the previous error:
 
 ```{asciicast debug}
-#| R.options = utils::modifyList(asciicast::asciicast_knitr_options(),
-#|                               list(asciicast_at = NULL,
-#|                                    asciicast_empty_wait = 5,
-#|                                    asciicast_end_wait = 20,
-#|                                    asciicast_omit_last_line = TRUE,
-#|                                    asciicast_cols = 80,
-#|                                    width = 80,
-#|                                    asciicast_cursor = TRUE,
-#|                                    asciicast_incomplete_error = FALSE)
-#|                              ),
+#| asciicast_at = "all",
+#| asciicast_knitr_output = "svg",
+#| asciicast_empty_wait = 5,
+#| asciicast_end_wait = 20,
+#| asciicast_cols = 80,
+#| R.options = list(width = 80),
+#| asciicast_cursor = TRUE,
+#| asciicast_incomplete_error = FALSE,
 #| echo = FALSE,
 #| asciicast_echo = TRUE
 rs$debug()
@@ -417,22 +414,20 @@ Press CTRL+C or ESC, or type `.q` and press ENTER to quit the REPL.
 
 Here is an example:
 
-```{asciicast attach}
+```{asciicast attach, output = "hide"}
 rs <- r_session$new()
 rs$run(function() { .GlobalEnv$data <- mtcars; NULL })
 ```
 
 ```{asciicast attach-1}
-#| R.options = utils::modifyList(asciicast::asciicast_knitr_options(),
-#|                               list(asciicast_at = NULL,
-#|                                    asciicast_empty_wait = 5,
-#|                                    asciicast_end_wait = 20,
-#|                                    asciicast_omit_last_line = TRUE,
-#|                                    asciicast_cols = 80,
-#|                                    width = 80,
-#|                                    asciicast_cursor = TRUE,
-#|                                    asciicast_incomplete_error = FALSE)
-#|                              ),
+#| asciicast_at = "all",
+#| asciicast_knitr_output = "svg",
+#| asciicast_empty_wait = 5,
+#| asciicast_end_wait = 20,
+#| asciicast_cols = 80,
+#| R.options = list(width = 80),
+#| asciicast_cursor = TRUE,
+#| asciicast_incomplete_error = FALSE,
 #| echo = FALSE,
 #| asciicast_echo = TRUE
 rs$attach()
