@@ -15,20 +15,16 @@ editor_options:
 knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures",
-  fig.width = 10
+  fig.width = 10,
+  asciicast_theme = "pkgdown"
 )
 asciicast::init_knitr_engine(
   echo = TRUE,
   echo_input = FALSE,
-  startup = quote(library(cli)),
-  options = list(
-    asciicast_knitr_output = "auto",
-    asciicast_at = "end",
-    asciicast_end_wait = 3,
-    asciicast_echo = FALSE,
-    asciicast_theme = "pkgdown",
-    asciicast_omit_last_line = TRUE
-  )
+  startup = quote({
+    library(cli)
+    options(cli.num_colors = cli::truecolor)
+  })
 )
 ```
 
@@ -48,7 +44,7 @@ asciicast::init_knitr_engine(
 
 Install the stable version from CRAN:
 
-```{asciicast eval = FALSE}
+```{r, asciicast-setup, eval = FALSE, cache = FALSE}
 install.packages("callr")
 ```
 
@@ -121,7 +117,7 @@ x <- callr::r(function() { print("hello world!"); message("hello again!") },
 readLines("/tmp/out")
 ```
 
-```{asciicast}
+```{asciicast io-2}
 readLines("/tmp/err")
 ```
 

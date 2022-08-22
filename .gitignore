@@ -21,3 +21,4 @@ Meta
 /vignettes/*.md
 /vignettes/*.html
 /vignettes/*_files
+/man/_cache
