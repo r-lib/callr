@@ -1,5 +1,8 @@
 # callr (development version)
 
+* New function `add_hook()` to hook into the callr process startup and
+  options. This is for experts and it is also currently experimental
+  (#203, @klmr).
 
 # callr 3.7.1
 
@@ -8,7 +11,7 @@
   cause R ignore that line (#205).
 
 * Serialization of objects passed between sessions now uses `compress=FALSE`
-  by default. The default can be changed by setting the 
+  by default. The default can be changed by setting the
   `callr.compress_transport` option (#223, @dfalbel).
 
 * We have revamped callr's error objects, with lots of improvements to the
