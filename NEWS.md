@@ -1,4 +1,4 @@
-# callr (development version)
+# callr 3.7.2
 
 * New function `add_hook()` to hook into the callr process startup and
   options. This is for experts and it is also currently experimental
