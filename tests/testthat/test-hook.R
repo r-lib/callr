@@ -1,6 +1,4 @@
 
-context("hook")
-
 test_that("set options with hook", {
   add_hook(
     test_hook = function (options) {
