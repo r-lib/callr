@@ -1,6 +1,7 @@
 
 test_that("all figures in man/figures are needed", {
   skip_on_cran()
+  skip_on_covr()
   pkg_dir <- test_package_root()
   figs <- dir(file.path(pkg_dir, "man", "figures"))
   readme <- file.path(pkg_dir, "README.md")
