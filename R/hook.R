@@ -89,16 +89,17 @@ user_hooks_env <- new.env(parent = emptyenv())
 #' @export
 
 add_hook <- function(...) {
-  if (...length() != 1L) {
+  args <- list(...)
+  if (length(args) != 1L) {
     stop("More than one argument passed to `add_hook`")
   }
 
-  name <- names(list(...))
+  name <- names(args)
   if (is.null(name)) {
     stop("Argument passed to `add_hook` must be named")
   }
 
-  hook <- ..1
+  hook <- args[[1]]
   if (is.null(hook)) {
     rm(list = name, envir = user_hooks_env)
   } else {
