@@ -30,7 +30,7 @@ new_callr_error <- function(out, msg = NULL) {
   cond
 }
 
-callr_remote_error <- function(remerr) {
+callr_remote_error <- function(remerr, out) {
   if (inherits(remerr[[3]], "interrupt")) {
     err <- new_error("timeout in callr subprocess", call. = FALSE)
     class(err) <- c("callr_timeout_error", "callr_error", class(err))
@@ -39,6 +39,10 @@ callr_remote_error <- function(remerr) {
     err <- new_error("error in callr subprocess", call. = FALSE)
     class(err) <- c("callr_status_error", "callr_error", class(err))
   }
+
+  err$status <- out$status
+  err$stdout <- out$stdout
+  err$stderr <- out$stderr
 
   err$parent_trace <- remerr[[2]]$trace
   throw(err, parent = remerr[[3]])

@@ -64,7 +64,7 @@ get_result <- function(output, options) {
   )
 
   if (remerr[[1]] == "error") {
-    throw(callr_remote_error(remerr))
+    throw(callr_remote_error(remerr, output))
 
   } else if (remerr[[1]] == "stack") {
     myerr <- structure(
