@@ -54,10 +54,13 @@
       <small>Source: <a href="https://github.com/r-lib/callr/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="section level2"><h2 class="pkg-version" data-toc-text="development version" id="callr-development-version">callr (development version)<a class="anchor" aria-label="anchor" href="#callr-development-version"></a></h2></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="3.7.2" id="callr-372">callr 3.7.2<a class="anchor" aria-label="anchor" href="#callr-372"></a></h2>
-<ul><li>New function <code><a href="../reference/add_hook.html">add_hook()</a></code> to hook into the callr process startup and options. This is for experts and it is also currently experimental (<a href="https://github.com/r-lib/callr/issues/203" class="external-link">#203</a>, <a href="https://github.com/klmr" class="external-link">@klmr</a>).</li></ul></div>
+<h2 class="pkg-version" data-toc-text="development version" id="callr-development-version">callr (development version)<a class="anchor" aria-label="anchor" href="#callr-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.7.2" id="callr-372">callr 3.7.2<a class="anchor" aria-label="anchor" href="#callr-372"></a></h2><p class="text-muted">CRAN release: 2022-08-22</p>
+<ul><li>New function <code><a href="../reference/add_hook.html">add_hook()</a></code> to hook into the callr process startup and options. This is for experts and it is also currently experimental (<a href="https://github.com/r-lib/callr/issues/203" class="external-link">#203</a>, <a href="https://github.com/klmr" class="external-link">@klmr</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.7.1" id="callr-371">callr 3.7.1<a class="anchor" aria-label="anchor" href="#callr-371"></a></h2><p class="text-muted">CRAN release: 2022-07-13</p>
 <ul><li><p>When copying existing startup files, an additional newline is appended to protect against a missing newline at the end of the file. This would cause R ignore that line (<a href="https://github.com/r-lib/callr/issues/205" class="external-link">#205</a>).</p></li>
@@ -79,20 +82,25 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.5.1" id="callr-351">callr 3.5.1<a class="anchor" aria-label="anchor" href="#callr-351"></a></h2><p class="text-muted">CRAN release: 2020-10-13</p>
 <ul><li>
-<code><a href="../reference/r_session.html">callr::r_session</a></code> now handles large messages from the subprocess well (<a href="https://github.com/r-lib/callr/issues/168" class="external-link">#168</a>).</li></ul></div>
+<code><a href="../reference/r_session.html">callr::r_session</a></code> now handles large messages from the subprocess well (<a href="https://github.com/r-lib/callr/issues/168" class="external-link">#168</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.5.0" id="callr-350">callr 3.5.0<a class="anchor" aria-label="anchor" href="#callr-350"></a></h2><p class="text-muted">CRAN release: 2020-10-08</p>
-<ul><li>callr can now pass the environment of the function to the subprocess, optionally. This makes it easier to call an internal function of a package in a subprocess. See the <code>package</code> argument of <code><a href="../reference/r.html">r()</a></code>, <code><a href="../reference/r_bg.html">r_bg()</a></code>, <code>r_session$run()</code>, etc. (<a href="https://github.com/r-lib/callr/issues/147" class="external-link">#147</a>).</li></ul></div>
+<ul><li>callr can now pass the environment of the function to the subprocess, optionally. This makes it easier to call an internal function of a package in a subprocess. See the <code>package</code> argument of <code><a href="../reference/r.html">r()</a></code>, <code><a href="../reference/r_bg.html">r_bg()</a></code>, <code>r_session$run()</code>, etc. (<a href="https://github.com/r-lib/callr/issues/147" class="external-link">#147</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.4.4" id="callr-344">callr 3.4.4<a class="anchor" aria-label="anchor" href="#callr-344"></a></h2><p class="text-muted">CRAN release: 2020-09-07</p>
-<ul><li>An <code>r_session</code> now exits if the load hook errors. This generates an error if the session is started with <code>wait = TRUE</code>. For <code>wait = FALSE</code> the first <code>$read()</code> operation will return with an error (<a href="https://github.com/r-lib/callr/issues/162" class="external-link">#162</a>).</li></ul></div>
+<ul><li>An <code>r_session</code> now exits if the load hook errors. This generates an error if the session is started with <code>wait = TRUE</code>. For <code>wait = FALSE</code> the first <code>$read()</code> operation will return with an error (<a href="https://github.com/r-lib/callr/issues/162" class="external-link">#162</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.4.3" id="callr-343">callr 3.4.3<a class="anchor" aria-label="anchor" href="#callr-343"></a></h2><p class="text-muted">CRAN release: 2020-03-28</p>
 <ul><li>
-<code><a href="../reference/default_repos.html">default_repos()</a></code> now returns a list if <code>getOption("repos")</code> is a list, and a vector otherwise, on R 4.x.y as well.</li></ul></div>
+<code><a href="../reference/default_repos.html">default_repos()</a></code> now returns a list if <code>getOption("repos")</code> is a list, and a vector otherwise, on R 4.x.y as well.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.4.2" id="callr-342">callr 3.4.2<a class="anchor" aria-label="anchor" href="#callr-342"></a></h2><p class="text-muted">CRAN release: 2020-02-12</p>
-<ul><li>Improved error messages. Error messages are now fully printed after an error. In non-interactive sessions, the stack trace is printed as well.</li></ul></div>
+<ul><li>Improved error messages. Error messages are now fully printed after an error. In non-interactive sessions, the stack trace is printed as well.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.4.1" id="callr-341">callr 3.4.1<a class="anchor" aria-label="anchor" href="#callr-341"></a></h2><p class="text-muted">CRAN release: 2020-01-24</p>
 <ul><li><p>callr is now more careful when loading the local <code>.Rprofile</code> in the subprocess. This fixes issues with packrat and renv that use <code>.Rprofile</code> for setup (<a href="https://github.com/r-lib/callr/issues/139" class="external-link">#139</a>).</p></li>
