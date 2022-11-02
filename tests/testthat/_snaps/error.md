@@ -256,7 +256,7 @@
       r_process()
     Output
       > callr::r(function() Sys.sleep(3), timeout = 1/5)
-      Error in `get_result(output = out, options)`
+      Error in `get_result(output = out, options)`:
       ! callr timed out
       Type .Last.error to see the more details.
 
