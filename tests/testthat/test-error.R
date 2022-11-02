@@ -164,7 +164,7 @@ test_that("interrupting an R session", {
   on.exit(rs$close(), add = TRUE)
   rs$call(function() Sys.sleep(3))
   rs$interrupt()
-  rs$poll_io(1000)
+  rs$poll_io(3000)
   expect_snapshot(
     rs$read(),
     transform = redact_callr_rs_result
@@ -209,7 +209,7 @@ test_that("stdout/stderr is printed on error", {
     .Last.error,
     .Last.error$stderr,
     interactive = TRUE,
-    transform = redact_srcref
+    transform = function(x) fix_eol(redact_srcref(x))
   )
 })
 
@@ -222,7 +222,7 @@ test_that("stdout/stderr is printed on error 2", {
     .Last.error,
     .Last.error$stdout,
     interactive = TRUE,
-    transform = redact_srcref
+    transform = function(x) fix_eol(redact_srcref(x))
   )
 })
 
@@ -245,6 +245,9 @@ test_that("error is printed to file", {
     callr::r(function() stop("ouch"), stderr = tmp),
     error = function(e) e
   )
-  expect_snapshot(err$stderr)
+  expect_snapshot(
+    err$stderr,
+    transform = function(x) fix_eol(redact_srcref(x))
+  )
   expect_snapshot(readLines(tmp))
 })

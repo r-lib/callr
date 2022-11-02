@@ -192,3 +192,7 @@ redact_srcref <- function(x) {
 redact_callr_rs_result <- function(x) {
   sub("done callr-rs-result-[a-f0-9]+", "done callr-rs-result-<id>", x)
 }
+
+fix_eol <- function(x) {
+  gsub("\r\n", "\n", x, fixed = TRUE)
+}
