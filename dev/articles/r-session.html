@@ -113,14 +113,14 @@ about 100-300 milliseconds.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.021   0.001   0.172                                                         
+#&gt;   0.028   0.000   0.233                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 15843.                                              
+#&gt; R SESSION, alive, idle, pid 15646.                                              
 </pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -136,7 +136,7 @@ about 100-300 milliseconds.</p>
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, finished, pid 15843.                                                 
+#&gt; R SESSION, finished, pid 15646.                                                 
 </pre>
 </div>
 <p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects,
@@ -156,14 +156,14 @@ asynchronously.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.004   0.000   0.006                                                         
+#&gt;   0.007   0.000   0.008                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs2</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, starting, pid 15851.                                          
+#&gt; R SESSION, alive, starting, pid 15654.                                          
 </pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -307,7 +307,7 @@ all processes until they are all ready.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; Time differences in secs                                                        
-#&gt; [1] 0.2979496 0.2979496 0.2979496 0.2979496                                     
+#&gt; [1] 0.4458983 0.4458983 0.4458983 0.4458983                                     
 </pre>
 </div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -378,7 +378,7 @@ and error.</li>
 <code class="sourceCode R"><span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"I am process {Sys.getpid()}."</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; I am process 15866.                                                             
+#&gt; I am process 15668.                                                             
 </pre>
 </div>
 <p><code>$run_with_output()</code> has the output as well:</p>
@@ -393,7 +393,7 @@ and error.</li>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3ddd34407154"                                         
+#&gt; [1] "done callr-rs-result-3d171b4d5f1a"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt;                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -408,7 +408,7 @@ and error.</li>
 #&gt; [1] ""                                                                          
 #&gt;                                                                                 
 #&gt; $stderr                                                                         
-#&gt; [1] "I am process 15866.\n"                                                     
+#&gt; [1] "I am process 15668.\n"                                                     
 #&gt;                                                                                 
 #&gt; $error                                                                          
 #&gt; NULL                                                                            
@@ -430,16 +430,16 @@ for the result:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
-#&gt; R SESSION, alive, busy, pid 15866.                                              
+#&gt; R SESSION, alive, busy, pid 15668.                                              
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
-#&gt; R SESSION, alive, busy, pid 15868.                                              
+#&gt; R SESSION, alive, busy, pid 15670.                                              
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
-#&gt; R SESSION, alive, busy, pid 15869.                                              
+#&gt; R SESSION, alive, busy, pid 15672.                                              
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; R SESSION, alive, busy, pid 15871.                                              
+#&gt; R SESSION, alive, busy, pid 15673.                                              
 #&gt;                                                                                 
 </pre>
 </div>
@@ -452,11 +452,11 @@ finish their job:</p>
 <pre>
 #&gt; [[1]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent" "silent"                                                      
+#&gt; "silent" "silent"  "ready"                                                      
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent"  "ready"                                                      
+#&gt; "silent" "silent" "silent"                                                      
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
 #&gt;   output    error  process                                                      
@@ -479,15 +479,15 @@ result (or error, if a failure happened):</p>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; Process  2  is ready:                                                           
+#&gt; Process  1  is ready:                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3ddd3b062913"                                         
+#&gt; [1] "done callr-rs-result-3d176051b9fd"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 15868.                                                             
+#&gt; I am process 15668.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -527,14 +527,17 @@ helper function useful as a starting point:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
+#&gt; NULL                                                                            
+#&gt;                                                                                 
+#&gt; [[2]]                                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3ddd37707b94"                                         
+#&gt; [1] "done callr-rs-result-3d1714ea6187"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 15866.                                                             
+#&gt; I am process 15670.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -548,18 +551,15 @@ helper function useful as a starting point:</p>
 #&gt; attr(,"class")                                                                  
 #&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
-#&gt; [[2]]                                                                           
-#&gt; NULL                                                                            
-#&gt;                                                                                 
 #&gt; [[3]]                                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3ddd4610fc3a"                                         
+#&gt; [1] "done callr-rs-result-3d1715848ed1"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 15869.                                                             
+#&gt; I am process 15672.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -578,10 +578,10 @@ helper function useful as a starting point:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3ddd75e41583"                                         
+#&gt; [1] "done callr-rs-result-3d1716ba2919"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 15871.                                                             
+#&gt; I am process 15673.                                                             
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -605,7 +605,7 @@ process:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `library("not-a-package")`:                                  
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘not-a-package’                                    
 #&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       
@@ -619,7 +619,7 @@ process and one for the subprocess:</p>
 <pre>
 #&gt; <span style="color: #268BD2;">&lt;callr_error/rlib_error_3_0/rlib_error/error&gt;</span>                                   
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `library("not-a-package")`:                                  
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘not-a-package’                                    
 #&gt; ---                                                                             
@@ -647,7 +647,7 @@ process and one for the subprocess:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-3ddd653f2dc0"                                         
+#&gt; [1] "done callr-rs-result-3d1723d4a5b6"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt; NULL                                                                            
@@ -661,7 +661,7 @@ process and one for the subprocess:</p>
 #&gt; $error                                                                          
 #&gt; <span style="color: #268BD2;">&lt;callr_error/rlib_error_3_0/rlib_error/error&gt;</span>                                   
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `library("still-not")`:                                      
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘still-not’                                        
 #&gt; ---                                                                             
@@ -705,7 +705,7 @@ error if the system process exits with a non-successful status:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `processx::run("ls", "/not-this")`:                          
 #&gt; <span style="color: #B58900;">!</span> System command 'ls' failed                                                    
 #&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       
@@ -717,7 +717,7 @@ error if the system process exits with a non-successful status:</p>
 <pre>
 #&gt; <span style="color: #268BD2;">&lt;callr_error/rlib_error_3_0/rlib_error/error&gt;</span>                                   
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `processx::run("ls", "/not-this")`:                          
 #&gt; <span style="color: #B58900;">!</span> System command 'ls' failed                                                    
 #&gt; ---                                                                             
@@ -773,7 +773,7 @@ processes.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `if (vec) "success"`:                                        
 #&gt; <span style="color: #B58900;">!</span> the condition has length &gt; 1                                                  
 #&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       

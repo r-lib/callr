@@ -153,7 +153,7 @@
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `summary(mycars)`:                                           
 #&gt; <span style="color: #B58900;">!</span> object 'mycars' not found                                                     
 #&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       
@@ -197,7 +197,7 @@
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `1 + "A"`:                                                   
 #&gt; <span style="color: #B58900;">!</span> non-numeric argument to binary operator                                       
 #&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       
@@ -208,18 +208,16 @@
 <code class="sourceCode R"><span><span class="va">.Last.error</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; <span style="color: #268BD2;">&lt;callr_error/rlib_error_3_0/rlib_error/error&gt;</span>                                   
 #&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#&gt; <span style="color: #B58900;">!</span> error in callr subprocess                                                     
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `1 + "A"`:                                                   
 #&gt; <span style="color: #B58900;">!</span> non-numeric argument to binary operator                                       
 #&gt; ---                                                                             
 #&gt; Backtrace:                                                                      
 #&gt; <span style="color: #002B36;">1. </span>callr::<span style="color: #2AA198;">r</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> <span style="color: #268BD2;">1</span> <span style="color: #859900;">+</span> <span style="color: #B58900;">"A")</span>                                                 
 #&gt; <span style="color: #002B36;">2. </span>callr:::<span style="color: #2AA198;">get_result</span><span style="color: #B58900;">(</span>output = out, options<span style="color: #B58900;">)</span>                                    
-#&gt; <span style="color: #002B36;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">callr_remote_error</span><span style="color: #268BD2;">(</span>remerr, output<span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                            
-#&gt; <span style="color: #002B36;">4. </span>callr:::<span style="color: #2AA198;">callr_remote_error</span><span style="color: #B58900;">(</span>remerr, output<span style="color: #B58900;">)</span>                                   
-#&gt; <span style="color: #002B36;">5. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span>err, parent = remerr<span style="color: #268BD2;">[[3]]</span><span style="color: #B58900;">)</span>                                     
+#&gt; <span style="color: #002B36;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">callr_remote_error</span><span style="color: #268BD2;">(</span>remerr, output<span style="color: #268BD2;">)</span>, parent = <span style="color: #2AA198;">fix_msg</span><span style="color: #268BD2;">(</span>remerr<span style="color: #2AA198;">[[</span><span style="color: #268BD2;">3</span><span style="color: #2AA198;">]</span>
+#&gt; <span style="color: #2AA198;">]</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                                                             
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
 #&gt; <span style="color: #002B36;">1. </span>base::.handleSimpleError(function (e) …                                      
@@ -263,7 +261,7 @@
 <span><span class="va">rp</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; PROCESS 'R', running, pid 14526.                                                
+#&gt; PROCESS 'R', running, pid 14331.                                                
 </pre>
 </div>
 <p>This is a list of all <code>r_process</code> methods:</p>
@@ -367,7 +365,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 14569.                                              
+#&gt; R SESSION, alive, idle, pid 14373.                                              
 </pre>
 </div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
@@ -377,8 +375,8 @@
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt;  [1] 0.49013656 0.51275059 0.71284910 0.51871318 0.65256491 0.42585896          
-#&gt;  [7] 0.01988415 0.50068206 0.83698898 0.16780324                                
+#&gt;  [1] 0.8608859 0.2964971 0.4580912 0.3333506 0.7206127 0.1480034 0.3663224      
+#&gt;  [8] 0.3952797 0.4363536 0.8789701                                              
 </pre>
 </div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -386,7 +384,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, busy, pid 14575.                                              
+#&gt; R SESSION, alive, busy, pid 14379.                                              
 </pre>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -404,11 +402,11 @@
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-386017a1136f"                                         
+#&gt; [1] "done callr-rs-result-379d4528f9a"                                          
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt;  [1]  1.1065620  1.3564355 -0.5044059 -0.4860671 -0.1059055  1.0657571          
-#&gt;  [7]  1.7086917 -0.1050352  0.7561819 -0.3320401                                
+#&gt;  [1]  0.28144264  0.62076786 -0.34790257  2.16841343  0.73164150 -1.36679006    
+#&gt;  [7]  1.13850849 -0.37200799 -0.02434456 -0.38029161                            
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -445,7 +443,7 @@
 #&gt; [1] FALSE                                                                       
 #&gt;                                                                                 
 #&gt; $command                                                                        
-#&gt; [1] "/opt/R/4.2.1/lib/R/bin/R" "CMD"                                            
+#&gt; [1] "/opt/R/4.2.2/lib/R/bin/R" "CMD"                                            
 #&gt; [3] "config"                   "CC"                                             
 #&gt;                                                                                 
 </pre>

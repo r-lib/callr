@@ -124,7 +124,9 @@ the child R process will be written to.
 If the child process runs with the <code>--slave</code> option (the default),
 then the commands are not echoed and will not be shown
 in the standard output. Also note that you need to call <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>
-explicitly to show the output of the command(s).</p></dd>
+explicitly to show the output of the command(s).
+IF <code>NULL</code> (the default), then standard output is not returned, but
+it is recorded and included in the error object if an error happens.</p></dd>
 
 
 <dt>stderr</dt>
@@ -134,7 +136,9 @@ In particular <code><a href="https://rdrr.io/r/base/message.html" class="externa
 error. If nothing was sent to the standard error, then this file
 will be empty. This argument can be the same file as <code>stdout</code>,
 in which case they will be correctly interleaved. If this is the
-string <code>"2&gt;&amp;1"</code>, then standard error is redirected to standard output.</p></dd>
+string <code>"2&gt;&amp;1"</code>, then standard error is redirected to standard output.
+IF <code>NULL</code> (the default), then standard output is not returned, but
+it is recorded and included in the error object if an error happens.</p></dd>
 
 
 <dt>poll_connection</dt>
