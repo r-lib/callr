@@ -261,7 +261,7 @@
 <span><span class="va">rp</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; PROCESS 'R', running, pid 12886.                                                
+#&gt; PROCESS 'R', running, pid 13071.                                                
 </pre>
 </div>
 <p>This is a list of all <code>r_process</code> methods:</p>
@@ -343,8 +343,8 @@
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
-#&gt;   output    error  process                                                      
-#&gt; "silent" "silent"  "ready"                                                      
+#&gt;  output   error process                                                         
+#&gt; "ready" "ready" "ready"                                                         
 #&gt;                                                                                 
 </pre>
 </div>
@@ -365,7 +365,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 12930.                                              
+#&gt; R SESSION, alive, idle, pid 13113.                                              
 </pre>
 </div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
@@ -375,8 +375,8 @@
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt;  [1] 0.4731598 0.5735678 0.4035464 0.5226417 0.2568701 0.4289312 0.1269619      
-#&gt;  [8] 0.8138405 0.7135773 0.3651953                                              
+#&gt;  [1] 0.56414753 0.35825633 0.56201150 0.17400590 0.23133920 0.72287948          
+#&gt;  [7] 0.08293438 0.77220898 0.49753679 0.51519847                                
 </pre>
 </div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -384,7 +384,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, busy, pid 12936.                                              
+#&gt; R SESSION, alive, busy, pid 13119.                                              
 </pre>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -402,11 +402,11 @@
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-31fa7dae6781"                                         
+#&gt; [1] "done callr-rs-result-32af531aa171"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt;  [1]  0.01045099  2.04313605 -0.98179172 -1.08132669  1.65646971 -1.94676168    
-#&gt;  [7]  1.05960377 -1.25221723  2.60401871  0.19705790                            
+#&gt;  [1] -0.598785908 -0.890783111 -0.533371161  0.006489603 -0.103639805           
+#&gt;  [6] -0.177408588  0.453842127 -1.075699097  1.885063796  0.621658172           
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
