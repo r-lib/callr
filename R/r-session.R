@@ -309,7 +309,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
           stderr = err,
           timeout = FALSE
         )
-        throw(new_callr_error(data, "Failed to start R session"))
+        throw(new_callr_crash_error(data, "Failed to start R session"))
       }
     } else if (pr["process"] != "ready") {
       cat("stdout:]\n", out, "\n")

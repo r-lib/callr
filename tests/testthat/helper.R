@@ -159,3 +159,36 @@ without_env <- function(f) {
   environment(f) <- .GlobalEnv
   f
 }
+
+expect_r_process_snapshot <- function(..., interactive = TRUE, echo = TRUE,
+                                      transform = NULL, variant = NULL) {
+  # errors.R assumes non-interactive in testthat, but we don't want that
+  withr::local_envvar(TESTTHAT = NA_character_)
+  dots <- eval(substitute(alist(...)))
+  nms <- names(dots)
+  if (all(nms == "")) {
+    code_pos <- rep(TRUE, length(dots))
+  } else {
+    code_pos <- nms == ""
+  }
+  code <- unlist(lapply(dots[code_pos], deparse))
+  args <- dots[!code_pos]
+
+  record_output <- asciicast::record_output
+  output <- do.call(
+    "record_output",
+    c(list(code), args, interactive = interactive, echo = echo)
+  )
+
+  r_process <- function() writeLines(output)
+
+  expect_snapshot(r_process(), transform = transform, variant = variant)
+}
+
+redact_srcref <- function(x) {
+  sub("[ ]*at [-a-zA-Z0-9]+[.]R:[0-9]+:[0-9]+:?", ":", x)
+}
+
+redact_callr_rs_result <- function(x) {
+  sub("done callr-rs-result-[a-f0-9]+", "done callr-rs-result-<id>", x)
+}

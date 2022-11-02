@@ -10,7 +10,7 @@
 #' @param msg An extra message to add to the error message.
 #' @keywords internal
 
-new_callr_error <- function(out, msg = NULL) {
+new_callr_crash_error <- function(out, msg = NULL) {
   error_msg <- paste0(
     if (out$timeout) "callr timed out" else "callr subprocess failed",
     if (!is.null(msg)) paste0(": ", msg) else if (!out$timeout) ":"
@@ -32,11 +32,11 @@ new_callr_error <- function(out, msg = NULL) {
 
 callr_remote_error <- function(remerr, out) {
   if (inherits(remerr[[3]], "interrupt")) {
-    err <- new_error("timeout in callr subprocess", call. = FALSE)
+    err <- new_error("interrupt sugnal in callr subprocess", call. = FALSE)
     class(err) <- c("callr_timeout_error", "callr_error", class(err))
-    remerr[[3]]$message <- "interrupt"
+    err$message <- "callr subprocess interrupted"
   } else {
-    err <- new_error("error in callr subprocess", call. = FALSE)
+    err <- new_error("in callr subprocess.", call. = FALSE)
     class(err) <- c("callr_status_error", "callr_error", class(err))
   }
 
@@ -45,7 +45,19 @@ callr_remote_error <- function(remerr, out) {
   err$stderr <- out$stderr
 
   err$parent_trace <- remerr[[2]]$trace
-  throw(err, parent = remerr[[3]])
+  err
+}
+
+callr_remote_error_with_stack <- function(remerr, out) {
+  err <- new_error("in callr subprocess.", call. = FALSE)
+  class(err) <- c("callr_status_error", "callr_error", class(err))
+
+  err$status <- out$status
+  err$stdout <- out$stdout
+  err$stderr <- out$stderr
+
+  err$stack <- clean_stack(remerr[[3]])
+  err
 }
 
 #' @export
@@ -61,6 +73,18 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
     advice = FALSE,
     ...
   )
+
+  if (!is.null(x$stack)) {
+    info <- if (err$.internal$has_cli()) {
+      cli::col_cyan(cli::symbol$info)
+    } else {
+      "i"                                                           # nocov
+    }
+    lines <- c(
+      lines,
+      paste0(info, " With remote `$stack`, use `utils::debugger()` to debug it.")
+    )
+  }
 
   lines <- c(
     lines,

@@ -696,12 +696,17 @@ err <- local({
 
   # -- condition message with cli ---------------------------------------
 
+  cnd_message_robust <- function(cond) {
+    cond$message %||% (if (inherits(cond, "interrupt")) "interrupt") %||% ""
+  }
+
   cnd_message_cli <- function(cond, full = FALSE) {
     exp <- paste0(cli::col_yellow("!"), " ")
     add_exp <- is.null(names(cond$message))
+    msg <- cnd_message_robust(cond)
 
     c(
-      paste0(if (add_exp) exp, cond$message),
+      paste0(if (add_exp) exp, msg),
       if (inherits(cond$parent, "condition")) {
         msg <- if (full && inherits(cond$parent, "rlib_error_3_0")) {
           format(cond$parent,
@@ -712,7 +717,7 @@ err <- local({
                  advice = FALSE
           )
         } else {
-          conditionMessage(cond$parent)
+          cnd_message_robust(cond$parent)
         }
         add_exp <- substr(cli::ansi_strip(msg[1]), 1, 1) != "!"
         if (add_exp) msg[1] <- paste0(exp, msg[1])
@@ -729,7 +734,7 @@ err <- local({
     exp <- "! "
     add_exp <- is.null(names(cond$message))
     c(
-      paste0(if (add_exp) exp, cond$message),
+      paste0(if (add_exp) exp, cnd_message_robust(cond)),
       if (inherits(cond$parent, "condition")) {
         msg <- if (full && inherits(cond$parent, "rlib_error_3_0")) {
           format(cond$parent,
@@ -740,7 +745,7 @@ err <- local({
                  advice = FALSE
           )
         } else {
-          conditionMessage(cond$parent)
+          cnd_message_robust(cond$parent)
         }
         add_exp <- substr(msg[1], 1, 1) != "!"
         if (add_exp) {

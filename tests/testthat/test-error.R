@@ -1,34 +1,23 @@
 
-test_that("error is propagated", {
-  err <- tryCatch(
-    r(function() 1 + "A", error = "error"),
-    error = function(e) e
+test_that("error is propagated, .Last.error is set", {
+  expect_r_process_snapshot(
+    callr::r(function() 1 + "A", error = "error"),
+    .Last.error,
+    transform = redact_srcref
   )
-  expect_match(
-    paste(conditionMessage(err), collapse = "\n"),
-    "error in callr subprocess"
-  )
-  expect_match(
-    paste(conditionMessage(err$parent), collapse = "\n"),
-    "non-numeric argument to binary operator"
-  )
-  gc()
 })
 
-test_that("error object is passed", {
-  err <- NULL
-  tryCatch(
-    r(function() 1 + "A", error = "error"),
-    error = function(e) err <<- e
+test_that("error is propagated, printed if non-interactive mode", {
+  expect_r_process_snapshot(
+    callr::r(function() 1 + "A", error = "error"),
+    interactive = FALSE,
+    transform = redact_srcref
   )
-  expect_true(inherits(err, "rlib_error"))
-  gc()
 })
 
-test_that("error stack is passed", {
-  err <- NULL
-  tryCatch(
-    r(
+test_that("error stack is passed, .Last.error is set", {
+  expect_r_process_snapshot(
+    callr::r(
       function() {
         f <- function() g()
         g <- function() 1 + "A"
@@ -36,142 +25,79 @@ test_that("error stack is passed", {
       },
       error = "stack"
     ),
-    error = function(e) err <<- e
+    .Last.error,
+    transform = redact_srcref
   )
-
-  expect_true("call" %in% names(err))
-  expect_true(inherits(err, "error"))
-  expect_true(inherits(err, "callr_error"))
-  expect_equal(length(err$stack), 3)
-  gc()
 })
 
 test_that("error behavior can be set using option", {
-  err <- NULL
-  withr::with_options(c(callr.error = "error"), {
-    tryCatch(
-      r(function() 1 + "A"),
-      error = function(e) err <<- e
-    )
-  })
-  expect_true(inherits(err, "rlib_error"))
+  withr::local_options(callr.error = "error")
+  expect_snapshot(
+    error = TRUE,
+    r(function() 1 + "A")
+  )
 
-  err <- NULL
-  withr::with_options(c(callr.error = "stack"), {
-    tryCatch(
-      r(
-        function() {
-          f <- function() g()
-          g <- function() 1 + "A"
-          f()
-        }
-      ),
-      error = function(e) err <<- e
+  withr::local_options(callr.error = "stack")
+  expect_snapshot(
+    error = TRUE,
+    r(
+      function() {
+        f <- function() g()
+        g <- function() 1 + "A"
+        f()
+      }
     )
-  })
-
-  expect_true("call" %in% names(err))
-  expect_true(inherits(err, "error"))
-  expect_true(inherits(err, "callr_error"))
-  expect_equal(length(err$stack), 3)
-  gc()
+  )
 })
 
 test_that("parent errors", {
   withr::local_options(list("callr.error" = "error"))
-  err <- tryCatch(
-    r(function() 1 + "A"),
-    error = function(e) e)
-
-  expect_s3_class(err, "rlib_error")
-  expect_s3_class(err$parent, "simpleError")
-  expect_match(
-    conditionMessage(err),
-    "error in callr subprocess")
-  expect_match(
-    conditionMessage(err$parent),
-    "non-numeric argument")
+  expect_snapshot({
+    err <- tryCatch(
+      r(function() 1 + "A"),
+      error = function(e) e
+    )
+    err$parent
+  })
 })
 
 test_that("parent errors, another level", {
   withr::local_options(list("callr.error" = "error"))
-  err <- tryCatch(
-    callr::r(function() {
-      withr::local_options(list("callr.error" = "error"))
-      callr::r(function() 1 + "A")
-    }),
-    error = function(e) e)
-
-  expect_s3_class(err, "rlib_error")
-  expect_s3_class(err$parent, "callr_status_error")
-  expect_s3_class(err$parent$parent, "simpleError")
-
-  expect_match(
-    conditionMessage(err),
-    "error in callr subprocess")
-  expect_match(
-    conditionMessage(err$parent),
-    "error in callr subprocess")
-  expect_match(
-    conditionMessage(err$parent$parent),
-    "non-numeric argument")
+  expect_snapshot({
+    err <- tryCatch(
+      callr::r(function() {
+        withr::local_options(list("callr.error" = "error"))
+        callr::r(function() 1 + "A")
+      }),
+      error = function(e) e
+    )
+    err$parent
+    err$parent$parent
+  })
 })
 
-test_that("error traces are merged", {
-  skip_on_cran()
-
-  sf <- tempfile(fileext = ".R")
-  op <- sub("\\.R$", ".rds", sf)
-  so <- paste0(sf, "out")
-  se <- paste0(sf, "err")
-  on.exit(unlink(c(sf, op, so, se), recursive = TRUE), add = TRUE)
-
-  expr <- substitute({
-    h <- function() callr::r(function() 1 + "a")
-    options(rlib_error_handler = function(c) {
-      saveRDS(c, file = `__op__`)
-      # quit after the first, because the other one is caught here as well
-      q()
-    })
-    h()
-  }, list("__op__" = op))
-
-  cat(deparse(expr), file = sf, sep = "\n")
-
-  callr::rscript(sf, stdout = so, stderr = se)
-
-  cond <- readRDS(op)
-
-  expect_s3_class(cond, "rlib_error")
-  expect_s3_class(cond$parent, "error")
-  expect_s3_class(cond$trace, "rlib_trace")
+test_that("error traces are printed recursively", {
+  expect_r_process_snapshot(
+    callr::r(function() callr::r(function() 1 + "a")),
+    interactive = FALSE,
+    transform = redact_srcref
+  )
 })
 
 test_that("errors in r_bg() are merged", {
-  skip_on_cran()
-
   withr::local_options(list("callr.error" = "error"))
 
   p <- r_bg(function() 1 + "A")
   on.exit(p$kill(), add = TRUE)
   p$wait(2000)
 
-  err <- tryCatch(
-    p$get_result(),
-    error = function(e) e)
-
-  expect_s3_class(err, "callr_status_error")
-  expect_s3_class(err$parent, "simpleError")
-  expect_match(
-    conditionMessage(err),
-    "error in callr subprocess.*non-numeric argument to")
-  expect_match(
-    conditionMessage(err$parent),
-    "non-numeric argument")
+  expect_snapshot(
+    error = TRUE,
+    p$get_result()
+  )
 })
 
 test_that("errors in r_process are merged", {
-  skip_on_cran()
   withr::local_options(list("callr.error" = "error"))
 
   opts <- r_process_options(func = function() 1 + "A")
@@ -179,42 +105,25 @@ test_that("errors in r_process are merged", {
   on.exit(p$kill(), add = TRUE)
   p$wait(2000)
 
-  err <- tryCatch(
-    p$get_result(),
-    error = function(e) e)
-
-  expect_s3_class(err, "callr_status_error")
-  expect_s3_class(err$parent, "simpleError")
-  expect_match(
-    conditionMessage(err),
-    "error in callr subprocess.*non-numeric argument to")
-  expect_match(
-    conditionMessage(err$parent),
-    "non-numeric argument")
+  expect_snapshot(
+    error = TRUE,
+    p$get_result()
+  )
 })
 
 test_that("errors in r_session$run() are merged", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 
-  err1 <- tryCatch(
-    rs$run(function() 1 + "A"),
-    error = function(e) e)
-  err2 <- tryCatch(
-    rs$run(function() 1 + "A"),
-    error = function(e) e)
-  err <- list(err1, err2)
+  expect_snapshot(
+    error = TRUE,
+    rs$run(function() 1 + "A")
+  )
 
-  for (i in seq_along(err)) {
-    expect_s3_class(err[[i]], "callr_status_error")
-    expect_s3_class(err[[i]]$parent, "simpleError")
-    expect_match(
-      conditionMessage(err[[i]]),
-      "error in callr subprocess.*non-numeric argument to")
-    expect_match(
-      conditionMessage(err[[i]]$parent),
-      "non-numeric argument")
-  }
+  expect_snapshot(
+    error = TRUE,
+    rs$run(function() 1 + "A")
+  )
 })
 
 test_that("errors in r_session$call() are merged", {
@@ -223,31 +132,70 @@ test_that("errors in r_session$call() are merged", {
 
   rs$call(function() 1 + "A")
   rs$poll_process(2000)
-  err1 <- rs$read()$error
+  expect_snapshot(rs$read()$error)
 
   rs$call(function() 1 + "A")
   rs$poll_process(2000)
-  err2 <- rs$read()$error
-
-  err <- list(err1, err2)
-
-  for (i in seq_along(err)) {
-    expect_s3_class(err[[i]], "callr_status_error")
-    expect_s3_class(err[[i]]$parent, "simpleError")
-    expect_match(
-      conditionMessage(err[[i]]),
-      "error in callr subprocess.*non-numeric argument to")
-    expect_match(
-      conditionMessage(err[[i]]$parent),
-      "non-numeric argument")
-  }
+  expect_snapshot(rs$read()$error)
 })
 
 test_that("child error is not modified", {
-  err <- tryCatch(callr::r(function() stop("foobar")), error = function(e) e)
-  expect_identical(
-    class(err$parent),
-    c("simpleError", "error", "condition")
+  expect_snapshot({
+    err <- tryCatch(callr::r(function() stop("foobar")), error = function(e) e)
+    err
+    class(err)
+    class(err$parent)
+  })
+})
+
+test_that("new_callr_error, timeout", {
+  expect_r_process_snapshot(
+    callr::r(function() Sys.sleep(3), timeout = 1/5),
+    transform = redact_srcref
   )
-  expect_null(err$parent$error$trace)
+  expect_snapshot(
+    error = TRUE,
+    callr::r(function() Sys.sleep(3), timeout = 1/5)
+  )
+})
+
+test_that("interrupting an R session", {
+  rs <- r_session$new()
+  on.exit(rs$close(), add = TRUE)
+  rs$call(function() Sys.sleep(3))
+  rs$interrupt()
+  rs$poll_io(1000)
+  expect_snapshot(
+    rs$read(),
+    transform = redact_callr_rs_result
+  )
+})
+
+test_that("format.call_status_error", {
+  err <- tryCatch(
+    callr::r(function() 1 + ""),
+    error = function(e) e
+  )
+  expect_snapshot(format(err))
+  expect_snapshot(print(err))
+
+  err <- tryCatch(
+    callr::r(function() 1 + "", error = "stack"),
+    error = function(e) e
+  )
+  expect_snapshot(format(err))
+  expect_snapshot(print(err))
+})
+
+test_that("format.call_status_error 2", {
+  expect_r_process_snapshot(
+    withr::local_options(rlib_error_always_trace = TRUE),
+    err <- tryCatch(
+      callr::r(function() 1 + ""),
+      error = function(e) e
+    ),
+    format(err, trace = TRUE),
+    interactive = FALSE,
+    transform = redact_srcref
+  )
 })
