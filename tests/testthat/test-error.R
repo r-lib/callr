@@ -194,7 +194,7 @@ test_that("format.call_status_error 2", {
       callr::r(function() 1 + ""),
       error = function(e) e
     ),
-    format(err, trace = TRUE),
+    writeLines(format(err, trace = TRUE)),
     interactive = FALSE,
     transform = redact_srcref
   )

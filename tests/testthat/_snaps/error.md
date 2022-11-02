@@ -354,24 +354,24 @@
     Output
       > withr::local_options(rlib_error_always_trace = TRUE)
       > err <- tryCatch(callr::r(function() 1 + ""), error = function(e) e)
-      > format(err, trace = TRUE)
-       [1] "Error: "                                                                                             
-       [2] "! in callr subprocess."                                                                              
-       [3] "Caused by error in `1 + \"\"`:"                                                                      
-       [4] "! non-numeric argument to binary operator"                                                           
-       [5] "---"                                                                                                 
-       [6] "Backtrace:"                                                                                          
-       [7] "1. base::tryCatch(callr::r(function() 1 + \"\"), error = function(e) e)"                             
-       [8] "2. base::tryCatchList(expr, classes, parentenv, handlers)"                                           
-       [9] "3. base::tryCatchOne(expr, names, parentenv, handlers[[1L]])"                                        
-      [10] "4. base::doTryCatch(return(expr), name, parentenv, handler)"                                         
-      [11] "5. callr::r(function() 1 + \"\")"                                                                    
-      [12] "6. callr:::get_result(output = out, options)"                                        
-      [13] "7. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))"
-      [14] "---"                                                                                                 
-      [15] "Subprocess backtrace:"                                                                               
-      [16] "1. base::.handleSimpleError(function (e)"                                                            
-      [17] "2. global h(simpleError(msg, call))"                                                                 
+      > writeLines(format(err, trace = TRUE))
+      Error: 
+      ! in callr subprocess.
+      Caused by error in `1 + ""`:
+      ! non-numeric argument to binary operator
+      ---
+      Backtrace:
+      1. base::tryCatch(callr::r(function() 1 + ""), error = function(e) e)
+      2. base::tryCatchList(expr, classes, parentenv, handlers)
+      3. base::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      4. base::doTryCatch(return(expr), name, parentenv, handler)
+      5. callr::r(function() 1 + "")
+      6. callr:::get_result(output = out, options)
+      7. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
+      ---
+      Subprocess backtrace:
+      1. base::.handleSimpleError(function (e)
+      2. global h(simpleError(msg, call))
 
 # stdout/stderr is printed on error
 
