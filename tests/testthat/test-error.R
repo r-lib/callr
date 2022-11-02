@@ -160,11 +160,18 @@ test_that("new_callr_error, timeout", {
 })
 
 test_that("interrupting an R session", {
+  # Not a great test, because it is timing dependent, especially bad
+  # on Windows, where it takes a bit longer to start running the command.
+  skip_on_cran()
+
   rs <- r_session$new()
   on.exit(rs$close(), add = TRUE)
   rs$call(function() Sys.sleep(3))
+  # wait a bit so it starts running
+  Sys.sleep(0.2)
   rs$interrupt()
   rs$poll_io(3000)
+
   expect_snapshot(
     rs$read(),
     transform = redact_callr_rs_result
