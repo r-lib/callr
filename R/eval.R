@@ -44,6 +44,8 @@
 #'   then the commands are not echoed and will not be shown
 #'   in the standard output. Also note that you need to call `print()`
 #'   explicitly to show the output of the command(s).
+#'   IF `NULL` (the default), then standard output is not returned, but
+#'   it is recorded and included in the error object if an error happens.
 #' @param stderr The name of the file the standard error of
 #'   the child R process will be written to.
 #'   In particular `message()` sends output to the standard
@@ -51,6 +53,8 @@
 #'   will be empty. This argument can be the same file as `stdout`,
 #'   in which case they will be correctly interleaved. If this is the
 #'   string `"2>&1"`, then standard error is redirected to standard output.
+#'   IF `NULL` (the default), then standard output is not returned, but
+#'   it is recorded and included in the error object if an error happens.
 #' @param error What to do if the remote process throws an error.
 #'   See details below.
 #' @param poll_connection Whether to have a control connection to
