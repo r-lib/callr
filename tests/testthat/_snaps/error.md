@@ -18,8 +18,8 @@
       ---
       Backtrace:
       1. callr::r(function() 1 + "A", error = "error")
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
       ---
       Subprocess backtrace:
       1. base::.handleSimpleError(function (e)
@@ -38,8 +38,8 @@
       ---
       Backtrace:
       1. callr::r(function() 1 + "A", error = "error")
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
       ---
       Subprocess backtrace:
       1. base::.handleSimpleError(function (e)
@@ -72,8 +72,8 @@
       ---
       Backtrace:
       1. callr::r(function() {
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error_with_stack(remerr, output), parent = fix_msg(remer:
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error_with_stack(remerr, output), parent = fix_msg(remer
 
 # error behavior can be set using option
 
@@ -143,14 +143,14 @@
       ---
       Backtrace:
       1. callr::r(function() callr::r(function() 1 + "a"))
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
       ---
       Subprocess backtrace:
       1. callr::r(function() 1 + "a")
-      2. callr:::get_result(output = out, options):
-      3. base::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
-      4. | base::signalCondition(cond):
+      2. callr:::get_result(output = out, options)
+      3. base::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
+      4. | base::signalCondition(cond)
       5. global (function (e)
       ---
       Subprocess backtrace:
@@ -256,7 +256,7 @@
       r_process()
     Output
       > callr::r(function() Sys.sleep(3), timeout = 1/5)
-      Error in `get_result(output = out, options)`:
+      Error in `get_result(output = out, options)`
       ! callr timed out
       Type .Last.error to see the more details.
 
@@ -366,8 +366,8 @@
        [9] "3. base::tryCatchOne(expr, names, parentenv, handlers[[1L]])"                                        
       [10] "4. base::doTryCatch(return(expr), name, parentenv, handler)"                                         
       [11] "5. callr::r(function() 1 + \"\")"                                                                    
-      [12] "6. callr:::get_result(output = out, options):"                                        
-      [13] "7. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):"
+      [12] "6. callr:::get_result(output = out, options)"                                        
+      [13] "7. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))"
       [14] "---"                                                                                                 
       [15] "Subprocess backtrace:"                                                                               
       [16] "1. base::.handleSimpleError(function (e)"                                                            
@@ -398,8 +398,8 @@
       ---
       Backtrace:
       1. callr::r(function() {
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
       ---
       Subprocess backtrace:
       1. base::stop("told ya")
@@ -433,8 +433,8 @@
       ---
       Backtrace:
       1. callr::r(function() {
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
       ---
       Subprocess backtrace:
       1. base::stop("told ya")
@@ -467,8 +467,8 @@
       ---
       Backtrace:
       1. callr::r(function() {
-      2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      2. callr:::get_result(output = out, options)
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
       ---
       Subprocess backtrace:
       1. base::stop("told ya")

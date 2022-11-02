@@ -186,7 +186,7 @@ expect_r_process_snapshot <- function(..., interactive = TRUE, echo = TRUE,
 }
 
 redact_srcref <- function(x) {
-  sub("[ ]*at [-a-zA-Z0-9]+[.]R:[0-9]+:[0-9]+:?", ":", x)
+  sub("[ ]*at [-a-zA-Z0-9]+[.]R:[0-9]+:[0-9]+:?", "", x)
 }
 
 redact_callr_rs_result <- function(x) {
