@@ -74,16 +74,52 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
     ...
   )
 
+  info <- if (err$.internal$has_cli()) {
+    cli::col_cyan(cli::symbol$info)
+  } else {
+    "i"                                                             # nocov
+  }
+
   if (!is.null(x$stack)) {
-    info <- if (err$.internal$has_cli()) {
-      cli::col_cyan(cli::symbol$info)
-    } else {
-      "i"                                                           # nocov
-    }
     lines <- c(
       lines,
       paste0(info, " With remote `$stack`, use `utils::debugger()` to debug it.")
     )
+  }
+
+  notempty <- function(x) !is.null(x) && sum(nchar(x)) > 0
+  hasout <- notempty(x$stdout)
+  haserr <- notempty(x$stderr)
+  if (hasout || haserr) {
+    if (err$.internal$is_interactive()) {
+      lines <- c(
+        lines,
+        if (hasout && haserr) {
+          paste0(info, " See `$stdout` and `$stderr` for standard output and error.")
+        } else if (hasout) {
+          paste0(info, " See `$stdout` for standard output.")
+        } else {
+          paste0(info, " See `$stderr` for standard error.")
+        }
+      )
+    } else {
+      lines <- c(
+        lines,
+        if (hasout) {
+          c(
+            "---",
+            "Standard output:",
+            trimws(x$stdout)
+          )
+        },
+        if (haserr) {
+          c("---",
+            "Standard error:",
+            trimws(x$stderr)
+          )
+        }
+      )
+    }
   }
 
   lines <- c(

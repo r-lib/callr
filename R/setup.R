@@ -4,7 +4,8 @@ setup_script_files <- function(options) {
     func_file   <- save_function_to_temp(options)
     result_file <- tempfile("callr-res-")
     script_file <- make_vanilla_script_file(
-      func_file, result_file, options$error)
+      func_file, result_file, options$error, !is.null(options$stderr)
+    )
     tmp_files <- c(tmp_files, func_file, script_file, result_file)
   })
 }

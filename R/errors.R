@@ -697,7 +697,9 @@ err <- local({
   # -- condition message with cli ---------------------------------------
 
   cnd_message_robust <- function(cond) {
-    cond$message %||% (if (inherits(cond, "interrupt")) "interrupt") %||% ""
+    cond$message %||%
+      (if (inherits(cond, "interrupt")) "interrupt") %||%
+      ""
   }
 
   cnd_message_cli <- function(cond, full = FALSE) {

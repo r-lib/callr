@@ -199,3 +199,52 @@ test_that("format.call_status_error 2", {
     transform = redact_srcref
   )
 })
+
+test_that("stdout/stderr is printed on error", {
+  expect_r_process_snapshot(
+    callr::r(function() {
+      warning("I have a bad feeling about this")
+      stop("told ya")
+    }),
+    .Last.error,
+    .Last.error$stderr,
+    interactive = TRUE,
+    transform = redact_srcref
+  )
+})
+
+test_that("stdout/stderr is printed on error 2", {
+  expect_r_process_snapshot(
+    callr::r(function() {
+      writeLines("Just some output")
+      stop("told ya")
+    }),
+    .Last.error,
+    .Last.error$stdout,
+    interactive = TRUE,
+    transform = redact_srcref
+  )
+})
+
+test_that("stdout/stderr is printed on error 3", {
+  expect_r_process_snapshot(
+    callr::r(function() {
+      writeLines("Just some output")
+      warning("I have a bad feeling about this")
+      stop("told ya")
+    }),
+    interactive = FALSE,
+    transform = redact_srcref
+  )
+})
+
+test_that("error is printed to file", {
+  tmp <- tempfile("callr-test")
+  on.exit(unlink(tmp), add = TRUE)
+  err <- tryCatch(
+    callr::r(function() stop("ouch"), stderr = tmp),
+    error = function(e) e
+  )
+  expect_snapshot(err$stderr)
+  expect_snapshot(readLines(tmp))
+})

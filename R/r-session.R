@@ -463,7 +463,8 @@ rs_call <- function(self, private, func, args, package) {
                                    private$options$result_file,
                                    private$options$error,
                                    pre_hook = pre, post_hook = post,
-                                   messages = TRUE)
+                                   messages = TRUE,
+                                   print_error = FALSE)
   cmd <- paste0(deparse(expr), "\n")
 
   ## Write this to stdin

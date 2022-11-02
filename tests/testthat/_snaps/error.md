@@ -19,7 +19,7 @@
       Backtrace:
       1. callr::r(function() 1 + "A", error = "error")
       2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = remerr[[3]]):
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
       ---
       Subprocess backtrace:
       1. base::.handleSimpleError(function (e)
@@ -39,7 +39,7 @@
       Backtrace:
       1. callr::r(function() 1 + "A", error = "error")
       2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = remerr[[3]]):
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
       ---
       Subprocess backtrace:
       1. base::.handleSimpleError(function (e)
@@ -73,7 +73,7 @@
       Backtrace:
       1. callr::r(function() {
       2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error_with_stack(remerr, output), parent = remerr[[2]]):
+      3. callr:::throw(callr_remote_error_with_stack(remerr, output), parent = fix_msg(remer:
 
 # error behavior can be set using option
 
@@ -144,12 +144,12 @@
       Backtrace:
       1. callr::r(function() callr::r(function() 1 + "a"))
       2. callr:::get_result(output = out, options):
-      3. callr:::throw(callr_remote_error(remerr, output), parent = remerr[[3]]):
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
       ---
       Subprocess backtrace:
       1. callr::r(function() 1 + "a")
       2. callr:::get_result(output = out, options):
-      3. base::throw(callr_remote_error(remerr, output), parent = remerr[[3]]):
+      3. base::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
       4. | base::signalCondition(cond):
       5. global (function (e)
       ---
@@ -355,21 +355,138 @@
       > withr::local_options(rlib_error_always_trace = TRUE)
       > err <- tryCatch(callr::r(function() 1 + ""), error = function(e) e)
       > format(err, trace = TRUE)
-       [1] "Error: "                                                                                    
-       [2] "! in callr subprocess."                                                                     
-       [3] "Caused by error in `1 + \"\"`:"                                                             
-       [4] "! non-numeric argument to binary operator"                                                  
-       [5] "---"                                                                                        
-       [6] "Backtrace:"                                                                                 
-       [7] "1. base::tryCatch(callr::r(function() 1 + \"\"), error = function(e) e)"                    
-       [8] "2. base::tryCatchList(expr, classes, parentenv, handlers)"                                  
-       [9] "3. base::tryCatchOne(expr, names, parentenv, handlers[[1L]])"                               
-      [10] "4. base::doTryCatch(return(expr), name, parentenv, handler)"                                
-      [11] "5. callr::r(function() 1 + \"\")"                                                           
-      [12] "6. callr:::get_result(output = out, options):"                               
-      [13] "7. callr:::throw(callr_remote_error(remerr, output), parent = remerr[[3]]):"
-      [14] "---"                                                                                        
-      [15] "Subprocess backtrace:"                                                                      
-      [16] "1. base::.handleSimpleError(function (e)"                                                   
-      [17] "2. global h(simpleError(msg, call))"                                                        
+       [1] "Error: "                                                                                             
+       [2] "! in callr subprocess."                                                                              
+       [3] "Caused by error in `1 + \"\"`:"                                                                      
+       [4] "! non-numeric argument to binary operator"                                                           
+       [5] "---"                                                                                                 
+       [6] "Backtrace:"                                                                                          
+       [7] "1. base::tryCatch(callr::r(function() 1 + \"\"), error = function(e) e)"                             
+       [8] "2. base::tryCatchList(expr, classes, parentenv, handlers)"                                           
+       [9] "3. base::tryCatchOne(expr, names, parentenv, handlers[[1L]])"                                        
+      [10] "4. base::doTryCatch(return(expr), name, parentenv, handler)"                                         
+      [11] "5. callr::r(function() 1 + \"\")"                                                                    
+      [12] "6. callr:::get_result(output = out, options):"                                        
+      [13] "7. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):"
+      [14] "---"                                                                                                 
+      [15] "Subprocess backtrace:"                                                                               
+      [16] "1. base::.handleSimpleError(function (e)"                                                            
+      [17] "2. global h(simpleError(msg, call))"                                                                 
+
+# stdout/stderr is printed on error
+
+    Code
+      r_process()
+    Output
+      > callr::r(function() {
+      +     warning("I have a bad feeling about this")
+      +     stop("told ya")
+      + })
+      Error: 
+      ! in callr subprocess.
+      Caused by error in `(function () ...`:
+      ! told ya
+      i See `$stderr` for standard error.
+      Type .Last.error to see the more details.
+      > .Last.error
+      <callr_error/rlib_error_3_0/rlib_error/error>
+      Error: 
+      ! in callr subprocess.
+      Caused by error in `(function () ...`:
+      ! told ya
+      i See `$stderr` for standard error.
+      ---
+      Backtrace:
+      1. callr::r(function() {
+      2. callr:::get_result(output = out, options):
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      ---
+      Subprocess backtrace:
+      1. base::stop("told ya")
+      2. | base::.handleSimpleError(function (e)
+      3. global h(simpleError(msg, call))
+      > .Last.error$stderr
+      [1] "Warning message:\nIn (function ()  : I have a bad feeling about this\n"
+
+# stdout/stderr is printed on error 2
+
+    Code
+      r_process()
+    Output
+      > callr::r(function() {
+      +     writeLines("Just some output")
+      +     stop("told ya")
+      + })
+      Error: 
+      ! in callr subprocess.
+      Caused by error in `(function () ...`:
+      ! told ya
+      i See `$stdout` for standard output.
+      Type .Last.error to see the more details.
+      > .Last.error
+      <callr_error/rlib_error_3_0/rlib_error/error>
+      Error: 
+      ! in callr subprocess.
+      Caused by error in `(function () ...`:
+      ! told ya
+      i See `$stdout` for standard output.
+      ---
+      Backtrace:
+      1. callr::r(function() {
+      2. callr:::get_result(output = out, options):
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      ---
+      Subprocess backtrace:
+      1. base::stop("told ya")
+      2. | base::.handleSimpleError(function (e)
+      3. global h(simpleError(msg, call))
+      > .Last.error$stdout
+      [1] "Just some output\n"
+
+# stdout/stderr is printed on error 3
+
+    Code
+      r_process()
+    Output
+      > callr::r(function() {
+      +     writeLines("Just some output")
+      +     warning("I have a bad feeling about this")
+      +     stop("told ya")
+      + })
+      Error: 
+      ! in callr subprocess.
+      Caused by error in `(function () ...`:
+      ! told ya
+      ---
+      Standard output:
+      Just some output
+      ---
+      Standard error:
+      Warning message:
+      In (function ()  : I have a bad feeling about this
+      ---
+      Backtrace:
+      1. callr::r(function() {
+      2. callr:::get_result(output = out, options):
+      3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]])):
+      ---
+      Subprocess backtrace:
+      1. base::stop("told ya")
+      2. | base::.handleSimpleError(function (e)
+      3. global h(simpleError(msg, call))
+      Execution halted
+
+# error is printed to file
+
+    Code
+      err$stderr
+    Output
+      [1] "Error in (function ()  : ouch\n"
+
+---
+
+    Code
+      readLines(tmp)
+    Output
+      [1] "Error in (function ()  : ouch"
 

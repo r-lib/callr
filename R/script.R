@@ -1,7 +1,8 @@
 
 make_vanilla_script_expr <- function(expr_file, res, error,
                                      pre_hook = NULL, post_hook = NULL,
-                                     messages = FALSE) {
+                                     messages = FALSE,
+                                     print_error = TRUE) {
 
   ## Code to handle errors in the child
   ## This will inserted into the main script
@@ -122,20 +123,40 @@ make_vanilla_script_expr <- function(expr_file, res, error,
         ## However, on R 3.1 and R 3.2 throwing an error here
         ## will crash the R process. With `try()` the error is still
         ## printed to stderr, but no real error is thrown.
-        error = function(e) { `__post_hook__`; try(stop(e)) },
-        interrupt = function(e) {  `__post_hook__`; e }
+        error = function(e) {
+          `__post_hook__`;
+          if (`__print_error__`) {
+            try(stop(e))
+          } else {
+            invisible()
+          }
+        },
+        interrupt = function(e) {
+          `__post_hook__`
+          if (`__print_error__`) {
+            e
+          } else {
+            invisible()
+          }
+        }
       )                                 # nocov end
     },
 
     list(`__error__` = err, `__expr_file__` = expr_file, `__res__` = res,
          `__pre_hook__` = pre_hook, `__post_hook__` = post_hook,
          `__message__` = message(),
-         `__compress__` = getOption("callr.compress_transport", FALSE))
+         `__compress__` = getOption("callr.compress_transport", FALSE),
+         `__print_error__` = print_error)
   )
 }
 
-make_vanilla_script_file <- function(expr_file, res, error) {
-  expr <- make_vanilla_script_expr(expr_file, res, error)
+make_vanilla_script_file <- function(expr_file, res, error, print_error) {
+  expr <- make_vanilla_script_expr(
+    expr_file,
+    res,
+    error,
+    print_error = print_error
+  )
   script <- deparse(expr)
 
   tmp <- tempfile("callr-scr-")

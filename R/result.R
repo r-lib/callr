@@ -61,6 +61,21 @@ get_result <- function(output, options) {
     return(ret)
   }
 
+  # To work around an errors.R bug, if the format method is registered
+  # from another package. errors.R expects that the parent error has a
+  # message, but if it is an interrupt (and perhaps some other rare cases),
+  # it does not.
+  fix_msg <- function(cnd) {
+    if (is.null(cnd$message)) {
+      if (inherits(cnd, "interrupt")) {
+        cnd$message <- "interrupt"
+      } else {
+        cnd$message <- ""
+      }
+    }
+    cnd
+  }
+
   ## The error RDS might be corrupt, too, if we crashed/got killed after
   ## an error
   tryCatch(
@@ -69,10 +84,10 @@ get_result <- function(output, options) {
   )
 
   if (remerr[[1]] == "error") {
-    throw(callr_remote_error(remerr, output), parent = remerr[[3]])
+    throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
 
   } else if (remerr[[1]] == "stack") {
-    throw(callr_remote_error_with_stack(remerr, output), parent = remerr[[2]])
+    throw(callr_remote_error_with_stack(remerr, output), parent = fix_msg(remerr[[2]]))
 
   } else if (remerr[[1]] == "debugger") {
     utils::debugger(clean_stack(remerr[[3]]))
