@@ -194,5 +194,5 @@ redact_callr_rs_result <- function(x) {
 }
 
 fix_eol <- function(x) {
-  gsub("\r\n", "\n", x, fixed = TRUE)
+  gsub("\\r\\n", "\\n", x, fixed = TRUE)
 }
