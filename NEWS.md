@@ -1,6 +1,6 @@
 # callr (development version)
 
-* Errors from callr now have the standard output (in `$stdout`) and
+* Errors from callr now include the standard output (in `$stdout`) and
   standard error (in `stderr`) again. The standard output and error are also
   printed on error in non-interactive sessions, and a note is printed about
   them in interactive sessions.
