@@ -43,7 +43,7 @@
     <loc>https://callr.r-lib.org/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://callr.r-lib.org/reference/new_callr_error.html</loc>
+    <loc>https://callr.r-lib.org/reference/new_callr_crash_error.html</loc>
   </url>
   <url>
     <loc>https://callr.r-lib.org/reference/r.html</loc>

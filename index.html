@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="index.html">callr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.7.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.7.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,27 +79,31 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="callr">callr<a class="anchor" aria-label="anchor" href="#callr"></a>
 </h1></div>
-<blockquote><p>Call R from R</p></blockquote>
+<blockquote>
+<p>Call R from R</p>
+</blockquote>
 <!-- badges: start -->
+
 <p>It is sometimes useful to perform a computation in a separate R process, without affecting the current R process at all. This packages does exactly that.</p>
 <hr>
 <ul>
-<li><a href="#features">Features</a></li>
-<li><a href="#installation">Installation</a></li>
+<li><a href="#features" id="toc-features">Features</a></li>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
 <li>
-<a href="#synchronous-one-off-r-processes">Synchronous, one-off R processes</a><ul>
-<li><a href="#passing-arguments">Passing arguments</a></li>
-<li><a href="#using-packages">Using packages</a></li>
-<li><a href="#error-handling">Error handling</a></li>
-<li><a href="#standard-output-and-error">Standard output and error</a></li>
+<a href="#synchronous-one-off-r-processes" id="toc-synchronous-one-off-r-processes">Synchronous, one-off R processes</a>
+<ul>
+<li><a href="#passing-arguments" id="toc-passing-arguments">Passing arguments</a></li>
+<li><a href="#using-packages" id="toc-using-packages">Using packages</a></li>
+<li><a href="#error-handling" id="toc-error-handling">Error handling</a></li>
+<li><a href="#standard-output-and-error" id="toc-standard-output-and-error">Standard output and error</a></li>
 </ul>
 </li>
-<li><a href="#background-r-processes">Background R processes</a></li>
-<li><a href="#multiple-background-r-processes-and-poll">Multiple background R processes and <code>poll()</code></a></li>
-<li><a href="#persistent-r-sessions">Persistent R sessions</a></li>
-<li><a href="#running-r-cmd-commands">Running <code>R CMD</code> commands</a></li>
-<li><a href="#code-of-conduct">Code of Conduct</a></li>
-<li><a href="#license">License</a></li>
+<li><a href="#background-r-processes" id="toc-background-r-processes">Background R processes</a></li>
+<li><a href="#multiple-background-r-processes-and-poll" id="toc-multiple-background-r-processes-and-poll">Multiple background R processes and <code>poll()</code></a></li>
+<li><a href="#persistent-r-sessions" id="toc-persistent-r-sessions">Persistent R sessions</a></li>
+<li><a href="#running-r-cmd-commands" id="toc-running-r-cmd-commands">Running <code>R CMD</code> commands</a></li>
+<li><a href="#code-of-conduct" id="toc-code-of-conduct">Code of Conduct</a></li>
+<li><a href="#license" id="toc-license">License</a></li>
 </ul>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -129,13 +133,15 @@
 <p>Use <code><a href="reference/r.html">r()</a></code> to run an R function in a new R process. The results are passed back seamlessly:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt;              Sepal.Length Sepal.Width Petal.Length Petal.Width                  
 #&gt; Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707                  
 #&gt; Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394                  
 #&gt; Petal.Length    1.2743154  -0.3296564    3.1162779   1.2956094                  
 #&gt; Petal.Width     0.5162707  -0.1216394    1.2956094   0.5810063                  
-</pre></div>
+</pre>
+</div>
 <div class="section level3">
 <h3 id="passing-arguments">Passing arguments<a class="anchor" aria-label="anchor" href="#passing-arguments"></a>
 </h3>
@@ -143,18 +149,21 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mycars</span> <span class="op">&lt;-</span> <span class="va">cars</span></span>
 <span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mycars</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt; <span style="font-weight: bold;;color: #B58900">Error</span>:                                                                          
-#&gt; <span style="color: #B58900">!</span> error in callr subprocess                                                     
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `summary(mycars)`:                                           
-#&gt; <span style="color: #B58900">!</span> object 'mycars' not found                                                     
-#&gt; <span style="color: #002B36">Type .Last.error to see the more details.</span>                                       
-</pre></div>
+#&gt; <span style="color: #B58900;">!</span> object 'mycars' not found                                                     
+#&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       
+</pre>
+</div>
 <p>But this does:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mycars</span> <span class="op">&lt;-</span> <span class="va">cars</span></span>
 <span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mycars</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt;      speed           dist                                                       
 #&gt;  Min.   : 4.0   Min.   :  2.00                                                  
 #&gt;  1st Qu.:12.0   1st Qu.: 26.00                                                  
@@ -162,7 +171,8 @@
 #&gt;  Mean   :15.4   Mean   : 42.98                                                  
 #&gt;  3rd Qu.:19.0   3rd Qu.: 56.00                                                  
 #&gt;  Max.   :25.0   Max.   :120.00                                                  
-</pre></div>
+</pre>
+</div>
 <p>Note that the arguments will be serialized and saved to a file, so if they are large R objects, it might take a long time for the child process to start up.</p>
 </div>
 <div class="section level3">
@@ -171,9 +181,11 @@
 <p>You can use any R package in the child process, just make sure to refer to it explicitly with the <code>::</code> operator. For example, the following code creates an <a href="https://github.com/igraph/rigraph" class="external-link">igraph</a> graph in the child, and calculates some metrics of it.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">4</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/diameter.html" class="external-link">diameter</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [1] 10                                                                          
-</pre></div>
+</pre>
+</div>
 </div>
 <div class="section level3">
 <h3 id="error-handling">Error handling<a class="anchor" aria-label="anchor" href="#error-handling"></a>
@@ -181,34 +193,36 @@
 <p>callr copies errors from the child process back to the main R session:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="st">"A"</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt; <span style="font-weight: bold;;color: #B58900">Error</span>:                                                                          
-#&gt; <span style="color: #B58900">!</span> error in callr subprocess                                                     
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `1 + "A"`:                                                   
-#&gt; <span style="color: #B58900">!</span> non-numeric argument to binary operator                                       
-#&gt; <span style="color: #002B36">Type .Last.error to see the more details.</span>                                       
-</pre></div>
+#&gt; <span style="color: #B58900;">!</span> non-numeric argument to binary operator                                       
+#&gt; <span style="color: #002B36;">Type .Last.error to see the more details.</span>                                       
+</pre>
+</div>
 <p>callr sets the <code>.Last.error</code> variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">.Last.error</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt; <span style="color: #268BD2">&lt;callr_error/rlib_error_3_0/rlib_error/error&gt;</span>                                   
-#&gt; <span style="font-weight: bold;;color: #B58900">Error</span>:                                                                          
-#&gt; <span style="color: #B58900">!</span> error in callr subprocess                                                     
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt; <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
+#&gt; <span style="color: #B58900;">!</span> in callr subprocess.                                                          
 #&gt; <span style="font-weight: bold;">Caused by error</span> in `1 + "A"`:                                                   
-#&gt; <span style="color: #B58900">!</span> non-numeric argument to binary operator                                       
+#&gt; <span style="color: #B58900;">!</span> non-numeric argument to binary operator                                       
 #&gt; ---                                                                             
 #&gt; Backtrace:                                                                      
-#&gt; <span style="color: #002B36">1. </span>callr::<span style="color: #2AA198">r</span><span style="color: #B58900">(</span><span style="color: #DC322F">function</span><span style="color: #268BD2">()</span> <span style="color: #268BD2">1</span> <span style="color: #859900">+</span> <span style="color: #B58900">"A")</span>                                                 
-#&gt; <span style="color: #002B36">2. </span>callr:::<span style="color: #2AA198">get_result</span><span style="color: #B58900">(</span>output = out, options<span style="color: #B58900">)</span>                                    
-#&gt; <span style="color: #002B36">3. </span>callr:::<span style="color: #2AA198">throw</span><span style="color: #B58900">(</span><span style="color: #2AA198">callr_remote_error</span><span style="color: #268BD2">(</span>remerr<span style="color: #268BD2">)</span><span style="color: #B58900">)</span>                                    
-#&gt; <span style="color: #002B36">4. </span>callr:::<span style="color: #2AA198">callr_remote_error</span><span style="color: #B58900">(</span>remerr<span style="color: #B58900">)</span>                                           
-#&gt; <span style="color: #002B36">5. </span>callr:::<span style="color: #2AA198">throw</span><span style="color: #B58900">(</span>err, parent = remerr<span style="color: #268BD2">[[3]]</span><span style="color: #B58900">)</span>                                     
+#&gt; <span style="color: #002B36;">1. </span>callr::<span style="color: #2AA198;">r</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> <span style="color: #268BD2;">1</span> <span style="color: #859900;">+</span> <span style="color: #B58900;">"A")</span>                                                 
+#&gt; <span style="color: #002B36;">2. </span>callr:::<span style="color: #2AA198;">get_result</span><span style="color: #B58900;">(</span>output = out, options<span style="color: #B58900;">)</span>                                    
+#&gt; <span style="color: #002B36;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">callr_remote_error</span><span style="color: #268BD2;">(</span>remerr, output<span style="color: #268BD2;">)</span>, parent = <span style="color: #2AA198;">fix_msg</span><span style="color: #268BD2;">(</span>remerr<span style="color: #2AA198;">[[</span><span style="color: #268BD2;">3</span><span style="color: #2AA198;">]</span>
+#&gt; <span style="color: #2AA198;">]</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                                                             
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #002B36">1. </span>base::.handleSimpleError(function (e) …                                      
-#&gt; <span style="color: #002B36">2. </span>global <span style="color: #2AA198">h</span><span style="color: #B58900">(</span><span style="color: #2AA198">simpleError</span><span style="color: #268BD2">(</span>msg, call<span style="color: #268BD2">)</span><span style="color: #B58900">)</span>                                             
-</pre></div>
+#&gt; <span style="color: #002B36;">1. </span>base::.handleSimpleError(function (e) …                                      
+#&gt; <span style="color: #002B36;">2. </span>global <span style="color: #2AA198;">h</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">simpleError</span><span style="color: #268BD2;">(</span>msg, call<span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                             
+</pre>
+</div>
 <p>The error objects has two parts. The first belongs to the main process, and the second belongs to the subprocess.</p>
 <p><code>.Last.error</code> also includes a stack trace, that includes both the main R process and the subprocess:</p>
 <p>The top part of the trace contains the frames in the main process, and the bottom part contains the frames in the subprocess, starting with the anonymous function.</p>
@@ -222,14 +236,18 @@
 <span>  stdout <span class="op">=</span> <span class="st">"/tmp/out"</span>, stderr <span class="op">=</span> <span class="st">"/tmp/err"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"/tmp/out"</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [1] "[1] \"hello world!\""                                                      
-</pre></div>
+</pre>
+</div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"/tmp/err"</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [1] "hello again!"                                                              
-</pre></div>
+</pre>
+</div>
 <p>With the <code>stdout</code> option, the standard output is collected and can be examined once the child process finished. The <code>show = TRUE</code> options will also show the output of the child, as it is printed, on the console of the parent.</p>
 </div>
 </div>
@@ -240,13 +258,16 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rp</span> <span class="op">&lt;-</span> <span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">rp</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt; PROCESS 'R', running, pid 11732.                                                
-</pre></div>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt; PROCESS 'R', running, pid 12939.                                                
+</pre>
+</div>
 <p>This is a list of all <code>r_process</code> methods:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt;  [1] "as_ps_handle"          "clone"                 "finalize"                 
 #&gt;  [4] "format"                "get_cmdline"           "get_cpu_times"            
 #&gt;  [7] "get_error_connection"  "get_error_file"        "get_exe"                  
@@ -264,7 +285,8 @@
 #&gt; [43] "read_error_lines"      "read_output"           "read_output_lines"        
 #&gt; [46] "resume"                "signal"                "supervise"                
 #&gt; [49] "suspend"               "wait"                  "write_input"              
-</pre></div>
+</pre>
+</div>
 <p>These include all methods of the <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> superclass and the new <code><a href="reference/get_result.html">get_result()</a></code> method, to retrieve the R object returned by the function call. Some of the handiest methods are:</p>
 <ul>
 <li>
@@ -296,7 +318,8 @@
 <code class="sourceCode R"><span><span class="va">rp1</span> <span class="op">&lt;-</span> <span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>; <span class="st">"1 done"</span> <span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">rp2</span> <span class="op">&lt;-</span> <span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r_bg.html">r_bg</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="st">"2 done"</span> <span class="op">}</span><span class="op">)</span></span>
 <span><span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">rp1</span>, <span class="va">rp2</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [[1]]                                                                           
 #&gt;   output    error  process                                                      
 #&gt; "silent" "silent" "silent"                                                      
@@ -305,25 +328,32 @@
 #&gt;  output   error process                                                         
 #&gt; "ready" "ready" "ready"                                                         
 #&gt;                                                                                 
-</pre></div>
+</pre>
+</div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rp2</span><span class="op">$</span><span class="fu">get_result</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [1] "2 done"                                                                    
-</pre></div>
+</pre>
+</div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">processx</span><span class="fu">::</span><span class="fu"><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">poll</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">rp1</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [[1]]                                                                           
 #&gt;  output   error process                                                         
 #&gt; "ready" "ready" "ready"                                                         
 #&gt;                                                                                 
-</pre></div>
+</pre>
+</div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rp1</span><span class="op">$</span><span class="fu">get_result</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [1] "1 done"                                                                    
-</pre></div>
+</pre>
+</div>
 </div>
 <div class="section level2">
 <h2 id="persistent-r-sessions">Persistent R sessions<a class="anchor" aria-label="anchor" href="#persistent-r-sessions"></a>
@@ -332,41 +362,50 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">callr</span><span class="fu">::</span><span class="va"><a href="reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rs</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt; R SESSION, alive, idle, pid 11775.                                              
-</pre></div>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt; R SESSION, alive, idle, pid 12984.                                              
+</pre>
+</div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
 <p>Once an R session is done with an asynchronous computation, its <code>poll_process()</code> method returns <code>"ready"</code> and the <code>r_session$read()</code> method can read out the result.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">callr</span><span class="fu">::</span><span class="va"><a href="reference/r_session.html">r_session</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt;  [1] 0.936747368 0.672634224 0.009973679 0.378520806 0.397000249 0.516679376    
-#&gt;  [7] 0.766593162 0.519247113 0.721116536 0.794452164                            
-</pre></div>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt;  [1] 0.04163475 0.55842600 0.57425053 0.14486084 0.46337181 0.52936371          
+#&gt;  [7] 0.43533067 0.15460357 0.07100859 0.58247559                                
+</pre>
+</div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">rs</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#&gt; R SESSION, alive, busy, pid 11781.                                              
-</pre></div>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
+#&gt; R SESSION, alive, busy, pid 12991.                                              
+</pre>
+</div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">poll_process</span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; [1] "ready"                                                                     
-</pre></div>
+</pre>
+</div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span><span class="op">$</span><span class="fu">read</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-2d7824a4659"                                          
+#&gt; [1] "done callr-rs-result-32303010168"                                          
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt;  [1]  0.2572967  0.9625772 -0.4902171 -0.4099311  2.1839976 -1.1131633          
-#&gt;  [7]  0.8029082 -0.6521073  1.1536814  1.0644496                                
+#&gt;  [1] -0.22373998  0.44042372 -0.03527574  0.72151795 -0.65417734 -1.16585950    
+#&gt;  [7]  0.44952813 -0.78001804  0.76238414 -0.79292989                            
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -379,7 +418,8 @@
 #&gt;                                                                                 
 #&gt; attr(,"class")                                                                  
 #&gt; [1] "callr_session_result"                                                      
-</pre></div>
+</pre>
+</div>
 </div>
 <div class="section level2">
 <h2 id="running-r-cmd-commands">Running <code>R CMD</code> commands<a class="anchor" aria-label="anchor" href="#running-r-cmd-commands"></a>
@@ -387,7 +427,8 @@
 <p>The <code><a href="reference/rcmd.html">rcmd()</a></code> function calls an <code>R CMD</code> command. For example, you can call <code>R CMD INSTALL</code>, <code>R CMD check</code> or <code>R CMD config</code> this way:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/rcmd.html">rcmd</a></span><span class="op">(</span><span class="st">"config"</span>, <span class="st">"CC"</span><span class="op">)</span></span></code></pre></div>
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
+<pre>
 #&gt; $status                                                                         
 #&gt; [1] 0                                                                           
 #&gt;                                                                                 
@@ -401,10 +442,11 @@
 #&gt; [1] FALSE                                                                       
 #&gt;                                                                                 
 #&gt; $command                                                                        
-#&gt; [1] "/opt/R/4.2.1/lib/R/bin/R" "CMD"                                            
+#&gt; [1] "/opt/R/4.2.2/lib/R/bin/R" "CMD"                                            
 #&gt; [3] "config"                   "CC"                                             
 #&gt;                                                                                 
-</pre></div>
+</pre>
+</div>
 <p>This returns a list with three components: the standard output, the standard error, and the exit (status) code of the <code>R CMD</code> command.</p>
 </div>
 <div class="section level2">
