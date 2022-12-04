@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures",
   fig.width = 10,
-  asciicast_theme = "pkgdown"
+  asciicast_theme = if (Sys.getenv("IN_PKGDOWN") == "true") "pkgdown" else "readme"
 )
 asciicast::init_knitr_engine(
   echo = TRUE,
