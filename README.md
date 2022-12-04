@@ -21,45 +21,45 @@ that.
 
 ---
 
--   <a href="#features" id="toc-features">Features</a>
--   <a href="#installation" id="toc-installation">Installation</a>
--   <a href="#synchronous-one-off-r-processes"
-    id="toc-synchronous-one-off-r-processes">Synchronous, one-off R
-    processes</a>
-    -   <a href="#passing-arguments" id="toc-passing-arguments">Passing
-        arguments</a>
-    -   <a href="#using-packages" id="toc-using-packages">Using packages</a>
-    -   <a href="#error-handling" id="toc-error-handling">Error handling</a>
-    -   <a href="#standard-output-and-error"
-        id="toc-standard-output-and-error">Standard output and error</a>
--   <a href="#background-r-processes"
-    id="toc-background-r-processes">Background R processes</a>
--   <a href="#multiple-background-r-processes-and-poll"
-    id="toc-multiple-background-r-processes-and-poll">Multiple background R
-    processes and <code>poll()</code></a>
--   <a href="#persistent-r-sessions"
-    id="toc-persistent-r-sessions">Persistent R sessions</a>
--   <a href="#running-r-cmd-commands"
-    id="toc-running-r-cmd-commands">Running <code>R CMD</code> commands</a>
--   <a href="#code-of-conduct" id="toc-code-of-conduct">Code of Conduct</a>
--   <a href="#license" id="toc-license">License</a>
+- <a href="#features" id="toc-features">Features</a>
+- <a href="#installation" id="toc-installation">Installation</a>
+- <a href="#synchronous-one-off-r-processes"
+  id="toc-synchronous-one-off-r-processes">Synchronous, one-off R
+  processes</a>
+  - <a href="#passing-arguments" id="toc-passing-arguments">Passing
+    arguments</a>
+  - <a href="#using-packages" id="toc-using-packages">Using packages</a>
+  - <a href="#error-handling" id="toc-error-handling">Error handling</a>
+  - <a href="#standard-output-and-error"
+    id="toc-standard-output-and-error">Standard output and error</a>
+- <a href="#background-r-processes"
+  id="toc-background-r-processes">Background R processes</a>
+- <a href="#multiple-background-r-processes-and-poll"
+  id="toc-multiple-background-r-processes-and-poll">Multiple background R
+  processes and <code>poll()</code></a>
+- <a href="#persistent-r-sessions"
+  id="toc-persistent-r-sessions">Persistent R sessions</a>
+- <a href="#running-r-cmd-commands"
+  id="toc-running-r-cmd-commands">Running <code>R CMD</code> commands</a>
+- <a href="#code-of-conduct" id="toc-code-of-conduct">Code of Conduct</a>
+- <a href="#license" id="toc-license">License</a>
 
 ## Features
 
--   Calls an R function, with arguments, in a subprocess.
--   Copies function arguments to the subprocess and copies the return
-    value of the function back, seamlessly.
--   Copies error objects back from the subprocess, including a stack
-    trace.
--   Shows and/or collects the standard output and standard error of the
-    subprocess.
--   Supports both one-off and persistent R subprocesses.
--   Calls the function synchronously or asynchronously (in the
-    background).
--   Can call `R CMD` commands, synchronously or asynchronously.
--   Can call R scripts, synchronously or asynchronously.
--   Provides extensible `r_process`, `rcmd_process` and
-    `rscript_process` R6 classes, based on `processx::process`.
+- Calls an R function, with arguments, in a subprocess.
+- Copies function arguments to the subprocess and copies the return
+  value of the function back, seamlessly.
+- Copies error objects back from the subprocess, including a stack
+  trace.
+- Shows and/or collects the standard output and standard error of the
+  subprocess.
+- Supports both one-off and persistent R subprocesses.
+- Calls the function synchronously or asynchronously (in the
+  background).
+- Can call `R CMD` commands, synchronously or asynchronously.
+- Can call R scripts, synchronously or asynchronously.
+- Provides extensible `r_process`, `rcmd_process` and `rscript_process`
+  R6 classes, based on `processx::process`.
 
 ## Installation
 
@@ -78,7 +78,9 @@ passed back seamlessly:
 callr::r(function() var(iris[, 1:4]))
 ```
 
-![](man/figures/simple.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/simple-dark.svg">
+<img src="man/figures/simple.svg" /> </picture>
 
 ### Passing arguments
 
@@ -92,7 +94,9 @@ mycars <- cars
 callr::r(function() summary(mycars))
 ```
 
-![](man/figures/passargsfail.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/passargsfail-dark.svg">
+<img src="man/figures/passargsfail.svg" /> </picture>
 
 But this does:
 
@@ -101,7 +105,9 @@ mycars <- cars
 callr::r(function(x) summary(x), args = list(mycars))
 ```
 
-![](man/figures/passargsok.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/passargsok-dark.svg">
+<img src="man/figures/passargsok.svg" /> </picture>
 
 Note that the arguments will be serialized and saved to a file, so if
 they are large R objects, it might take a long time for the child
@@ -118,7 +124,9 @@ child, and calculates some metrics of it.
 callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-![](man/figures/packages.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/packages-dark.svg">
+<img src="man/figures/packages.svg" /> </picture>
 
 ### Error handling
 
@@ -128,16 +136,20 @@ callr copies errors from the child process back to the main R session:
 callr::r(function() 1 + "A")
 ```
 
-![](man/figures/error1.svg)<!-- --> callr sets the `.Last.error`
-variable, and after an error you can inspect this for more details about
-the error, including stack traces both from the main R process and the
-subprocess.
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/error1-dark.svg">
+<img src="man/figures/error1.svg" /> </picture> callr sets the
+`.Last.error` variable, and after an error you can inspect this for more
+details about the error, including stack traces both from the main R
+process and the subprocess.
 
 ``` r
 .Last.error
 ```
 
-![](man/figures/error2-2.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/error2-2-dark.svg">
+<img src="man/figures/error2-2.svg" /> </picture>
 
 The error objects has two parts. The first belongs to the main process,
 and the second belongs to the subprocess.
@@ -162,13 +174,17 @@ x <- callr::r(function() { print("hello world!"); message("hello again!") },
 readLines("/tmp/out")
 ```
 
-![](man/figures/io.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/io-dark.svg">
+<img src="man/figures/io.svg" /> </picture>
 
 ``` r
 readLines("/tmp/err")
 ```
 
-![](man/figures/io-2.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/io-2-dark.svg">
+<img src="man/figures/io-2.svg" /> </picture>
 
 With the `stdout` option, the standard output is collected and can be
 examined once the child process finished. The `show = TRUE` options will
@@ -186,7 +202,9 @@ rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-![](man/figures/bg.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/bg-dark.svg">
+<img src="man/figures/bg.svg" /> </picture>
 
 This is a list of all `r_process` methods:
 
@@ -194,24 +212,25 @@ This is a list of all `r_process` methods:
 ls(rp)
 ```
 
-![](man/figures/bg-methods.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/bg-methods-dark.svg">
+<img src="man/figures/bg-methods.svg" /> </picture>
 
 These include all methods of the `processx::process` superclass and the
 new `get_result()` method, to retrieve the R object returned by the
 function call. Some of the handiest methods are:
 
--   `get_exit_status()` to query the exit status of a finished process.
--   `get_result()` to collect the return value of the R function call.
--   `interrupt()` to send an interrupt to the process. This is
-    equivalent to a `CTRL+C` key press, and the R process might ignore
-    it.
--   `is_alive()` to check if the process is alive.
--   `kill()` to terminate the process.
--   `poll_io()` to wait for any standard output, standard error, or the
-    completion of the process, with a timeout.
--   `read_*()` to read the standard output or error.
--   `suspend()` and `resume()` to stop and continue a process.
--   `wait()` to wait for the completion of the process, with a timeout.
+- `get_exit_status()` to query the exit status of a finished process.
+- `get_result()` to collect the return value of the R function call.
+- `interrupt()` to send an interrupt to the process. This is equivalent
+  to a `CTRL+C` key press, and the R process might ignore it.
+- `is_alive()` to check if the process is alive.
+- `kill()` to terminate the process.
+- `poll_io()` to wait for any standard output, standard error, or the
+  completion of the process, with a timeout.
+- `read_*()` to read the standard output or error.
+- `suspend()` and `resume()` to stop and continue a process.
+- `wait()` to wait for the completion of the process, with a timeout.
 
 ## Multiple background R processes and `poll()`
 
@@ -227,25 +246,33 @@ rp2 <- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
 processx::poll(list(rp1, rp2), 1000)
 ```
 
-![](man/figures/poll.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/poll-dark.svg">
+<img src="man/figures/poll.svg" /> </picture>
 
 ``` r
 rp2$get_result()
 ```
 
-![](man/figures/poll-2.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/poll-2-dark.svg">
+<img src="man/figures/poll-2.svg" /> </picture>
 
 ``` r
 processx::poll(list(rp1), 1000)
 ```
 
-![](man/figures/poll-3.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/poll-3-dark.svg">
+<img src="man/figures/poll-3.svg" /> </picture>
 
 ``` r
 rp1$get_result()
 ```
 
-![](man/figures/poll-4.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/poll-4-dark.svg">
+<img src="man/figures/poll-4.svg" /> </picture>
 
 ## Persistent R sessions
 
@@ -257,7 +284,9 @@ rs <- callr::r_session$new()
 rs
 ```
 
-![](man/figures/rsession.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/rsession-dark.svg">
+<img src="man/figures/rsession.svg" /> </picture>
 
 `r_session$run()` is a synchronous call, that works similarly to `r()`,
 but uses the persistent session. `r_session$call()` starts the function
@@ -275,26 +304,34 @@ rs <- callr::r_session$new()
 rs$run(function() runif(10))
 ```
 
-![](man/figures/rsession2.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/rsession2-dark.svg">
+<img src="man/figures/rsession2.svg" /> </picture>
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-![](man/figures/rsession2-2.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/rsession2-2-dark.svg">
+<img src="man/figures/rsession2-2.svg" /> </picture>
 
 ``` r
 rs$poll_process(2000)
 ```
 
-![](man/figures/rsession-4.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/rsession-4-dark.svg">
+<img src="man/figures/rsession-4.svg" /> </picture>
 
 ``` r
 rs$read()
 ```
 
-![](man/figures/rsession-5.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/rsession-5-dark.svg">
+<img src="man/figures/rsession-5.svg" /> </picture>
 
 ## Running `R CMD` commands
 
@@ -305,7 +342,9 @@ call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
 callr::rcmd("config", "CC")
 ```
 
-![](man/figures/rcmd.svg)<!-- -->
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="man/figures/rcmd-dark.svg">
+<img src="man/figures/rcmd.svg" /> </picture>
 
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
