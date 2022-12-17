@@ -539,7 +539,8 @@ rs_get_state <- function(self, private) {
 rs_get_running_time <- function(self, private) {
   now <- Sys.time()
   finished <- private$state == "finished"
-  c(total = if (finished) now - private$started_at else as.POSIXct(NA),
+  no_uptime <- as.difftime(NA_real_, units = "secs")
+  c(total = if (finished) no_uptime else now - private$started_at,
     current = now - private$fun_started_at)
 }
 
