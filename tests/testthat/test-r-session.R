@@ -25,6 +25,19 @@ test_that("regular use", {
   expect_equal(res$result, 84)
   expect_equal(rs$get_state(), "idle")
 
+  ## While session is idle the current call running time is NA
+  rs$call(function() 42)
+  expect_equal(
+    is.na(rs$get_running_time()),
+    c(total = FALSE, current = FALSE)
+  )
+  res <- read_next(rs)
+  expect_equal(
+    is.na(rs$get_running_time()),
+    c(total = FALSE, current = TRUE)
+  )
+  expect_s3_class(rs$get_running_time(), "difftime")
+
   ## Close
   rs$close()
   expect_equal(rs$get_state(), "finished")
