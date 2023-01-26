@@ -18,7 +18,7 @@
 #'   * `pkg`: set the environment to the `pkg` package namespace.
 #'
 #' @examplesIf FALSE
-#' rs <- r_ression$new()
+#' rs <- r_session$new()
 #'
 #' rs$run(function() 1 + 2)
 #'
