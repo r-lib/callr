@@ -16,7 +16,7 @@ make_vanilla_script_expr <- function(expr_file, res, error,
       err <- callr_data$err
 
       if (`__traceback__`) {
-        # This might be quieried for R sessions with $traceback()
+        # This might be queried for R sessions with $traceback()
         assign(".Traceback", .traceback(4), envir = callr_data)
 
         # Also dump frames, this might be queried as well with $debug()
