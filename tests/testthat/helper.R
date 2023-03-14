@@ -162,6 +162,7 @@ without_env <- function(f) {
 
 expect_r_process_snapshot <- function(..., interactive = TRUE, echo = TRUE,
                                       transform = NULL, variant = NULL) {
+  skip_if_not_installed("asciicast")
   # errors.R assumes non-interactive in testthat, but we don't want that
   withr::local_envvar(TESTTHAT = NA_character_)
   dots <- eval(substitute(alist(...)))
