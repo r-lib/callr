@@ -38,6 +38,7 @@ test_that("wd argument", {
 })
 
 test_that("fail_on_status", {
+  skip_if_not_installed("withr")
   rand <- tempfile()
   expect_error(
     withr::with_dir(

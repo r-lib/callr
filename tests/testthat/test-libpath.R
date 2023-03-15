@@ -16,6 +16,7 @@ test_that(".Library.site", {
 })
 
 test_that(".libPaths()", {
+  skip_if_not_installed("withr")
   dir.create(tmp <- tempfile())
   on.exit(unlink(tmp, recursive = TRUE))
 
@@ -35,6 +36,7 @@ test_that("if .Renviron overrides R_PROFILE", {
   ## But we still need to use the proper lib path, as set in the fake
   ## profile
   skip_in_covr()
+  skip_if_not_installed("withr")
 
   cat("Sys.setenv(FOO='nope')\n", file = tmp_prof <- tempfile())
   cat("R_PROFILE=\"", tmp_prof, "\"\n", file = tmp_env <- tempfile(), sep = "")
@@ -64,6 +66,7 @@ test_that("libpath in system(), empty .Renviron", {
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
+  skip_if_not_installed("withr")
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
@@ -86,6 +89,7 @@ test_that("libpath in system, R_LIBS in .Renviron", {
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
+  skip_if_not_installed("withr")
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
@@ -109,6 +113,7 @@ test_that("libpath in system, R_LIBS", {
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
+  skip_if_not_installed("withr")
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
@@ -132,6 +137,7 @@ test_that("libpath in system, R_LIBS and .Renviron", {
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
+  skip_if_not_installed("withr")
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))

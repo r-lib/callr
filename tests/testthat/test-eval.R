@@ -82,6 +82,7 @@ test_that("stdout and stderr in the same file", {
 })
 
 test_that("profiles are used as requested", {
+  skip_if_not_installed("withr")
   do <- function(system, user) {
     tmp1 <- tempfile()
     tmp2 <- tempfile()
@@ -114,6 +115,7 @@ test_that("profiles are used as requested", {
 })
 
 test_that(".Renviron is used, but lib path is set over it", {
+  skip_if_not_installed("withr")
   dir.create(tmp <- tempfile())
   on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
   withr::with_dir(tmp, {

@@ -31,6 +31,7 @@ test_that("error stack is passed, .Last.error is set", {
 })
 
 test_that("error behavior can be set using option", {
+  skip_if_not_installed("withr")
   withr::local_options(callr.error = "error")
   expect_snapshot(
     error = TRUE,
@@ -51,6 +52,7 @@ test_that("error behavior can be set using option", {
 })
 
 test_that("parent errors", {
+  skip_if_not_installed("withr")
   withr::local_options(list("callr.error" = "error"))
   expect_snapshot({
     err <- tryCatch(
@@ -62,6 +64,7 @@ test_that("parent errors", {
 })
 
 test_that("parent errors, another level", {
+  skip_if_not_installed("withr")
   withr::local_options(list("callr.error" = "error"))
   expect_snapshot({
     err <- tryCatch(
@@ -85,6 +88,7 @@ test_that("error traces are printed recursively", {
 })
 
 test_that("errors in r_bg() are merged", {
+  skip_if_not_installed("withr")
   withr::local_options(list("callr.error" = "error"))
 
   p <- r_bg(function() 1 + "A")
@@ -98,6 +102,7 @@ test_that("errors in r_bg() are merged", {
 })
 
 test_that("errors in r_process are merged", {
+  skip_if_not_installed("withr")
   withr::local_options(list("callr.error" = "error"))
 
   opts <- r_process_options(func = function() 1 + "A")
@@ -195,6 +200,7 @@ test_that("format.call_status_error", {
 })
 
 test_that("format.call_status_error 2", {
+  skip_if_not_installed("withr")
   expect_r_process_snapshot(
     withr::local_options(rlib_error_always_trace = TRUE),
     err <- tryCatch(

@@ -1,5 +1,6 @@
 
 test_that("messages in callr::r do not crash session", {
+  skip_if_not_installed("cli")
   ret <- r(function() { cli::cli_text("fooobar"); 1 + 1 })
   expect_identical(ret, 2)
   gc()
@@ -8,6 +9,7 @@ test_that("messages in callr::r do not crash session", {
 test_that("messages in callr::r_bg do not crash session", {
   skip_in_covr()  # TODO: what wrong with this on Windows?
   skip_on_cran()
+  skip_if_not_installed("cli")
 
   rx <- r_bg(function() { cli::cli_text("fooobar"); 1 + 1 })
   rx$wait(5000)

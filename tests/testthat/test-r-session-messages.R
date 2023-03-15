@@ -34,6 +34,7 @@ test_that("callr_message, then error", {
 })
 
 test_that("message handlers", {
+  skip_if_not_installed("withr")
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 
@@ -58,6 +59,7 @@ test_that("message handlers", {
 })
 
 test_that("large messages", {
+  skip_if_not_installed("withr")
   rs <- r_session$new()
   on.exit(rs$close(), add = TRUE)
 

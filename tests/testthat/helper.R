@@ -18,6 +18,7 @@ read_next <- function(x, timeout = 3000) {
 }
 
 has_locale <- function(l) {
+  skip_if_not_installed("withr")
   has <- TRUE
   tryCatch(
     withr::with_locale(c(LC_CTYPE = l), "foobar"),
@@ -99,6 +100,7 @@ test_paths <- function(callr_drop, callr_keep,
 
 test_temp_file <- function(fileext = "", pattern = "test-file-",
                            envir = parent.frame(), create = TRUE) {
+  skip_if_not_installed("withr")
   tmp <- tempfile(pattern = pattern, fileext = fileext)
   if (identical(envir, .GlobalEnv)) {
     message("Temporary files will _not_ be cleaned up")
@@ -126,6 +128,7 @@ expect_error <- function(..., class = "error") {
 }
 
 test_package_root <- function() {
+  skip_if_not_installed("rprojroot")
   x <- tryCatch(
     rprojroot::find_package_root_file(),
     error = function(e) NULL)
@@ -162,6 +165,8 @@ without_env <- function(f) {
 
 expect_r_process_snapshot <- function(..., interactive = TRUE, echo = TRUE,
                                       transform = NULL, variant = NULL) {
+  skip_if_not_installed("asciicast")
+  skip_if_not_installed("withr")
   # errors.R assumes non-interactive in testthat, but we don't want that
   withr::local_envvar(TESTTHAT = NA_character_)
   dots <- eval(substitute(alist(...)))

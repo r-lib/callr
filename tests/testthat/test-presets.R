@@ -1,5 +1,6 @@
 
 test_that("r", {
+  skip_if_not_installed("withr")
 
   withr::with_options(
     list(repos = "foobar"),
@@ -34,6 +35,7 @@ test_that("r_safe", {
 
 ## https://github.com/r-lib/callr/issues/66
 test_that("names of getOption('repos') are preserved", {
+  skip_if_not_installed("withr")
   repos <- withr::with_options(
     list(repos = c(foo = "bar")),
     callr::r(function() getOption("repos"))
