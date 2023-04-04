@@ -58,6 +58,7 @@ load_client_lib <- function(sofile = NULL, pxdir = NULL) {
 
   env <- new.env(parent = emptyenv())
   env$.path <- sofile
+  env$.lib <- lib
 
   mycall <- .Call
 

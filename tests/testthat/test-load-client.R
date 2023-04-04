@@ -90,3 +90,20 @@ test_that("set_stdout_file, set_setderr_file", {
   ret <- callr::r(do)  
   expect_equal(ret, c("this is output", "this is error"))
 })
+
+test_that("init function of client lib is run", {
+  pxlib <- r(function() {
+    as.environment("tools:callr")$`__callr_data__`$pxlib
+  })
+
+  # File name should be `client.SOEXT` so that R can match the init
+  # function from the name
+  expect_true(grepl("^client\\.", basename(pxlib$.path)))
+
+  # In case R removes the `dynamicLookup` field
+  skip_on_cran()
+
+  # Should be `FALSE` since processx disables dynamic lookup in the
+  # init function
+  expect_false(unclass(pxlib$.lib)$dynamicLookup)
+})
