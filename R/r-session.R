@@ -941,7 +941,9 @@ r_session_options_default <- function() {
     supervise = FALSE,
     load_hook = NULL,
     extra = list(),
-    arch = "same"
+    arch = "same",
+    cleanup = TRUE,
+    cleanup_signal = ps::signals()$SIGTERM
   )
 }
 

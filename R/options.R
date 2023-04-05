@@ -78,7 +78,9 @@ r_process_options_default <- function() {
     load_hook = default_load_hook(),
     extra = list(),
     package = FALSE,
-    arch = "same"
+    arch = "same",
+    cleanup = TRUE,
+    cleanup_signal = ps::signals()$SIGTERM
   )
 }
 
@@ -97,7 +99,9 @@ rcmd_process_options_default <- function() {
     wd = ".",
     supervise = FALSE,
     extra = list(),
-    arch = "same"
+    arch = "same",
+    cleanup = TRUE,
+    cleanup_signal = ps::signals()$SIGTERM
   )
 }
 
@@ -116,7 +120,9 @@ rscript_process_options_default <- function() {
     wd = ".",
     color = FALSE,
     extra = list(),
-    arch = "same"
+    arch = "same",
+    cleanup = TRUE,
+    cleanup_signal = ps::signals()$SIGTERM
   )
 }
 
