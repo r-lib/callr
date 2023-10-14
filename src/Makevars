@@ -1,0 +1,15 @@
+
+OBJECTS =                                        \
+        init.o                                   \
+	rdlopen.o                                \
+	pmload.o                                 \
+	dyld/common/MachOAnalyzer.o              \
+	dyld/common/MachOFile.o                  \
+	dyld/common/MachOLoaded.o                \
+        dyld/common/MachOLayout.o                \
+        dyld/common/Diagnostics.o                \
+        dyld/common/ClosureFileSystemPhysical.o
+
+
+PKG_CPPFLAGS=-I include -I dyld/lsl
+PKG_CXXFLAGS=-std=gnu++20

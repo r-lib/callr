@@ -1,0 +1,1 @@
+#define abort_report_np(format, string) { printf(format, string); exit(-1); }
