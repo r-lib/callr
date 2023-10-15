@@ -1,6 +1,9 @@
 load_r <- function() {
   rlib <- file.path(R.home("lib"), "libR.dylib")
-  .Call(c_load_r, rlib)
+  dir.create(tmp <- tempfile())
+  path <- file.path(tmp, "libR.dylib")
+  file.copy(rlib, path)
+  .Call(c_load_r, path)
 }
 
 init_r <- function(R) {

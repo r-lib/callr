@@ -18,7 +18,7 @@ void *c_dlopen(
 
 SEXP rdlopen(SEXP path) {
   const char *cpath = CHAR(STRING_ELT(path, 0));
-  void *ret = c_dlopen(cpath, RTLD_NOW);
+  void *ret = c_dlopen(cpath, RTLD_NOW | RTLD_LOCAL);
   if (!ret) error("Cannot load shared library %s", cpath);
   SEXP xptr = R_MakeExternalPtr(ret, R_NilValue, R_NilValue);
   return xptr;

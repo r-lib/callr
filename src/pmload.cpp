@@ -207,7 +207,7 @@ void *pmload::my_dlopen(const char *file, int flags) {
 		  bindTargets[info.targetIndex] = ptr;
 	    },
 	    ^(const dyld3::MachOAnalyzer::BindTargetInfo &info, bool &stop) {
-		  printf("Override %s in %s\n", info.symbolName, file);
+              //		  printf("Override %s in %s\n", info.symbolName, file);
 	    });
 
 	diag.assertNoError();
