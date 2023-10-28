@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 /revdep
+/src/Makevars
+/src/config.h
 /src/*.o
 /src/unix/*.o
 /src/win/*.o

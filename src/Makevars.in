@@ -1,0 +1,14 @@
+OBJECTS = @OBJECTS@
+
+PKG_LIBS = @LIBS@
+
+PKG_CPPFLAGS = @CPPFLAGS@
+
+PKG_CXXFLAGS = @CXXFLAGS@
+
+.PHONY: all clean
+
+all: @TARGETS@ $(SHLIB)
+
+clean:
+	rm -rf $(SHLIB) $(OBJECTS)

@@ -4,6 +4,8 @@
 ^README.Rmd$
 ^revdep$
 ^README.markdown$
+^src/Makevars$
+^src/config\.h$
 ^src/callr\.so$
 ^src/.*\.o$
 ^src/tools/px$

@@ -4,6 +4,25 @@
 #include <R_ext/Rdynload.h>
 #include <Rinternals.h>
 
+#ifdef __linux__
+
+static const R_CallMethodDef callMethods[]  = {
+  { NULL, NULL, 0 }
+};
+
+#endif
+
+
+#ifdef _WIN32
+
+static const R_CallMethodDef callMethods[]  = {
+  { NULL, NULL, 0 }
+};
+
+#endif
+
+#ifdef __MACH__
+
 void *c_dlsym(
   void *lib,
   const char *name,
@@ -109,6 +128,8 @@ static const R_CallMethodDef callMethods[]  = {
   { "eval_r",    (DL_FUNC) eval_r,    2 },
   { NULL, NULL, 0 }
 };
+
+#endif
 
 void R_init_callr(DllInfo *dll) {
   R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
