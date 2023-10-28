@@ -27,7 +27,7 @@ Suggests:
     ps,
     rprojroot,
     spelling,
-    testthat (>= 3.0.0),
+    testthat (>= 3.2.0),
     withr (>= 2.3.0)
 Encoding: UTF-8
 Language: en-US

@@ -79,9 +79,10 @@
 
     Code
       r(function() 1 + "A")
-    Error <callr_status_error>
+    Condition
+      Error:
       ! in callr subprocess.
-      Caused by error in `1 + "A"`:
+      Caused by error:
       ! non-numeric argument to binary operator
 
 ---
@@ -92,9 +93,10 @@
         g <- (function() 1 + "A")
         f()
       })
-    Error <callr_status_error>
+    Condition
+      Error:
       ! in callr subprocess.
-      Caused by error in `1 + "A"`:
+      Caused by error:
       ! non-numeric argument to binary operator
 
 # parent errors
@@ -162,36 +164,40 @@
 
     Code
       p$get_result()
-    Error <callr_status_error>
+    Condition
+      Error:
       ! in callr subprocess.
-      Caused by error in `1 + "A"`:
+      Caused by error:
       ! non-numeric argument to binary operator
 
 # errors in r_process are merged
 
     Code
       p$get_result()
-    Error <callr_status_error>
+    Condition
+      Error:
       ! in callr subprocess.
-      Caused by error in `1 + "A"`:
+      Caused by error:
       ! non-numeric argument to binary operator
 
 # errors in r_session$run() are merged
 
     Code
       rs$run(function() 1 + "A")
-    Error <callr_status_error>
+    Condition
+      Error:
       ! in callr subprocess.
-      Caused by error in `1 + "A"`:
+      Caused by error:
       ! non-numeric argument to binary operator
 
 ---
 
     Code
       rs$run(function() 1 + "A")
-    Error <callr_status_error>
+    Condition
+      Error:
       ! in callr subprocess.
-      Caused by error in `1 + "A"`:
+      Caused by error:
       ! non-numeric argument to binary operator
 
 # errors in r_session$call() are merged
@@ -264,7 +270,8 @@
 
     Code
       callr::r(function() Sys.sleep(3), timeout = 1 / 5)
-    Error <callr_timeout_error>
+    Condition
+      Error:
       ! callr timed out
 
 # interrupting an R session
