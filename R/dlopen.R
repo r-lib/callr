@@ -1,9 +1,15 @@
+
+dlsym <- function(lib, symbol) {
+  .Call(c_rdlsym, lib, symbol, FALSE)
+}
+
+dlopen <- function(path) {
+  .Call(c_rdlopen, path)
+}
+
 load_r <- function() {
-  rlib <- file.path(R.home("lib"), "libR.dylib")
-  dir.create(tmp <- tempfile())
-  path <- file.path(tmp, "libR.dylib")
-  file.copy(rlib, path)
-  .Call(c_load_r, path)
+  rlib <- file.path(R.home("lib"), paste0("libR", .Platform$dynlib.ext))
+  .Call(c_load_r, rlib)
 }
 
 init_r <- function(R) {

@@ -49,6 +49,8 @@ if [ -n "$MACOS" ]; then
     OBJECTS="${OBJECTS} dyld/common/ClosureFileSystemPhysical.o"
     CPPFLAGS="${CPPFLAGS} -I include -I dyld\/lsl"
     CXXFLAGS="${CXXFLAGS} -std=gnu++20"
+elif [ -n "LINUX" ]; then
+    OBJECTS="${OBJECTS} linux/dl.o"
 fi
 
 # ------------------------------------------------------------------------

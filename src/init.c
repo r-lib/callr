@@ -1,4 +1,5 @@
 #include <dlfcn.h>
+#include <pthread.h>
 
 #include <R.h>
 #include <R_ext/Rdynload.h>
@@ -6,7 +7,54 @@
 
 #ifdef __linux__
 
+void linux_init(void);
+
+void *xdlsym(void* handle, const char* symbol);
+void *xdlopen(const char *filename, int flags);
+
+SEXP rdlsym(SEXP lib, SEXP name, SEXP recurse) {
+  void *clib = R_ExternalPtrAddr(lib);
+  const char *cname = CHAR(STRING_ELT(name, 0));
+  void *sym = xdlsym(clib, cname);
+  if (!sym) error("Cannot find dynamic symbol %s", cname);
+  SEXP xptr = R_MakeExternalPtr(sym, R_NilValue, R_NilValue);
+  return xptr;
+}
+
+SEXP rdlopen(SEXP path) {
+  const char *cpath = CHAR(STRING_ELT(path, 0));
+  void *ret = xdlopen(cpath, RTLD_NOW | RTLD_LOCAL);
+  if (!ret) error("Cannot load shared library %s", cpath);
+  SEXP xptr = R_MakeExternalPtr(ret, R_NilValue, R_NilValue);
+  return xptr;
+}
+
+struct r_interp {
+  const char *path;
+  void *lib;
+};
+
+void *thr_load_r(void *arg) {
+  struct r_interp * R = (struct r_interp*) arg;
+  // initialize thread local data
+  linux_init();
+  R->lib = xdlopen(R->path, RTLD_NOW);
+  return 0;
+}
+
+SEXP load_r(SEXP path) {
+  const char *cpath = CHAR(STRING_ELT(path, 0));
+  pthread_t *thread = malloc(sizeof(pthread_t));
+  struct r_interp R = { cpath, NULL };
+  pthread_create(thread, NULL, thr_load_r, &R);
+  pthread_join(*thread, NULL);
+  return R_NilValue;
+}
+
 static const R_CallMethodDef callMethods[]  = {
+  { "rdlsym",    (DL_FUNC) rdlsym,    3 },
+  { "rdlopen",   (DL_FUNC) rdlopen,   1 },
+  { "load_r",    (DL_FUNC) load_r,    1 },
   { NULL, NULL, 0 }
 };
 
@@ -47,7 +95,7 @@ SEXP rdlsym(SEXP lib, SEXP name, SEXP recurse) {
   void *clib = R_ExternalPtrAddr(lib);
   const char *cname = CHAR(STRING_ELT(name, 0));
   int crecurse = LOGICAL(recurse)[0];
-  void *sym = c_dlsym(clib, cname, 0, crecurse);
+  void *sym = c_dlsym(clib, cname, 1, crecurse);
   if (!sym) error("Cannot find dynamic symbol %s", cname);
   SEXP xptr = R_MakeExternalPtr(sym, R_NilValue, R_NilValue);
   return xptr;
@@ -132,6 +180,9 @@ static const R_CallMethodDef callMethods[]  = {
 #endif
 
 void R_init_callr(DllInfo *dll) {
+#ifdef __linux__
+  linux_init();
+#endif
   R_registerRoutines(dll, NULL, callMethods, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
   R_forceSymbols(dll, TRUE);
