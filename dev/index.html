@@ -104,7 +104,6 @@
 <li><a href="#persistent-r-sessions" id="toc-persistent-r-sessions">Persistent R sessions</a></li>
 <li><a href="#running-r-cmd-commands" id="toc-running-r-cmd-commands">Running <code>R CMD</code> commands</a></li>
 <li><a href="#code-of-conduct" id="toc-code-of-conduct">Code of Conduct</a></li>
-<li><a href="#license" id="toc-license">License</a></li>
 </ul>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -261,7 +260,7 @@
 <span><span class="va">rp</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; PROCESS 'R', running, pid 6611.                                                 
+#&gt; PROCESS 'R', running, pid 7303.                                                 
 </pre>
 </div>
 <p>This is a list of all <code>r_process</code> methods:</p>
@@ -365,7 +364,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 6656.                                               
+#&gt; R SESSION, alive, idle, pid 7354.                                               
 </pre>
 </div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
@@ -375,8 +374,8 @@
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt;  [1] 0.3134816 0.4173500 0.8143017 0.7135994 0.6304309 0.4564509 0.4837769      
-#&gt;  [8] 0.6341170 0.7103619 0.3029189                                              
+#&gt;  [1] 0.2753969 0.8237323 0.7029535 0.9865073 0.7600986 0.7124903 0.6519488      
+#&gt;  [8] 0.8556200 0.4081603 0.8304307                                              
 </pre>
 </div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -384,7 +383,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, busy, pid 6663.                                               
+#&gt; R SESSION, alive, busy, pid 7363.                                               
 </pre>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -402,11 +401,11 @@
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-19711e25af16"                                         
+#&gt; [1] "done callr-rs-result-1c17652f483a"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt;  [1]  0.3478693  1.4018361  0.5987699 -1.3337923  0.3397889  1.3047614          
-#&gt;  [7] -0.5364293  0.7604312  0.3408841  0.4040328                                
+#&gt;  [1]  1.90446815 -0.61322344 -0.63316360 -0.93943464  0.74376649 -2.16487106    
+#&gt;  [7] -0.26240916 -0.01562631  0.38633680  1.97622172                            
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -443,7 +442,7 @@
 #&gt; [1] FALSE                                                                       
 #&gt;                                                                                 
 #&gt; $command                                                                        
-#&gt; [1] "/opt/R/4.3.1/lib/R/bin/R" "CMD"                                            
+#&gt; [1] "/opt/R/4.3.2/lib/R/bin/R" "CMD"                                            
 #&gt; [3] "config"                   "CC"                                             
 #&gt;                                                                                 
 </pre>
@@ -454,11 +453,6 @@
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
 <p>Please note that the callr project is released with a <a href="https://callr.r-lib.org/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
-</div>
-<div class="section level2">
-<h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
-</h2>
-<p>MIT © Mango Solutions, RStudio</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -473,9 +467,8 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
@@ -501,7 +494,7 @@
 <li>
 <a href="https://github.com/wch" class="external-link">Winston Chang</a> <br><small class="roles"> Author </small>  </li>
 <li>
-<a href="https://www.rstudio.com" class="external-link"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" width="72"></a> <br><small class="roles"> Copyright holder, funder </small>  </li>
+<a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a> <br><small class="roles"> Copyright holder, funder </small>  </li>
 <li>Mango Solutions <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
@@ -512,7 +505,7 @@
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg" alt="lifecycle"></a></li>
 <li><a href="https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://www.r-pkg.org/pkg/callr" class="external-link"><img src="https://www.r-pkg.org/badges/version/callr"></a></li>
-<li><a href="https://www.r-pkg.org/pkg/callr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/callr" alt="CRAN RStudio mirror downloads"></a></li>
+<li><a href="https://www.r-pkg.org/pkg/callr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/callr" alt="CRAN Posit mirror downloads"></a></li>
 <li><a href="https://app.codecov.io/gh/r-lib/callr?branch=main" class="external-link"><img src="https://codecov.io/gh/r-lib/callr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
@@ -525,7 +518,7 @@
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://github.com/wch" class="external-link">Winston Chang</a>, <a href="https://www.rstudio.com" class="external-link"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" width="72"></a>, Mango Solutions.</p>
+<p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://github.com/wch" class="external-link">Winston Chang</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>, Mango Solutions.</p>
 </div>
 
 <div class="pkgdown-footer-right">
