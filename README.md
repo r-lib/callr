@@ -10,7 +10,7 @@
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml)
 [![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
-[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
+[![CRAN Posit mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
 [![Codecov test coverage](https://codecov.io/gh/r-lib/callr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/callr?branch=main)
 <!-- badges: end -->
 
@@ -315,7 +315,3 @@ standard error, and the exit (status) code of the `R CMD` command.
 Please note that the callr project is released with a [Contributor Code
 of Conduct](https://callr.r-lib.org/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.
-
-## License
-
-MIT © Mango Solutions, RStudio

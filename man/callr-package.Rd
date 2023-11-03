@@ -399,11 +399,6 @@ Please note that the callr project is released with a
 \href{https://callr.r-lib.org/CODE_OF_CONDUCT.html}{Contributor Code of Conduct}.
 By contributing to this project, you agree to abide by its terms.
 }
-
-\subsection{License}{
-
-MIT © Mango Solutions, RStudio
-}
 }
 
 \seealso{
@@ -425,7 +420,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item RStudio [copyright holder, funder]
+  \item Posit Software, PBC [copyright holder, funder]
   \item Mango Solutions [copyright holder, funder]
 }
 

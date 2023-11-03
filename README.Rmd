@@ -226,7 +226,3 @@ This returns a list with three components: the standard output, the standard err
 Please note that the callr project is released with a
 [Contributor Code of Conduct](https://callr.r-lib.org/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
-
-## License
-
-MIT © Mango Solutions, RStudio
