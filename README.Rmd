@@ -48,6 +48,12 @@ Install the stable version from CRAN:
 install.packages("callr")
 ```
 
+Install the development version from GitHub:
+
+```{r, asciicast-setup2, eval = FALSE, cache = FALSE}
+pak::pak("r-lib/callr")
+```
+
 ## Synchronous, one-off R processes
 
 Use `r()` to run an R function in a new R process.

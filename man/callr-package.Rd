@@ -31,6 +31,11 @@ Install the stable version from CRAN:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{install.packages("callr")
 }\if{html}{\out{</div>}}
+
+Install the development version from GitHub:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{pak::pak("r-lib/callr")
+}\if{html}{\out{</div>}}
 }
 
 \subsection{Synchronous, one-off R processes}{
