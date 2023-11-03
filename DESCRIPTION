@@ -5,7 +5,7 @@ Authors@R: c(
     person("Gábor", "Csárdi", , "csardi.gabor@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-7098-9676")),
     person("Winston", "Chang", role = "aut"),
-    person("RStudio", role = c("cph", "fnd")),
+    person(given = "Posit Software, PBC", role = c("cph", "fnd")),
     person("Mango Solutions", role = c("cph", "fnd"))
   )
 Description: It is sometimes useful to perform a computation in a separate
@@ -32,7 +32,7 @@ Suggests:
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1.9000
+RoxygenNote: 7.2.3
 Config/testthat/edition: 3
 Config/Needs/website:
     r-lib/asciicast,
