@@ -124,6 +124,8 @@ has a \code{get_result()} method to collect the result.
 \description{
 Starts evaluating an R function call in a background R process, and
 returns immediately.
+Use \code{p$get_result()} to collect the result or to throw an error
+if the background computation failed.
 }
 \section{Security considerations}{
 
