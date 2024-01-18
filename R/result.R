@@ -39,7 +39,7 @@ get_result <- function(output, options) {
   }
 
   ## No error file? Then probably all is well, return the output
-  ## If this is currupt, then the R process has crashed
+  ## If this is corrupt, then the R process has crashed
   ## This cannot happen from R 3.5.0, because that version only writes
   ## out the output file if no error or crash has happened.
   ## (Older R versions write a corrupt RDS file in this case.)
