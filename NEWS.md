@@ -3,6 +3,10 @@
 * The `r_session$get_running_time()` method now returns the correct
   values, as documented (#241, @djnavarro).
 
+* callr now uses fully qualified function calls in the subprocess to
+  avoid interference with functions defeined in the global environment.
+  I.e. `base::stderr()` instead of `stderr()`. Closes #246.
+
 # callr 3.7.3
 
 * Errors from callr now include the standard output (in `$stdout`) and
