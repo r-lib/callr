@@ -21,7 +21,7 @@ Imports:
     R6,
     utils
 Suggests:
-    asciicast,
+    asciicast (>= 2.3.1),
     cli (>= 1.1.0),
     covr,
     mockery,
