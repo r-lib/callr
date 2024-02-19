@@ -1,4 +1,4 @@
-# callr (development version)
+# callr 3.7.4
 
 * The `r_session$get_running_time()` method now returns the correct
   values, as documented (#241, @djnavarro).
