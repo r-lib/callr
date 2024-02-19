@@ -6,7 +6,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-7098-9676")),
     person("Winston", "Chang", role = "aut"),
     person("Posit Software, PBC", role = c("cph", "fnd")),
-    person("Mango Solutions", role = c("cph", "fnd"))
+    person("Ascent Digital Services", role = c("cph", "fnd"))
   )
 Description: It is sometimes useful to perform a computation in a separate
     R process, without affecting the current R process at all.  This
@@ -14,7 +14,7 @@ Description: It is sometimes useful to perform a computation in a separate
 License: MIT + file LICENSE
 URL: https://callr.r-lib.org, https://github.com/r-lib/callr
 BugReports: https://github.com/r-lib/callr/issues
-Depends: 
+Depends:
     R (>= 3.4)
 Imports:
     processx (>= 3.6.1),
