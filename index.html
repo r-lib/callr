@@ -32,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="index.html">callr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.7.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.7.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -185,7 +185,7 @@
 <code class="sourceCode R"><span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">4</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/diameter.html" class="external-link">diameter</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; [1] 10                                                                          
+#&gt; [1] 11                                                                          
 </pre>
 </div>
 </div>
@@ -262,7 +262,7 @@
 <span><span class="va">rp</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; PROCESS 'R', running, pid 7043.                                                 
+#&gt; PROCESS 'R', running, pid 6933.                                                 
 </pre>
 </div>
 <p>This is a list of all <code>r_process</code> methods:</p>
@@ -366,7 +366,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 7095.                                               
+#&gt; R SESSION, alive, idle, pid 6984.                                               
 </pre>
 </div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
@@ -376,8 +376,8 @@
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt;  [1] 0.7906493 0.4976701 0.2081724 0.5172547 0.1612755 0.1458871 0.8381086      
-#&gt;  [8] 0.9100504 0.1154481 0.6315105                                              
+#&gt;  [1] 0.17954173 0.68719842 0.46269881 0.51459579 0.93105901 0.36109131          
+#&gt;  [7] 0.25795643 0.01988251 0.05619887 0.05516676                                
 </pre>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -385,7 +385,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, busy, pid 7104.                                               
+#&gt; R SESSION, alive, busy, pid 6993.                                               
 </pre>
 </div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -403,11 +403,11 @@
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1b13f655dd7"                                          
+#&gt; [1] "done callr-rs-result-1aa42cd6aaf3"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt;  [1]  0.3058083  1.4018373 -2.5619507 -1.0521648  0.9376999 -0.8923070          
-#&gt;  [7] -0.5709835 -2.8307737  0.2581357  0.4631656                                
+#&gt;  [1] -0.06373761  1.15363274  0.74637647 -0.90856962 -1.04793610 -0.29330013    
+#&gt;  [7] -0.71884312 -1.57352843 -0.38177738  0.94790943                            
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -497,7 +497,7 @@
 <a href="https://github.com/wch" class="external-link">Winston Chang</a> <br><small class="roles"> Author </small>  </li>
 <li>
 <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a> <br><small class="roles"> Copyright holder, funder </small>  </li>
-<li>Mango Solutions <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li>Ascent Digital Services <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
 
@@ -511,7 +511,7 @@
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://github.com/wch" class="external-link">Winston Chang</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>, Mango Solutions.</p>
+<p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://github.com/wch" class="external-link">Winston Chang</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>, Ascent Digital Services.</p>
 </div>
 
 <div class="pkgdown-footer-right">
