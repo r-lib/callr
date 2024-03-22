@@ -1,6 +1,7 @@
 
 test_that("r() does not load anything", {
   skip_in_covr()
+  skip_if_not_installed("withr")
   pkgs <- withr::with_envvar(
     clean_envvars(),
     r(without_env(function() loadedNamespaces())))
@@ -11,6 +12,7 @@ test_that("r() does not load anything", {
 
 test_that("r_bg() does not load anything", {
   skip_in_covr()
+  skip_if_not_installed("withr")
   p <- withr::with_envvar(
     clean_envvars(),
     r_bg(without_env(function() loadedNamespaces())))
@@ -24,6 +26,7 @@ test_that("r_bg() does not load anything", {
 
 test_that("r_session does not load anything", {
   skip_in_covr()
+  skip_if_not_installed("withr")
   rs <- withr::with_envvar(clean_envvars(), r_session$new())
   on.exit(rs$close(), add = TRUE)
   pkgs <- rs$run(without_env(function() loadedNamespaces()))

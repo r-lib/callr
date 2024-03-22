@@ -2,6 +2,7 @@
 test_that("spell check", {
   skip_on_cran()
   skip_in_covr()
+  skip_if_not_installed("spelling")
   pkg_dir <- test_package_root()
   results <- spelling::spell_check_package(pkg_dir)
 

@@ -1,5 +1,6 @@
 
 test_that("is_complete_expression", {
+  skip_if_not_installed("withr")
   do_tests <- function() {
     expect_true(is_complete_expression(""))
     expect_true(is_complete_expression("1"))
@@ -20,6 +21,7 @@ test_that("is_complete_expression", {
 })
 
 test_that("default_repos", {
+  skip_if_not_installed("withr")
   def <- "https://cloud.r-project.org"
 
   withr::with_options(list(repos = NULL),

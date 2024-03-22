@@ -269,6 +269,7 @@ test_that("custom load hook", {
 })
 
 test_that("traceback", {
+  skip_if_not_installed("withr")
   withr::local_options(callr.traceback = TRUE)
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
@@ -301,6 +302,7 @@ test_that("error in the load hook", {
 })
 
 test_that("fds are not leaked", {
+  skip_if_not_installed("ps")
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 

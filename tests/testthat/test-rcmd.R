@@ -11,6 +11,7 @@ test_that("rcmd show works", {
 })
 
 test_that("rcmd echo works", {
+  skip_if_not_installed("withr")
   withr::local_options(width = 500)
   expect_output(rcmd("config", "CC", echo = TRUE), "config\\s+CC")
   gc()
@@ -39,6 +40,7 @@ test_that("wd argument", {
 })
 
 test_that("fail_on_status", {
+  skip_if_not_installed("withr")
   rand <- tempfile()
   expect_error(
     withr::with_dir(

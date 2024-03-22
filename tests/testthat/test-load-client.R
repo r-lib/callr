@@ -14,6 +14,7 @@ test_that("load_client_lib", {
 })
 
 test_that("errors", {
+  skip_if_not_installed("mockery")
   mockery::stub(load_client_lib, "system.file", "")
   expect_error(
     load_client_lib(),
@@ -22,6 +23,7 @@ test_that("errors", {
 })
 
 test_that("errors 2", {
+  skip_if_not_installed("mockery")
   sofile <- system.file(
     "libs", .Platform$r_arch, paste0("client", .Platform$dynlib.ext),
     package = "processx"
