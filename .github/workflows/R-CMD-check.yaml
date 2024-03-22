@@ -25,8 +25,6 @@ jobs:
           - {os: macos-latest,   r: 'release'}
 
           - {os: windows-latest, r: 'release'}
-          # Use 3.6 to trigger usage of RTools35
-          - {os: windows-latest, r: '3.6'}
           # use 4.1 to check with rtools40's older compiler
           - {os: windows-latest, r: '4.1'}
 
@@ -54,13 +52,6 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
-        if: ${{ startsWith(steps.setup-r.outputs.installed-r-version, '3') && runner.os == 'Windows' }}
-        with:
-          extra-packages: any::rcmdcheck, any::magick@2.8.2
-          needs: check
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        if: ${{ ! startsWith(steps.setup-r.outputs.installed-r-version, '3') || runner.os != 'Windows' }}
         with:
           extra-packages: any::rcmdcheck
           needs: check
