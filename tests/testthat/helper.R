@@ -167,6 +167,13 @@ expect_r_process_snapshot <- function(..., interactive = TRUE, echo = TRUE,
                                       transform = NULL, variant = NULL) {
   skip_if_not_installed("asciicast")
   skip_if_not_installed("withr")
+
+  # Skip these tests on platforms where V8 is not available
+  if (! R.Version()$arch %in% c("i386", "x86_64", "aarch64") &&
+                   ! requireNamespace("asciicast", quietly = TRUE)) {
+    skip("No asciicast package")
+  }
+
   # errors.R assumes non-interactive in testthat, but we don't want that
   withr::local_envvar(TESTTHAT = NA_character_)
   dots <- eval(substitute(alist(...)))

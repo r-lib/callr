@@ -11,6 +11,7 @@ test_that("rcmd show works", {
 })
 
 test_that("rcmd echo works", {
+  withr::local_options(width = 500)
   expect_output(rcmd("config", "CC", echo = TRUE), "config\\s+CC")
   gc()
 })

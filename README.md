@@ -10,7 +10,7 @@
 [![lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/callr/actions/workflows/R-CMD-check.yaml)
 [![](https://www.r-pkg.org/badges/version/callr)](https://www.r-pkg.org/pkg/callr)
-[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
+[![CRAN Posit mirror downloads](https://cranlogs.r-pkg.org/badges/callr)](https://www.r-pkg.org/pkg/callr)
 [![Codecov test coverage](https://codecov.io/gh/r-lib/callr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/callr?branch=main)
 <!-- badges: end -->
 
@@ -21,28 +21,19 @@ that.
 
 ---
 
-- <a href="#features" id="toc-features">Features</a>
-- <a href="#installation" id="toc-installation">Installation</a>
-- <a href="#synchronous-one-off-r-processes"
-  id="toc-synchronous-one-off-r-processes">Synchronous, one-off R
-  processes</a>
-  - <a href="#passing-arguments" id="toc-passing-arguments">Passing
-    arguments</a>
-  - <a href="#using-packages" id="toc-using-packages">Using packages</a>
-  - <a href="#error-handling" id="toc-error-handling">Error handling</a>
-  - <a href="#standard-output-and-error"
-    id="toc-standard-output-and-error">Standard output and error</a>
-- <a href="#background-r-processes"
-  id="toc-background-r-processes">Background R processes</a>
-- <a href="#multiple-background-r-processes-and-poll"
-  id="toc-multiple-background-r-processes-and-poll">Multiple background R
-  processes and <code>poll()</code></a>
-- <a href="#persistent-r-sessions"
-  id="toc-persistent-r-sessions">Persistent R sessions</a>
-- <a href="#running-r-cmd-commands"
-  id="toc-running-r-cmd-commands">Running <code>R CMD</code> commands</a>
-- <a href="#code-of-conduct" id="toc-code-of-conduct">Code of Conduct</a>
-- <a href="#license" id="toc-license">License</a>
+- [Features](#features)
+- [Installation](#installation)
+- [Synchronous, one-off R processes](#synchronous-one-off-r-processes)
+  - [Passing arguments](#passing-arguments)
+  - [Using packages](#using-packages)
+  - [Error handling](#error-handling)
+  - [Standard output and error](#standard-output-and-error)
+- [Background R processes](#background-r-processes)
+- [Multiple background R processes and
+  `poll()`](#multiple-background-r-processes-and-poll)
+- [Persistent R sessions](#persistent-r-sessions)
+- [Running `R CMD` commands](#running-r-cmd-commands)
+- [Code of Conduct](#code-of-conduct)
 
 ## Features
 
@@ -67,6 +58,12 @@ Install the stable version from CRAN:
 
 ``` r
 install.packages("callr")
+```
+
+Install the development version from GitHub:
+
+``` r
+pak::pak("r-lib/callr")
 ```
 
 ## Synchronous, one-off R processes
@@ -354,7 +351,3 @@ standard error, and the exit (status) code of the `R CMD` command.
 Please note that the callr project is released with a [Contributor Code
 of Conduct](https://callr.r-lib.org/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.
-
-## License
-
-MIT © Mango Solutions, RStudio

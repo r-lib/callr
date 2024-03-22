@@ -48,6 +48,12 @@ Install the stable version from CRAN:
 install.packages("callr")
 ```
 
+Install the development version from GitHub:
+
+```{r, asciicast-setup2, eval = FALSE, cache = FALSE}
+pak::pak("r-lib/callr")
+```
+
 ## Synchronous, one-off R processes
 
 Use `r()` to run an R function in a new R process.
@@ -226,7 +232,3 @@ This returns a list with three components: the standard output, the standard err
 Please note that the callr project is released with a
 [Contributor Code of Conduct](https://callr.r-lib.org/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
-
-## License
-
-MIT © Mango Solutions, RStudio

@@ -31,6 +31,11 @@ Install the stable version from CRAN:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{install.packages("callr")
 }\if{html}{\out{</div>}}
+
+Install the development version from GitHub:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{pak::pak("r-lib/callr")
+}\if{html}{\out{</div>}}
 }
 
 \subsection{Synchronous, one-off R processes}{
@@ -397,11 +402,6 @@ Please note that the callr project is released with a
 \href{https://callr.r-lib.org/CODE_OF_CONDUCT.html}{Contributor Code of Conduct}.
 By contributing to this project, you agree to abide by its terms.
 }
-
-\subsection{License}{
-
-MIT © Mango Solutions, RStudio
-}
 }
 
 \seealso{
@@ -423,7 +423,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item RStudio [copyright holder, funder]
+  \item Posit Software, PBC [copyright holder, funder]
   \item Mango Solutions [copyright holder, funder]
 }
 

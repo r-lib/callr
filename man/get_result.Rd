@@ -7,11 +7,11 @@
 get_result(output, options)
 }
 \arguments{
-\item{options}{The context, including all parameters.}
-
-\item{out}{List of the output object from \code{\link[=run]{run()}} and
+\item{output}{List of the output object from \code{\link[=run]{run()}} and
 the name of the result file to read. For the error file,
 \code{.error} is appended to this.}
+
+\item{options}{The context, including all parameters.}
 }
 \value{
 If no error happened, the result is returned. Otherwise
