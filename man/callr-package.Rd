@@ -396,6 +396,22 @@ For example, you can call \verb{R CMD INSTALL}, \verb{R CMD check} or \verb{R CM
 This returns a list with three components: the standard output, the standard error, and the exit (status) code of the \verb{R CMD} command.
 }
 
+\subsection{Configuration}{
+\subsection{Environment variables}{
+\itemize{
+\item \code{CALLR_NO_TEMP_DLLS}: If \code{true}, then callr does not use a temporary
+directory to copy the client DLL files from, in the subprocess. By
+default callr copies the DLL file that drives the callr subprocess into
+a temporary directory and loads it from there. This is mainly to avoid
+locking a DLL file in the package library, on Windows. If this default
+causes issues for you, set it to \code{true}, and then callr will use the DLL
+file from the installed processx package. See also
+https://github.com/r-lib/callr/issues/273.
+}
+}
+
+}
+
 \subsection{Code of Conduct}{
 
 Please note that the callr project is released with a
@@ -408,7 +424,7 @@ By contributing to this project, you agree to abide by its terms.
 Useful links:
 \itemize{
   \item \url{https://callr.r-lib.org}
-  \item \url{https://github.com/r-lib/callr#readme}
+  \item \url{https://github.com/r-lib/callr}
   \item Report bugs at \url{https://github.com/r-lib/callr/issues}
 }
 
@@ -424,7 +440,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Posit Software, PBC [copyright holder, funder]
-  \item Mango Solutions [copyright holder, funder]
+  \item Ascent Digital Services [copyright holder, funder]
 }
 
 }
