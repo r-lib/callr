@@ -89,7 +89,7 @@ test_that("set_stdout_file, set_setderr_file", {
     c(readLines(f1), readLines(f2))
   }
 
-  ret <- callr::r(do)  
+  ret <- callr::r(do)
   expect_equal(ret, c("this is output", "this is error"))
 })
 
@@ -108,4 +108,25 @@ test_that("init function of client lib is run", {
   # Should be `FALSE` since processx disables dynamic lookup in the
   # init function
   expect_false(unclass(pxlib$.lib)$dynamicLookup)
+})
+
+test_that("CALLR_NO_TEMP_DLLS", {
+  skip_on_cran()
+  if (.Platform$OS.type != "windows") skip("Windows only")
+
+  # If not set, then it should come from the temporary location
+  withr::local_envvar(CALLR_NO_TEMP_DLLS = NA_character_)
+  dlls <- callr::r(function() ps::ps_shared_libs())$path
+  px <- grep("processx.*client.dll", dlls)
+  cr <- grep("callr.*client.dll", dlls)
+  expect_true(length(px) == 0)
+  expect_true(length(cr) >= 1)
+
+  # If set, then it should come from processx
+  withr::local_envvar(CALLR_NO_TEMP_DLLS = "true")
+  dlls <- callr::r(function() ps::ps_shared_libs())$path
+  px <- grep("processx.*client.dll", dlls)
+  cr <- grep("callr.*client.dll", dlls)
+  expect_true(length(px) >= 1)
+  expect_true(length(cr) == 0)
 })

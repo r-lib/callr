@@ -346,6 +346,19 @@ callr::rcmd("config", "CC")
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
 
+## Configuration
+
+### Environment variables
+
+* `CALLR_NO_TEMP_DLLS`: If `true`, then callr does not use a temporary
+  directory to copy the client DLL files from, in the subprocess. By
+  default callr copies the DLL file that drives the callr subprocess into
+  a temporary directory and loads it from there. This is mainly to avoid
+  locking a DLL file in the package library, on Windows. If this default
+  causes issues for you, set it to `true`, and then callr will use the DLL
+  file from the installed processx package. See also
+  https://github.com/r-lib/callr/issues/273.
+
 ## Code of Conduct
 
 Please note that the callr project is released with a [Contributor Code
