@@ -60,8 +60,10 @@ If the child process runs with the \code{--slave} option (the default),
 then the commands are not echoed and will not be shown
 in the standard output. Also note that you need to call \code{print()}
 explicitly to show the output of the command(s).
-IF \code{NULL} (the default), then standard output is not returned, but
-it is recorded and included in the error object if an error happens.}
+IF \code{NULL}, then standard output is not returned, but
+it is recorded and included in the error object if an error happens.
+Various special values for this argument such as \code{"|"} are explained
+in the \code{stdout} argument of \link[processx:process]{processx::process}.}
 
 \item{stderr}{The name of the file the standard error of
 the child R process will be written to.
@@ -70,8 +72,10 @@ error. If nothing was sent to the standard error, then this file
 will be empty. This argument can be the same file as \code{stdout},
 in which case they will be correctly interleaved. If this is the
 string \code{"2>&1"}, then standard error is redirected to standard output.
-IF \code{NULL} (the default), then standard output is not returned, but
-it is recorded and included in the error object if an error happens.}
+IF \code{NULL}, then standard output is not returned, but
+it is recorded and included in the error object if an error happens.
+Various special values for this argument such as \code{"|"} are explained
+in the \code{stdout} argument of \link[processx:process]{processx::process}.}
 
 \item{poll_connection}{Whether to have a control connection to
 the process. This is used to transmit messages from the subprocess
