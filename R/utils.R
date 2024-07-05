@@ -84,7 +84,12 @@ enumerate <- function(x) {
 ## 7845b83343afa356e4259c054e7c9a910034f170/R/trump.R
 
 crash <- function() {
-  get("attach")( structure(list(), class = "UserDefinedDatabase")  )
+  get("attach")(
+    structure(
+      attr(file(), "conn_id"),
+      class = "UserDefinedDatabase"
+    )
+  )
 }
 
 is_flag <- function(x) {
