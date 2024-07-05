@@ -113,14 +113,14 @@ about 100-300 milliseconds.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.012   0.005   0.188                                                         
+#&gt;   0.016   0.003   0.196                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 8186.                                               
+#&gt; R SESSION, alive, idle, pid 8100.                                               
 </pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -136,7 +136,7 @@ about 100-300 milliseconds.</p>
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, finished, pid 8186.                                                  
+#&gt; R SESSION, finished, pid 8100.                                                  
 </pre>
 </div>
 <p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects,
@@ -156,14 +156,14 @@ asynchronously.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.000   0.004   0.006                                                         
+#&gt;   0.001   0.005   0.007                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs2</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, starting, pid 8197.                                           
+#&gt; R SESSION, alive, starting, pid 8111.                                           
 </pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -307,7 +307,7 @@ all processes until they are all ready.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; Time differences in secs                                                        
-#&gt; [1] 0.3190665 0.3190665 0.3190665 0.3190665                                     
+#&gt; [1] 0.315598 0.315598 0.315598 0.315598                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -378,7 +378,7 @@ and error.</li>
 <code class="sourceCode R"><span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"I am process {Sys.getpid()}."</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; I am process 8218.                                                              
+#&gt; I am process 8131.                                                              
 </pre>
 </div>
 <p><code>$run_with_output()</code> has the output as well:</p>
@@ -393,7 +393,7 @@ and error.</li>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1ff15d9c906f"                                         
+#&gt; [1] "done callr-rs-result-1f9b4aa368cc"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt;                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -408,7 +408,7 @@ and error.</li>
 #&gt; [1] ""                                                                          
 #&gt;                                                                                 
 #&gt; $stderr                                                                         
-#&gt; [1] "I am process 8218.\n"                                                      
+#&gt; [1] "I am process 8131.\n"                                                      
 #&gt;                                                                                 
 #&gt; $error                                                                          
 #&gt; NULL                                                                            
@@ -430,16 +430,16 @@ for the result:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
-#&gt; R SESSION, alive, busy, pid 8218.                                               
+#&gt; R SESSION, alive, busy, pid 8131.                                               
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
-#&gt; R SESSION, alive, busy, pid 8220.                                               
+#&gt; R SESSION, alive, busy, pid 8133.                                               
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
-#&gt; R SESSION, alive, busy, pid 8225.                                               
+#&gt; R SESSION, alive, busy, pid 8138.                                               
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; R SESSION, alive, busy, pid 8229.                                               
+#&gt; R SESSION, alive, busy, pid 8142.                                               
 #&gt;                                                                                 
 </pre>
 </div>
@@ -456,7 +456,7 @@ finish their job:</p>
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent"  "ready"                                                      
+#&gt; "silent" "silent" "silent"                                                      
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
 #&gt;   output    error  process                                                      
@@ -464,7 +464,7 @@ finish their job:</p>
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent" "silent"                                                      
+#&gt; "silent" "silent"  "ready"                                                      
 #&gt;                                                                                 
 </pre>
 </div>
@@ -479,15 +479,15 @@ result (or error, if a failure happened):</p>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; Process  2  is ready:                                                           
+#&gt; Process  4  is ready:                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1ff175cac608"                                         
+#&gt; [1] "done callr-rs-result-1f9b5835051e"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 8220.                                                              
+#&gt; I am process 8142.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -531,10 +531,10 @@ helper function useful as a starting point:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1ff127434251"                                         
+#&gt; [1] "done callr-rs-result-1f9b78d80599"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 8218.                                                              
+#&gt; I am process 8131.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -549,17 +549,36 @@ helper function useful as a starting point:</p>
 #&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
+#&gt; $code                                                                           
+#&gt; [1] 200                                                                         
+#&gt;                                                                                 
+#&gt; $message                                                                        
+#&gt; [1] "done callr-rs-result-1f9b1a0c6871"                                         
+#&gt;                                                                                 
+#&gt; $result                                                                         
+#&gt; I am process 8133.                                                              
+#&gt;                                                                                 
+#&gt; $stdout                                                                         
+#&gt; [1] ""                                                                          
+#&gt;                                                                                 
+#&gt; $stderr                                                                         
+#&gt; [1] ""                                                                          
+#&gt;                                                                                 
+#&gt; $error                                                                          
 #&gt; NULL                                                                            
+#&gt;                                                                                 
+#&gt; attr(,"class")                                                                  
+#&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1ff168f8c72"                                          
+#&gt; [1] "done callr-rs-result-1f9b763ab745"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 8225.                                                              
+#&gt; I am process 8138.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -574,26 +593,7 @@ helper function useful as a starting point:</p>
 #&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; $code                                                                           
-#&gt; [1] 200                                                                         
-#&gt;                                                                                 
-#&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1ff14ec267c3"                                         
-#&gt;                                                                                 
-#&gt; $result                                                                         
-#&gt; I am process 8229.                                                              
-#&gt;                                                                                 
-#&gt; $stdout                                                                         
-#&gt; [1] ""                                                                          
-#&gt;                                                                                 
-#&gt; $stderr                                                                         
-#&gt; [1] ""                                                                          
-#&gt;                                                                                 
-#&gt; $error                                                                          
 #&gt; NULL                                                                            
-#&gt;                                                                                 
-#&gt; attr(,"class")                                                                  
-#&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 </pre>
 </div>
@@ -624,13 +624,13 @@ process and one for the subprocess:</p>
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘not-a-package’                                    
 #&gt; ---                                                                             
 #&gt; Backtrace:                                                                      
-#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #859900;">$</span><span style="color: #2AA198;">run</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> <span style="color: #2AA198;">library</span><span style="color: #268BD2;">(</span><span style="color: #B58900;">"not-a-package"</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                  
-#&gt; <span style="color: #525252;">2. </span>callr:::<span style="color: #2AA198;">rs_run</span><span style="color: #B58900;">(</span>self, private, func, args, package<span style="color: #B58900;">)</span>                           
-#&gt; <span style="color: #525252;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span>res<span style="color: #859900;">$</span>error<span style="color: #B58900;">)</span>                                                     
+#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #cc9900;">$</span><span style="font-weight: bold;">run</span><span style="color: #cc9900;">(</span><span style="color: #999900;">function</span><span style="color: #B58900;">()</span> <span style="font-weight: bold;">library</span><span style="color: #B58900;">(</span><span style="color: #009999;">"not-a-package"</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>                                  
+#&gt; <span style="color: #525252;">2. </span>callr:::<span style="font-weight: bold;">rs_run</span><span style="color: #cc9900;">(</span>self, private, func, args, package<span style="color: #cc9900;">)</span>                           
+#&gt; <span style="color: #525252;">3. </span>callr:::<span style="font-weight: bold;">throw</span><span style="color: #cc9900;">(</span>res<span style="color: #cc9900;">$</span>error<span style="color: #cc9900;">)</span>                                                     
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #525252;">1. </span>base::<span style="color: #2AA198;">library</span><span style="color: #B58900;">("not-a-package")</span>                                               
-#&gt; <span style="color: #525252;">2. </span>base::<span style="color: #2AA198;">stop</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">packageNotFoundError</span><span style="color: #268BD2;">(</span>package, lib.loc, <span style="color: #2AA198;">sys.call()</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>               
+#&gt; <span style="color: #525252;">1. </span>base::<span style="font-weight: bold;">library</span><span style="color: #cc9900;">(</span><span style="color: #009999;">"not-a-package"</span><span style="color: #cc9900;">)</span>                                               
+#&gt; <span style="color: #525252;">2. </span>base::<span style="font-weight: bold;">stop</span><span style="color: #cc9900;">(</span><span style="font-weight: bold;">packageNotFoundError</span><span style="color: #B58900;">(</span>package, lib.loc, <span style="font-weight: bold;">sys.call</span><span style="color: #268BD2;">()</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>               
 #&gt; <span style="color: #525252;">3. </span>global (function (e) …                                                       
 </pre>
 </div>
@@ -647,7 +647,7 @@ process and one for the subprocess:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1ff145035a6c"                                         
+#&gt; [1] "done callr-rs-result-1f9b237922a2"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt; NULL                                                                            
@@ -666,8 +666,8 @@ process and one for the subprocess:</p>
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘still-not’                                        
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #525252;">1. </span>base::<span style="color: #2AA198;">library</span><span style="color: #B58900;">("still-not")</span>                                                   
-#&gt; <span style="color: #525252;">2. </span>base::<span style="color: #2AA198;">stop</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">packageNotFoundError</span><span style="color: #268BD2;">(</span>package, lib.loc, <span style="color: #2AA198;">sys.call()</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>               
+#&gt; <span style="color: #525252;">1. </span>base::<span style="font-weight: bold;">library</span><span style="color: #cc9900;">(</span><span style="color: #009999;">"still-not"</span><span style="color: #cc9900;">)</span>                                                   
+#&gt; <span style="color: #525252;">2. </span>base::<span style="font-weight: bold;">stop</span><span style="color: #cc9900;">(</span><span style="font-weight: bold;">packageNotFoundError</span><span style="color: #B58900;">(</span>package, lib.loc, <span style="font-weight: bold;">sys.call</span><span style="color: #268BD2;">()</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>               
 #&gt; <span style="color: #525252;">3. </span>global (function (e) …                                                       
 #&gt;                                                                                 
 #&gt; attr(,"class")                                                                  
@@ -722,12 +722,12 @@ error if the system process exits with a non-successful status:</p>
 #&gt; <span style="color: #B58900;">!</span> System command 'ls' failed                                                    
 #&gt; ---                                                                             
 #&gt; Backtrace:                                                                      
-#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #859900;">$</span><span style="color: #2AA198;">run</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> processx::<span style="color: #2AA198;">run</span><span style="color: #268BD2;">(</span><span style="color: #B58900;">"ls"</span>, <span style="color: #B58900;">"/not-this"</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                          
-#&gt; <span style="color: #525252;">2. </span>callr:::<span style="color: #2AA198;">rs_run</span><span style="color: #B58900;">(</span>self, private, func, args, package<span style="color: #B58900;">)</span>                           
-#&gt; <span style="color: #525252;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span>res<span style="color: #859900;">$</span>error<span style="color: #B58900;">)</span>                                                     
+#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #cc9900;">$</span><span style="font-weight: bold;">run</span><span style="color: #cc9900;">(</span><span style="color: #999900;">function</span><span style="color: #B58900;">()</span> processx::<span style="font-weight: bold;">run</span><span style="color: #B58900;">(</span><span style="color: #009999;">"ls"</span>, <span style="color: #009999;">"/not-this"</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>                          
+#&gt; <span style="color: #525252;">2. </span>callr:::<span style="font-weight: bold;">rs_run</span><span style="color: #cc9900;">(</span>self, private, func, args, package<span style="color: #cc9900;">)</span>                           
+#&gt; <span style="color: #525252;">3. </span>callr:::<span style="font-weight: bold;">throw</span><span style="color: #cc9900;">(</span>res<span style="color: #cc9900;">$</span>error<span style="color: #cc9900;">)</span>                                                     
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #525252;">1. </span>processx::<span style="color: #2AA198;">run</span><span style="color: #B58900;">("ls"</span>, <span style="color: #B58900;">"/not-this")</span>                                             
+#&gt; <span style="color: #525252;">1. </span>processx::<span style="font-weight: bold;">run</span><span style="color: #cc9900;">(</span><span style="color: #009999;">"ls"</span>, <span style="color: #009999;">"/not-this"</span><span style="color: #cc9900;">)</span>                                             
 #&gt; <span style="color: #525252;">2. </span>base::throw(new_process_error(res, call = sys.call(), echo = echo, …         
 #&gt; <span style="color: #525252;">3. | base::signalCondition(cond)</span>                                                
 #&gt; <span style="color: #525252;">4. </span>global (function (e) …                                                       
