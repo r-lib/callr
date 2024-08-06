@@ -1,108 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://callr.r-lib.org/dev/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/articles/r-session.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/add_hook.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/callr-package.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/convert_and_check_my_args.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/default_repos.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/get_result.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/new_callr_crash_error.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_bg.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_copycat.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_process.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_process_options.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_session.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_session_debug.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_session_options.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/r_vanilla.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rcmd.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rcmd_bg.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rcmd_copycat.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rcmd_process.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rcmd_process_options.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rcmd_safe_env.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rscript.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rscript_process.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/rscript_process_options.html</loc>
-  </url>
-  <url>
-    <loc>https://callr.r-lib.org/dev/reference/supported_archs.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://callr.r-lib.org/dev/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/LICENSE-text.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/LICENSE.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/articles/index.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/articles/r-session.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/authors.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/index.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/news/index.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/add_hook.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/callr-package.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/convert_and_check_my_args.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/default_repos.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/get_result.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/index.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/new_callr_crash_error.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_bg.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_copycat.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_process.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_process_options.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_session.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_session_debug.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_session_options.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/r_vanilla.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rcmd.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rcmd_bg.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rcmd_copycat.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rcmd_process.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rcmd_process_options.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rcmd_safe_env.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/reexports.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rscript.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rscript_process.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/rscript_process_options.html</loc></url>
+<url><loc>https://callr.r-lib.org/dev/reference/supported_archs.html</loc></url>
 </urlset>
+
