@@ -19,6 +19,8 @@ test_that("r()", {
 })
 
 test_that("r_bg()", {
+  # fails in covr :(
+  testthat::skip_on_covr()
   # not passed by default
   p1 <- r_bg(callr:::remove_source, list(r))
   on.exit(p1$kill(), add = TRUE)
