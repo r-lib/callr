@@ -33,7 +33,7 @@
 r_session <- R6::R6Class(
   "r_session",
   inherit = processx::process,
-
+  cloneable = FALSE,
   public = list(
 
     #' @field status
