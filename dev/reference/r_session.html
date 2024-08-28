@@ -85,10 +85,9 @@ be used to evaluate R function calls, one at a time.</p>
 <li><p><a href="#method-r_session-traceback"><code>r_session$traceback()</code></a></p></li>
 <li><p><a href="#method-r_session-debug"><code>r_session$debug()</code></a></p></li>
 <li><p><a href="#method-r_session-attach"><code>r_session$attach()</code></a></p></li>
-<li><p><a href="#method-r_session-finalize"><code>r_session$finalize()</code></a></p></li>
 <li><p><a href="#method-r_session-print"><code>r_session$print()</code></a></p></li>
-<li><p><a href="#method-r_session-clone"><code>r_session$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href="http://processx.r-lib.org/reference/process.html#method-as_ps_handle"><code>processx::process$as_ps_handle()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="finalize"><a href="http://processx.r-lib.org/reference/process.html#method-finalize"><code>processx::process$finalize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href="http://processx.r-lib.org/reference/process.html#method-format"><code>processx::process$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline"><a href="http://processx.r-lib.org/reference/process.html#method-get_cmdline"><code>processx::process$get_cmdline()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times"><a href="http://processx.r-lib.org/reference/process.html#method-get_cpu_times"><code>processx::process$get_cpu_times()</code></a></span></li>
@@ -421,19 +420,10 @@ the frames can be costly for large objects passed as arguments.</p><div class="s
 </div>
 
 
-</div><p></p><hr><a id="method-r_session-finalize"></a><div class="section">
-<h3 id="method-finalize-">Method <code>finalize()</code><a class="anchor" aria-label="anchor" href="#method-finalize-"></a></h3>
-<p>Finalizer that is called when garbage collecting an <code>r_session</code>
-object, to clean up temporary files.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">finalize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-
 </div><p></p><hr><a id="method-r_session-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Print method for an <code>r_session</code>.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -446,22 +436,6 @@ object, to clean up temporary files.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-r_session-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
-<p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>deep</code></dt>
-<dd><p>Whether to make a deep clone.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
 </div>
 
     </div>
@@ -469,7 +443,7 @@ object, to clean up temporary files.</p><div class="section">
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va">r_ression</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="va">r_session</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
