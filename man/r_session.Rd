@@ -12,7 +12,7 @@ be used to evaluate R function calls, one at a time.
 }
 \examples{
 \dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-rs <- r_ression$new()
+rs <- r_session$new()
 
 rs$run(function() 1 + 2)
 
@@ -49,15 +49,14 @@ rs$read()
 \item \href{#method-r_session-traceback}{\code{r_session$traceback()}}
 \item \href{#method-r_session-debug}{\code{r_session$debug()}}
 \item \href{#method-r_session-attach}{\code{r_session$attach()}}
-\item \href{#method-r_session-finalize}{\code{r_session$finalize()}}
 \item \href{#method-r_session-print}{\code{r_session$print()}}
-\item \href{#method-r_session-clone}{\code{r_session$clone()}}
 }
 }
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href='../../processx/html/process.html#method-process-as_ps_handle'><code>processx::process$as_ps_handle()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="finalize"><a href='../../processx/html/process.html#method-process-finalize'><code>processx::process$finalize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href='../../processx/html/process.html#method-process-format'><code>processx::process$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline"><a href='../../processx/html/process.html#method-process-get_cmdline'><code>processx::process$get_cmdline()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times"><a href='../../processx/html/process.html#method-process-get_cpu_times'><code>processx::process$get_cpu_times()</code></a></span></li>
@@ -406,17 +405,6 @@ Experimental function that provides a REPL
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-r_session-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-r_session-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Finalizer that is called when garbage collecting an \code{r_session}
-object, to clean up temporary files.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_session$finalize()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-r_session-print"></a>}}
 \if{latex}{\out{\hypertarget{method-r_session-print}{}}}
 \subsection{Method \code{print()}}{
@@ -429,23 +417,6 @@ Print method for an \code{r_session}.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{Arguments are not used currently.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-r_session-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-r_session-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_session$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
 }
 \if{html}{\out{</div>}}
 }

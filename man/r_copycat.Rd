@@ -88,7 +88,7 @@ in plain files.
 
 \seealso{
 Other callr functions: 
-\code{\link{r_vanilla}()},
-\code{\link{r}()}
+\code{\link{r}()},
+\code{\link{r_vanilla}()}
 }
 \concept{callr functions}

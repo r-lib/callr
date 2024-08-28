@@ -76,16 +76,14 @@ rscript_process <- R6::R6Class(
     #' @param options A list of options created via
     #'   [rscript_process_options()].
     initialize = function(options)
-      rscript_init(self, private, super, options),
-    #' @description Clean up after an `Rscript` process, remove
-    #' temporary files.
+      rscript_init(self, private, super, options)
+  ),
+  private = list(
+    options = NULL,
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     }
-  ),
-  private = list(
-    options = NULL
   )
 )
 

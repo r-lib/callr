@@ -28,14 +28,13 @@ rp$get_result()
 \itemize{
 \item \href{#method-r_process-new}{\code{r_process$new()}}
 \item \href{#method-r_process-get_result}{\code{r_process$get_result()}}
-\item \href{#method-r_process-finalize}{\code{r_process$finalize()}}
-\item \href{#method-r_process-clone}{\code{r_process$clone()}}
 }
 }
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href='../../processx/html/process.html#method-process-as_ps_handle'><code>processx::process$as_ps_handle()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="finalize"><a href='../../processx/html/process.html#method-process-finalize'><code>processx::process$finalize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href='../../processx/html/process.html#method-process-format'><code>processx::process$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline"><a href='../../processx/html/process.html#method-process-get_cmdline'><code>processx::process$get_cmdline()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times"><a href='../../processx/html/process.html#method-process-get_cpu_times'><code>processx::process$get_cpu_times()</code></a></span></li>
@@ -122,34 +121,6 @@ together with other processes or events.
 \subsection{Returns}{
 The return value of the R expression evaluated in the R
 process.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-r_process-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-r_process-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Clean up temporary files once an R process has finished and its
-handle is garbage collected.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_process$finalize()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-r_process-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-r_process-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{r_process$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
 }
 }
 }

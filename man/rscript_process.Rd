@@ -22,7 +22,6 @@ rp$read_output_lines()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-rscript_process-new}{\code{rscript_process$new()}}
-\item \href{#method-rscript_process-finalize}{\code{rscript_process$finalize()}}
 \item \href{#method-rscript_process-clone}{\code{rscript_process$clone()}}
 }
 }
@@ -30,6 +29,7 @@ rp$read_output_lines()
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href='../../processx/html/process.html#method-process-as_ps_handle'><code>processx::process$as_ps_handle()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="finalize"><a href='../../processx/html/process.html#method-process-finalize'><code>processx::process$finalize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href='../../processx/html/process.html#method-process-format'><code>processx::process$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline"><a href='../../processx/html/process.html#method-process-get_cmdline'><code>processx::process$get_cmdline()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times"><a href='../../processx/html/process.html#method-process-get_cpu_times'><code>processx::process$get_cpu_times()</code></a></span></li>
@@ -97,17 +97,6 @@ Create a new \code{Rscript} process.
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-rscript_process-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-rscript_process-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Clean up after an \code{Rsctipt} process, remove
-temporary files.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{rscript_process$finalize()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-rscript_process-clone"></a>}}

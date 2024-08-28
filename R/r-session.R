@@ -198,16 +198,6 @@ r_session <- R6::R6Class(
       rs_attach(self, private),
 
     #' @description
-    #' Finalizer that is called when garbage collecting an `r_session`
-    #' object, to clean up temporary files.
-    finalize = function() {
-      unlink(private$tmp_output_file)
-      unlink(private$tmp_error_file)
-      unlink(private$options$tmp_files, recursive = TRUE)
-      if ("finalize" %in% ls(super)) super$finalize()
-    },
-
-    #' @description
     #' Print method for an `r_session`.
     #' @param ... Arguments are not used currently.
     print = function(...) {
@@ -225,6 +215,13 @@ r_session <- R6::R6Class(
   ),
 
   private = list(
+    finalize = function() {
+      unlink(private$tmp_output_file)
+      unlink(private$tmp_error_file)
+      unlink(private$options$tmp_files, recursive = TRUE)
+      if ("finalize" %in% ls(super)) super$finalize()
+    },
+
     options = NULL,
     state = NULL,
     started_at = NULL,

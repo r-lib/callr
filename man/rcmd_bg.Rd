@@ -89,7 +89,7 @@ in plain files.
 
 \seealso{
 Other R CMD commands: 
-\code{\link{rcmd_copycat}()},
-\code{\link{rcmd}()}
+\code{\link{rcmd}()},
+\code{\link{rcmd_copycat}()}
 }
 \concept{R CMD commands}

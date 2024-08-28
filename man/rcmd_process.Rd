@@ -22,7 +22,6 @@ rp$read_output_lines()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-rcmd_process-new}{\code{rcmd_process$new()}}
-\item \href{#method-rcmd_process-finalize}{\code{rcmd_process$finalize()}}
 \item \href{#method-rcmd_process-clone}{\code{rcmd_process$clone()}}
 }
 }
@@ -30,6 +29,7 @@ rp$read_output_lines()
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href='../../processx/html/process.html#method-process-as_ps_handle'><code>processx::process$as_ps_handle()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="finalize"><a href='../../processx/html/process.html#method-process-finalize'><code>processx::process$finalize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href='../../processx/html/process.html#method-process-format'><code>processx::process$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cmdline"><a href='../../processx/html/process.html#method-process-get_cmdline'><code>processx::process$get_cmdline()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="get_cpu_times"><a href='../../processx/html/process.html#method-process-get_cpu_times'><code>processx::process$get_cpu_times()</code></a></span></li>
@@ -100,16 +100,6 @@ Start an \verb{R CMD} process.
 \subsection{Returns}{
 A new \code{rcmd_process} object.
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-rcmd_process-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-rcmd_process-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Clean up the temporary files created for an \verb{R CMD} process.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{rcmd_process$finalize()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-rcmd_process-clone"></a>}}

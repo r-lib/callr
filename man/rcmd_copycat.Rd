@@ -55,7 +55,7 @@ in plain files.
 
 \seealso{
 Other R CMD commands: 
-\code{\link{rcmd_bg}()},
-\code{\link{rcmd}()}
+\code{\link{rcmd}()},
+\code{\link{rcmd_bg}()}
 }
 \concept{R CMD commands}

@@ -22,16 +22,14 @@ rcmd_process <- R6::R6Class(
     #'  [rcmd_process_options()].
     #' @return A new `rcmd_process` object.
     initialize = function(options)
-      rcmdp_init(self, private, super, options),
-    #' @description
-    #' Clean up the temporary files created for an `R CMD` process.
+      rcmdp_init(self, private, super, options)
+  ),
+  private = list(
+    options = NULL,
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     }
-  ),
-  private = list(
-    options = NULL
   )
 )
 

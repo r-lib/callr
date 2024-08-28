@@ -41,18 +41,15 @@ r_process <- R6::R6Class(
     #' @return The return value of the R expression evaluated in the R
     #' process.
     get_result = function()
-      rp_get_result(self, private),
+      rp_get_result(self, private)
 
-    #' @description
-    #' Clean up temporary files once an R process has finished and its
-    #' handle is garbage collected.
+  ),
+  private = list(
+    options = NULL,
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     }
-  ),
-  private = list(
-    options = NULL
   )
 )
 
