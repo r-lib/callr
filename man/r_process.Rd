@@ -28,6 +28,7 @@ rp$get_result()
 \itemize{
 \item \href{#method-r_process-new}{\code{r_process$new()}}
 \item \href{#method-r_process-get_result}{\code{r_process$get_result()}}
+\item \href{#method-r_process-clone}{\code{r_process$clone()}}
 }
 }
 \if{html}{\out{
@@ -121,6 +122,23 @@ together with other processes or events.
 \subsection{Returns}{
 The return value of the R expression evaluated in the R
 process.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-r_process-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-r_process-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{r_process$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
 }
 }
 }

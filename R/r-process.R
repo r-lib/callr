@@ -20,7 +20,6 @@
 r_process <- R6::R6Class(
   "r_process",
   inherit = processx::process,
-  cloneable = FALSE,
   public = list(
 
     #' @description

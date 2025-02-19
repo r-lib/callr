@@ -50,6 +50,7 @@ rs$read()
 \item \href{#method-r_session-debug}{\code{r_session$debug()}}
 \item \href{#method-r_session-attach}{\code{r_session$attach()}}
 \item \href{#method-r_session-print}{\code{r_session$print()}}
+\item \href{#method-r_session-clone}{\code{r_session$clone()}}
 }
 }
 \if{html}{\out{
@@ -417,6 +418,23 @@ Print method for an \code{r_session}.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{Arguments are not used currently.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-r_session-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{r_session$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
 }
 \if{html}{\out{</div>}}
 }
