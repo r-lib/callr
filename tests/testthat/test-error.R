@@ -32,15 +32,17 @@ test_that("error stack is passed, .Last.error is set", {
 
 test_that("error behavior can be set using option", {
   skip_if_not_installed("withr")
-  withr::local_options(callr.error = "error")
-  expect_snapshot(
-    error = TRUE,
-    r(function() 1 + "A")
-  )
+
+  withr::local_options(list("callr.error" = "error"))
+  expect_error(callr::r(function() 1 + "A"))
+
+  expect_r_process_snapshot({
+    options(callr.error = "error")
+    callr::r(function() 1 + "A")
+  })
 
   withr::local_options(callr.error = "stack")
-  expect_snapshot(
-    error = TRUE,
+  expect_error(
     r(
       function() {
         f <- function() g()
@@ -49,6 +51,17 @@ test_that("error behavior can be set using option", {
       }
     )
   )
+  
+  expect_r_process_snapshot({
+    options(callr.error = "stack")
+    callr::r(
+      function() {
+        f <- function() g()
+        g <- function() 1 + "A"
+        f()
+      }
+    )
+  })
 })
 
 test_that("parent errors", {

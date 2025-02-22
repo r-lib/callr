@@ -78,26 +78,37 @@
 # error behavior can be set using option
 
     Code
-      r(function() 1 + "A")
-    Condition
-      Error:
+      r_process()
+    Output
+      > {
+      +     options(callr.error = "error")
+      +     callr::r(function() 1 + "A")
+      + }
+      Error: 
       ! in callr subprocess.
-      Caused by error:
+      Caused by error in `1 + "A"`:
       ! non-numeric argument to binary operator
+      Type .Last.error to see the more details.
 
 ---
 
     Code
-      r(function() {
-        f <- (function() g())
-        g <- (function() 1 + "A")
-        f()
-      })
-    Condition
-      Error:
+      r_process()
+    Output
+      > {
+      +     options(callr.error = "stack")
+      +     callr::r(function() {
+      +         f <- function() g()
+      +         g <- function() 1 + "A"
+      +         f()
+      +     })
+      + }
+      Error: 
       ! in callr subprocess.
-      Caused by error:
+      Caused by error in `1 + "A"`:
       ! non-numeric argument to binary operator
+      i With remote `$stack`, use `utils::debugger()` to debug it.
+      Type .Last.error to see the more details.
 
 # parent errors
 
