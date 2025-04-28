@@ -10,7 +10,9 @@ editor_options:
     wrap: sentence
 ---
 
-```{r, setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 knitr::opts_chunk$set(
   comment = "#>",
   cache = FALSE,
@@ -27,7 +29,8 @@ options(
 )
 ```
 
-```{asciicast include = FALSE}
+```{asciicast}
+#| include: false
 options(width = 80)
 ```
 
@@ -50,22 +53,26 @@ to start up.
 `wait_timeout` is by default 3000 milliseconds, which should be plenty.
 Typically R starts up in about 100-300 milliseconds.
 
-```{asciicast start}
+```{asciicast}
+#| label: start
 library(callr)
 system.time(rs <- r_session$new())
 ```
 
-```{asciicast start-1}
+```{asciicast}
+#| label: start-1
 rs
 ```
 
-```{asciicast start-2}
+```{asciicast}
+#| label: start-2
 rs$get_state()
 ```
 
 To terminate an R session, call its `$close()` method:
 
-```{asciicast close}
+```{asciicast}
+#| label: close
 rs$close()
 rs
 ```
@@ -81,15 +88,18 @@ If you don't want to wait for the session to start up, then use
 If you do that, `r_session$new()` will still error if the OS cannot start
 up the R process, but R errors will be reported asynchronously.
 
-```{asciicast start-bg}
+```{asciicast}
+#| label: start-bg
 system.time(rs2 <- r_session$new(wait = FALSE))
 ```
 
-```{asciicast start-bg-1}
+```{asciicast}
+#| label: start-bg-1
 rs2
 ```
 
-```{asciicast start-bg-2}
+```{asciicast}
+#| label: start-bg-2
 rs2$get_state()
 ```
 
@@ -101,7 +111,8 @@ starting up.
 It also lets you start up multiple processes concurrently, see the next
 section.
 
-```{asciicast start-bg-3}
+```{asciicast}
+#| label: start-bg-3
 processx::poll(list(rs2), 3000)
 ```
 
@@ -120,7 +131,8 @@ Once `processx::poll()` reports a `"ready"` `process` connection, you can call t
 
 If `r_session$$read()` reports "201 STARTED", it is ready to run R code:
 
-```{asciicast start-bg-4}
+```{asciicast}
+#| label: start-bg-4
 rs2$read()
 ```
 
@@ -137,7 +149,8 @@ See `?r_session_options` for the details.
 Here is an example that uses the `load_hook` option to run extra code
 right after R has started up:
 
-```{asciicast options}
+```{asciicast}
+#| label: options
 opts <- r_session_options(
   load_hook = quote({ message("I am running!"); Sys.sleep(1) })
 )
@@ -145,15 +158,18 @@ rs3 <- r_session$new(wait = FALSE, options = opts)
 processx::poll(list(rs3), 3000)
 ```
 
-```{asciicast options-2}
+```{asciicast}
+#| label: options-2
 rs3$read_error()
 ```
 
-```{asciicast options-3}
+```{asciicast}
+#| label: options-3
 rs3$poll_process(3000)
 ```
 
-```{asciicast options-4}
+```{asciicast}
+#| label: options-4
 rs3$read()
 ```
 
@@ -163,7 +179,9 @@ Note, however, that if the process generates enough output on stdout
 or stderr that fills the pipe buffer between the processes, then it will
 stop running, until the main process reads the pipe.
 
-```{asciicast options-5, include = FALSE}
+```{asciicast}
+#| label: options-5
+#| include: false
 rs3$close()
 ```
 
@@ -173,11 +191,13 @@ If you need to start several R sessions quickly, then it is best to use
 `wait = FALSE` and then `processx::poll()` for all processes until they are
 all ready.
 
-```{r include = FALSE}
+```{r}
+#| include: false
 num_procs <- 4
 ```
 
-```{asciicast multiple}
+```{asciicast}
+#| label: multiple
 num_procs <- 4
 procs <- tibble::tibble(
   session = replicate(num_procs, r_session$new(wait = FALSE), simplify = FALSE),
@@ -198,7 +218,8 @@ while ((now <- Sys.time()) < limit &&
 Sys.time() - procs$started_at
 ```
 
-```{asciicast multiple-2}
+```{asciicast}
+#| label: multiple-2
 procs$start_result
 ```
 
@@ -214,13 +235,15 @@ Let's use the `r num_procs` R sessions created above to demonstrate them.
 
 `$run()` is the simplest:
 
-```{asciicast run}
+```{asciicast}
+#| label: run
 procs$session[[1]]$run(function() glue::glue("I am process {Sys.getpid()}."))
 ```
 
 `$run_with_output()` has the output as well:
 
-```{asciicast run-with-output}
+```{asciicast}
+#| label: run-with-output
 procs$session[[1]]$run_with_output(function() {
   message("I am process ", Sys.getpid(), ".")
   head(mtcars)
@@ -229,7 +252,8 @@ procs$session[[1]]$run_with_output(function() {
 
 `$call()` starts running the function, but does not wait for the result:
 
-```{asciicast call}
+```{asciicast}
+#| label: call
 invisible(lapply(procs$session, function(p) {
     p$call(function() {
       Sys.sleep(runif(1) * 2)
@@ -242,7 +266,8 @@ procs$session
 Use `processx::poll()` to wait for one or more sessions to finish their
 job:
 
-```{asciicast call-1}
+```{asciicast}
+#| label: call-1
 pr <- processx::poll(procs$session, 5000)
 pr
 ```
@@ -250,7 +275,8 @@ pr
 Then you can use the `$read()` method to read out the result
 (or error, if a failure happened):
 
-```{asciicast call-2}
+```{asciicast}
+#| label: call-2
 for (i in seq_along(pr)) {
   if (pr[[i]][["process"]] == "ready") {
     cat("Process ", i, " is ready:\n")
@@ -263,7 +289,8 @@ To wait for all processes to be ready, you can use a loop that is similar
 to the one we used above to start them.
 You might find this helper function useful as a starting point:
 
-```{asciicast call-3}
+```{asciicast}
+#| label: call-3
 wait_for_sessions <- function(sess, timeout = 5000) {
   result <- vector("list", length(sess))
   is_busy <- function() {
@@ -287,7 +314,8 @@ wait_for_sessions(procs$session)
 
 Errors from a `$run()` are turned into errors in the main process:
 
-```{asciicast error}
+```{asciicast}
+#| label: error
 rs <- r_session$new()
 rs$run(function() library("not-a-package"))
 ```
@@ -295,13 +323,15 @@ rs$run(function() library("not-a-package"))
 callr also adds two stack traces to the output, one for the main process
 and one for the subprocess:
 
-```{asciicast last-error}
+```{asciicast}
+#| label: last-error
 .Last.error
 ```
 
 Errors from a `$call()` are returned in the `error` entry of the result:
 
-```{asciicast error-call}
+```{asciicast}
+#| label: error-call
 rs$call(function() library("still-not"))
 rs$poll_process(2000)
 rs$read()
@@ -331,16 +361,19 @@ The error object often has additional information about the error, e.g.
 `processx::run()` includes the standard output + error if the system process
 exits with a non-successful status:
 
-```{asciicast last-error-parent}
+```{asciicast}
+#| label: last-error-parent
 rs <- r_session$new()
 rs$run(function() processx::run("ls", "/not-this"))
 ```
 
-```{asciicast last-error-parent-1}
+```{asciicast}
+#| label: last-error-parent-1
 .Last.error
 ```
 
-```{asciicast last-error-parent-2}
+```{asciicast}
+#| label: last-error-parent-2
 .Last.error$parent
 ```
 
@@ -354,7 +387,8 @@ This option is off by default, because the stack trace sometimes contains
 large objects, that take a lot of time to copy between processes.
 
 
-```{asciicast base-trace}
+```{asciicast}
+#| label: base-trace
 options(callr.traceback = TRUE)
 rs <- r_session$new()
 fun <- function() {
@@ -370,7 +404,8 @@ fun <- function() {
 rs$run(fun)
 ```
 
-```{asciicast base-trace-1}
+```{asciicast}
+#| label: base-trace-1
 rs$traceback()
 ```
 
@@ -381,17 +416,18 @@ including the frames.
 You can then inspect these frames with the `$debug()` method.
 We can use it here to debug the previous error:
 
-```{asciicast debug}
-#| asciicast_at = "all",
-#| asciicast_knitr_output = "svg",
-#| asciicast_empty_wait = 5,
-#| asciicast_end_wait = 20,
-#| asciicast_cols = 80,
-#| R.options = list(width = 80),
-#| asciicast_cursor = TRUE,
-#| asciicast_incomplete_error = FALSE,
-#| echo = FALSE,
-#| asciicast_echo = TRUE
+```{asciicast}
+#| label: debug
+#| asciicast_at: "all"
+#| asciicast_knitr_output: "svg"
+#| asciicast_empty_wait: 5
+#| asciicast_end_wait: 20
+#| asciicast_cols: 80
+#| R.options: list(width = 80)
+#| asciicast_cursor: TRUE
+#| asciicast_incomplete_error: FALSE
+#| echo: FALSE
+#| asciicast_echo: TRUE
 rs$debug()
 #! --
 .inspect 3
@@ -414,22 +450,25 @@ Press CTRL+C or ESC, or type `.q` and press ENTER to quit the REPL.
 
 Here is an example:
 
-```{asciicast attach, output = "hide"}
+```{asciicast}
+#| label: attach
+#| output: hide
 rs <- r_session$new()
 rs$run(function() { .GlobalEnv$data <- mtcars; NULL })
 ```
 
-```{asciicast attach-1}
-#| asciicast_at = "all",
-#| asciicast_knitr_output = "svg",
-#| asciicast_empty_wait = 5,
-#| asciicast_end_wait = 20,
-#| asciicast_cols = 80,
-#| R.options = list(width = 80),
-#| asciicast_cursor = TRUE,
-#| asciicast_incomplete_error = FALSE,
-#| echo = FALSE,
-#| asciicast_echo = TRUE
+```{asciicast}
+#| label: attach-1
+#| asciicast_at: "all"
+#| asciicast_knitr_output: "svg"
+#| asciicast_empty_wait: 5
+#| asciicast_end_wait: 20
+#| asciicast_cols: 80
+#| R.options: list(width = 80)
+#| asciicast_cursor: TRUE
+#| asciicast_incomplete_error: FALSE
+#| echo: FALSE
+#| asciicast_echo: TRUE
 rs$attach()
 #! --
 ls()
