@@ -78,6 +78,16 @@
 # error behavior can be set using option
 
     Code
+      callr::r(function() 1 + "A")
+    Condition
+      Error:
+      ! in callr subprocess.
+      Caused by error:
+      ! non-numeric argument to binary operator
+
+---
+
+    Code
       r_process()
     Output
       > {
@@ -89,6 +99,20 @@
       Caused by error in `1 + "A"`:
       ! non-numeric argument to binary operator
       Type .Last.error to see the more details.
+
+---
+
+    Code
+      r(function() {
+        f <- (function() g())
+        g <- (function() 1 + "A")
+        f()
+      })
+    Condition
+      Error:
+      ! in callr subprocess.
+      Caused by error:
+      ! non-numeric argument to binary operator
 
 ---
 

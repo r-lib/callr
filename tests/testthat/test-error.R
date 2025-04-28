@@ -33,7 +33,7 @@ test_that("error behavior can be set using option", {
   skip_if_not_installed("withr")
 
   withr::local_options(list("callr.error" = "error"))
-  expect_error(callr::r(function() 1 + "A"))
+  expect_snapshot(error = TRUE, callr::r(function() 1 + "A"))
 
   expect_r_process_snapshot({
     options(callr.error = "error")
@@ -41,7 +41,7 @@ test_that("error behavior can be set using option", {
   })
 
   withr::local_options(callr.error = "stack")
-  expect_error(
+  expect_snapshot(error = TRUE, {
     r(
       function() {
         f <- function() g()
@@ -49,7 +49,7 @@ test_that("error behavior can be set using option", {
         f()
       }
     )
-  )
+  })
 
   expect_r_process_snapshot({
     options(callr.error = "stack")

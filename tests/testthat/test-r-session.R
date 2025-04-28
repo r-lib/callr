@@ -227,7 +227,7 @@ test_that("messages with R objects", {
 test_that("run throws", {
   rs <- r_session$new()
   on.exit(rs$kill())
-  expect_error(rs$run(function() stop("foobar")), "foobar")
+  expect_snapshot(error = TRUE, rs$run(function() stop("foobar")))
   rs$close()
 })
 
@@ -313,17 +313,17 @@ test_that("traceback", {
     f()
   }
 
-  expect_error(rs$run(do), "oops")
+  expect_snapshot(error = TRUE, rs$run(do))
   expect_output(tb <- rs$traceback(), "1: \"?f()\"?")
   expect_match(c(tb[[3]]), "f()", fixed = TRUE)
 })
 
 test_that("error in the load hook", {
   opts <- r_session_options(load_hook = quote(stop("oops")))
-  expect_error({
+  expect_snapshot(error = TRUE, local({
     rs <- r_session$new(opts)
     on.exit(rs$kill(), add = TRUE)
-  })
+  }))
 
   rs2 <- r_session$new(opts, wait = FALSE)
   on.exit(rs2$kill(), add = TRUE)

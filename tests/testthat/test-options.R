@@ -1,22 +1,20 @@
 test_that("error for unknown options", {
-  expect_error(
+  expect_snapshot(error = TRUE, {
     r_process_options(
       func = function() {
       },
       foo = "bar"
-    ),
-    "Unknown option"
-  )
+    )
+  })
 
-  expect_error(
+  expect_snapshot(error = TRUE, {
     r_process_options(
       func = function() {
       },
       foo = "bar",
       bar = "foo"
-    ),
-    "Unknown options"
-  )
+    )
+  })
 
   gc()
 })

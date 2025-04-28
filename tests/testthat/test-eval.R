@@ -159,9 +159,9 @@ test_that("errors are printed on stderr", {
     stop("send to stderr 2")
   }
 
-  expect_error(
+  expect_snapshot(error = TRUE, {
     r(f, stdout = out <- tempfile(), stderr = err <- tempfile())
-  )
+  })
   on.exit(unlink(c(out, err), recursive = TRUE), add = TRUE)
 
   expect_false(any(grepl("send to stderr", readLines(out))))
