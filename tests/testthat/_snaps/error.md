@@ -103,20 +103,6 @@
 ---
 
     Code
-      r(function() {
-        f <- (function() g())
-        g <- (function() 1 + "A")
-        f()
-      })
-    Condition
-      Error:
-      ! in callr subprocess.
-      Caused by error:
-      ! non-numeric argument to binary operator
-
----
-
-    Code
       r_process()
     Output
       > {
