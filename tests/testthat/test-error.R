@@ -1,4 +1,3 @@
-
 test_that("error is propagated, .Last.error is set", {
   expect_r_process_snapshot(
     callr::r(function() 1 + "A", error = "error"),
@@ -34,7 +33,7 @@ test_that("error behavior can be set using option", {
   skip_if_not_installed("withr")
 
   withr::local_options(list("callr.error" = "error"))
-  expect_error(callr::r(function() 1 + "A"))
+  expect_snapshot(error = TRUE, callr::r(function() 1 + "A"))
 
   expect_r_process_snapshot({
     options(callr.error = "error")
@@ -51,7 +50,7 @@ test_that("error behavior can be set using option", {
       }
     )
   )
-  
+
   expect_r_process_snapshot({
     options(callr.error = "stack")
     callr::r(
@@ -168,12 +167,12 @@ test_that("child error is not modified", {
 
 test_that("new_callr_error, timeout", {
   expect_r_process_snapshot(
-    callr::r(function() Sys.sleep(3), timeout = 1/5),
+    callr::r(function() Sys.sleep(3), timeout = 1 / 5),
     transform = redact_srcref
   )
   expect_snapshot(
     error = TRUE,
-    callr::r(function() Sys.sleep(3), timeout = 1/5)
+    callr::r(function() Sys.sleep(3), timeout = 1 / 5)
   )
 })
 

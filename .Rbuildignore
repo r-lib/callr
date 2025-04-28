@@ -26,3 +26,5 @@
 ^man/_cache$
 ^README_cache$
 ^LICENSE\.md$
+^[\.]?air\.toml$
+^\.vscode$

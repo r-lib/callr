@@ -1,4 +1,3 @@
-
 test_that("all figures in man/figures are needed", {
   skip_on_cran()
   skip_on_covr()

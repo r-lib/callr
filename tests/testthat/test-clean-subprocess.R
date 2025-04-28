@@ -1,10 +1,10 @@
-
 test_that("r() does not load anything", {
   skip_in_covr()
   skip_if_not_installed("withr")
   pkgs <- withr::with_envvar(
     clean_envvars(),
-    r(without_env(function() loadedNamespaces())))
+    r(without_env(function() loadedNamespaces()))
+  )
   if (length(pkgs) > 1) print(pkgs)
   ## Some R versions still load compiler...
   expect_true(all(pkgs %in% c("base", "compiler")))
@@ -15,7 +15,8 @@ test_that("r_bg() does not load anything", {
   skip_if_not_installed("withr")
   p <- withr::with_envvar(
     clean_envvars(),
-    r_bg(without_env(function() loadedNamespaces())))
+    r_bg(without_env(function() loadedNamespaces()))
+  )
   on.exit(p$kill(), add = TRUE)
   p$wait(3000)
   pkgs <- p$get_result()

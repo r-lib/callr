@@ -1,4 +1,3 @@
-
 #' Call R from R
 #'
 #' @description

@@ -1,4 +1,3 @@
-
 #' External R Session
 #'
 #' @description
@@ -34,17 +33,16 @@ r_session <- R6::R6Class(
   "r_session",
   inherit = processx::process,
   public = list(
-
     #' @field status
     #' Status codes returned by `read()`.
     status = list(
-      DONE        = 200L,
-      STARTED     = 201L,
+      DONE = 200L,
+      STARTED = 201L,
       ATTACH_DONE = 202L,
-      MSG         = 301L,
-      EXITED      = 500L,
-      CRASHED     = 501L,
-      CLOSED      = 502L
+      MSG = 301L,
+      EXITED = 500L,
+      CRASHED = 501L,
+      CLOSED = 502L
     ),
 
     #' @description
@@ -59,9 +57,11 @@ r_session <- R6::R6Class(
     #' @param wait_timeout Timeout for waiting for the R process to start,
     #'   in milliseconds.
     #' @return An `r_session` object.
-    initialize = function(options = r_session_options(), wait = TRUE,
-                          wait_timeout = 3000)
-      rs_init(self, private, super, options, wait, wait_timeout),
+    initialize = function(
+      options = r_session_options(),
+      wait = TRUE,
+      wait_timeout = 3000
+    ) rs_init(self, private, super, options, wait, wait_timeout),
 
     #' @description
     #' Similar to [r()], but runs the function in a permanent background
@@ -103,8 +103,7 @@ r_session <- R6::R6Class(
     #'
     #' @param timeout Timeout period in milliseconds.
     #' @return Character string `"ready"` or `"timeout"`.
-    poll_process = function(timeout)
-      rs_poll_process(self, private, timeout),
+    poll_process = function(timeout) rs_poll_process(self, private, timeout),
 
     #' @description
     #' Return the state of the R session.
@@ -114,8 +113,7 @@ r_session <- R6::R6Class(
     #'   * `"idle"`: ready to compute,
     #'   * `"busy"`: computing right now,
     #'   * `"finished"`: the R process has finished.
-    get_state = function()
-      rs_get_state(self, private),
+    get_state = function() rs_get_state(self, private),
 
     #' @description
     #' Returns the elapsed time since the R process has started, and the
@@ -123,8 +121,7 @@ r_session <- R6::R6Class(
     #' is `NA` if there is no active computation.
     #' @return Named vector of `POSIXct` objects. The names are `"total"`
     #'   and `"current"`.
-    get_running_time = function()
-      rs_get_running_time(self, private),
+    get_running_time = function() rs_get_running_time(self, private),
 
     #' @description
     #' Reads an event from the child process, if there is one available.
@@ -154,8 +151,7 @@ r_session <- R6::R6Class(
     #'   * `502`: (`CLOSED`) The R session closed its end of the connection
     #'      that callr uses for communication.
 
-    read = function()
-      rs_read(self, private),
+    read = function() rs_read(self, private),
 
     #' @description
     #' Terminate the current computation and the R process.
@@ -164,8 +160,7 @@ r_session <- R6::R6Class(
     #' subprocess to exit cleanly, after its standard input is closed.
     #' If the process is still running after this period, it will be
     #' killed.
-    close = function(grace = 1000)
-      rs_close(self, private, grace),
+    close = function(grace = 1000) rs_close(self, private, grace),
 
     #' @description
     #' The `traceback()` method can be used after an error in the R
@@ -177,8 +172,7 @@ r_session <- R6::R6Class(
     #' the subprocess save the trace on error. This is because saving
     #' the trace can be costly for large objects passed as arguments.
     #' @return The same output as from [base::traceback()]
-    traceback = function()
-      rs_traceback(self, private),
+    traceback = function() rs_traceback(self, private),
 
     #' @description
     #' Interactive debugger to inspect the dumped frames in the subprocess,
@@ -188,13 +182,11 @@ r_session <- R6::R6Class(
     #' `callr.traceback` option to `TRUE` (in the main process) to make
     #' the subprocess dump frames on error. This is because saving
     #' the frames can be costly for large objects passed as arguments.
-    debug = function()
-      rs_debug(self, private),
+    debug = function() rs_debug(self, private),
 
     #' @description Experimental function that provides a REPL
     #' (Read-Eval-Print-Loop) to the subprocess.
-    attach = function()
-      rs_attach(self, private),
+    attach = function() rs_attach(self, private),
 
     #' @description
     #' Print method for an `r_session`.
@@ -208,7 +200,10 @@ r_session <- R6::R6Class(
         } else {
           "finished, "
         },
-        "pid ", self$get_pid(), ".\n")
+        "pid ",
+        self$get_pid(),
+        ".\n"
+      )
       invisible(self)
     }
   ),
@@ -234,27 +229,23 @@ r_session <- R6::R6Class(
     res_file = NULL,
 
     buffer = NULL,
-    read_buffer = function()
-      rs__read_buffer(self, private),
-    read_message = function()
-      rs__read_message(self, private),
+    read_buffer = function() rs__read_buffer(self, private),
+    read_message = function() rs__read_message(self, private),
 
     get_result_and_output = function(std = FALSE)
       rs__get_result_and_output(self, private, std),
     report_back = function(code, text = "")
       rs__report_back(self, private, code, text),
-    write_for_sure = function(text)
-      rs__write_for_sure(self, private, text),
-    parse_msg = function(msg)
-      rs__parse_msg(self, private, msg),
-    attach_wait = function()
-      rs__attach_wait(self, private)
+    write_for_sure = function(text) rs__write_for_sure(self, private, text),
+    parse_msg = function(msg) rs__parse_msg(self, private, msg),
+    attach_wait = function() rs__attach_wait(self, private)
   )
 )
 
 rs_init <- function(self, private, super, options, wait, wait_timeout) {
-
-  options$func <- options$func %||% function() { }
+  options$func <- options$func %||%
+    function() {
+    }
   options$args <- list()
   options$load_hook <- session_load_hook(options$load_hook)
 
@@ -267,9 +258,20 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   prepare_client_files()
   with_envvar(
     options$env,
-    do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
-      stdin = "|", stdout = "|", stderr = "|", poll_connection = TRUE),
-      options$extra))
+    do.call(
+      super$initialize,
+      c(
+        list(
+          options$bin,
+          options$real_cmdargs,
+          stdin = "|",
+          stdout = "|",
+          stderr = "|",
+          poll_connection = TRUE
+        ),
+        options$extra
+      )
+    )
   )
 
   ## Make child report back when ready
@@ -330,20 +332,29 @@ rs_read <- function(self, private) {
     if (self$is_alive()) {
       # We do this in on.exit(), because parse_msg still reads the streams
       on.exit(self$kill(), add = TRUE)
-      out <- list(header = list(
-        code = 502, length = 0,
-        rest = "R session closed the process connection, killed"
-      ))
+      out <- list(
+        header = list(
+          code = 502,
+          length = 0,
+          rest = "R session closed the process connection, killed"
+        )
+      )
     } else if (identical(es <- self$get_exit_status(), 0L)) {
-      out <- list(header = list(
-        code = 500, length = 0,
-        rest = "R session finished cleanly"
-      ))
+      out <- list(
+        header = list(
+          code = 500,
+          length = 0,
+          rest = "R session finished cleanly"
+        )
+      )
     } else {
-      out <- list(header = list(
-        code = 501, length = 0,
-        rest = paste0("R session crashed with exit code ", es)
-      ))
+      out <- list(
+        header = list(
+          code = 501,
+          length = 0,
+          rest = paste0("R session crashed with exit code ", es)
+        )
+      )
     }
   }
   if (length(out)) private$parse_msg(out)
@@ -425,7 +436,6 @@ rs_close <- function(self, private, grace) {
 }
 
 rs_call <- function(self, private, func, args, package) {
-
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
   ## TODO: do we need a state at all?
@@ -440,8 +450,11 @@ rs_call <- function(self, private, func, args, package) {
   private$options$func_file <- save_function_to_temp(private$options)
   private$options$result_file <- tempfile("callr-rs-result-")
   private$options$tmp_files <-
-    c(private$options$tmp_files, private$options$func_file,
-      private$options$result_file)
+    c(
+      private$options$tmp_files,
+      private$options$func_file,
+      private$options$result_file
+    )
 
   ## Maybe we need to redirect stdout / stderr
   re_stdout <- if (is.null(private$options$stdout)) {
@@ -455,12 +468,15 @@ rs_call <- function(self, private, func, args, package) {
   post <- rs__posthook(re_stdout, re_stderr)
 
   ## Run an expr that loads it, in the child process, with error handlers
-  expr <- make_vanilla_script_expr(private$options$func_file,
-                                   private$options$result_file,
-                                   private$options$error,
-                                   pre_hook = pre, post_hook = post,
-                                   messages = TRUE,
-                                   print_error = FALSE)
+  expr <- make_vanilla_script_expr(
+    private$options$func_file,
+    private$options$result_file,
+    private$options$error,
+    pre_hook = pre,
+    post_hook = post,
+    messages = TRUE,
+    print_error = FALSE
+  )
   cmd <- paste0(deparse(expr), "\n")
 
   ## Write this to stdin
@@ -483,7 +499,8 @@ rs_run_with_output <- function(self, private, func, args, package) {
   while (go) {
     ## TODO: why is this in a tryCatch?
     res <- tryCatch(
-      { processx::poll(list(private$pipe), -1)
+      {
+        processx::poll(list(private$pipe), -1)
         msg <- self$read()
         if (is.null(msg)) next
         if (msg$code == 200 || (msg$code >= 500 && msg$code < 600)) {
@@ -508,11 +525,13 @@ rs_run_with_output <- function(self, private, func, args, package) {
         }
         iconn <- structure(
           list(message = "Interrupted"),
-          class = c("interrupt", "condition"))
+          class = c("interrupt", "condition")
+        )
         signalCondition(iconn)
         cat("\n")
         invokeRestart("abort")
-    })
+      }
+    )
   }
   res
 }
@@ -521,7 +540,7 @@ rs_run <- function(self, private, func, args, package) {
   res <- rs_run_with_output(self, private, func, args, package)
   if (is.null(res$error)) {
     res$result
-  } else{
+  } else {
     res$stdout <- paste0(res$stdout, self$read_output())
     res$stderr <- paste0(res$stderr, self$read_error())
     throw(res$error)
@@ -537,8 +556,10 @@ rs_get_running_time <- function(self, private) {
   finished <- private$state == "finished"
   idle <- private$state == "idle"
   missing <- as.difftime(NA_real_, units = "secs")
-  c(total = now - private$started_at,
-    current = if (finished | idle) missing else now - private$fun_started_at)
+  c(
+    total = now - private$started_at,
+    current = if (finished | idle) missing else now - private$fun_started_at
+  )
 }
 
 rs_poll_process <- function(self, private, timeout) {
@@ -558,18 +579,25 @@ rs_traceback <- function(self, private) {
 
 rs_debug <- function(self, private) {
   hasdump <- self$run(function() {
-    ! is.null(as.environment("tools:callr")$`__callr_data__`$.Last.dump)
+    !is.null(as.environment("tools:callr")$`__callr_data__`$.Last.dump)
   })
   if (!hasdump) stop("Can't find dumped frames, nothing to debug")
 
   help <- function() {
-    cat("Debugging in process ", self$get_pid(),
-        ", press CTRL+C (ESC) or type .q to quit. Commands:\n", sep = "")
-    cat("  .where       -- print stack trace\n",
-        "  .inspect <n> -- inspect a frame, 0 resets to .GlobalEnv\n",
-        "  .help        -- print this message\n",
-        "  .q           -- quit debugger\n",
-        "  <cmd>        -- run <cmd> in frame or .GlobalEnv\n\n", sep = "")
+    cat(
+      "Debugging in process ",
+      self$get_pid(),
+      ", press CTRL+C (ESC) or type .q to quit. Commands:\n",
+      sep = ""
+    )
+    cat(
+      "  .where       -- print stack trace\n",
+      "  .inspect <n> -- inspect a frame, 0 resets to .GlobalEnv\n",
+      "  .help        -- print this message\n",
+      "  .q           -- quit debugger\n",
+      "  <cmd>        -- run <cmd> in frame or .GlobalEnv\n\n",
+      sep = ""
+    )
   }
 
   should_quit <- FALSE
@@ -578,11 +606,9 @@ rs_debug <- function(self, private) {
       traceback(tb)
       if (frame) cat("Inspecting frame", frame, "\n")
       NULL
-
     } else if (cmd == ".help") {
       help()
       NULL
-
     } else if (grepl("^.inspect ", cmd)) {
       newframe <- as.integer(strsplit(cmd, " ")[[1]][[2]])
       if (is.na(newframe)) {
@@ -591,11 +617,9 @@ rs_debug <- function(self, private) {
         frame <<- newframe
       }
       NULL
-
     } else if (cmd == ".q") {
       should_quit <<- TRUE
       NULL
-
     } else {
       cmd
     }
@@ -608,8 +632,11 @@ rs_debug <- function(self, private) {
   while (TRUE) {
     cat("\n")
     prompt <- paste0(
-      "RS ", self$get_pid(),
-      if (frame) paste0(" (frame ", frame, ")"), " > ")
+      "RS ",
+      self$get_pid(),
+      if (frame) paste0(" (frame ", frame, ")"),
+      " > "
+    )
     cmd <- rs__attach_get_input(prompt)
     cmd2 <- translate_cmd(cmd)
     if (should_quit) break
@@ -617,11 +644,14 @@ rs_debug <- function(self, private) {
 
     try(update_history(cmd), silent = TRUE)
 
-    ret <- self$run_with_output(function(cmd, frame) {
-      dump <- as.environment("tools:callr")$`__callr_data__`$.Last.dump
-      envir <- if (!frame) .GlobalEnv else dump[[frame + 12L]]
-      eval(parse(text = cmd), envir = envir)
-    }, list(cmd = cmd, frame = frame))
+    ret <- self$run_with_output(
+      function(cmd, frame) {
+        dump <- as.environment("tools:callr")$`__callr_data__`$.Last.dump
+        envir <- if (!frame) .GlobalEnv else dump[[frame + 12L]]
+        eval(parse(text = cmd), envir = envir)
+      },
+      list(cmd = cmd, frame = frame)
+    )
     cat(ret$stdout)
     cat(ret$stderr)
     if (!is.null(ret$error)) {
@@ -638,16 +668,21 @@ rs_attach <- function(self, private) {
   err <- self$get_error_connection()
   while (nchar(x <- processx::processx_conn_read_chars(out))) cat(x)
   while (nchar(x <- processx::processx_conn_read_chars(err))) cat(bold(x))
-  tryCatch({
-    while (TRUE) {
-      cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
-      if (cmd == ".q") break
-      try(update_history(cmd), silent = TRUE)
-      private$write_for_sure(paste0(cmd, "\n"))
-      private$report_back(202, "done")
-      private$attach_wait()
-    } },
-    interrupt = function(e) { self$interrupt(); invisible() }
+  tryCatch(
+    {
+      while (TRUE) {
+        cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
+        if (cmd == ".q") break
+        try(update_history(cmd), silent = TRUE)
+        private$write_for_sure(paste0(cmd, "\n"))
+        private$report_back(202, "done")
+        private$attach_wait()
+      }
+    },
+    interrupt = function(e) {
+      self$interrupt()
+      invisible()
+    }
   )
 }
 
@@ -655,7 +690,7 @@ rs_attach <- function(self, private) {
 
 rs__attach_get_input <- function(prompt) {
   cmd <- readline(prompt = prompt)
-  while (! is_complete_expression(cmd)) {
+  while (!is_complete_expression(cmd)) {
     cmd <- paste0(cmd, sep = "\n", readline(prompt = "+ "))
   }
   cmd
@@ -675,7 +710,7 @@ rs__attach_wait <- function(self, private) {
     }
     if (pr[[3]] == "ready") {
       msg <- self$read()
-      if (msg$code == 202) break;
+      if (msg$code == 202) break
     }
   }
 }
@@ -691,7 +726,7 @@ rs__report_back <- function(self, private, code, text) {
 rs__write_for_sure <- function(self, private, text) {
   while (1) {
     text <- self$write_input(text)
-    if (!length(text)) break;
+    if (!length(text)) break
     Sys.sleep(.1)
   }
 }
@@ -706,12 +741,13 @@ rs__parse_msg <- function(self, private, msg) {
     message <- msg$header$rest
   }
 
-  if (! code %in% names(rs__parse_msg_funcs)) {
+  if (!code %in% names(rs__parse_msg_funcs)) {
     throw(new_error("Unknown message code: `", code, "`"))
   }
   structure(
     rs__parse_msg_funcs[[code]](self, private, msg$header$code, message),
-    class = "callr_session_result")
+    class = "callr_session_result"
+  )
 }
 
 rs__parse_msg_funcs <- list()
@@ -753,7 +789,8 @@ rs__parse_msg_funcs[["501"]] <- function(self, private, code, message) {
   private$state <- "finished"
   err <- structure(
     list(message = message),
-    class = c("error", "condition"))
+    class = c("error", "condition")
+  )
   res <- private$get_result_and_output(std = TRUE)
   res$error <- err
   c(list(code = code, message = message), res)
@@ -765,7 +802,9 @@ rs__status_expr <- function(code, text = "", fd = 3L) {
   substitute(
     local({
       pxlib <- as.environment("tools:callr")$`__callr_data__`$pxlib
-      code_ <- code; fd_ <- fd; text_ <- text
+      code_ <- code
+      fd_ <- fd
+      text_ <- text
       data <- paste0(code_, " 0 ", text_, "\n")
       pxlib$write_fd(as.integer(fd), data)
     }),
@@ -774,53 +813,86 @@ rs__status_expr <- function(code, text = "", fd = 3L) {
 }
 
 rs__prehook <- function(stdout, stderr) {
-  oexpr <- if (!is.null(stdout)) substitute({
-    assign(
-      ".__stdout__",
-      as.environment("tools:callr")$`__callr_data__`$pxlib$
-                                   set_stdout_file(`__fn__`),
-      envir = as.environment("tools:callr")$`__callr_data__`)
-  }, list(`__fn__` = stdout))
-  eexpr <- if (!is.null(stderr)) substitute({
-    assign(
-      ".__stderr__",
-      as.environment("tools:callr")$`__callr_data__`$pxlib$
-                                   set_stderr_file(`__fn__`),
-      envir = as.environment("tools:callr")$`__callr_data__`)
-  }, list(`__fn__` = stderr))
+  oexpr <- if (!is.null(stdout))
+    substitute(
+      {
+        assign(
+          ".__stdout__",
+          as.environment("tools:callr")$`__callr_data__`$pxlib$set_stdout_file(
+            `__fn__`
+          ),
+          envir = as.environment("tools:callr")$`__callr_data__`
+        )
+      },
+      list(`__fn__` = stdout)
+    )
+  eexpr <- if (!is.null(stderr))
+    substitute(
+      {
+        assign(
+          ".__stderr__",
+          as.environment("tools:callr")$`__callr_data__`$pxlib$set_stderr_file(
+            `__fn__`
+          ),
+          envir = as.environment("tools:callr")$`__callr_data__`
+        )
+      },
+      list(`__fn__` = stderr)
+    )
 
-  substitute({ o; e }, list(o = oexpr, e = eexpr))
+  substitute(
+    {
+      o
+      e
+    },
+    list(o = oexpr, e = eexpr)
+  )
 }
 
 rs__posthook <- function(stdout, stderr) {
-  oexpr <- if (!is.null(stdout)) substitute({
-    as.environment("tools:callr")$`__callr_data__`$
-      pxlib$set_stdout(as.environment("tools:callr")$`__callr_data__`$
-      .__stdout__)
-  })
-  eexpr <- if (!is.null(stderr)) substitute({
-    as.environment("tools:callr")$`__callr_data__`$
-      pxlib$set_stderr(as.environment("tools:callr")$`__callr_data__`$
-      .__stderr__)
-  })
+  oexpr <- if (!is.null(stdout))
+    substitute({
+      as.environment("tools:callr")$`__callr_data__`$pxlib$set_stdout(
+        as.environment("tools:callr")$`__callr_data__`$.__stdout__
+      )
+    })
+  eexpr <- if (!is.null(stderr))
+    substitute({
+      as.environment("tools:callr")$`__callr_data__`$pxlib$set_stderr(
+        as.environment("tools:callr")$`__callr_data__`$.__stderr__
+      )
+    })
 
-  substitute({ o; e }, list(o = oexpr, e = eexpr))
+  substitute(
+    {
+      o
+      e
+    },
+    list(o = oexpr, e = eexpr)
+  )
 }
 
 rs__get_result_and_output <- function(self, private, std) {
-
   ## Get stdout and stderr
-  stdout <- if (!is.null(private$tmp_output_file) &&
-             file.exists(private$tmp_output_file)) {
-    tryCatch(suppressWarnings(read_all(private$tmp_output_file)),
-             error = function(e) "")
+  stdout <- if (
+    !is.null(private$tmp_output_file) &&
+      file.exists(private$tmp_output_file)
+  ) {
+    tryCatch(
+      suppressWarnings(read_all(private$tmp_output_file)),
+      error = function(e) ""
+    )
   } else if (std && self$has_output_connection()) {
     tryCatch(self$read_all_output(), error = function(err) NULL)
   }
-  stderr <- if (!is.null(private$tmp_error_file) &&
-             file.exists(private$tmp_error_file)) {
-    tryCatch(suppressWarnings(read_all(private$tmp_error_file)),
-             error = function(e) "")
+  stderr <- if (
+    !is.null(private$tmp_error_file) &&
+      file.exists(private$tmp_error_file)
+  ) {
+    tryCatch(
+      suppressWarnings(read_all(private$tmp_error_file)),
+      error = function(e) ""
+    )
   } else if (std && self$has_error_connection()) {
     tryCatch(self$read_all_error(), error = function(err) NULL)
   }
@@ -848,7 +920,6 @@ rs__get_result_and_output <- function(self, private, std) {
 }
 
 rs__handle_condition <- function(cond) {
-
   default_handler <- function(x) {
     classes <- class(x)
     for (cl in classes) {
@@ -863,9 +934,11 @@ rs__handle_condition <- function(cond) {
   if (is.list(cond) && is.null(cond$muffle)) {
     cond$muffle <- "callr_r_session_muffle"
   }
-  withRestarts({
-    signalCondition(cond)
-    default_handler(cond) },
+  withRestarts(
+    {
+      signalCondition(cond)
+      default_handler(cond)
+    },
     callr_r_session_muffle = function() NULL,
     muffleMessage = function() NULL
   )

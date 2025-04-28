@@ -1,10 +1,12 @@
-
 setup_script_files <- function(options) {
   within(options, {
-    func_file   <- save_function_to_temp(options)
+    func_file <- save_function_to_temp(options)
     result_file <- tempfile("callr-res-")
     script_file <- make_vanilla_script_file(
-      func_file, result_file, options$error, !is.null(options$stderr)
+      func_file,
+      result_file,
+      options$error,
+      !is.null(options$stderr)
     )
     tmp_files <- c(tmp_files, func_file, script_file, result_file)
   })
@@ -16,13 +18,18 @@ save_function_to_temp <- function(options) {
   # Once we start saving the function environments, we might get
   # "'package:x' may not be available when loading" warnings
   suppressWarnings(saveRDS(
-    list(options$func, options$args), file = tmp,
-    compress = getOption("callr.compress_transport", FALSE)))
+    list(options$func, options$args),
+    file = tmp,
+    compress = getOption("callr.compress_transport", FALSE)
+  ))
   tmp
 }
 
-transport_fun <- function(fun, package,
-                          source_refs = getOption("callr.keep.source")) {
+transport_fun <- function(
+  fun,
+  package,
+  source_refs = getOption("callr.keep.source")
+) {
   if (!isTRUE(source_refs)) fun <- remove_source(fun)
 
   if (isTRUE(package)) {
@@ -39,7 +46,6 @@ transport_fun <- function(fun, package,
 }
 
 setup_context <- function(options) {
-
   ## Avoid R CMD check warning...
   repos <- libpath <- system_profile <- user_profile <- load_hook <- NULL
 
@@ -47,8 +53,14 @@ setup_context <- function(options) {
 
   options <- within(options, {
     ## profiles
-    profiles <- make_profiles(system_profile, user_profile, repos, libpath,
-                             load_hook, env)
+    profiles <- make_profiles(
+      system_profile,
+      user_profile,
+      repos,
+      libpath,
+      load_hook,
+      env
+    )
     tmp_files <- c(tmp_files, profiles)
 
     ## environment files
@@ -59,8 +71,15 @@ setup_context <- function(options) {
 
     ## First, save these, so we can restore them exactly in the subprocess,
     ## and sub-subprocesses are not affected by our workarounds
-    save_env <- c("R_ENVIRON", "R_ENVIRON_USER", "R_PROFILE",
-                  "R_PROFILE_USER", "R_LIBS", "R_LIBS_USER", "R_LIBS_SITE")
+    save_env <- c(
+      "R_ENVIRON",
+      "R_ENVIRON_USER",
+      "R_PROFILE",
+      "R_PROFILE_USER",
+      "R_LIBS",
+      "R_LIBS_USER",
+      "R_LIBS_SITE"
+    )
     keep_set <- save_env %in% names(env)
     save_set <- !keep_set & save_env %in% names(Sys.getenv())
     save_nms <- paste0("CALLR_", save_env, "_BAK")
@@ -75,7 +94,8 @@ setup_context <- function(options) {
 
     if (is.na(env["R_LIBS"])) env["R_LIBS"] <- make_path(libpath)
     if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- make_path(libpath)
-    if (is.na(env["R_LIBS_SITE"])) env["R_LIBS_SITE"] <- make_path(.Library.site)
+    if (is.na(env["R_LIBS_SITE"]))
+      env["R_LIBS_SITE"] <- make_path(.Library.site)
 
     env["CALLR_IS_RUNNING"] <- "true"
   })
@@ -84,7 +104,6 @@ setup_context <- function(options) {
 }
 
 make_profiles <- function(system, user, repos, libpath, load_hook, env) {
-
   profile_system <- tempfile("callr-spr-")
   profile_user <- tempfile("callr-upr-")
 
@@ -115,7 +134,7 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
     user <- env["R_PROFILE_USER"]
     if (is.na(user)) user <- Sys.getenv("R_PROFILE_USER", NA_character_)
     local <- ".Rprofile"
-    home  <- path.expand("~/.Rprofile")
+    home <- path.expand("~/.Rprofile")
     if (is.na(user) && file.exists(local)) user <- local
     if (is.na(user) && file.exists(home)) user <- home
   } else {
@@ -141,22 +160,39 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
 
   ## Override repos, as requested
   for (p in c(profile_system, profile_user)) {
-    cat("options(repos=", deparse(repos), ")\n", sep = "", file = p,
-        append = TRUE)
+    cat(
+      "options(repos=",
+      deparse(repos),
+      ")\n",
+      sep = "",
+      file = p,
+      append = TRUE
+    )
   }
 
   ## Set .Library.site
-  cat(".Library.site <- ", deparse(.Library.site),
-      "\n.libPaths(.libPaths())\n", file = profile_system, append = TRUE)
+  cat(
+    ".Library.site <- ",
+    deparse(.Library.site),
+    "\n.libPaths(.libPaths())\n",
+    file = profile_system,
+    append = TRUE
+  )
 
   ## Set .libPaths()
-  for (p in c(profile_system, profile_user))  {
-    cat(".libPaths(", deparse(libpath), ")\n", sep = "", file = p,
-        append = TRUE)
+  for (p in c(profile_system, profile_user)) {
+    cat(
+      ".libPaths(",
+      deparse(libpath),
+      ")\n",
+      sep = "",
+      file = p,
+      append = TRUE
+    )
   }
 
   if (!is.null(load_hook)) {
-    cat(load_hook, sep = "",  file = profile_user, append = TRUE)
+    cat(load_hook, sep = "", file = profile_user, append = TRUE)
   }
 
   # End of include guard.
@@ -166,15 +202,17 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
 }
 
 make_environ <- function(profiles, libpath, env) {
-
   env_sys <- tempfile("callr-sev-")
   env_user <- tempfile("callr-uev-")
 
   for (ef in c(env_sys, env_user)) {
-    cat("CALLR_CHILD_R_LIBS=\"${R_LIBS}\"\n",
-        "CALLR_CHILD_R_LIBS_USER=\"${R_LIBS_USER}\"\n",
-        "CALLR_CHILD_R_LIBS_SITE=\"${R_LIBS_SITE}\"\n",
-        file = ef, append = TRUE)
+    cat(
+      "CALLR_CHILD_R_LIBS=\"${R_LIBS}\"\n",
+      "CALLR_CHILD_R_LIBS_USER=\"${R_LIBS_USER}\"\n",
+      "CALLR_CHILD_R_LIBS_SITE=\"${R_LIBS_SITE}\"\n",
+      file = ef,
+      append = TRUE
+    )
   }
 
   sys <- env["R_ENVIRON"]
@@ -197,26 +235,52 @@ make_environ <- function(profiles, libpath, env) {
   }
 
   for (ef in c(env_sys, env_user)) {
-    cat("R_PROFILE=\"", profiles[[1]], "\"\n", file = ef,
-        append = TRUE, sep = "")
-    cat("R_PROFILE_USER=\"", profiles[[2]], "\"\n", file = ef,
-        append = TRUE, sep = "")
-    cat("R_LIBS_SITE=\"${CALLR_CHILD_R_LIBS_SITE:-",
-        paste(.Library.site, collapse = .Platform$path.sep), "}\"\n",
-        file = ef, append = TRUE, sep = "")
-    cat("R_LIBS=\"${CALLR_CHILD_R_LIBS:-",
-        paste(libpath, collapse = .Platform$path.sep), "}\"\n",
-        file = ef, append = TRUE, sep = "")
-    cat("R_LIBS_USER=\"${CALLR_CHILD_R_LIBS_USER:-",
-        paste(libpath, collapse = .Platform$path.sep), "}\"\n",
-        file = ef, append = TRUE, sep = "")
+    cat(
+      "R_PROFILE=\"",
+      profiles[[1]],
+      "\"\n",
+      file = ef,
+      append = TRUE,
+      sep = ""
+    )
+    cat(
+      "R_PROFILE_USER=\"",
+      profiles[[2]],
+      "\"\n",
+      file = ef,
+      append = TRUE,
+      sep = ""
+    )
+    cat(
+      "R_LIBS_SITE=\"${CALLR_CHILD_R_LIBS_SITE:-",
+      paste(.Library.site, collapse = .Platform$path.sep),
+      "}\"\n",
+      file = ef,
+      append = TRUE,
+      sep = ""
+    )
+    cat(
+      "R_LIBS=\"${CALLR_CHILD_R_LIBS:-",
+      paste(libpath, collapse = .Platform$path.sep),
+      "}\"\n",
+      file = ef,
+      append = TRUE,
+      sep = ""
+    )
+    cat(
+      "R_LIBS_USER=\"${CALLR_CHILD_R_LIBS_USER:-",
+      paste(libpath, collapse = .Platform$path.sep),
+      "}\"\n",
+      file = ef,
+      append = TRUE,
+      sep = ""
+    )
   }
 
   c(env_sys, env_user)
 }
 
 setup_callbacks <- function(options) {
-
   ## We cannot easily use `within` here, because the
   ## functions we create will have the wrong environment
 
@@ -227,8 +291,10 @@ setup_callbacks <- function(options) {
   ## element to NULL
   options <- append(
     options,
-    list("real_block_callback" =
-           if (!is.null(block_cb)) function(x, proc) block_cb(x))
+    list(
+      "real_block_callback" = if (!is.null(block_cb))
+        function(x, proc) block_cb(x)
+    )
   )
 
   callback_factory <- function(stream) {
@@ -243,7 +309,6 @@ setup_callbacks <- function(options) {
         if (!is.null(stream)) cat(x, file = stream, sep = "\n", append = TRUE)
         cb(x)
       }
-
     } else {
       function(x, proc) {
         if (!is.null(stream)) cat(x, file = stream, sep = "\n", append = TRUE)
@@ -259,7 +324,6 @@ setup_r_binary_and_args <- function(options, script_file = TRUE) {
   options$arch <- options$arch %||% "same"
   if (grepl("[/\\\\]", options$arch)) {
     path <- options$arch
-
   } else if (options$arch != "same") {
     path <- file.path(
       R.home(),
@@ -267,14 +331,15 @@ setup_r_binary_and_args <- function(options, script_file = TRUE) {
       options$arch,
       if (os_platform() == "windows") "Rterm" else "R"
     )
-
   } else {
     exec <- if (os_platform() == "windows") "Rterm" else "R"
     path <- file.path(R.home("bin"), exec)
   }
 
-  if (!file.exists(path) &&
-      !file.exists(paste0(path, ".exe"))) {
+  if (
+    !file.exists(path) &&
+      !file.exists(paste0(path, ".exe"))
+  ) {
     stop("Cannot find R executable at `", path, "`")
   }
 
@@ -285,11 +350,9 @@ setup_r_binary_and_args <- function(options, script_file = TRUE) {
 }
 
 setup_rcmd_binary_and_args <- function(options) {
-
   if (os_platform() == "windows") {
     options$bin <- file.path(R.home("bin"), "Rcmd.exe")
     options$real_cmdargs <- c(options$cmd, options$cmdargs)
-
   } else {
     options$bin <- file.path(R.home("bin"), "R")
     options$real_cmdargs <- c("CMD", options$cmd, options$cmdargs)
@@ -299,10 +362,8 @@ setup_rcmd_binary_and_args <- function(options) {
 }
 
 setup_rscript_binary_and_args <- function(options) {
-
-  if(os_platform() == "windows") {
+  if (os_platform() == "windows") {
     options$bin <- file.path(R.home("bin"), "Rscript.exe")
-
   } else {
     options$bin <- file.path(R.home("bin"), "Rscript")
   }

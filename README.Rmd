@@ -11,7 +11,9 @@ editor_options:
     wrap: sentence
 ---
 
-```{r, setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures",
@@ -44,13 +46,19 @@ asciicast::init_knitr_engine(
 
 Install the stable version from CRAN:
 
-```{r, asciicast-setup, eval = FALSE, cache = FALSE}
+```{r}
+#| label: asciicast-setup
+#| eval: false
+#| cache: false
 install.packages("callr")
 ```
 
 Install the development version from GitHub:
 
-```{r, asciicast-setup2, eval = FALSE, cache = FALSE}
+```{r}
+#| label: asciicast-setup2
+#| eval: false
+#| cache: false
 pak::pak("r-lib/callr")
 ```
 
@@ -59,7 +67,8 @@ pak::pak("r-lib/callr")
 Use `r()` to run an R function in a new R process.
 The results are passed back seamlessly:
 
-```{asciicast simple}
+```{asciicast}
+#| label: simple
 callr::r(function() var(iris[, 1:4]))
 ```
 
@@ -69,14 +78,16 @@ You can pass arguments to the function by setting `args` to the list of argument
 This is often necessary as these arguments are explicitly copied to the child process, whereas the evaluated function cannot refer to variables in the parent.
 For example, the following does not work:
 
-```{asciicast passargsfail}
+```{asciicast}
+#| label: passargsfail
 mycars <- cars
 callr::r(function() summary(mycars))
 ```
 
 But this does:
 
-```{asciicast, passargsok}
+```{asciicast}
+#| label: passargsok
 mycars <- cars
 callr::r(function(x) summary(x), args = list(mycars))
 ```
@@ -88,7 +99,8 @@ Note that the arguments will be serialized and saved to a file, so if they are l
 You can use any R package in the child process, just make sure to refer to it explicitly with the `::` operator.
 For example, the following code creates an [igraph](https://github.com/igraph/rigraph) graph in the child, and calculates some metrics of it.
 
-```{asciicast packages}
+```{asciicast}
+#| label: packages
 callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
@@ -96,12 +108,14 @@ callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g)
 
 callr copies errors from the child process back to the main R session:
 
-```{asciicast error1}
+```{asciicast}
+#| label: error1
 callr::r(function() 1 + "A")
 ```
 callr sets the `.Last.error` variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.
 
-```{asciicast error2-2}
+```{asciicast}
+#| label: error2-2
 .Last.error
 ```
 
@@ -116,14 +130,17 @@ The top part of the trace contains the frames in the main process, and the botto
 
 By default, the standard output and error of the child is lost, but you can request callr to redirect them to files, and then inspect the files in the parent:
 
-```{asciicast io, results = "hide"}
+```{asciicast}
+#| label: io
+#| results: hide
 x <- callr::r(function() { print("hello world!"); message("hello again!") },
   stdout = "/tmp/out", stderr = "/tmp/err"
 )
 readLines("/tmp/out")
 ```
 
-```{asciicast io-2}
+```{asciicast}
+#| label: io-2
 readLines("/tmp/err")
 ```
 
@@ -135,14 +152,16 @@ The `show = TRUE` options will also show the output of the child, as it is print
 `r_bg()` is similar to `r()` but it starts the R process in the background.
 It returns an `r_process` R6 object, that provides a rich API:
 
-```{asciicast bg}
+```{asciicast}
+#| label: bg
 rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 ```
 
 This is a list of all `r_process` methods:
 
-```{asciicast, bg-methods}
+```{asciicast}
+#| label: bg-methods
 ls(rp)
 ```
 
@@ -165,21 +184,25 @@ Multiple background R processes are best managed with the `processx::poll()` fun
 It returns as soon as one process has generated an event, or if its timeout has expired.
 The timeout is in milliseconds.
 
-```{asciicast poll}
+```{asciicast}
+#| label: poll
 rp1 <- callr::r_bg(function() { Sys.sleep(1/2); "1 done" })
 rp2 <- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
 processx::poll(list(rp1, rp2), 1000)
 ```
 
-```{asciicast poll-2}
+```{asciicast}
+#| label: poll-2
 rp2$get_result()
 ```
 
-```{asciicast poll-3}
+```{asciicast}
+#| label: poll-3
 processx::poll(list(rp1), 1000)
 ```
 
-```{asciicast poll-4}
+```{asciicast}
+#| label: poll-4
 rp1$get_result()
 ```
 
@@ -187,7 +210,8 @@ rp1$get_result()
 
 `r_session` is another `processx::process` subclass that represents a persistent background R session:
 
-```{asciicast rsession}
+```{asciicast}
+#| label: rsession
 rs <- callr::r_session$new()
 rs
 ```
@@ -198,21 +222,25 @@ The `r_session$poll_process()` method or `processx::poll()` can then be used to 
 
 Once an R session is done with an asynchronous computation, its `poll_process()` method returns `"ready"` and the `r_session$read()` method can read out the result.
 
-```{asciicast rsession2}
+```{asciicast}
+#| label: rsession2
 rs <- callr::r_session$new()
 rs$run(function() runif(10))
 ```
 
-```{asciicast rsession2-2}
+```{asciicast}
+#| label: rsession2-2
 rs$call(function() rnorm(10))
 rs
 ```
 
-```{asciicast rsession-4}
+```{asciicast}
+#| label: rsession-4
 rs$poll_process(2000)
 ```
 
-```{asciicast rsession-5}
+```{asciicast}
+#| label: rsession-5
 rs$read()
 ```
 
@@ -221,7 +249,8 @@ rs$read()
 The `rcmd()` function calls an `R CMD` command.
 For example, you can call `R CMD INSTALL`, `R CMD check` or `R CMD config` this way:
 
-```{asciicast rcmd}
+```{asciicast}
+#| label: rcmd
 callr::rcmd("config", "CC")
 ```
 

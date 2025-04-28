@@ -5,7 +5,8 @@ Authors@R: c(
     person("Gábor", "Csárdi", , "csardi.gabor@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-7098-9676")),
     person("Winston", "Chang", role = "aut"),
-    person("Posit Software, PBC", role = c("cph", "fnd")),
+    person("Posit Software, PBC", role = c("cph", "fnd"),
+           comment = c(ROR = "03wc8by49")),
     person("Ascent Digital Services", role = c("cph", "fnd"))
   )
 Description: It is sometimes useful to perform a computation in a separate
@@ -23,7 +24,6 @@ Imports:
 Suggests:
     asciicast (>= 2.3.1),
     cli (>= 1.1.0),
-    mockery,
     ps,
     rprojroot,
     spelling,
@@ -37,6 +37,7 @@ Config/Needs/website:
     tibble,
     tidyverse/tidytemplate
 Config/testthat/edition: 3
+Config/usethis/last-upkeep: 2025-04-28
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)

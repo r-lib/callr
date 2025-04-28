@@ -1,4 +1,3 @@
-
 test_that("is_complete_expression", {
   skip_if_not_installed("withr")
   do_tests <- function() {
@@ -24,38 +23,59 @@ test_that("default_repos", {
   skip_if_not_installed("withr")
   def <- "https://cloud.r-project.org"
 
-  withr::with_options(list(repos = NULL),
+  withr::with_options(
+    list(repos = NULL),
     expect_equal(
       default_repos(),
-      c(CRAN = def)))
+      c(CRAN = def)
+    )
+  )
 
-  withr::with_options(list(repos = character()),
+  withr::with_options(
+    list(repos = character()),
     expect_equal(
       default_repos(),
-      c(CRAN = def)))
+      c(CRAN = def)
+    )
+  )
 
-  withr::with_options(list(repos = list()),
+  withr::with_options(
+    list(repos = list()),
     expect_equal(
       default_repos(),
-      list(CRAN = def)))
+      list(CRAN = def)
+    )
+  )
 
-  withr::with_options(list(repos = c(foo = "bar")),
+  withr::with_options(
+    list(repos = c(foo = "bar")),
     expect_equal(
       default_repos(),
-      c(foo = "bar", CRAN = def)))
+      c(foo = "bar", CRAN = def)
+    )
+  )
 
-  withr::with_options(list(repos = list(foo = "bar")),
+  withr::with_options(
+    list(repos = list(foo = "bar")),
     expect_equal(
       default_repos(),
-      list(foo = "bar", CRAN = def)))
+      list(foo = "bar", CRAN = def)
+    )
+  )
 
-  withr::with_options(list(repos = c(foo = "bar", CRAN = "set")),
+  withr::with_options(
+    list(repos = c(foo = "bar", CRAN = "set")),
     expect_equal(
       default_repos(),
-      c(foo = "bar", CRAN = "set")))
+      c(foo = "bar", CRAN = "set")
+    )
+  )
 
-  withr::with_options(list(repos = c(foo = "bar", CRAN = "@CRAN@")),
+  withr::with_options(
+    list(repos = c(foo = "bar", CRAN = "@CRAN@")),
     expect_equal(
       default_repos(),
-      c(foo = "bar", CRAN = def)))
+      c(foo = "bar", CRAN = def)
+    )
+  )
 })

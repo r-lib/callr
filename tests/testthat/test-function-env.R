@@ -1,4 +1,3 @@
-
 test_that("r()", {
   # not passed by default
   error <- tryCatch(

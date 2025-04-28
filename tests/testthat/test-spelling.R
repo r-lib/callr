@@ -1,4 +1,3 @@
-
 test_that("spell check", {
   skip_on_cran()
   skip_in_covr()
@@ -9,7 +8,8 @@ test_that("spell check", {
   if (nrow(results)) {
     output <- sprintf(
       "Potential spelling errors: %s\n",
-      paste(results$word, collapse = ", "))
+      paste(results$word, collapse = ", ")
+    )
     stop(output, call. = FALSE)
   } else {
     expect_true(TRUE)

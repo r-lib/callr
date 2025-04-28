@@ -1,4 +1,3 @@
-
 #' Evaluate an expression in another R session
 #'
 #' From `callr` version 2.0.0, `r()` is equivalent to `r_safe()`, and
@@ -167,18 +166,28 @@
 #'
 #' @export
 
-r <- function(func, args = list(), libpath = .libPaths(),
-              repos = default_repos(),
-              stdout = NULL, stderr = NULL,
-              poll_connection = TRUE,
-              error = getOption("callr.error", "error"),
-              cmdargs = c("--slave", "--no-save", "--no-restore"),
-              show = FALSE, callback = NULL,
-              block_callback = NULL, spinner = show && interactive(),
-              system_profile = FALSE, user_profile = "project",
-              env = rcmd_safe_env(), timeout = Inf, package = FALSE,
-              arch = "same", ...) {
-
+r <- function(
+  func,
+  args = list(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = NULL,
+  stderr = NULL,
+  poll_connection = TRUE,
+  error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"),
+  show = FALSE,
+  callback = NULL,
+  block_callback = NULL,
+  spinner = show && interactive(),
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  timeout = Inf,
+  package = FALSE,
+  arch = "same",
+  ...
+) {
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(as.list(environment()))
   options$extra <- list(...)

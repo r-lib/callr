@@ -1,11 +1,12 @@
-
 test_that("callr_message, then error", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 
   do <- function() {
-    msg <- structure(list(message = "hi"),
-                     class = c("callr_message", "condition"))
+    msg <- structure(
+      list(message = "hi"),
+      class = c("callr_message", "condition")
+    )
     signalCondition(msg)
     signalCondition(msg)
     stop("nah-ah")
@@ -15,8 +16,10 @@ test_that("callr_message, then error", {
   tryCatch(
     withCallingHandlers(
       rs$run(do),
-      callr_message = function(m) msg <<- c(msg, list(m))),
-    error = function(e) err <<- e)
+      callr_message = function(m) msg <<- c(msg, list(m))
+    ),
+    error = function(e) err <<- e
+  )
 
   expect_s3_class(msg[[1]], "callr_message")
   expect_equal(conditionMessage(msg[[1]]), "hi")
@@ -39,8 +42,10 @@ test_that("message handlers", {
   on.exit(rs$kill(), add = TRUE)
 
   do <- function() {
-    msg <- structure(list(message = "hi"),
-                     class = c("myclass", "callr_message", "condition"))
+    msg <- structure(
+      list(message = "hi"),
+      class = c("myclass", "callr_message", "condition")
+    )
     signalCondition(msg)
   }
 
@@ -64,12 +69,16 @@ test_that("large messages", {
   on.exit(rs$close(), add = TRUE)
 
   do <- function() {
-    msg <- structure(list(message = paste(1:150000, sep = " ")),
-                     class = c("myclass", "callr_message", "condition"))
+    msg <- structure(
+      list(message = paste(1:150000, sep = " ")),
+      class = c("myclass", "callr_message", "condition")
+    )
     signalCondition(msg)
     for (i in 1:5) {
-      msg <- structure(list(message = paste("message", i)),
-                       class = c("myclass", "callr_message", "condition"))
+      msg <- structure(
+        list(message = paste("message", i)),
+        class = c("myclass", "callr_message", "condition")
+      )
       signalCondition(msg)
     }
   }

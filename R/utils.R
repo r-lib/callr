@@ -1,4 +1,3 @@
-
 #' Default value for the `repos` option in callr subprocesses
 #'
 #' callr sets the `repos` option in subprocesses, to make sure that
@@ -15,7 +14,7 @@
 default_repos <- function() {
   opt <- getOption("repos")
   was_list <- is.list(opt)
-  if (! "CRAN" %in% names(opt) || opt[["CRAN"]] == "@CRAN@") {
+  if (!"CRAN" %in% names(opt) || opt[["CRAN"]] == "@CRAN@") {
     opt[["CRAN"]] <- "https://cloud.r-project.org"
   }
   if (!was_list) opt <- unlist(opt)
@@ -54,7 +53,7 @@ set_envvar <- function(envs) {
 
   both_set <- set & !is.na(old)
 
-  if (any(set))  do.call("Sys.setenv", as.list(envs[set]))
+  if (any(set)) do.call("Sys.setenv", as.list(envs[set]))
   if (any(!set)) Sys.unsetenv(names(envs)[!set])
 
   invisible(old)
@@ -98,8 +97,8 @@ is_flag <- function(x) {
 
 is_string <- function(x) {
   is.character(x) &&
-  length(x) == 1 &&
-  !is.na(x)
+    length(x) == 1 &&
+    !is.na(x)
 }
 
 read_all <- function(filename) {
@@ -118,8 +117,8 @@ is_complete_expression <- function(x) {
   if (is.null(err)) return(TRUE)
   exp <- tryCatch(parse(text = "1+"), error = function(e) e$message)
   exp1 <- strsplit(exp, "\n")[[1]][[1]]
-  msg <- sub("^.*:\\s*([^:]+)$",  "\\1", exp1, perl = TRUE)
-  ! grepl(msg, conditionMessage(err), fixed = TRUE)
+  msg <- sub("^.*:\\s*([^:]+)$", "\\1", exp1, perl = TRUE)
+  !grepl(msg, conditionMessage(err), fixed = TRUE)
 }
 
 bold <- function(x) {

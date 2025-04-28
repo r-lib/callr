@@ -1,4 +1,3 @@
-
 test_that("rcmd works", {
   expect_equal(rcmd("config", "CC")$status, 0)
   expect_match(rcmd("config", "CC")$stdout, ".")
@@ -45,14 +44,16 @@ test_that("fail_on_status", {
   expect_error(
     withr::with_dir(
       tempdir(),
-      rcmd("BATCH", rand, fail_on_status = TRUE)),
+      rcmd("BATCH", rand, fail_on_status = TRUE)
+    ),
     "System command .* failed|System command error",
     class = "system_command_status_error"
   )
   expect_silent(
     out <- withr::with_dir(
       tempdir(),
-      rcmd("BATCH", rand, fail_on_status = FALSE))
+      rcmd("BATCH", rand, fail_on_status = FALSE)
+    )
   )
   expect_true(out$status != 0)
   gc()
@@ -77,14 +78,16 @@ test_that("stderr -> stdout", {
   expect_equal(out2$status, 0L)
   expect_match(
     out2$stdout,
-    "installing.*No man pages found.*testing if installed package")
+    "installing.*No man pages found.*testing if installed package"
+  )
   expect_null(out2$stderr)
 
   out3 <- test_temp_file(create = FALSE)
   rcmd("INSTALL", c("-l", lib, pkg), stdout = out3, stderr = out3)
   expect_match(
     readChar(out3, nchars = file.info(out3)$size),
-    "installing.*No man pages found.*testing if installed package")
+    "installing.*No man pages found.*testing if installed package"
+  )
   gc()
 })
 

@@ -78,6 +78,16 @@
 # error behavior can be set using option
 
     Code
+      callr::r(function() 1 + "A")
+    Condition
+      Error:
+      ! in callr subprocess.
+      Caused by error:
+      ! non-numeric argument to binary operator
+
+---
+
+    Code
       r_process()
     Output
       > {

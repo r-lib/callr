@@ -1,4 +1,3 @@
-
 test_that("create and run r_process", {
   options <- r_process_options(func = function() 1 + 1)
   x <- r_process$new(options)

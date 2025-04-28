@@ -1,4 +1,3 @@
-
 is_true_check_env_var <- function(x, default = "") {
   # like utils:::str2logical
   val <- Sys.getenv(x, default)

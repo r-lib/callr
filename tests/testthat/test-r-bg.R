@@ -1,4 +1,3 @@
-
 test_that("r_bg runs", {
   x <- r_bg(function() 1 + 1)
   x$wait()
@@ -19,7 +18,7 @@ test_that("r_bg can be killed", {
   x <- r_bg(function() Sys.sleep(2))
   x$kill()
   expect_false(x$is_alive())
-  expect_error(x$get_result())
+  expect_snapshot(error = TRUE, x$get_result())
   rm(x)
   gc()
 })
@@ -27,7 +26,7 @@ test_that("r_bg can be killed", {
 test_that("r_bg can get the error back", {
   x <- r_bg(function() 1 + "A", error = "error")
   x$wait()
-  expect_error(x$get_result(), "non-numeric argument to binary operator")
+  expect_snapshot(error = TRUE, x$get_result())
   rm(x)
   gc()
 })
@@ -49,7 +48,10 @@ test_that("can read standard error", {
 })
 
 test_that("can read stdout and stderr", {
-  x <- r_bg(function() { cat("Hello world!\n"); message("Again!") })
+  x <- r_bg(function() {
+    cat("Hello world!\n")
+    message("Again!")
+  })
   x$wait()
   expect_equal(x$read_output_lines(), "Hello world!")
   expect_equal(x$read_error_lines(), "Again!")
@@ -58,13 +60,12 @@ test_that("can read stdout and stderr", {
 })
 
 test_that("cleans up temporary files", {
-
   skip_on_cran()
 
   rbg <- function() {
     library(callr)
     old <- dir(tempdir(), pattern = "^callr-")
-    rp <- callr::r_bg(function() 1+1)
+    rp <- callr::r_bg(function() 1 + 1)
     on.exit(tryCatch(rp$kill, error = function(e) NULL), add = TRUE)
     rp$wait(5000)
     rp$kill()

@@ -1,4 +1,3 @@
-
 test_that("basic r", {
   expect_equal(r(function() 1 + 1), 2)
   expect_equal(r(function(x) 1 + x, list(5)), 6)
@@ -31,8 +30,14 @@ test_that("standard output and standard error", {
   tmp_err <- tempfile("stderr-")
   on.exit(unlink(c(tmp_out, tmp_err)), add = TRUE)
   expect_silent(
-    r(function() { cat("hello world!\n"); message("hello again!") },
-      stdout = tmp_out, stderr = tmp_err)
+    r(
+      function() {
+        cat("hello world!\n")
+        message("hello again!")
+      },
+      stdout = tmp_out,
+      stderr = tmp_err
+    )
   )
   expect_equal(readLines(tmp_out), "hello world!")
   expect_equal(readLines(tmp_err), "hello again!")
@@ -52,11 +57,8 @@ test_that("cmdargs argument", {
 })
 
 test_that("env", {
-
   expect_equal(
-    r(function() Sys.getenv("CALLR_FOOBAR"),
-      env = c(CALLR_FOOBAR = "indeed")
-      ),
+    r(function() Sys.getenv("CALLR_FOOBAR"), env = c(CALLR_FOOBAR = "indeed")),
     "indeed"
   )
   gc()
@@ -66,15 +68,16 @@ test_that("stdout and stderr in the same file", {
   tmp <- tempfile()
   on.exit(unlink(tmp), add = TRUE)
 
-
-  r(function() {
+  r(
+    function() {
       cat("hello1\n")
       Sys.sleep(0.1)
       message("hello2")
       Sys.sleep(0.1)
       cat("hello3\n")
     },
-    stdout = tmp, stderr = tmp
+    stdout = tmp,
+    stderr = tmp
   )
 
   expect_equal(readLines(tmp), paste0("hello", 1:3))
@@ -89,10 +92,12 @@ test_that("profiles are used as requested", {
     on.exit(unlink(c(tmp1, tmp2)), add = TRUE)
     cat("Sys.setenv(FOO = 'bar')\n", file = tmp1)
     cat("Sys.setenv(NAH = 'doh')\n", file = tmp2)
-    withr::with_envvar(list(R_PROFILE = tmp1, R_PROFILE_USER = tmp2),  {
+    withr::with_envvar(list(R_PROFILE = tmp1, R_PROFILE_USER = tmp2), {
       res <- r(
         function() c(Sys.getenv("FOO", ""), Sys.getenv("NAH", "")),
-        system_profile = system, user_profile = user)
+        system_profile = system,
+        user_profile = user
+      )
     })
   }
 
@@ -122,13 +127,18 @@ test_that(".Renviron is used, but lib path is set over it", {
     ## Create .Renviron file
     dir.create("not")
     dir.create("yes")
-    cat("R_LIBS=\"", file.path(getwd(), "not"), "\"\n",
-        sep = "", file = ".Renviron")
+    cat(
+      "R_LIBS=\"",
+      file.path(getwd(), "not"),
+      "\"\n",
+      sep = "",
+      file = ".Renviron"
+    )
     cat("FOO=bar\n", file = ".Renviron", append = TRUE)
 
     ## R CMD check sets R_ENVIRON and R_ENVIRON_USER to empty,
     ## so we need to recover that.
-    withr::with_envvar(c(R_ENVIRON_USER=".Renviron"), {
+    withr::with_envvar(c(R_ENVIRON_USER = ".Renviron"), {
       res <- r(
         function() list(.libPaths(), Sys.getenv("FOO")),
         libpath = c(file.path(getwd(), "yes"), .libPaths())
@@ -149,8 +159,9 @@ test_that("errors are printed on stderr", {
     stop("send to stderr 2")
   }
 
-  expect_error(
-    r(f, stdout = out <- tempfile(), stderr = err <- tempfile()))
+  expect_snapshot(error = TRUE, {
+    r(f, stdout = out <- tempfile(), stderr = err <- tempfile())
+  })
   on.exit(unlink(c(out, err), recursive = TRUE), add = TRUE)
 
   expect_false(any(grepl("send to stderr", readLines(out))))
@@ -177,7 +188,6 @@ test_that("stdout and stderr are interleaved correctly", {
 })
 
 test_that("callr messages do not cause problems", {
-
   do <- function() {
     cnd <- structure(
       list(message = "foobar"),
@@ -208,7 +218,7 @@ test_that("cleans up temp files", {
     library(callr)
     old <- dir(tempdir(), pattern = "^callr-")
 
-    result <- callr::r(function() 1+1)
+    result <- callr::r(function() 1 + 1)
 
     unloadNamespace("callr")
 

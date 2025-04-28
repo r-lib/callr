@@ -1,4 +1,3 @@
-
 #' Convert and check function arguments
 #'
 #' This function is used for all variants of `r` and `rcmd`. An argument
@@ -17,9 +16,8 @@
 #' @keywords internal
 
 convert_and_check_my_args <- function(options) {
-
   has <- function(x) x %in% names(options)
-  no <- function(x) ! has(x)
+  no <- function(x) !has(x)
 
   ## Conversions
   options <- within(options, {
@@ -48,29 +46,33 @@ convert_and_check_my_args <- function(options) {
   })
 
   ## Checks
-  with(options, stopifnot(
-    no("func") || is.function(func),
-    no("func") || is.list(args),
-    is.character(libpath),
-    no("stdout") || is.null(stdout) || is_string(stdout),
-    no("stderr") || is.null(stderr) || is_string(stderr),
-    no("error") || is_string(error),
-    is.character(cmdargs),
-    no("echo") || is_flag(echo),
-    no("show") || is_flag(show),
-    no("callback") || is.null(callback) || is.function(callback),
-    no("block_callback") || is.null(block_callback) ||
-      is.function(block_callback),
-    no("spinner") || is_flag(spinner),
-    is_flag(system_profile),
-    is_flag(user_profile) || identical(user_profile, "project"),
-    is.character(env),
-    no("timeout") || (length(timeout) == 1 && !is.na(timeout)),
-    no("wd") || is_string(wd),
-    no("fail_on_status") || is_flag(fail_on_status),
-    is_string(package) || is_flag(package),
-    is_string(arch)
-  ))
+  with(
+    options,
+    stopifnot(
+      no("func") || is.function(func),
+      no("func") || is.list(args),
+      is.character(libpath),
+      no("stdout") || is.null(stdout) || is_string(stdout),
+      no("stderr") || is.null(stderr) || is_string(stderr),
+      no("error") || is_string(error),
+      is.character(cmdargs),
+      no("echo") || is_flag(echo),
+      no("show") || is_flag(show),
+      no("callback") || is.null(callback) || is.function(callback),
+      no("block_callback") ||
+        is.null(block_callback) ||
+        is.function(block_callback),
+      no("spinner") || is_flag(spinner),
+      is_flag(system_profile),
+      is_flag(user_profile) || identical(user_profile, "project"),
+      is.character(env),
+      no("timeout") || (length(timeout) == 1 && !is.na(timeout)),
+      no("wd") || is_string(wd),
+      no("fail_on_status") || is_flag(fail_on_status),
+      is_string(package) || is_flag(package),
+      is_string(arch)
+    )
+  )
 
   options
 }

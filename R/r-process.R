@@ -1,4 +1,3 @@
-
 #' External R Process
 #'
 #' @description
@@ -21,13 +20,11 @@ r_process <- R6::R6Class(
   "r_process",
   inherit = processx::process,
   public = list(
-
     #' @description
     #' Start a new R process in the background.
     #' @param options A list of options created via [r_process_options()].
     #' @return A new `r_process` object.
-    initialize = function(options)
-      rp_init(self, private, super, options),
+    initialize = function(options) rp_init(self, private, super, options),
 
     #' @description
     #' Return the result, an R object, from a finished
@@ -39,9 +36,7 @@ r_process <- R6::R6Class(
     #'
     #' @return The return value of the R expression evaluated in the R
     #' process.
-    get_result = function()
-      rp_get_result(self, private)
-
+    get_result = function() rp_get_result(self, private)
   ),
   private = list(
     options = NULL,
@@ -53,7 +48,6 @@ r_process <- R6::R6Class(
 )
 
 rp_init <- function(self, private, super, options) {
-
   ## This contains the context that we set up in steps
   options <- convert_and_check_my_args(options)
 
@@ -65,11 +59,20 @@ rp_init <- function(self, private, super, options) {
 
   with_envvar(
     options$env,
-    do.call(super$initialize, c(list(
-      options$bin, options$real_cmdargs, stdout = options$stdout,
-      stderr = options$stderr, poll_connection = options$poll_connection,
-      supervise = options$supervise),
-      options$extra))
+    do.call(
+      super$initialize,
+      c(
+        list(
+          options$bin,
+          options$real_cmdargs,
+          stdout = options$stdout,
+          stderr = options$stderr,
+          poll_connection = options$poll_connection,
+          supervise = options$supervise
+        ),
+        options$extra
+      )
+    )
   )
 
   invisible(self)

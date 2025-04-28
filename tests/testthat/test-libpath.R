@@ -1,4 +1,3 @@
-
 test_that(".Library", {
   expect_equal(
     .Library,
@@ -21,7 +20,8 @@ test_that(".libPaths()", {
   on.exit(unlink(tmp, recursive = TRUE))
 
   lp <- withr::with_libpaths(
-    tmp, action = "prefix",
+    tmp,
+    action = "prefix",
     r(function() {
       .libPaths()
     })
@@ -32,7 +32,6 @@ test_that(".libPaths()", {
 })
 
 test_that("if .Renviron overrides R_PROFILE", {
-
   ## But we still need to use the proper lib path, as set in the fake
   ## profile
   skip_in_covr()
@@ -40,7 +39,14 @@ test_that("if .Renviron overrides R_PROFILE", {
 
   cat("Sys.setenv(FOO='nope')\n", file = tmp_prof <- tempfile())
   cat("R_PROFILE=\"", tmp_prof, "\"\n", file = tmp_env <- tempfile(), sep = "")
-  cat("R_PROFILE_USER=\"", tmp_prof, "\"\n", file = tmp_env, sep = "", append = TRUE)
+  cat(
+    "R_PROFILE_USER=\"",
+    tmp_prof,
+    "\"\n",
+    file = tmp_env,
+    sep = "",
+    append = TRUE
+  )
 
   cat("FOO=bar\n", file = tmp_env, sep = "", append = TRUE)
 
@@ -51,8 +57,11 @@ test_that("if .Renviron overrides R_PROFILE", {
   lp <- withr::with_envvar(
     c(R_ENVIRON = tmp_env),
     withr::with_libpaths(
-      tmp_lib, action = "prefix",
-      r(function() list(.libPaths(), Sys.getenv("FOO"), Sys.getenv("R_PROFILE")))
+      tmp_lib,
+      action = "prefix",
+      r(
+        function() list(.libPaths(), Sys.getenv("FOO"), Sys.getenv("R_PROFILE"))
+      )
     )
   )
 
@@ -62,7 +71,6 @@ test_that("if .Renviron overrides R_PROFILE", {
 })
 
 test_that("libpath in system(), empty .Renviron", {
-
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
@@ -70,7 +78,7 @@ test_that("libpath in system(), empty .Renviron", {
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
-  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
+  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add = TRUE)
 
   tmpenv <- withr::local_tempfile()
   cat("", file = tmpenv)
@@ -85,7 +93,6 @@ test_that("libpath in system(), empty .Renviron", {
 })
 
 test_that("libpath in system, R_LIBS in .Renviron", {
-
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
@@ -93,7 +100,7 @@ test_that("libpath in system, R_LIBS in .Renviron", {
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
-  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
+  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add = TRUE)
 
   tmpenv <- withr::local_tempfile()
   cat("R_LIBS=\"", tmpdrop, "\"\n", sep = "", file = tmpenv)
@@ -109,7 +116,6 @@ test_that("libpath in system, R_LIBS in .Renviron", {
 })
 
 test_that("libpath in system, R_LIBS", {
-
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
@@ -117,11 +123,11 @@ test_that("libpath in system, R_LIBS", {
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
-  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
+  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add = TRUE)
 
   tmpenv <- withr::local_tempfile()
   cat("", file = tmpenv)
-  withr::local_envvar(c(R_ENVIRON_USER = tmpenv, R_LIBS=tmpdrop))
+  withr::local_envvar(c(R_ENVIRON_USER = tmpenv, R_LIBS = tmpdrop))
 
   withr::local_libpaths(tmpdrop, action = "prefix")
 
@@ -133,7 +139,6 @@ test_that("libpath in system, R_LIBS", {
 })
 
 test_that("libpath in system, R_LIBS and .Renviron", {
-
   # We remove the library with covr from the lib path, so this
   # cannot work in a subprocess.
   skip_in_covr()
@@ -141,11 +146,11 @@ test_that("libpath in system, R_LIBS and .Renviron", {
 
   dir.create(tmpdrop <- tempfile("drop"))
   dir.create(tmpkeep <- tempfile("keep"))
-  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add  = TRUE)
+  on.exit(unlink(c(tmpdrop, tmpkeep), recursive = TRUE), add = TRUE)
 
-  tmpenv <-  withr::local_tempfile()
+  tmpenv <- withr::local_tempfile()
   cat("R_LIBS=\"", tmpdrop, "\"\n", sep = "", file = tmpenv)
-  withr::local_envvar(c(R_ENVIRON_USER = tmpenv, R_LIBS=tmpdrop))
+  withr::local_envvar(c(R_ENVIRON_USER = tmpenv, R_LIBS = tmpdrop))
 
   withr::local_libpaths(tmpdrop, action = "prefix")
 
@@ -158,7 +163,7 @@ test_that("libpath in system, R_LIBS and .Renviron", {
 
 test_that("libpath in system, if subprocess changes R_LIBS", {
   dir.create(tmpkeep <- tempfile("keep"))
-  on.exit(unlink(tmpkeep, recursive = TRUE), add  = TRUE)
+  on.exit(unlink(tmpkeep, recursive = TRUE), add = TRUE)
 
   rbin <- setup_r_binary_and_args(list())$bin
   rbin <- shQuote(rbin)
@@ -166,9 +171,14 @@ test_that("libpath in system, if subprocess changes R_LIBS", {
   f <- function(rbin, new) {
     Sys.setenv(R_LIBS = new)
     Sys.setenv(R_ENVIRON_USER = "no_such_file")
-    system(paste(
-      rbin, "--no-site-file --no-init-file --no-save --no-restore --slave",
-      "-e \".libPaths()\""), intern = TRUE)
+    system(
+      paste(
+        rbin,
+        "--no-site-file --no-init-file --no-save --no-restore --slave",
+        "-e \".libPaths()\""
+      ),
+      intern = TRUE
+    )
   }
 
   out <- callr::r(f, list(rbin = rbin, new = tmpkeep))
@@ -179,11 +189,10 @@ test_that("libpath in system, if subprocess changes R_LIBS", {
 })
 
 test_that("libpath in system, if subprocess changes R_LIBS #2", {
-
   if (.Platform$OS.type != "unix") skip("Unix only")
 
   dir.create(tmpkeep <- tempfile("keep"))
-  on.exit(unlink(tmpkeep, recursive = TRUE), add  = TRUE)
+  on.exit(unlink(tmpkeep, recursive = TRUE), add = TRUE)
 
   rbin <- setup_r_binary_and_args(list())$bin
 
@@ -195,8 +204,15 @@ test_that("libpath in system, if subprocess changes R_LIBS #2", {
     on.exit(unlink(tmp), add = TRUE)
     system2(
       rbin,
-      c("--no-site-file", "--no-init-file", "--no-save",
-        "--no-restore", "--slave", "-e", "'.libPaths()'"),
+      c(
+        "--no-site-file",
+        "--no-init-file",
+        "--no-save",
+        "--no-restore",
+        "--slave",
+        "-e",
+        "'.libPaths()'"
+      ),
       env = env,
       stdout = tmp
     )
@@ -225,11 +241,12 @@ test_that("setting profile/environ variables in 'env'", {
 
   ret <- callr::r(
     function() {
-      c(Sys.getenv("MY_ENV"),
+      c(
+        Sys.getenv("MY_ENV"),
         Sys.getenv("R_PROFILE_USER"),
         exists("foo"),
         Sys.getenv("MY_ENV2")
-        )
+      )
     },
     user_profile = TRUE,
     env = c(
