@@ -418,6 +418,7 @@ We can use it here to debug the previous error:
 
 ```{asciicast}
 #| label: debug
+#| fig-alt: "Screen recording showing `rs$debug()`. First there is a help message with the various commands you can use: `.where`, `.inspect <n>`, `.help`, `.q`, or an R expression to run. Then there is a list of frames. Next there is an `inspect 3` call to get into `frame 3`, and next an `ls()` expression evaluated in that frame. It lists `vec` as the only object in that frame, and then `vec` will show what `vec` is, the `1:2` integer vector. At the end `.q` exits the debugger."
 #| asciicast_at: "all"
 #| asciicast_knitr_output: "svg"
 #| asciicast_empty_wait: 5
@@ -459,6 +460,7 @@ rs$run(function() { .GlobalEnv$data <- mtcars; NULL })
 
 ```{asciicast}
 #| label: attach-1
+#| fig-alt: "Screen recording for an `rs$attach()` example. It shows an `RS <pid>` prompt. Then we type in `ls()`, which is evaluated in the subprocess, and shows `data`. `head(data)` shows the first rows of `data`, which is the `mtcars` data set. Finally `.q` quits the debugger."
 #| asciicast_at: "all"
 #| asciicast_knitr_output: "svg"
 #| asciicast_empty_wait: 5
