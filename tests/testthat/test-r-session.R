@@ -1,4 +1,3 @@
-
 test_that("regular use", {
   rs <- r_session$new()
   on.exit(rs$kill())
@@ -18,7 +17,7 @@ test_that("regular use", {
   expect_equal(rs$get_state(), "idle")
 
   ## Run another command, with arguments
-  rs$call(function(x, y)  x + y, list(x = 42, y = 42))
+  rs$call(function(x, y) x + y, list(x = 42, y = 42))
 
   ## Get result
   res <- read_next(rs)
@@ -51,9 +50,14 @@ test_that("run", {
   expect_equal(rs$run_with_output(function() 42)$result, 42)
   expect_equal(rs$run_with_output(function() 42)$result, 42)
   expect_equal(
-    rs$run_with_output(function(x, y) { x + y },
-                       list(x = 42, y = 42))$result,
-    84)
+    rs$run_with_output(
+      function(x, y) {
+        x + y
+      },
+      list(x = 42, y = 42)
+    )$result,
+    84
+  )
 
   ## Finish
   rs$close()
@@ -72,16 +76,24 @@ test_that("get stdout/stderr from file", {
 
   for (i in 1:10) {
     res <- rs$run_with_output(function() {
-      cat("foo\n"); message("bar"); 42 })
+      cat("foo\n")
+      message("bar")
+      42
+    })
     expect_equal(
       res[c("result", "stdout", "stderr")],
-      list(result = 42, stdout = eol("foo"), stderr = eol("bar")))
+      list(result = 42, stdout = eol("foo"), stderr = eol("bar"))
+    )
 
     res <- rs$run_with_output(function() {
-      cat("bar\n"); message("foo"); 43 })
+      cat("bar\n")
+      message("foo")
+      43
+    })
     expect_equal(
       res[c("result", "stdout", "stderr")],
-      list(result = 43, stdout = eol("bar"), stderr = eol("foo")))
+      list(result = 43, stdout = eol("bar"), stderr = eol("foo"))
+    )
   }
   rs$close()
 })
@@ -96,16 +108,24 @@ test_that("stdout/stderr from pipe", {
   rs$read_output_lines()
 
   res <- rs$run_with_output(function() {
-    cat("foo\n"); message("bar"); 42 })
+    cat("foo\n")
+    message("bar")
+    42
+  })
   expect_equal(
     res[c("result", "stdout", "stderr")],
-    list(result = 42, stdout = NULL, stderr = NULL))
+    list(result = 42, stdout = NULL, stderr = NULL)
+  )
 
   res <- rs$run_with_output(function() {
-    cat("bar\n"); message("foo"); 43 })
+    cat("bar\n")
+    message("foo")
+    43
+  })
   expect_equal(
     res[c("result", "stdout", "stderr")],
-    list(result = 43, stdout = NULL, stderr = NULL))
+    list(result = 43, stdout = NULL, stderr = NULL)
+  )
 
   processx::poll(list(rs$get_output_connection()), 1000)
   expect_equal(rs$read_output_lines(n = 1), "foo")
@@ -135,7 +155,8 @@ test_that("messages", {
   f <- function() {
     x <- structure(
       list(code = 301, message = "ahoj"),
-      class = c("callr_message", "condition"))
+      class = c("callr_message", "condition")
+    )
     signalCondition(x)
     22
   }
@@ -155,7 +176,9 @@ test_that("messages", {
     msg,
     structure(
       list(code = 301, message = "ahoj", muffle = "callr_r_session_muffle"),
-      class = c("callr_message", "condition")))
+      class = c("callr_message", "condition")
+    )
+  )
   rs$close()
 })
 
@@ -164,7 +187,8 @@ test_that("messages with R objects", {
   f <- function(obj) {
     x <- structure(
       c(list(code = 301), obj),
-      class = c("foobar_class", "callr_message", "condition"))
+      class = c("foobar_class", "callr_message", "condition")
+    )
     signalCondition(x)
     22
   }
@@ -182,7 +206,8 @@ test_that("messages with R objects", {
   expect_equal(res$result, 22)
   exp <- exp2 <- structure(
     list(code = 301, a = 1, b = 2),
-    class = c("foobar_class", "callr_message", "condition"))
+    class = c("foobar_class", "callr_message", "condition")
+  )
   exp2$muffle <- "callr_r_session_muffle"
   expect_equal(msg, exp2)
   rs$call(f, args = list(obj))
@@ -191,7 +216,9 @@ test_that("messages with R objects", {
     rs$read(),
     structure(
       list(code = 301, message = exp),
-      class = "callr_session_result"))
+      class = "callr_session_result"
+    )
+  )
   rs$poll_process(2000)
   expect_equal(rs$read()$result, 22)
   rs$close()
@@ -209,7 +236,8 @@ test_that("exit", {
   on.exit(rs$kill(), add = TRUE)
   err <- tryCatch(
     res <- rs$run(function() q()),
-    error = function(x) x)
+    error = function(x) x
+  )
 
   deadline <- Sys.time() + 3
   while (rs$is_alive() && Sys.time() < deadline) Sys.sleep(0.05)
@@ -226,12 +254,16 @@ test_that("crash", {
   on.exit(rs$kill(), add = TRUE)
   err <- tryCatch(
     rs$run(function() get("crash", asNamespace("callr"))()),
-    error = function(e) e)
+    error = function(e) e
+  )
   expect_true(
     grepl("crashed with exit code", conditionMessage(err)) ||
-    grepl("R session closed the process connection", conditionMessage(err)) ||
-    grepl("Invalid (uninitialized or closed?) connection object",
-          conditionMessage(err), fixed = TRUE)
+      grepl("R session closed the process connection", conditionMessage(err)) ||
+      grepl(
+        "Invalid (uninitialized or closed?) connection object",
+        conditionMessage(err),
+        fixed = TRUE
+      )
   )
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
@@ -240,7 +272,8 @@ test_that("crash", {
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
   res <- rs$run_with_output(function() {
-    cat("o\n"); message("e");
+    cat("o\n")
+    message("e")
     get("crash", asNamespace("callr"))()
   })
   expect_null(res$result)

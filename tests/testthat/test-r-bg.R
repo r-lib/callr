@@ -1,4 +1,3 @@
-
 test_that("r_bg runs", {
   x <- r_bg(function() 1 + 1)
   x$wait()
@@ -49,7 +48,10 @@ test_that("can read standard error", {
 })
 
 test_that("can read stdout and stderr", {
-  x <- r_bg(function() { cat("Hello world!\n"); message("Again!") })
+  x <- r_bg(function() {
+    cat("Hello world!\n")
+    message("Again!")
+  })
   x$wait()
   expect_equal(x$read_output_lines(), "Hello world!")
   expect_equal(x$read_error_lines(), "Again!")
@@ -58,13 +60,12 @@ test_that("can read stdout and stderr", {
 })
 
 test_that("cleans up temporary files", {
-
   skip_on_cran()
 
   rbg <- function() {
     library(callr)
     old <- dir(tempdir(), pattern = "^callr-")
-    rp <- callr::r_bg(function() 1+1)
+    rp <- callr::r_bg(function() 1 + 1)
     on.exit(tryCatch(rp$kill, error = function(e) NULL), add = TRUE)
     rp$wait(5000)
     rp$kill()

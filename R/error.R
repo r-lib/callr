@@ -1,4 +1,3 @@
-
 #' Create an error object
 #'
 #' There are two kinds of errors, both have class `callr_error`:
@@ -21,7 +20,8 @@ new_callr_crash_error <- function(out, msg = NULL) {
   class(cond) <- c(
     if (out$timeout) "callr_timeout_error" else "callr_status_error",
     "callr_error",
-    class(cond))
+    class(cond)
+  )
 
   cond$status <- out$status
   cond$stdout <- out$stdout
@@ -62,8 +62,13 @@ callr_remote_error_with_stack <- function(remerr, out) {
 
 #' @export
 
-format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
-                                      advice = !trace, ...) {
+format.callr_status_error <- function(
+  x,
+  trace = FALSE,
+  class = FALSE,
+  advice = !trace,
+  ...
+) {
   class(x) <- setdiff(class(x), "callr_status_error")
 
   lines <- NextMethod(
@@ -77,13 +82,16 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
   info <- if (err$.internal$has_cli()) {
     cli::col_cyan(cli::symbol$info)
   } else {
-    "i"                                                             # nocov
+    "i" # nocov
   }
 
   if (!is.null(x$stack)) {
     lines <- c(
       lines,
-      paste0(info, " With remote `$stack`, use `utils::debugger()` to debug it.")
+      paste0(
+        info,
+        " With remote `$stack`, use `utils::debugger()` to debug it."
+      )
     )
   }
 
@@ -95,7 +103,10 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
       lines <- c(
         lines,
         if (hasout && haserr) {
-          paste0(info, " See `$stdout` and `$stderr` for standard output and error.")
+          paste0(
+            info,
+            " See `$stdout` and `$stderr` for standard output and error."
+          )
         } else if (hasout) {
           paste0(info, " See `$stdout` for standard output.")
         } else {
@@ -113,10 +124,7 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
           )
         },
         if (haserr) {
-          c("---",
-            "Standard error:",
-            trimws(x$stderr)
-          )
+          c("---", "Standard error:", trimws(x$stderr))
         }
       )
     }
@@ -136,7 +144,10 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
 
   cond <- x
   while (trace && !is.null(cond$parent_trace)) {
-    lines <- c(lines, c("---", "Subprocess backtrace:", format(cond$parent_trace)))
+    lines <- c(
+      lines,
+      c("---", "Subprocess backtrace:", format(cond$parent_trace))
+    )
     cond <- cond$parent
   }
 
@@ -145,7 +156,12 @@ format.callr_status_error <- function(x, trace = FALSE, class = FALSE,
 
 #' @export
 
-print.callr_status_error <- function(x, trace = TRUE, class = TRUE,
-                                     advice = !trace, ...) {
+print.callr_status_error <- function(
+  x,
+  trace = TRUE,
+  class = TRUE,
+  advice = !trace,
+  ...
+) {
   writeLines(format(x, trace = trace, class = class, advice = advice, ...))
 }

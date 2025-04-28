@@ -1,7 +1,6 @@
-
 test_that("set options with hook", {
   add_hook(
-    test_hook = function (options) {
+    test_hook = function(options) {
       within(options, {
         env["TEST_HOOK"] <- "hello"
         cmdargs <- c(cmdargs, "extra_arg")

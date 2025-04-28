@@ -1,4 +1,3 @@
-
 test_that("r with timeout", {
   tic <- Sys.time()
   e <- tryCatch(

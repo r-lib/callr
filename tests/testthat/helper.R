@@ -1,4 +1,3 @@
-
 try_silently <- function(expr) {
   tryCatch(
     expr,
@@ -28,18 +27,31 @@ has_locale <- function(l) {
   has
 }
 
-test_paths <- function(callr_drop, callr_keep,
-                       system_drop = callr_drop, system_keep = callr_keep,
-                       system_vanilla_drop = system_drop,
-                       system_vanilla_keep = system_keep) {
-
+test_paths <- function(
+  callr_drop,
+  callr_keep,
+  system_drop = callr_drop,
+  system_keep = callr_keep,
+  system_vanilla_drop = system_drop,
+  system_vanilla_keep = system_keep
+) {
   # env vars we manipulate and need to restore in the child process
-  envs <- c("R_ENVIRON", "R_ENVIRON_USER", "R_PROFILE", "R_PROFILE_USER",
-            "R_LIBS", "R_LIBS_USER", "R_LIBS_SITE")
+  envs <- c(
+    "R_ENVIRON",
+    "R_ENVIRON_USER",
+    "R_PROFILE",
+    "R_PROFILE_USER",
+    "R_LIBS",
+    "R_LIBS_USER",
+    "R_LIBS_SITE"
+  )
 
   # env vars that should not be set, in addition to the CALLR_*_BAK ones
-  xenvs <- c("CALLR_CHILD_R_LIBS", "CALLR_CHILD_R_LIBS_SITE",
-             "CALLR_CHILD_R_LIBS_USER")
+  xenvs <- c(
+    "CALLR_CHILD_R_LIBS",
+    "CALLR_CHILD_R_LIBS_SITE",
+    "CALLR_CHILD_R_LIBS_USER"
+  )
 
   check_env <- function(subenv) {
     miss <- paste0("CALLR_", envs, "_BAK")
@@ -52,7 +64,7 @@ test_paths <- function(callr_drop, callr_keep,
     list(env = Sys.getenv(), lib = lib)
   }
 
-  out <- callr::r(fc , libpath = callr_keep)
+  out <- callr::r(fc, libpath = callr_keep)
   expect_equal(
     out$lib,
     unique(normalizePath(c(callr_keep, .Library.site, .Library)))
@@ -82,7 +94,8 @@ test_paths <- function(callr_drop, callr_keep,
   }
 
   outvanilla <- callr::r(
-    fvanilla, list(rbin = rbin),
+    fvanilla,
+    list(rbin = rbin),
     libpath = system_vanilla_keep
   )
   if (length(system_vanilla_keep)) {
@@ -98,8 +111,12 @@ test_paths <- function(callr_drop, callr_keep,
   check_env(out$env)
 }
 
-test_temp_file <- function(fileext = "", pattern = "test-file-",
-                           envir = parent.frame(), create = TRUE) {
+test_temp_file <- function(
+  fileext = "",
+  pattern = "test-file-",
+  envir = parent.frame(),
+  create = TRUE
+) {
   skip_if_not_installed("withr")
   tmp <- tempfile(pattern = pattern, fileext = fileext)
   if (identical(envir, .GlobalEnv)) {
@@ -107,7 +124,8 @@ test_temp_file <- function(fileext = "", pattern = "test-file-",
   } else {
     withr::defer(
       try(unlink(tmp, recursive = TRUE, force = TRUE), silent = TRUE),
-      envir = envir)
+      envir = envir
+    )
   }
   if (create) {
     cat("", file = tmp)
@@ -131,15 +149,18 @@ test_package_root <- function() {
   skip_if_not_installed("rprojroot")
   x <- tryCatch(
     rprojroot::find_package_root_file(),
-    error = function(e) NULL)
+    error = function(e) NULL
+  )
 
   if (!is.null(x)) return(x)
 
   pkg <- testthat::testing_package()
   x <- tryCatch(
     rprojroot::find_package_root_file(
-      path = file.path("..", "..", "00_pkg_src", pkg)),
-    error = function(e) NULL)
+      path = file.path("..", "..", "00_pkg_src", pkg)
+    ),
+    error = function(e) NULL
+  )
 
   if (!is.null(x)) return(x)
 
@@ -163,14 +184,21 @@ without_env <- function(f) {
   f
 }
 
-expect_r_process_snapshot <- function(..., interactive = TRUE, echo = TRUE,
-                                      transform = NULL, variant = NULL) {
+expect_r_process_snapshot <- function(
+  ...,
+  interactive = TRUE,
+  echo = TRUE,
+  transform = NULL,
+  variant = NULL
+) {
   skip_if_not_installed("asciicast")
   skip_if_not_installed("withr")
 
   # Skip these tests on platforms where V8 is not available
-  if (! R.Version()$arch %in% c("i386", "x86_64", "aarch64") &&
-                   ! requireNamespace("asciicast", quietly = TRUE)) {
+  if (
+    !R.Version()$arch %in% c("i386", "x86_64", "aarch64") &&
+      !requireNamespace("asciicast", quietly = TRUE)
+  ) {
     skip("No asciicast package")
   }
 

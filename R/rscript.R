@@ -1,4 +1,3 @@
-
 #' Run an R script
 #'
 #' It uses the `Rscript` program corresponding to the current R version,
@@ -12,15 +11,28 @@
 #'
 #' @export
 
-rscript <- function(script, cmdargs = character(), libpath = .libPaths(),
-                    repos = default_repos(),
-                    stdout = NULL, stderr = NULL,
-                    poll_connection = TRUE, echo = FALSE, show = TRUE,
-                    callback = NULL, block_callback = NULL, spinner = FALSE,
-                    system_profile = FALSE, user_profile = "project",
-                    env = rcmd_safe_env(), timeout = Inf, wd = ".",
-                    fail_on_status = TRUE, color = TRUE, ...) {
-
+rscript <- function(
+  script,
+  cmdargs = character(),
+  libpath = .libPaths(),
+  repos = default_repos(),
+  stdout = NULL,
+  stderr = NULL,
+  poll_connection = TRUE,
+  echo = FALSE,
+  show = TRUE,
+  callback = NULL,
+  block_callback = NULL,
+  spinner = FALSE,
+  system_profile = FALSE,
+  user_profile = "project",
+  env = rcmd_safe_env(),
+  timeout = Inf,
+  wd = ".",
+  fail_on_status = TRUE,
+  color = TRUE,
+  ...
+) {
   load_hook <- rscript_load_hook_color(color)
 
   options <- convert_and_check_my_args(as.list(environment()))
@@ -38,7 +50,6 @@ rscript <- function(script, cmdargs = character(), libpath = .libPaths(),
 }
 
 rscript_load_hook_color <- function(color) {
-
   if (!color) return("")
 
   nc <- tryCatch(
@@ -75,8 +86,7 @@ rscript_process <- R6::R6Class(
     #' @description Create a new `Rscript` process.
     #' @param options A list of options created via
     #'   [rscript_process_options()].
-    initialize = function(options)
-      rscript_init(self, private, super, options)
+    initialize = function(options) rscript_init(self, private, super, options)
   ),
   private = list(
     options = NULL,
@@ -88,7 +98,6 @@ rscript_process <- R6::R6Class(
 )
 
 rscript_init <- function(self, private, super, options) {
-
   options$load_hook <- rscript_load_hook_color(options$color)
   options <- convert_and_check_my_args(options)
   options <- setup_context(options)
@@ -102,10 +111,19 @@ rscript_init <- function(self, private, super, options) {
 
   with_envvar(
     options$env,
-    do.call(super$initialize, c(list(options$bin, options$real_cmdargs,
-      stdout = options$stdout, stderr = options$stderr,
-      poll_connection = options$poll_connection),
-      options$extra))
+    do.call(
+      super$initialize,
+      c(
+        list(
+          options$bin,
+          options$real_cmdargs,
+          stdout = options$stdout,
+          stderr = options$stderr,
+          poll_connection = options$poll_connection
+        ),
+        options$extra
+      )
+    )
   )
 
   invisible(self)

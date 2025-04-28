@@ -1,4 +1,3 @@
-
 file_from_env <- function(var) {
   if (file.exists(f <- Sys.getenv(var))) readLines(f)
 }

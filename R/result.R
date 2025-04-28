@@ -1,4 +1,3 @@
-
 #' Read the result object from the output file, or the error
 #'
 #' Even if an error happens, the output file might still exist,
@@ -16,7 +15,6 @@
 #' @keywords internal
 
 get_result <- function(output, options) {
-
   res <- options$result_file
 
   ## Timeout?
@@ -29,11 +27,12 @@ get_result <- function(output, options) {
   errorres <- paste0(res, ".error")
   killmsg <- paste(
     "could not start R, exited with non-zero status,",
-    "has crashed or was killed")
-  if (! file.exists(res) && ! file.exists(errorres)) {
+    "has crashed or was killed"
+  )
+  if (!file.exists(res) && !file.exists(errorres)) {
     if (is.na(output$status) || output$status != 0) {
       throw(new_callr_crash_error(output, killmsg))
-    } else  {
+    } else {
       return(ret)
     }
   }
@@ -43,7 +42,7 @@ get_result <- function(output, options) {
   ## This cannot happen from R 3.5.0, because that version only writes
   ## out the output file if no error or crash has happened.
   ## (Older R versions write a corrupt RDS file in this case.)
-  if (! file.exists(errorres)) {
+  if (!file.exists(errorres)) {
     tryCatch(
       ret <- readRDS(res),
       error = function(e) {
@@ -85,13 +84,13 @@ get_result <- function(output, options) {
 
   if (remerr[[1]] == "error") {
     throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]]))
-
   } else if (remerr[[1]] == "stack") {
-    throw(callr_remote_error_with_stack(remerr, output), parent = fix_msg(remerr[[2]]))
-
+    throw(
+      callr_remote_error_with_stack(remerr, output),
+      parent = fix_msg(remerr[[2]])
+    )
   } else if (remerr[[1]] == "debugger") {
     utils::debugger(clean_stack(remerr[[3]]))
-
   } else {
     throw(new_error("Unknown callr error strategy: ", remerr[[1]])) # nocov
   }

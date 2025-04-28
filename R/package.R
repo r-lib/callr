@@ -1,4 +1,3 @@
-
 ## R CMD check workaround
 dummy_r6 <- function() R6::R6Class
 
@@ -33,19 +32,23 @@ prepare_client_files <- function() {
 
 get_client_files <- function() {
   archs <- ls(clients)
-  vapply(archs, function(aa) {
-    hash <- substr(clients[[aa]]$md5, 1, 7)
+  vapply(
+    archs,
+    function(aa) {
+      hash <- substr(clients[[aa]]$md5, 1, 7)
 
-    # Filename must be `client.ext` so that `dyn.load()` can find
-    # the init function
-    file.path(
-      tempdir(),
-      "callr",
-      sub("arch-", "", aa),  # Might be empty
-      hash,
-      paste0("client", .Platform$dynlib.ext)
-    )
-  }, character(1))
+      # Filename must be `client.ext` so that `dyn.load()` can find
+      # the init function
+      file.path(
+        tempdir(),
+        "callr",
+        sub("arch-", "", aa), # Might be empty
+        hash,
+        paste0("client", .Platform$dynlib.ext)
+      )
+    },
+    character(1)
+  )
 }
 
 .onUnload <- function(libpath) {

@@ -1,11 +1,11 @@
-
 test_that("r", {
   skip_if_not_installed("withr")
 
   withr::with_options(
     list(repos = "foobar"),
     expect_equal(
-      r_copycat(function() getOption("repos"),
+      r_copycat(
+        function() getOption("repos"),
         user_profile = FALSE,
         system_profile = FALSE
       ),
@@ -25,7 +25,6 @@ test_that("r_vanilla", {
 })
 
 test_that("r_safe", {
-
   expect_equal(
     r_safe(function() Sys.getenv("R_TESTS")),
     ""

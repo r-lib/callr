@@ -1,6 +1,4 @@
-
 test_that("show option works", {
-
   expect_output(
     r(function() print("hello"), show = TRUE),
     "hello"

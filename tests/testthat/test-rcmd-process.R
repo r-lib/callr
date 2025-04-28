@@ -1,4 +1,3 @@
-
 test_that("create and run rcmd_process", {
   opts <- rcmd_process_options(cmd = "config", cmdargs = "CC")
   x <- rcmd_process$new(opts)
@@ -11,7 +10,6 @@ test_that("create and run rcmd_process", {
 })
 
 test_that("cleans up temp files", {
-
   skip_on_cran()
 
   rc <- function() {

@@ -1,10 +1,10 @@
-
 test_that("r() to the other arch", {
   skip_on_cran()
   archs <- supported_archs()
   if (length(archs) < 1) return(expect_true(TRUE))
   ret <- unlist(lapply(
-    archs, function(a) r(function() .Platform$r_arch, arch = a)
+    archs,
+    function(a) r(function() .Platform$r_arch, arch = a)
   ))
   expect_equal(ret, archs)
 })
