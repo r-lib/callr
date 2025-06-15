@@ -259,6 +259,13 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   options <- setup_context(options)
   options <- setup_r_binary_and_args(options, script_file = FALSE)
 
+  otel_session <- otel::start_session(
+    "callr::r_session start",
+    attributes = otel::as_attributes(options)
+  )
+  otel::log_debug("start r_session", attributes = otel::as_attributes(options))
+  options$otel_session <- otel_session
+
   private$options <- options
 
   prepare_client_files()
@@ -333,6 +340,10 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 }
 
 rs_read <- function(self, private) {
+  spn <- otel::start_span(
+    "r_session$read",
+    session = private$options$otel_session
+  )
   if (!is.null(private$buffer)) {
     # There is a partial message in the buffer, try to finish it.
     out <- private$read_buffer()
@@ -342,6 +353,7 @@ rs_read <- function(self, private) {
   }
   if (!length(out)) {
     if (processx::processx_conn_is_incomplete(private$pipe)) {
+      spn$set_attribute("message", FALSE)
       return()
     }
     if (self$is_alive()) {
@@ -372,7 +384,15 @@ rs_read <- function(self, private) {
       )
     }
   }
-  if (length(out)) private$parse_msg(out)
+  if (length(out)) {
+    spn$set_attribute("message", TRUE)
+    if (!is.null(out$header$code)) {
+      spn$set_attribute("status_code", out$header$code)
+    }
+    private$parse_msg(out)
+  } else {
+    spn$set_attribute("message", FALSE)
+  }
 }
 
 rs__read_buffer <- function(self, private) {
@@ -439,6 +459,7 @@ rs__parse_header <- function(line) {
 }
 
 rs_close <- function(self, private, grace) {
+  otel::start_span("r_session$close", session = private$options$otel_session)
   processx::processx_conn_close(self$get_input_connection())
   self$poll_process(grace)
   self$kill()
@@ -451,10 +472,12 @@ rs_close <- function(self, private, grace) {
   processx::processx_conn_close(private$pipe)
   processx::processx_conn_close(self$get_output_connection())
   processx::processx_conn_close(self$get_error_connection())
+  private$options$otel_session$end()
   invisible()
 }
 
 rs_call <- function(self, private, func, args, package) {
+  otel::start_span("r_session$call", session = private$options$otel_session)
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
   ## TODO: do we need a state at all?

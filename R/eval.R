@@ -201,6 +201,8 @@ r <- function(
   options <- setup_callbacks(options)
   options <- setup_r_binary_and_args(options)
 
+  otel::start_span("callr::r")
+
   out <- run_r(options)
 
   get_result(output = out, options)

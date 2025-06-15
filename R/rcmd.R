@@ -72,6 +72,8 @@ rcmd <- function(
   ## This cleans up everything...
   on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
 
+  otel::start_span("callr::rcmd", attributes = otel::as_attributes(options))
+
   run_r(options)
 }
 

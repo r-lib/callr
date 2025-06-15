@@ -46,6 +46,8 @@ rscript <- function(
   ## This cleans up everything...
   on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
 
+  otel::start_span("callr::rscript", attributes = otel::as_attributes(options))
+
   invisible(run_r(options))
 }
 
