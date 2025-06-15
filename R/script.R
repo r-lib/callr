@@ -75,7 +75,9 @@ make_vanilla_script_expr <- function(
     message <- function() {
       substitute({
         pxlib <- base::as.environment("tools:callr")$`__callr_data__`$pxlib
-        if (base::is.null(e$code)) e$code <- "301"
+        if (base::is.null(e$code)) {
+          e$code <- "301"
+        }
         msg <- base::paste0(
           "base64::",
           pxlib$base64_encode(base::serialize(e, NULL))

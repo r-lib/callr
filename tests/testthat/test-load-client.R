@@ -108,7 +108,9 @@ test_that("init function of client lib is run", {
 
 test_that("CALLR_NO_TEMP_DLLS", {
   skip_on_cran()
-  if (.Platform$OS.type != "windows") skip("Windows only")
+  if (.Platform$OS.type != "windows") {
+    skip("Windows only")
+  }
 
   # If not set, then it should come from the temporary location
   withr::local_envvar(CALLR_NO_TEMP_DLLS = NA_character_)

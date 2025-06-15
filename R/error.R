@@ -12,7 +12,11 @@
 new_callr_crash_error <- function(out, msg = NULL) {
   error_msg <- paste0(
     if (out$timeout) "callr timed out" else "callr subprocess failed",
-    if (!is.null(msg)) paste0(": ", msg) else if (!out$timeout) ":"
+    if (!is.null(msg)) {
+      paste0(": ", msg)
+    } else if (!out$timeout) {
+      ":"
+    }
   )
 
   cond <- new_error(paste(error_msg))

@@ -30,7 +30,9 @@ transport_fun <- function(
   package,
   source_refs = getOption("callr.keep.source")
 ) {
-  if (!isTRUE(source_refs)) fun <- remove_source(fun)
+  if (!isTRUE(source_refs)) {
+    fun <- remove_source(fun)
+  }
 
   if (isTRUE(package)) {
     # Do nothing
@@ -87,15 +89,28 @@ setup_context <- function(options) {
     env[save_nms[save_set]] <- Sys.getenv(save_env[save_set])
     env <- env[setdiff(names(env), save_nms[!keep_set & !save_set])]
 
-    if (is.na(env["R_ENVIRON"])) env["R_ENVIRON"] <- envs[[1]]
-    if (is.na(env["R_ENVIRON_USER"])) env["R_ENVIRON_USER"] <- envs[[2]]
-    if (is.na(env["R_PROFILE"])) env["R_PROFILE"] <- profiles[[1]]
-    if (is.na(env["R_PROFILE_USER"])) env["R_PROFILE_USER"] <- profiles[[2]]
+    if (is.na(env["R_ENVIRON"])) {
+      env["R_ENVIRON"] <- envs[[1]]
+    }
+    if (is.na(env["R_ENVIRON_USER"])) {
+      env["R_ENVIRON_USER"] <- envs[[2]]
+    }
+    if (is.na(env["R_PROFILE"])) {
+      env["R_PROFILE"] <- profiles[[1]]
+    }
+    if (is.na(env["R_PROFILE_USER"])) {
+      env["R_PROFILE_USER"] <- profiles[[2]]
+    }
 
-    if (is.na(env["R_LIBS"])) env["R_LIBS"] <- make_path(libpath)
-    if (is.na(env["R_LIBS_USER"])) env["R_LIBS_USER"] <- make_path(libpath)
-    if (is.na(env["R_LIBS_SITE"]))
+    if (is.na(env["R_LIBS"])) {
+      env["R_LIBS"] <- make_path(libpath)
+    }
+    if (is.na(env["R_LIBS_USER"])) {
+      env["R_LIBS_USER"] <- make_path(libpath)
+    }
+    if (is.na(env["R_LIBS_SITE"])) {
       env["R_LIBS_SITE"] <- make_path(.Library.site)
+    }
 
     env["CALLR_IS_RUNNING"] <- "true"
   })
@@ -132,10 +147,14 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
     if (file.exists(local)) user <- local else user <- NA_character_
   } else if (user) {
     user <- env["R_PROFILE_USER"]
-    if (is.na(user)) user <- Sys.getenv("R_PROFILE_USER", NA_character_)
+    if (is.na(user)) {
+      user <- Sys.getenv("R_PROFILE_USER", NA_character_)
+    }
     local <- ".Rprofile"
     home <- path.expand("~/.Rprofile")
-    if (is.na(user) && file.exists(local)) user <- local
+    if (is.na(user) && file.exists(local)) {
+      user <- local
+    }
     if (is.na(user) && file.exists(home)) user <- home
   } else {
     user <- NA_character_
@@ -216,19 +235,29 @@ make_environ <- function(profiles, libpath, env) {
   }
 
   sys <- env["R_ENVIRON"]
-  if (is.na(sys)) sys <- Sys.getenv("R_ENVIRON", NA_character_)
-  if (is.na(sys)) sys <- file.path(R.home("etc"), "Renviron.site")
+  if (is.na(sys)) {
+    sys <- Sys.getenv("R_ENVIRON", NA_character_)
+  }
+  if (is.na(sys)) {
+    sys <- file.path(R.home("etc"), "Renviron.site")
+  }
   if (!is.na(sys) && file.exists(sys)) {
     file.append(env_sys, sys)
     cat("\n", file = env_sys, append = TRUE)
   }
 
   user <- env["R_ENVIRON_USER"]
-  if (is.na(user)) user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
+  if (is.na(user)) {
+    user <- Sys.getenv("R_ENVIRON_USER", NA_character_)
+  }
   local <- ".Renviron"
   home <- "~/.Renviron"
-  if (is.na(user) && file.exists(local)) user <- local
-  if (is.na(user) && file.exists(home)) user <- home
+  if (is.na(user) && file.exists(local)) {
+    user <- local
+  }
+  if (is.na(user) && file.exists(home)) {
+    user <- home
+  }
   if (!is.na(user) && file.exists(user)) {
     file.append(env_user, user)
     cat("\n", file = env_user, append = TRUE)
@@ -292,8 +321,9 @@ setup_callbacks <- function(options) {
   options <- append(
     options,
     list(
-      "real_block_callback" = if (!is.null(block_cb))
+      "real_block_callback" = if (!is.null(block_cb)) {
         function(x, proc) block_cb(x)
+      }
     )
   )
 
@@ -302,11 +332,15 @@ setup_callbacks <- function(options) {
     force(stream)
 
     ## In case there is no output, we create an empty file here
-    if (!is.null(stream) && stream != "2>&1") cat("", file = stream)
+    if (!is.null(stream) && stream != "2>&1") {
+      cat("", file = stream)
+    }
 
     if (!is.null(cb)) {
       function(x, proc) {
-        if (!is.null(stream)) cat(x, file = stream, sep = "\n", append = TRUE)
+        if (!is.null(stream)) {
+          cat(x, file = stream, sep = "\n", append = TRUE)
+        }
         cb(x)
       }
     } else {

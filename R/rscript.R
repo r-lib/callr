@@ -50,13 +50,17 @@ rscript <- function(
 }
 
 rscript_load_hook_color <- function(color) {
-  if (!color) return("")
+  if (!color) {
+    return("")
+  }
 
   nc <- tryCatch(
     cli::num_ansi_colors(),
     error = function(e) 1L
   )
-  if (nc == 1) return("")
+  if (nc == 1) {
+    return("")
+  }
 
   expr <- substitute(
     options(crayon.enabled = TRUE, crayon.colors = `_nc_`),

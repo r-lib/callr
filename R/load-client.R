@@ -13,7 +13,9 @@ load_client_lib <- function(sofile = NULL, pxdir = NULL) {
       paste0("client", ext),
       package = "processx"
     )
-    if (sofile != "" && file.exists(sofile)) return(sofile)
+    if (sofile != "" && file.exists(sofile)) {
+      return(sofile)
+    }
 
     # Try this as well, this is for devtools/pkgload
     sofile <- system.file(
@@ -21,7 +23,9 @@ load_client_lib <- function(sofile = NULL, pxdir = NULL) {
       paste0("client", ext),
       package = "processx"
     )
-    if (sofile != "" && file.exists(sofile)) return(sofile) # nocov
+    if (sofile != "" && file.exists(sofile)) {
+      return(sofile)
+    } # nocov
 
     # stop() here and not throw(), because this function should be standalone
     stop("Cannot find client file")
@@ -87,13 +91,19 @@ load_client_lib <- function(sofile = NULL, pxdir = NULL) {
   env$disable_fd_inheritance <- function() mycall(sym_disinh)
 
   env$write_fd <- function(fd, data) {
-    if (is.character(data)) data <- charToRaw(paste0(data, collapse = ""))
+    if (is.character(data)) {
+      data <- charToRaw(paste0(data, collapse = ""))
+    }
     len <- length(data)
     repeat {
       written <- mycall(sym_write, fd, data)
       len <- len - written
-      if (len == 0) break
-      if (written) data <- data[-(1:written)]
+      if (len == 0) {
+        break
+      }
+      if (written) {
+        data <- data[-(1:written)]
+      }
       Sys.sleep(.1)
     }
   }
