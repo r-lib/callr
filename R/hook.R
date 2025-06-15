@@ -6,6 +6,34 @@ common_hook <- function() {
         detach("tools:callr")
       }
       env <- readRDS(`__envfile__`)
+
+      # OpenTelemetry setup
+      if (
+        nzchar(Sys.getenv("TRACEPARENT")) &&
+          requireNamespace("otel", quietly = TRUE)
+      ) {
+        hdrs <- as.list(c(
+          traceparent = Sys.getenv("TRACEPARENT"),
+          tracestate = Sys.getenv("TRACESTATE"),
+          baggage = Sys.getenv("BAGGAGE")
+        ))
+        prtctx <- otel::extract_http_context(hdrs)
+        reg.finalizer(
+          env$`__callr_data__`,
+          function(e) e$otel_span$end(),
+          onexit = TRUE
+        )
+        assign(
+          envir = env$`__callr_data__`,
+          "otel_span",
+          otel::start_span(
+            "callr subprocess",
+            options = list(parent = prtctx),
+            scope = NULL
+          )
+        )
+      }
+
       do.call("attach", list(env, pos = length(search()), name = "tools:callr"))
       data <- env$`__callr_data__`
       data$pxlib <- data$load_client_lib(

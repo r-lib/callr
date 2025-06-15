@@ -55,11 +55,16 @@ rp_init <- function(self, private, super, options) {
   options <- setup_context(options)
   options <- setup_r_binary_and_args(options)
 
+  if (otel::is_tracing()) {
+    hdrs <- otel::pack_http_context()
+    names(hdrs) <- toupper(names(hdrs))
+    options$env[names(hdrs)] <- hdrs
+  }
   otel_session <- otel::start_session(
     "callr::r_process start",
     attributes = otel::as_attributes(options)
   )
-  otel::log_debug("start r_process", attributes = otel::as_attributes(options))
+  otel::log_debug("start r_process", session = otel_session)
   options$otel_session <- otel_session
 
   private$options <- options
