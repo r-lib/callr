@@ -189,7 +189,9 @@ test_that("libpath in system, if subprocess changes R_LIBS", {
 })
 
 test_that("libpath in system, if subprocess changes R_LIBS #2", {
-  if (.Platform$OS.type != "unix") skip("Unix only")
+  if (.Platform$OS.type != "unix") {
+    skip("Unix only")
+  }
 
   dir.create(tmpkeep <- tempfile("keep"))
   on.exit(unlink(tmpkeep, recursive = TRUE), add = TRUE)

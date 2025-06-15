@@ -79,7 +79,9 @@ rp_init <- function(self, private, super, options) {
 }
 
 rp_get_result <- function(self, private) {
-  if (self$is_alive()) throw(new_error("Still alive"))
+  if (self$is_alive()) {
+    throw(new_error("Still alive"))
+  }
 
   ## This is artificial...
   out <- list(

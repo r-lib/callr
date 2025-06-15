@@ -21,27 +21,45 @@ convert_and_check_my_args <- function(options) {
 
   ## Conversions
   options <- within(options, {
-    if (has("libpath")) libpath <- as.character(libpath)
-    if (has("repos")) repos <- repos
+    if (has("libpath")) {
+      libpath <- as.character(libpath)
+    }
+    if (has("repos")) {
+      repos <- repos
+    }
     if (has("stdout") && !is.null(stdout)) {
       stdout <- as.character(stdout)
     }
     if (has("stderr") && !is.null(stderr)) {
       stderr <- as.character(stderr)
     }
-    if (has("error")) error <- error[1]
-    if (has("cmdargs")) cmdargs <- as.character(cmdargs)
+    if (has("error")) {
+      error <- error[1]
+    }
+    if (has("cmdargs")) {
+      cmdargs <- as.character(cmdargs)
+    }
     if (has("timeout") && !inherits(timeout, "difftime")) {
       timeout <- as.difftime(
         as.double(timeout),
         units = "secs"
       )
     }
-    if (no("wd")) wd <- "."
-    if (no("echo")) echo <- FALSE
-    if (no("fail_on_status")) fail_on_status <- FALSE
-    if (no("tmp_files")) tmp_files <- character()
-    if (no("package")) package <- FALSE
+    if (no("wd")) {
+      wd <- "."
+    }
+    if (no("echo")) {
+      echo <- FALSE
+    }
+    if (no("fail_on_status")) {
+      fail_on_status <- FALSE
+    }
+    if (no("tmp_files")) {
+      tmp_files <- character()
+    }
+    if (no("package")) {
+      package <- FALSE
+    }
     if (no("arch")) arch <- "same"
   })
 

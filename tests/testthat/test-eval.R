@@ -269,7 +269,9 @@ test_that("local .Rprofile is not loaded recursively", {
 
   expr <- quote({
     rprofile <- Sys.getenv("R_PROFILE_USER", "~/.Rprofile")
-    if (file.exists(rprofile)) source(rprofile)
+    if (file.exists(rprofile)) {
+      source(rprofile)
+    }
     rm(rprofile)
     aa <- 123
   })

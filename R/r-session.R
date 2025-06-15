@@ -61,15 +61,18 @@ r_session <- R6::R6Class(
       options = r_session_options(),
       wait = TRUE,
       wait_timeout = 3000
-    ) rs_init(self, private, super, options, wait, wait_timeout),
+    ) {
+      rs_init(self, private, super, options, wait, wait_timeout)
+    },
 
     #' @description
     #' Similar to [r()], but runs the function in a permanent background
     #' R session. It throws an error if the function call generated an
     #' error in the child process.
     #' @return The return value of the R expression.
-    run = function(func, args = list(), package = FALSE)
-      rs_run(self, private, func, args, package),
+    run = function(func, args = list(), package = FALSE) {
+      rs_run(self, private, func, args, package)
+    },
 
     #' @description
     #' Similar to `$run()`, but returns the standard output and error of
@@ -86,15 +89,17 @@ r_session <- R6::R6Class(
     #'   error thrown in the subprocess. Otherwise it is `NULL`.
     #' * `code`, `message`: These fields are used by call internally and
     #'   you can ignore them.
-    run_with_output = function(func, args = list(), package = FALSE)
-      rs_run_with_output(self, private, func, args, package),
+    run_with_output = function(func, args = list(), package = FALSE) {
+      rs_run_with_output(self, private, func, args, package)
+    },
 
     #' @description
     #' Starts running a function in the background R session, and
     #' returns immediately. To check if the function is done, call the
     #' `poll_process()` method.
-    call = function(func, args = list(), package = FALSE)
-      rs_call(self, private, func, args, package),
+    call = function(func, args = list(), package = FALSE) {
+      rs_call(self, private, func, args, package)
+    },
 
     #' @description
     #' Poll the R session with a timeout. If the session has finished the
@@ -232,10 +237,12 @@ r_session <- R6::R6Class(
     read_buffer = function() rs__read_buffer(self, private),
     read_message = function() rs__read_message(self, private),
 
-    get_result_and_output = function(std = FALSE)
-      rs__get_result_and_output(self, private, std),
-    report_back = function(code, text = "")
-      rs__report_back(self, private, code, text),
+    get_result_and_output = function(std = FALSE) {
+      rs__get_result_and_output(self, private, std)
+    },
+    report_back = function(code, text = "") {
+      rs__report_back(self, private, code, text)
+    },
     write_for_sure = function(text) rs__write_for_sure(self, private, text),
     parse_msg = function(msg) rs__parse_msg(self, private, msg),
     attach_wait = function() rs__attach_wait(self, private)
@@ -244,8 +251,7 @@ r_session <- R6::R6Class(
 
 rs_init <- function(self, private, super, options, wait, wait_timeout) {
   options$func <- options$func %||%
-    function() {
-    }
+    function() {}
   options$args <- list()
   options$load_hook <- session_load_hook(options$load_hook)
 
@@ -283,15 +289,22 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
+    otel::start_span("r_session$initialize() wait", session = otel_session)
     timeout <- wait_timeout
     have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
     pr <- self$poll_io(timeout)
     out <- ""
     err <- ""
     while (any(pr == "ready")) {
-      if (pr["output"] == "ready") out <- paste0(out, self$read_output())
-      if (pr["error"] == "ready") err <- paste0(err, self$read_error())
-      if (pr["process"] == "ready") break
+      if (pr["output"] == "ready") {
+        out <- paste0(out, self$read_output())
+      }
+      if (pr["error"] == "ready") {
+        err <- paste0(err, self$read_error())
+      }
+      if (pr["process"] == "ready") {
+        break
+      }
       timeout <- as.double(have_until - Sys.time(), units = "secs") * 1000
       pr <- self$poll_io(as.integer(timeout))
     }
@@ -328,7 +341,9 @@ rs_read <- function(self, private) {
     out <- private$read_message()
   }
   if (!length(out)) {
-    if (processx::processx_conn_is_incomplete(private$pipe)) return()
+    if (processx::processx_conn_is_incomplete(private$pipe)) {
+      return()
+    }
     if (self$is_alive()) {
       # We do this in on.exit(), because parse_msg still reads the streams
       on.exit(self$kill(), add = TRUE)
@@ -386,7 +401,9 @@ rs__read_buffer <- function(self, private) {
 rs__read_message <- function(self, private) {
   # A new message, we can surely read the first line
   out <- processx::processx_conn_read_lines(private$pipe, 1)
-  if (length(out) == 0) return(NULL)
+  if (length(out) == 0) {
+    return(NULL)
+  }
 
   header <- rs__parse_header(out)
   body <- ""
@@ -426,7 +443,9 @@ rs_close <- function(self, private, grace) {
   self$poll_process(grace)
   self$kill()
   self$wait(1000)
-  if (self$is_alive()) throw(new_error("Could not kill background R session"))
+  if (self$is_alive()) {
+    throw(new_error("Could not kill background R session"))
+  }
   private$state <- "finished"
   private$fun_started_at <- as.POSIXct(NA)
   processx::processx_conn_close(private$pipe)
@@ -439,9 +458,15 @@ rs_call <- function(self, private, func, args, package) {
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
   ## TODO: do we need a state at all?
-  if (private$state == "starting") throw(new_error("R session not ready yet"))
-  if (private$state == "finished") throw(new_error("R session finished"))
-  if (private$state == "busy") throw(new_error("R session busy"))
+  if (private$state == "starting") {
+    throw(new_error("R session not ready yet"))
+  }
+  if (private$state == "finished") {
+    throw(new_error("R session finished"))
+  }
+  if (private$state == "busy") {
+    throw(new_error("R session busy"))
+  }
 
   ## Save the function in a file
   private$options$func <- func
@@ -502,7 +527,9 @@ rs_run_with_output <- function(self, private, func, args, package) {
       {
         processx::poll(list(private$pipe), -1)
         msg <- self$read()
-        if (is.null(msg)) next
+        if (is.null(msg)) {
+          next
+        }
         if (msg$code == 200 || (msg$code >= 500 && msg$code < 600)) {
           return(msg)
         }
@@ -581,7 +608,9 @@ rs_debug <- function(self, private) {
   hasdump <- self$run(function() {
     !is.null(as.environment("tools:callr")$`__callr_data__`$.Last.dump)
   })
-  if (!hasdump) stop("Can't find dumped frames, nothing to debug")
+  if (!hasdump) {
+    stop("Can't find dumped frames, nothing to debug")
+  }
 
   help <- function() {
     cat(
@@ -604,7 +633,9 @@ rs_debug <- function(self, private) {
   translate_cmd <- function(cmd) {
     if (cmd == ".where") {
       traceback(tb)
-      if (frame) cat("Inspecting frame", frame, "\n")
+      if (frame) {
+        cat("Inspecting frame", frame, "\n")
+      }
       NULL
     } else if (cmd == ".help") {
       help()
@@ -639,8 +670,12 @@ rs_debug <- function(self, private) {
     )
     cmd <- rs__attach_get_input(prompt)
     cmd2 <- translate_cmd(cmd)
-    if (should_quit) break
-    if (is.null(cmd2)) next
+    if (should_quit) {
+      break
+    }
+    if (is.null(cmd2)) {
+      next
+    }
 
     try(update_history(cmd), silent = TRUE)
 
@@ -666,13 +701,19 @@ rs_debug <- function(self, private) {
 rs_attach <- function(self, private) {
   out <- self$get_output_connection()
   err <- self$get_error_connection()
-  while (nchar(x <- processx::processx_conn_read_chars(out))) cat(x)
-  while (nchar(x <- processx::processx_conn_read_chars(err))) cat(bold(x))
+  while (nchar(x <- processx::processx_conn_read_chars(out))) {
+    cat(x)
+  }
+  while (nchar(x <- processx::processx_conn_read_chars(err))) {
+    cat(bold(x))
+  }
   tryCatch(
     {
       while (TRUE) {
         cmd <- rs__attach_get_input(paste0("RS ", self$get_pid(), " > "))
-        if (cmd == ".q") break
+        if (cmd == ".q") {
+          break
+        }
         try(update_history(cmd), silent = TRUE)
         private$write_for_sure(paste0(cmd, "\n"))
         private$report_back(202, "done")
@@ -726,7 +767,9 @@ rs__report_back <- function(self, private, code, text) {
 rs__write_for_sure <- function(self, private, text) {
   while (1) {
     text <- self$write_input(text)
-    if (!length(text)) break
+    if (!length(text)) {
+      break
+    }
     Sys.sleep(.1)
   }
 }
@@ -813,7 +856,7 @@ rs__status_expr <- function(code, text = "", fd = 3L) {
 }
 
 rs__prehook <- function(stdout, stderr) {
-  oexpr <- if (!is.null(stdout))
+  oexpr <- if (!is.null(stdout)) {
     substitute(
       {
         assign(
@@ -826,7 +869,8 @@ rs__prehook <- function(stdout, stderr) {
       },
       list(`__fn__` = stdout)
     )
-  eexpr <- if (!is.null(stderr))
+  }
+  eexpr <- if (!is.null(stderr)) {
     substitute(
       {
         assign(
@@ -839,6 +883,7 @@ rs__prehook <- function(stdout, stderr) {
       },
       list(`__fn__` = stderr)
     )
+  }
 
   substitute(
     {
@@ -850,18 +895,20 @@ rs__prehook <- function(stdout, stderr) {
 }
 
 rs__posthook <- function(stdout, stderr) {
-  oexpr <- if (!is.null(stdout))
+  oexpr <- if (!is.null(stdout)) {
     substitute({
       as.environment("tools:callr")$`__callr_data__`$pxlib$set_stdout(
         as.environment("tools:callr")$`__callr_data__`$.__stdout__
       )
     })
-  eexpr <- if (!is.null(stderr))
+  }
+  eexpr <- if (!is.null(stderr)) {
     substitute({
       as.environment("tools:callr")$`__callr_data__`$pxlib$set_stderr(
         as.environment("tools:callr")$`__callr_data__`$.__stderr__
       )
     })
+  }
 
   substitute(
     {

@@ -17,7 +17,9 @@ default_repos <- function() {
   if (!"CRAN" %in% names(opt) || opt[["CRAN"]] == "@CRAN@") {
     opt[["CRAN"]] <- "https://cloud.r-project.org"
   }
-  if (!was_list) opt <- unlist(opt)
+  if (!was_list) {
+    opt <- unlist(opt)
+  }
   opt
 }
 
@@ -44,7 +46,9 @@ is.named <- function(x) {
 }
 
 set_envvar <- function(envs) {
-  if (length(envs) == 0) return()
+  if (length(envs) == 0) {
+    return()
+  }
 
   stopifnot(is.named(envs))
 
@@ -53,8 +57,12 @@ set_envvar <- function(envs) {
 
   both_set <- set & !is.na(old)
 
-  if (any(set)) do.call("Sys.setenv", as.list(envs[set]))
-  if (any(!set)) Sys.unsetenv(names(envs)[!set])
+  if (any(set)) {
+    do.call("Sys.setenv", as.list(envs[set]))
+  }
+  if (any(!set)) {
+    Sys.unsetenv(names(envs)[!set])
+  }
 
   invisible(old)
 }
@@ -114,7 +122,9 @@ read_all <- function(filename) {
 is_complete_expression <- function(x) {
   err <- NULL
   tryCatch(parse(text = x), error = function(e) err <<- e)
-  if (is.null(err)) return(TRUE)
+  if (is.null(err)) {
+    return(TRUE)
+  }
   exp <- tryCatch(parse(text = "1+"), error = function(e) e$message)
   exp1 <- strsplit(exp, "\n")[[1]][[1]]
   msg <- sub("^.*:\\s*([^:]+)$", "\\1", exp1, perl = TRUE)

@@ -240,7 +240,9 @@ test_that("exit", {
   )
 
   deadline <- Sys.time() + 3
-  while (rs$is_alive() && Sys.time() < deadline) Sys.sleep(0.05)
+  while (rs$is_alive() && Sys.time() < deadline) {
+    Sys.sleep(0.05)
+  }
   expect_true(Sys.time() < deadline)
 
   expect_false(rs$is_alive())
@@ -281,8 +283,12 @@ test_that("crash", {
 
   ## This is a race, and sometimes we don't get the stdout/stderr
   ## on Windows
-  if (os_platform() != "windows") expect_equal(res$stdout, "o\n")
-  if (os_platform() != "windows") expect_equal(substr(res$stderr, 1, 2), "e\n")
+  if (os_platform() != "windows") {
+    expect_equal(res$stdout, "o\n")
+  }
+  if (os_platform() != "windows") {
+    expect_equal(substr(res$stderr, 1, 2), "e\n")
+  }
   expect_false(rs$is_alive())
   expect_equal(rs$get_state(), "finished")
   rs$close()
@@ -320,10 +326,13 @@ test_that("traceback", {
 
 test_that("error in the load hook", {
   opts <- r_session_options(load_hook = quote(stop("oops")))
-  expect_snapshot(error = TRUE, local({
-    rs <- r_session$new(opts)
-    on.exit(rs$kill(), add = TRUE)
-  }))
+  expect_snapshot(
+    error = TRUE,
+    local({
+      rs <- r_session$new(opts)
+      on.exit(rs$kill(), add = TRUE)
+    })
+  )
 
   rs2 <- r_session$new(opts, wait = FALSE)
   on.exit(rs2$kill(), add = TRUE)

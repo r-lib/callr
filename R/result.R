@@ -18,7 +18,9 @@ get_result <- function(output, options) {
   res <- options$result_file
 
   ## Timeout?
-  if (output$timeout) throw(new_callr_crash_error(output))
+  if (output$timeout) {
+    throw(new_callr_crash_error(output))
+  }
 
   ## No output file and no error file? Some other (system?) error then,
   ## unless exit status was zero, which is probably just quit().

@@ -2,7 +2,9 @@ common_hook <- function() {
   substitute(
     {
       # This should not happen in a new R session, but just to be safe
-      while ("tools:callr" %in% search()) detach("tools:callr")
+      while ("tools:callr" %in% search()) {
+        detach("tools:callr")
+      }
       env <- readRDS(`__envfile__`)
       do.call("attach", list(env, pos = length(search()), name = "tools:callr"))
       data <- env$`__callr_data__`
