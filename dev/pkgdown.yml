@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   r-session: r-session.html
-last_built: 2025-04-28T09:45Z
+last_built: 2025-06-16T09:08Z
 urls:
   reference: https://callr.r-lib.org/reference
   article: https://callr.r-lib.org/articles

@@ -79,8 +79,8 @@ specified, this is the R function to run in the background.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $libpath</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library" "/opt/R/4.5.0/lib/R/site-library"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "/opt/R/4.5.0/lib/R/library"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library" "/opt/R/4.5.1/lib/R/site-library"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "/opt/R/4.5.1/lib/R/library"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $repos</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                          RSPM </span>
@@ -117,30 +117,32 @@ specified, this is the R function to run in the background.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $load_hook</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "{\n"                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "    while (\"tools:callr\" %in% search()) detach(\"tools:callr\")\n"                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "    env &lt;- readRDS(\"/tmp/Rtmp747G0j/callr-env-216e1c110bec\")\n"                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "    data &lt;- env$`__callr_data__`\n"                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "        .Platform$r_arch)]], data$pxdir)\n"                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "    options(error = function() invokeRestart(\"abort\"))\n"                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "    rm(list = c(\"data\", \"env\"))\n"                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "        \"R_LIBS\", \"R_LIBS_USER\", \"R_LIBS_SITE\"), function(var) {\n"             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "        bakvar &lt;- paste0(\"CALLR_\", var, \"_BAK\")\n"                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "        val &lt;- Sys.getenv(bakvar, NA_character_)\n"                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "        if (!is.na(val)) {\n"                                                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "            do.call(\"Sys.setenv\", structure(list(val), names = var))\n"             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "        }\n"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "        else {\n"                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "            Sys.unsetenv(var)\n"                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "        }\n"                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "        Sys.unsetenv(bakvar)\n"                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "    })\n"                                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS\")\n"                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_SITE\")\n"                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [24] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_USER\")\n"                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "}\n"                                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "    while (\"tools:callr\" %in% search()) {\n"                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "        detach(\"tools:callr\")\n"                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "    }\n"                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "    env &lt;- readRDS(\"/tmp/Rtmp8zwNGX/callr-env-2295322d0daa\")\n"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "    data &lt;- env$`__callr_data__`\n"                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "    data$pxlib &lt;- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "        .Platform$r_arch)]], data$pxdir)\n"                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "    options(error = function() invokeRestart(\"abort\"))\n"                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "    rm(list = c(\"data\", \"env\"))\n"                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "    lapply(c(\"R_ENVIRON\", \"R_ENVIRON_USER\", \"R_PROFILE\", \"R_PROFILE_USER\", \n"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "        \"R_LIBS\", \"R_LIBS_USER\", \"R_LIBS_SITE\"), function(var) {\n"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14] "        bakvar &lt;- paste0(\"CALLR_\", var, \"_BAK\")\n"                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "        val &lt;- Sys.getenv(bakvar, NA_character_)\n"                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16] "        if (!is.na(val)) {\n"                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "            do.call(\"Sys.setenv\", structure(list(val), names = var))\n"             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "        }\n"                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "        else {\n"                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20] "            Sys.unsetenv(var)\n"                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "        }\n"                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22] "        Sys.unsetenv(bakvar)\n"                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "    })\n"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [24] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS\")\n"                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_SITE\")\n"                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [26] "    Sys.unsetenv(\"CALLR_CHILD_R_LIBS_USER\")\n"                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [27] "}\n"                                                                                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $extra</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
@@ -164,7 +166,7 @@ specified, this is the R function to run in the background.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
   </div></footer></body></html>
