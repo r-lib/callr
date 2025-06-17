@@ -262,7 +262,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   options <- setup_r_binary_and_args(options, script_file = FALSE)
 
   otel_session <- otel::start_session(
-    "callr::r_session start",
+    "callr::r_session",
     attributes = otel::as_attributes(options)
   )
   if (otel::is_tracing()) {
@@ -270,7 +270,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     names(hdrs) <- toupper(names(hdrs))
     options$env[names(hdrs)] <- hdrs
   }
-  otel::log_debug("start r_session", session = otel_session)
+  otel::log_debug("callr::r_session start", session = otel_session)
   options$otel_session <- otel_session
 
   private$options <- options
