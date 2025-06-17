@@ -215,6 +215,8 @@ r_session <- R6::R6Class(
 
   private = list(
     finalize = function() {
+      private$options$otel_session$add_event("finalizer")
+      private$options$otel_session$end()
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
       unlink(private$options$tmp_files, recursive = TRUE)
