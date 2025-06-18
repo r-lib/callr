@@ -270,7 +270,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
     names(hdrs) <- toupper(names(hdrs))
     options$env[names(hdrs)] <- hdrs
   }
-  otel::log_debug("callr::r_session start", session = otel_session)
+  otel::log_debug("callr::r_session start")
   options$otel_session <- otel_session
 
   private$options <- options
@@ -303,7 +303,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
-    otel::start_span("r_session$initialize() wait", session = otel_session)
+    otel::start_span("r_session$initialize() wait")
     timeout <- wait_timeout
     have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
     pr <- self$poll_io(timeout)
@@ -347,10 +347,8 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 }
 
 rs_read <- function(self, private) {
-  spn <- otel::start_span(
-    "r_session$read",
-    session = private$options$otel_session
-  )
+  otel::local_session(private$options$otel_session)
+  spn <- otel::start_span("r_session$read")
   if (!is.null(private$buffer)) {
     # There is a partial message in the buffer, try to finish it.
     out <- private$read_buffer()
@@ -466,7 +464,8 @@ rs__parse_header <- function(line) {
 }
 
 rs_close <- function(self, private, grace) {
-  otel::start_span("r_session$close", session = private$options$otel_session)
+  otel::local_session(private$options$otel_session)
+  otel::start_span("r_session$close")
   processx::processx_conn_close(self$get_input_connection())
   self$poll_process(grace)
   self$kill()
@@ -484,7 +483,8 @@ rs_close <- function(self, private, grace) {
 }
 
 rs_call <- function(self, private, func, args, package) {
-  otel::start_span("r_session$call", session = private$options$otel_session)
+  otel::local_session(private$options$otel_session)
+  otel::start_span("r_session$call")
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
   ## TODO: do we need a state at all?

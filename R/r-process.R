@@ -59,7 +59,7 @@ rp_init <- function(self, private, super, options) {
     "callr::r_process",
     attributes = otel::as_attributes(options)
   )
-  otel::log_debug("start r_process", session = otel_session)
+  otel::log_debug("start r_process")
   if (otel::is_tracing()) {
     hdrs <- otel::pack_http_context()
     names(hdrs) <- toupper(names(hdrs))
