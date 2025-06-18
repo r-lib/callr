@@ -8,10 +8,10 @@ common_hook <- function() {
       env <- readRDS(`__envfile__`)
 
       # OpenTelemetry setup
-      if (
-        nzchar(Sys.getenv("TRACEPARENT")) &&
-          requireNamespace("otel", quietly = TRUE)
-      ) {
+      has_otel <- nzchar(Sys.getenv("TRACEPARENT")) &&
+        requireNamespace("otel", quietly = TRUE)
+      assign(envir = env$`__callr_data__`, "has_otel", has_otel)
+      if (has_otel) {
         hdrs <- as.list(c(
           traceparent = Sys.getenv("TRACEPARENT"),
           tracestate = Sys.getenv("TRACESTATE"),
@@ -41,7 +41,7 @@ common_hook <- function() {
         data$pxdir
       )
       options(error = function() invokeRestart("abort"))
-      rm(list = c("data", "env"))
+      rm(list = c("data", "env", "has_otel"))
 
       lapply(
         c(
