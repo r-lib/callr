@@ -29,7 +29,7 @@ common_hook <- function() {
           otel::start_span(
             "callr subprocess",
             options = list(parent = prtctx),
-            scope = NULL
+            scope = .GlobalEnv
           )
         )
       }
