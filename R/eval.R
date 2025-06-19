@@ -201,6 +201,13 @@ r <- function(
   options <- setup_callbacks(options)
   options <- setup_r_binary_and_args(options)
 
+  if (otel::is_tracing()) {
+    otel::start_span("callr::r", attributes = otel::as_attributes(options))
+    hdrs <- otel::pack_http_context()
+    names(hdrs) <- toupper(names(hdrs))
+    options$env[names(hdrs)] <- hdrs
+  }
+
   out <- run_r(options)
 
   get_result(output = out, options)

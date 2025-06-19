@@ -46,6 +46,16 @@ rscript <- function(
   ## This cleans up everything...
   on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
 
+  if (otel::is_tracing()) {
+    otel::start_span(
+      "callr::rscript",
+      attributes = otel::as_attributes(options)
+    )
+    hdrs <- otel::pack_http_context()
+    names(hdrs) <- toupper(names(hdrs))
+    options$env[names(hdrs)] <- hdrs
+  }
+
   invisible(run_r(options))
 }
 

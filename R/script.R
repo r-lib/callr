@@ -43,6 +43,9 @@ make_vanilla_script_expr <- function(
           e2$trace <- e2$trace[-(1:cut), ]
         }
 
+        if (callr_data$has_otel) {
+          callr_data$otel_span$record_exception(e2)
+        }
         base::saveRDS(
           base::list("error", e2, e),
           file = base::paste0(`__res__`, ".error")
@@ -74,7 +77,8 @@ make_vanilla_script_expr <- function(
   if (messages) {
     message <- function() {
       substitute({
-        pxlib <- base::as.environment("tools:callr")$`__callr_data__`$pxlib
+        callr_data <- base::as.environment("tools:callr")$`__callr_data__`
+        pxlib <- callr_data$pxlib
         if (base::is.null(e$code)) {
           e$code <- "301"
         }
@@ -83,6 +87,12 @@ make_vanilla_script_expr <- function(
           pxlib$base64_encode(base::serialize(e, NULL))
         )
         data <- base::paste0(e$code, " ", base::nchar(msg), "\n", msg)
+        if (callr_data$has_otel) {
+          callr$data$otel_span$add_event(
+            "callr message",
+            attributes = list(status_code = e$code)
+          )
+        }
         pxlib$write_fd(3L, data)
 
         if (

@@ -215,6 +215,8 @@ r_session <- R6::R6Class(
 
   private = list(
     finalize = function() {
+      private$options$otel_session$add_event("finalizer")
+      private$options$otel_session$end()
       unlink(private$tmp_output_file)
       unlink(private$tmp_error_file)
       unlink(private$options$tmp_files, recursive = TRUE)
@@ -259,6 +261,18 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   options <- setup_context(options)
   options <- setup_r_binary_and_args(options, script_file = FALSE)
 
+  otel_session <- otel::start_session(
+    "callr::r_session",
+    attributes = otel::as_attributes(options)
+  )
+  if (otel::is_tracing()) {
+    hdrs <- otel::pack_http_context()
+    names(hdrs) <- toupper(names(hdrs))
+    options$env[names(hdrs)] <- hdrs
+  }
+  otel::log_debug("callr::r_session start")
+  options$otel_session <- otel_session
+
   private$options <- options
 
   prepare_client_files()
@@ -289,7 +303,7 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
-    otel::start_span("r_session$initialize() wait", session = otel_session)
+    otel::start_span("r_session$initialize() wait")
     timeout <- wait_timeout
     have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
     pr <- self$poll_io(timeout)
@@ -333,6 +347,8 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
 }
 
 rs_read <- function(self, private) {
+  otel::local_session(private$options$otel_session)
+  spn <- otel::start_span("r_session$read")
   if (!is.null(private$buffer)) {
     # There is a partial message in the buffer, try to finish it.
     out <- private$read_buffer()
@@ -342,6 +358,7 @@ rs_read <- function(self, private) {
   }
   if (!length(out)) {
     if (processx::processx_conn_is_incomplete(private$pipe)) {
+      spn$set_attribute("message", FALSE)
       return()
     }
     if (self$is_alive()) {
@@ -372,7 +389,15 @@ rs_read <- function(self, private) {
       )
     }
   }
-  if (length(out)) private$parse_msg(out)
+  if (length(out)) {
+    spn$set_attribute("message", TRUE)
+    if (!is.null(out$header$code)) {
+      spn$set_attribute("status_code", out$header$code)
+    }
+    private$parse_msg(out)
+  } else {
+    spn$set_attribute("message", FALSE)
+  }
 }
 
 rs__read_buffer <- function(self, private) {
@@ -439,6 +464,8 @@ rs__parse_header <- function(line) {
 }
 
 rs_close <- function(self, private, grace) {
+  otel::local_session(private$options$otel_session)
+  otel::start_span("r_session$close")
   processx::processx_conn_close(self$get_input_connection())
   self$poll_process(grace)
   self$kill()
@@ -451,10 +478,13 @@ rs_close <- function(self, private, grace) {
   processx::processx_conn_close(private$pipe)
   processx::processx_conn_close(self$get_output_connection())
   processx::processx_conn_close(self$get_error_connection())
+  private$options$otel_session$end()
   invisible()
 }
 
 rs_call <- function(self, private, func, args, package) {
+  otel::local_session(private$options$otel_session)
+  otel::start_span("r_session$call")
   ## We only allow a new command if the R session is idle.
   ## This allows keeping a clean state
   ## TODO: do we need a state at all?

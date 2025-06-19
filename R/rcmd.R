@@ -72,6 +72,13 @@ rcmd <- function(
   ## This cleans up everything...
   on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
 
+  if (otel::is_tracing()) {
+    otel::start_span("callr::rcmd", attributes = otel::as_attributes(options))
+    hdrs <- otel::pack_http_context()
+    names(hdrs) <- toupper(names(hdrs))
+    options$env[names(hdrs)] <- hdrs
+  }
+
   run_r(options)
 }
 

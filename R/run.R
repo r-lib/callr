@@ -12,6 +12,8 @@ run_r <- function(options) {
       (!is.null(stdout) && !is.null(stderr) && stdout == stderr)
   )
 
+  otel::log_debug("callr start subprocess")
+
   res <- with(
     options,
     with_envvar(
