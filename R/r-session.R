@@ -289,7 +289,6 @@ rs_init <- function(self, private, super, options, wait, wait_timeout) {
   private$state <- "starting"
 
   if (wait) {
-    otel::start_span("r_session$initialize() wait", session = otel_session)
     timeout <- wait_timeout
     have_until <- Sys.time() + as.difftime(timeout / 1000, units = "secs")
     pr <- self$poll_io(timeout)
