@@ -1,1 +1,6 @@
-R/errors.R
+R/aaa-rstudio-detect.R
+R/hook.R
+R/load-client.R
+R/r-session.R
+R/standalone-errors.R
+R/script.R
