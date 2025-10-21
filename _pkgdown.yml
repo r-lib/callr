@@ -20,15 +20,15 @@ navbar:
     left: [reference, articles, news]
   components:
     articles:
-      text: Articles
-      menu:
-      - text: Tutorials
-      - text: Persistent R sessions
-        href: articles/r-session.html
-      - text: '-------'
-      - text: Blog posts
-      - text: "A multi process task queue in 100 lines of R code"
-        href: https://www.tidyverse.org/blog/2019/09/callr-task-q
+     text: Articles
+     menu:
+     - text: Tutorials
+     - text: Persistent R sessions
+       href: articles/r-session.html
+     - text: -------
+     - text: Blog posts
+     - text: "A multi process task queue in 100 lines of R code"
+       href: https://www.tidyverse.org/blog/2019/09/callr-task-q
 
 reference:
 - title: Introduction
