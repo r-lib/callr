@@ -8,7 +8,7 @@ An \verb{R CMD *} command that runs in the background. This is an R6 class
 that extends the \link[processx:process]{processx::process} class.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 options <- rcmd_process_options(cmd = "config", cmdargs = "CC")
 rp <- rcmd_process$new(options)
 rp$wait()

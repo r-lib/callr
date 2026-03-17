@@ -11,7 +11,7 @@ The process is started at the creation of the object, and then it can
 be used to evaluate R function calls, one at a time.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 rs <- r_session$new()
 
 rs$run(function() 1 + 2)

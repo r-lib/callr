@@ -245,7 +245,7 @@ For performance reasons \code{compress=FALSE} is used when serializing with
 }
 
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 # Workspace is empty
 r(function() ls())
 

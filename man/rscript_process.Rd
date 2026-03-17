@@ -8,7 +8,7 @@ An \verb{Rscript script.R} command that runs in the background. This is an
 R6 class that extends the \link[processx:process]{processx::process} class.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 options <- rscript_process_options(script = "script.R")
 rp <- rscript_process$new(options)
 rp$wait()

@@ -9,7 +9,7 @@ extends the \link[processx:process]{processx::process} class. The process starts
 background, evaluates an R function call, and then quits.
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 ## List all options and their default values:
 r_process_options()
 
