@@ -150,7 +150,7 @@ in plain files.
 }
 
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 rcmd("config", "CC")
 \dontshow{\}) # examplesIf}
 }
