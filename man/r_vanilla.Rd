@@ -95,8 +95,8 @@ r_vanilla(function() getOption("repos"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other callr functions: 
-\code{\link{r}()},
-\code{\link{r_copycat}()}
+Other callr functions:
+\code{\link[=r]{r()}},
+\code{\link[=r_copycat]{r_copycat()}}
 }
 \concept{callr functions}

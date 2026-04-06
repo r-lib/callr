@@ -434,6 +434,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Gábor Csárdi \email{csardi.gabor@gmail.com} (\href{https://orcid.org/0000-0001-7098-9676}{ORCID}) [copyright holder]
   \item Winston Chang
 }
 
