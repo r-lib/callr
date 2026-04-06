@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   r-session: r-session.html
-last_built: 2026-03-17T21:07Z
+last_built: 2026-04-06T15:11Z
 urls:
   reference: https://callr.r-lib.org/reference
   article: https://callr.r-lib.org/articles

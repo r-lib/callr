@@ -204,7 +204,7 @@ rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-    #> PROCESS 'R', running, pid 8796.
+    #> PROCESS 'R', running, pid 8773.
 
 This is a list of all `r_process` methods:
 
@@ -212,23 +212,23 @@ This is a list of all `r_process` methods:
 ls(rp)
 ```
 
-    #>  [1] "as_ps_handle"          "clone"                 "finalize"
-    #>  [4] "format"                "get_cmdline"           "get_cpu_times"
-    #>  [7] "get_error_connection"  "get_error_file"        "get_exe"
-    #> [10] "get_exit_status"       "get_input_connection"  "get_input_file"
-    #> [13] "get_memory_info"       "get_name"              "get_output_connection"
-    #> [16] "get_output_file"       "get_pid"               "get_poll_connection"
-    #> [19] "get_result"            "get_start_time"        "get_status"
-    #> [22] "get_username"          "get_wd"                "has_error_connection"
-    #> [25] "has_input_connection"  "has_output_connection" "has_poll_connection"
-    #> [28] "initialize"            "interrupt"             "is_alive"
-    #> [31] "is_incomplete_error"   "is_incomplete_output"  "is_supervised"
-    #> [34] "kill"                  "kill_tree"             "poll_io"
-    #> [37] "print"                 "read_all_error"        "read_all_error_lines"
-    #> [40] "read_all_output"       "read_all_output_lines" "read_error"
-    #> [43] "read_error_lines"      "read_output"           "read_output_lines"
-    #> [46] "resume"                "signal"                "supervise"
-    #> [49] "suspend"               "wait"                  "write_input"
+    #>  [1] "as_ps_handle"          "clone"                 "format"
+    #>  [4] "get_cmdline"           "get_cpu_times"         "get_error_connection"
+    #>  [7] "get_error_file"        "get_exe"               "get_exit_status"
+    #> [10] "get_input_connection"  "get_input_file"        "get_memory_info"
+    #> [13] "get_name"              "get_output_connection" "get_output_file"
+    #> [16] "get_pid"               "get_poll_connection"   "get_result"
+    #> [19] "get_start_time"        "get_status"            "get_username"
+    #> [22] "get_wd"                "has_error_connection"  "has_input_connection"
+    #> [25] "has_output_connection" "has_poll_connection"   "initialize"
+    #> [28] "interrupt"             "is_alive"              "is_incomplete_error"
+    #> [31] "is_incomplete_output"  "is_supervised"         "kill"
+    #> [34] "kill_tree"             "poll_io"               "print"
+    #> [37] "read_all_error"        "read_all_error_lines"  "read_all_output"
+    #> [40] "read_all_output_lines" "read_error"            "read_error_lines"
+    #> [43] "read_output"           "read_output_lines"     "resume"
+    #> [46] "signal"                "supervise"             "suspend"
+    #> [49] "wait"                  "write_input"
 
 These include all methods of the
 [`processx::process`](http://processx.r-lib.org/reference/process.md)
@@ -305,7 +305,7 @@ rs <- callr::r_session$new()
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 8847.
+    #> R SESSION, alive, idle, pid 8824.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -326,15 +326,15 @@ rs <- callr::r_session$new()
 rs$run(function() runif(10))
 ```
 
-    #>  [1] 0.26668819 0.12215086 0.65662226 0.35658939 0.70410273 0.20289642
-    #>  [7] 0.36614862 0.48964823 0.02158947 0.70928372
+    #>  [1] 0.73649294 0.02909280 0.47378037 0.14330610 0.64687783 0.74671013
+    #>  [7] 0.66166569 0.98940297 0.57955534 0.01730766
 
 ``` r
 rs$call(function() rnorm(10))
 rs
 ```
 
-    #> R SESSION, alive, busy, pid 8856.
+    #> R SESSION, alive, busy, pid 8833.
 
 ``` r
 rs$poll_process(2000)
@@ -350,11 +350,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-21eb311fa717"
+    #> [1] "done callr-rs-result-21d51e590b87"
     #>
     #> $result
-    #>  [1] -0.8057134 -1.6957165 -0.5845091 -0.6517915 -0.8323845 -0.3524898
-    #>  [7] -0.2532493  1.7692045  0.3967179 -0.6182952
+    #>  [1]  0.6449795 -0.9475784  0.1846695 -1.7233021 -0.8488840 -0.5173057
+    #>  [7] -0.1384770  0.6102268 -1.2333627  0.8310416
     #>
     #> $stdout
     #> [1] ""
