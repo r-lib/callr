@@ -8,6 +8,10 @@ env_file <- NULL
 ## We save this as an RDS, so it can be loaded quickly
 .onLoad <- function(libname, pkgname) {
   err$onload_hook()
+
+  # Register methods on load as hacky work-around for pak double registration
+  registerS3method("format", "callr_status_error", format.callr_status_error)
+  registerS3method("print", "callr_status_error", print.callr_status_error)
   env_file <<- tempfile("callr-env-")
   clients <<- asNamespace("processx")$client
   sofiles <<- get_client_files()

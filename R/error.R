@@ -64,8 +64,7 @@ callr_remote_error_with_stack <- function(remerr, out) {
   err
 }
 
-#' @export
-
+# registered in .onLoad
 format.callr_status_error <- function(
   x,
   trace = FALSE,
@@ -158,8 +157,7 @@ format.callr_status_error <- function(
   lines
 }
 
-#' @export
-
+# registered in .onLoad
 print.callr_status_error <- function(
   x,
   trace = TRUE,

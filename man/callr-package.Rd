@@ -45,7 +45,7 @@ The results are passed back seamlessly:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() var(iris[, 1:4]))
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #>              Sepal.Length Sepal.Width Petal.Length Petal.Width                  
 #> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707                  
 #> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394                  
@@ -63,12 +63,12 @@ For example, the following does not work:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{mycars <- cars
 callr::r(function() summary(mycars))
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#> <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#> <span style="color: #B58900;">!</span> in callr subprocess.                                                          
-#> <span style="font-weight: bold;">Caused by error</span> in `summary(mycars)`:                                           
-#> <span style="color: #B58900;">!</span> object 'mycars' not found                                                     
-#> <span style="color: #525252;">Type .Last.error to see the more details.</span>                                       
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Error:                                                                          
+#> ! in callr subprocess.                                                          
+#> Caused by error in `(function () ...`:                                          
+#> ! object 'mycars' not found                                                     
+#> Type .Last.error to see the more details.                                       
 </pre></div>
 }}
 
@@ -78,7 +78,7 @@ But this does:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{mycars <- cars
 callr::r(function(x) summary(x), args = list(mycars))
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #>      speed           dist                                                       
 #>  Min.   : 4.0   Min.   :  2.00                                                  
 #>  1st Qu.:12.0   1st Qu.: 26.00                                                  
@@ -100,7 +100,7 @@ For example, the following code creates an \href{https://github.com/igraph/rigra
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() \{ g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) \})
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [1] 11                                                                          
 </pre></div>
 }}
@@ -113,12 +113,12 @@ callr copies errors from the child process back to the main R session:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::r(function() 1 + "A")
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#> <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#> <span style="color: #B58900;">!</span> in callr subprocess.                                                          
-#> <span style="font-weight: bold;">Caused by error</span> in `1 + "A"`:                                                   
-#> <span style="color: #B58900;">!</span> non-numeric argument to binary operator                                       
-#> <span style="color: #525252;">Type .Last.error to see the more details.</span>                                       
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Error:                                                                          
+#> ! in callr subprocess.                                                          
+#> Caused by error in `1 + "A"`:                                                   
+#> ! non-numeric argument to binary operator                                       
+#> Type .Last.error to see the more details.                                       
 </pre></div>
 callr sets the `.Last.error` variable, and after an error you can inspect this for more details about the error, including stack traces both from the main R process and the subprocess.
 }}
@@ -126,21 +126,21 @@ callr sets the `.Last.error` variable, and after an error you can inspect this f
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{.Last.error
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#> <span style="font-weight: bold;color: #B58900;">Error</span>:                                                                          
-#> <span style="color: #B58900;">!</span> in callr subprocess.                                                          
-#> <span style="font-weight: bold;">Caused by error</span> in `1 + "A"`:                                                   
-#> <span style="color: #B58900;">!</span> non-numeric argument to binary operator                                       
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> Error:                                                                          
+#> ! in callr subprocess.                                                          
+#> Caused by error in `1 + "A"`:                                                   
+#> ! non-numeric argument to binary operator                                       
 #> ---                                                                             
 #> Backtrace:                                                                      
-#> <span style="color: #525252;">1. </span>callr::<span style="color: #2AA198;">r</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> <span style="color: #268BD2;">1</span> <span style="color: #859900;">+</span> <span style="color: #B58900;">"A")</span>                                                 
-#> <span style="color: #525252;">2. </span>callr:::<span style="color: #2AA198;">get_result</span><span style="color: #B58900;">(</span>output = out, options<span style="color: #B58900;">)</span>                                    
-#> <span style="color: #525252;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">callr_remote_error</span><span style="color: #268BD2;">(</span>remerr, output<span style="color: #268BD2;">)</span>, parent = <span style="color: #2AA198;">fix_msg</span><span style="color: #268BD2;">(</span>remerr<span style="color: #2AA198;">[[</span><span style="color: #268BD2;">3</span><span style="color: #2AA198;">]</span>
-#> <span style="color: #2AA198;">]</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                                                             
+#> 1. callr::r(function() 1 + "A")                                                 
+#> 2. callr:::get_result(output = out, options)                                    
+#> 3. callr:::throw(callr_remote_error(remerr, output), parent = fix_msg(remerr[[3]
+#> ]))                                                                             
 #> ---                                                                             
 #> Subprocess backtrace:                                                           
-#> <span style="color: #525252;">1. </span>base::.handleSimpleError(function (e) …                                      
-#> <span style="color: #525252;">2. </span>global <span style="color: #2AA198;">h</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">simpleError</span><span style="color: #268BD2;">(</span>msg, call<span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                             
+#> 1. base::.handleSimpleError(function (e)                                        
+#> 2. global h(simpleError(msg, call))                                             
 </pre></div>
 }}
 
@@ -162,7 +162,7 @@ By default, the standard output and error of the child is lost, but you can requ
 )
 readLines("/tmp/out")
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [1] "[1] \\"hello world!\\""                                                      
 </pre></div>
 }}
@@ -170,7 +170,7 @@ readLines("/tmp/out")
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{readLines("/tmp/err")
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [1] "hello again!"                                                              
 </pre></div>
 }}
@@ -190,8 +190,8 @@ It returns an \code{r_process} R6 object, that provides a rich API:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#> PROCESS 'R', running, pid 58242.                                                
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> PROCESS 'R', running, pid 93508.                                                
 </pre></div>
 }}
 
@@ -200,7 +200,7 @@ This is a list of all \code{r_process} methods:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{ls(rp)
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #>  [1] "as_ps_handle"          "clone"                 "finalize"                 
 #>  [4] "format"                "get_cmdline"           "get_cpu_times"            
 #>  [7] "get_error_connection"  "get_error_file"        "get_exe"                  
@@ -247,7 +247,7 @@ The timeout is in milliseconds.
 rp2 <- callr::r_bg(function() \{ Sys.sleep(1/1000); "2 done" \})
 processx::poll(list(rp1, rp2), 1000)
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [[1]]                                                                           
 #>   output    error  process                                                      
 #> "silent" "silent" "silent"                                                      
@@ -262,7 +262,7 @@ processx::poll(list(rp1, rp2), 1000)
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rp2$get_result()
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [1] "2 done"                                                                    
 </pre></div>
 }}
@@ -270,10 +270,10 @@ processx::poll(list(rp1, rp2), 1000)
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{processx::poll(list(rp1), 1000)
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [[1]]                                                                           
-#>   output    error  process                                                      
-#> "silent" "silent"  "ready"                                                      
+#>  output   error process                                                         
+#> "ready" "ready" "ready"                                                         
 #>                                                                                 
 </pre></div>
 }}
@@ -281,7 +281,7 @@ processx::poll(list(rp1, rp2), 1000)
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rp1$get_result()
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [1] "1 done"                                                                    
 </pre></div>
 }}
@@ -295,8 +295,8 @@ processx::poll(list(rp1, rp2), 1000)
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs <- callr::r_session$new()
 rs
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#> R SESSION, alive, idle, pid 58288.                                              
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> R SESSION, alive, idle, pid 93547.                                              
 </pre></div>
 }}
 
@@ -310,9 +310,9 @@ Once an R session is done with an asynchronous computation, its \code{poll_proce
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs <- callr::r_session$new()
 rs$run(function() runif(10))
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#>  [1] 0.8047354 0.8938617 0.7142338 0.8505395 0.3118376 0.7083882 0.9514367      
-#>  [8] 0.2536755 0.6727270 0.3359578                                              
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#>  [1] 0.9610059 0.1697476 0.4644942 0.7274561 0.5235966 0.2661597 0.6214701      
+#>  [8] 0.9156920 0.5577677 0.8844519                                              
 </pre></div>
 }}
 
@@ -320,15 +320,15 @@ rs$run(function() runif(10))
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$call(function() rnorm(10))
 rs
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
-#> R SESSION, alive, busy, pid 58294.                                              
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+#> R SESSION, alive, busy, pid 93551.                                              
 </pre></div>
 }}
 
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$poll_process(2000)
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> [1] "ready"                                                                     
 </pre></div>
 }}
@@ -336,16 +336,16 @@ rs
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rs$read()
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> $code                                                                           
 #> [1] 200                                                                         
 #>                                                                                 
 #> $message                                                                        
-#> [1] "done callr-rs-result-e3324ebebc8b"                                         
+#> [1] "done callr-rs-result-16cf57f352725"                                        
 #>                                                                                 
 #> $result                                                                         
-#>  [1] -0.60962697 -0.41063130  0.22121432  1.44621900  0.26890394  0.11432756    
-#>  [7] -0.53206118  0.47493933  0.02069551  1.37348004                            
+#>  [1]  0.6357407  0.3347589  1.1821022  1.1821849  1.8102056 -0.6755208          
+#>  [7] -0.7085879  1.3591706  0.8677449 -0.5669537                                
 #>                                                                                 
 #> $stdout                                                                         
 #> [1] ""                                                                          
@@ -370,12 +370,12 @@ For example, you can call \verb{R CMD INSTALL}, \verb{R CMD check} or \verb{R CM
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{callr::rcmd("config", "CC")
 }\if{html}{\out{</div>}}\if{html}{\out{
-<div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
+<div class="asciicast" style="color: #B9C0CB;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000"><pre>
 #> $status                                                                         
 #> [1] 0                                                                           
 #>                                                                                 
 #> $stdout                                                                         
-#> [1] "clang -arch arm64\\n"                                                       
+#> [1] "clang -arch arm64 -std=gnu2x\\n"                                            
 #>                                                                                 
 #> $stderr                                                                         
 #> [1] ""                                                                          
@@ -384,7 +384,7 @@ For example, you can call \verb{R CMD INSTALL}, \verb{R CMD check} or \verb{R CM
 #> [1] FALSE                                                                       
 #>                                                                                 
 #> $command                                                                        
-#> [1] "/Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/bin/R"        
+#> [1] "/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/bin/R"        
 #> [2] "CMD"                                                                       
 #> [3] "config"                                                                    
 #> [4] "CC"                                                                        
@@ -434,12 +434,13 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Gábor Csárdi \email{csardi.gabor@gmail.com} (\href{https://orcid.org/0000-0001-7098-9676}{ORCID}) [copyright holder]
   \item Winston Chang
 }
 
 Other contributors:
 \itemize{
-  \item Posit Software, PBC [copyright holder, funder]
+  \item Posit Software, PBC (\href{https://ror.org/03wc8by49}{ROR}) [copyright holder, funder]
   \item Ascent Digital Services [copyright holder, funder]
 }
 

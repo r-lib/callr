@@ -1,5 +1,9 @@
 # callr (development version)
 
+* `r()`, `rcmd()`, `rscript()` and friends no longer hang on Windows when
+  called with `stdout = "|"` (or any value of `stdout`/`stderr` other than
+  a file path or `NULL`) (#313).
+
 # callr 3.7.6
 
 * If the `CALLR_NO_TEMP_DLLS=true` env var is set then callr does not

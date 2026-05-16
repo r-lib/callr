@@ -85,7 +85,7 @@ in plain files.
 }
 
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (FALSE) withAutoprint(\{ # examplesIf}
 # Compare to r()
 r(function() .libPaths())
 r_vanilla(function() .libPaths())
@@ -95,8 +95,8 @@ r_vanilla(function() getOption("repos"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other callr functions: 
-\code{\link{r}()},
-\code{\link{r_copycat}()}
+Other callr functions:
+\code{\link[=r]{r()}},
+\code{\link[=r_copycat]{r_copycat()}}
 }
 \concept{callr functions}

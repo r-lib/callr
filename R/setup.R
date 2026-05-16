@@ -331,21 +331,25 @@ setup_callbacks <- function(options) {
     ## Need to evaluate it when the callback is created
     force(stream)
 
+    ## "|" and "2>&1" are not file names; `cat(file = "|", ...)` opens
+    ## a pipe-to-command connection that hangs on Windows (#313).
+    is_file <- !is.null(stream) && !stream %in% c("|", "2>&1")
+
     ## In case there is no output, we create an empty file here
-    if (!is.null(stream) && stream != "2>&1") {
+    if (is_file) {
       cat("", file = stream)
     }
 
     if (!is.null(cb)) {
       function(x, proc) {
-        if (!is.null(stream)) {
+        if (is_file) {
           cat(x, file = stream, sep = "\n", append = TRUE)
         }
         cb(x)
       }
     } else {
       function(x, proc) {
-        if (!is.null(stream)) cat(x, file = stream, sep = "\n", append = TRUE)
+        if (is_file) cat(x, file = stream, sep = "\n", append = TRUE)
       }
     }
   }

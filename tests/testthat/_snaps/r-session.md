@@ -4,8 +4,8 @@
       rs$run(function() stop("foobar"))
     Condition
       Error:
-      ! in callr subprocess.
-      Caused by error:
+      ! ! in callr subprocess.
+      Caused by error in `(function () ...`:
       ! foobar
 
 # traceback
@@ -14,8 +14,8 @@
       rs$run(do)
     Condition
       Error:
-      ! in callr subprocess.
-      Caused by error:
+      ! ! in callr subprocess.
+      Caused by error in `g()`:
       ! oops
 
 # error in the load hook
@@ -27,5 +27,5 @@
       })
     Condition
       Error:
-      ! callr subprocess failed: Failed to start R session
+      ! ! callr subprocess failed: Failed to start R session
 
