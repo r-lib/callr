@@ -49,6 +49,7 @@ function in a new R process. The results are passed back seamlessly:
 
     callr::r(function() var(iris[, 1:4]))
 
+
     #>              Sepal.Length Sepal.Width Petal.Length Petal.Width
     #> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
     #> Sepal.Width    -0.0424340   0.1899794   -0.3296564  -0.1216394
@@ -65,6 +66,7 @@ to variables in the parent. For example, the following does not work:
     mycars <- cars
     callr::r(function() summary(mycars))
 
+
     #> Error:
     #> ! in callr subprocess.
     #> Caused by error in `(function () ...`:
@@ -75,6 +77,7 @@ But this does:
 
     mycars <- cars
     callr::r(function(x) summary(x), args = list(mycars))
+
 
     #>      speed           dist
     #>  Min.   : 4.0   Min.   :  2.00
@@ -97,6 +100,7 @@ child, and calculates some metrics of it.
 
     callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 
+
     #> [1] 11
 
 #### Error handling
@@ -104,6 +108,7 @@ child, and calculates some metrics of it.
 callr copies errors from the child process back to the main R session:
 
     callr::r(function() 1 + "A")
+
 
     #> Error:
     #> ! in callr subprocess.
@@ -116,6 +121,7 @@ inspect this for more details about the error, including stack traces
 both from the main R process and the subprocess.
 
     .Last.error
+
 
     #> Error:
     #> ! in callr subprocess.
@@ -153,9 +159,11 @@ in the parent:
     )
     readLines("/tmp/out")
 
+
     #> [1] "[1] \"hello world!\""
 
     readLines("/tmp/err")
+
 
     #> [1] "hello again!"
 
@@ -174,11 +182,13 @@ provides a rich API:
     rp <- callr::r_bg(function() Sys.sleep(.2))
     rp
 
+
     #> PROCESS 'R', running, pid 93508.
 
 This is a list of all `r_process` methods:
 
     ls(rp)
+
 
     #>  [1] "as_ps_handle"          "clone"                 "finalize"
     #>  [4] "format"                "get_cmdline"           "get_cpu_times"
@@ -238,6 +248,7 @@ an event, or if its timeout has expired. The timeout is in milliseconds.
     rp2 <- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
     processx::poll(list(rp1, rp2), 1000)
 
+
     #> [[1]]
     #>   output    error  process
     #> "silent" "silent" "silent"
@@ -249,9 +260,11 @@ an event, or if its timeout has expired. The timeout is in milliseconds.
 
     rp2$get_result()
 
+
     #> [1] "2 done"
 
     processx::poll(list(rp1), 1000)
+
 
     #> [[1]]
     #>  output   error process
@@ -259,6 +272,7 @@ an event, or if its timeout has expired. The timeout is in milliseconds.
     #>
 
     rp1$get_result()
+
 
     #> [1] "1 done"
 
@@ -270,6 +284,7 @@ subclass that represents a persistent background R session:
 
     rs <- callr::r_session$new()
     rs
+
 
     #> R SESSION, alive, idle, pid 93547.
 
@@ -290,19 +305,23 @@ method can read out the result.
     rs <- callr::r_session$new()
     rs$run(function() runif(10))
 
+
     #>  [1] 0.9610059 0.1697476 0.4644942 0.7274561 0.5235966 0.2661597 0.6214701
     #>  [8] 0.9156920 0.5577677 0.8844519
 
     rs$call(function() rnorm(10))
     rs
 
+
     #> R SESSION, alive, busy, pid 93551.
 
     rs$poll_process(2000)
 
+
     #> [1] "ready"
 
     rs$read()
+
 
     #> $code
     #> [1] 200
@@ -333,6 +352,7 @@ calls an `R CMD` command. For example, you can call `R CMD INSTALL`,
 `R CMD check` or `R CMD config` this way:
 
     callr::rcmd("config", "CC")
+
 
     #> $status
     #> [1] 0

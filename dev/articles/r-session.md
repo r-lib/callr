@@ -20,33 +20,41 @@ milliseconds, which should be plenty. Typically R starts up in about
 100-300 milliseconds.
 
 ``` r
+
 library(callr)
 system.time(rs <- r_session$new())
 ```
 
+
     #>    user  system elapsed                                                         
-    #>   0.015   0.005   0.190                                                         
+    #>   0.015   0.004   0.194                                                         
 
 ``` r
+
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 9281.                                               
+
+    #> R SESSION, alive, idle, pid 9362.                                               
 
 ``` r
+
 rs$get_state()
 ```
+
 
     #> [1] "idle"                                                                      
 
 To terminate an R session, call its `$close()` method:
 
 ``` r
+
 rs$close()
 rs
 ```
 
-    #> R SESSION, finished, pid 9281.                                                  
+
+    #> R SESSION, finished, pid 9362.                                                  
 
 Just like
 [`processx::process`](http://processx.r-lib.org/reference/process.md)
@@ -61,21 +69,27 @@ will still error if the OS cannot start up the R process, but R errors
 will be reported asynchronously.
 
 ``` r
+
 system.time(rs2 <- r_session$new(wait = FALSE))
 ```
 
+
     #>    user  system elapsed                                                         
-    #>   0.002   0.004   0.006                                                         
+    #>   0.004   0.001   0.006                                                         
 
 ``` r
+
 rs2
 ```
 
-    #> R SESSION, alive, starting, pid 9292.                                           
+
+    #> R SESSION, alive, starting, pid 9373.                                           
 
 ``` r
+
 rs2$get_state()
 ```
+
 
     #> [1] "starting"                                                                  
 
@@ -87,8 +101,10 @@ the main process while the R process is starting up. It also lets you
 start up multiple processes concurrently, see the next section.
 
 ``` r
+
 processx::poll(list(rs2), 3000)
 ```
+
 
     #> [[1]]                                                                           
     #>   output    error  process                                                      
@@ -113,8 +129,10 @@ reports a `"ready"` `process` connection, you can call the
 If `r_session$$read()` reports “201 STARTED”, it is ready to run R code:
 
 ``` r
+
 rs2$read()
 ```
+
 
     #> $code                                                                           
     #> [1] 201                                                                         
@@ -141,6 +159,7 @@ Here is an example that uses the `load_hook` option to run extra code
 right after R has started up:
 
 ``` r
+
 opts <- r_session_options(
   load_hook = quote({ message("I am running!"); Sys.sleep(1) })
 )
@@ -148,26 +167,33 @@ rs3 <- r_session$new(wait = FALSE, options = opts)
 processx::poll(list(rs3), 3000)
 ```
 
+
     #> [[1]]                                                                           
     #>   output    error  process                                                      
     #> "silent"  "ready" "silent"                                                      
     #>                                                                                 
 
 ``` r
+
 rs3$read_error()
 ```
+
 
     #> [1] "I am running!\n"                                                           
 
 ``` r
+
 rs3$poll_process(3000)
 ```
+
 
     #> [1] "ready"                                                                     
 
 ``` r
+
 rs3$read()
 ```
+
 
     #> $code                                                                           
     #> [1] 201                                                                         
@@ -192,6 +218,7 @@ If you need to start several R sessions quickly, then it is best to use
 all processes until they are all ready.
 
 ``` r
+
 num_procs <- 4
 procs <- tibble::tibble(
   session = replicate(num_procs, r_session$new(wait = FALSE), simplify = FALSE),
@@ -212,12 +239,15 @@ while ((now <- Sys.time()) < limit &&
 Sys.time() - procs$started_at
 ```
 
+
     #> Time differences in secs                                                        
-    #> [1] 0.2719481 0.2719481 0.2719481 0.2719481                                     
+    #> [1] 0.2748382 0.2748382 0.2748382 0.2748382                                     
 
 ``` r
+
 procs$start_result
 ```
+
 
     #> [[1]]                                                                           
     #> $code                                                                           
@@ -274,25 +304,29 @@ Let’s use the 4 R sessions created above to demonstrate them.
 `$run()` is the simplest:
 
 ``` r
+
 procs$session[[1]]$run(function() glue::glue("I am process {Sys.getpid()}."))
 ```
 
-    #> I am process 9313.                                                              
+
+    #> I am process 9393.                                                              
 
 `$run_with_output()` has the output as well:
 
 ``` r
+
 procs$session[[1]]$run_with_output(function() {
   message("I am process ", Sys.getpid(), ".")
   head(mtcars)
 })
 ```
 
+
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-24385fd78194"                                         
+    #> [1] "done callr-rs-result-248920a5de43"                                         
     #>                                                                                 
     #> $result                                                                         
     #>                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -307,7 +341,7 @@ procs$session[[1]]$run_with_output(function() {
     #> [1] ""                                                                          
     #>                                                                                 
     #> $stderr                                                                         
-    #> [1] "I am process 9313.\n"                                                      
+    #> [1] "I am process 9393.\n"                                                      
     #>                                                                                 
     #> $error                                                                          
     #> NULL                                                                            
@@ -318,6 +352,7 @@ procs$session[[1]]$run_with_output(function() {
 `$call()` starts running the function, but does not wait for the result:
 
 ``` r
+
 invisible(lapply(procs$session, function(p) {
     p$call(function() {
       Sys.sleep(runif(1) * 2)
@@ -327,26 +362,29 @@ invisible(lapply(procs$session, function(p) {
 procs$session
 ```
 
+
     #> [[1]]                                                                           
-    #> R SESSION, alive, busy, pid 9313.                                               
+    #> R SESSION, alive, busy, pid 9393.                                               
     #>                                                                                 
     #> [[2]]                                                                           
-    #> R SESSION, alive, busy, pid 9315.                                               
+    #> R SESSION, alive, busy, pid 9395.                                               
     #>                                                                                 
     #> [[3]]                                                                           
-    #> R SESSION, alive, busy, pid 9320.                                               
+    #> R SESSION, alive, busy, pid 9400.                                               
     #>                                                                                 
     #> [[4]]                                                                           
-    #> R SESSION, alive, busy, pid 9325.                                               
+    #> R SESSION, alive, busy, pid 9405.                                               
     #>                                                                                 
 
 Use [`processx::poll()`](http://processx.r-lib.org/reference/poll.md) to
 wait for one or more sessions to finish their job:
 
 ``` r
+
 pr <- processx::poll(procs$session, 5000)
 pr
 ```
+
 
     #> [[1]]                                                                           
     #>   output    error  process                                                      
@@ -354,11 +392,11 @@ pr
     #>                                                                                 
     #> [[2]]                                                                           
     #>   output    error  process                                                      
-    #> "silent" "silent"  "ready"                                                      
+    #> "silent" "silent" "silent"                                                      
     #>                                                                                 
     #> [[3]]                                                                           
     #>   output    error  process                                                      
-    #> "silent" "silent" "silent"                                                      
+    #> "silent" "silent"  "ready"                                                      
     #>                                                                                 
     #> [[4]]                                                                           
     #>   output    error  process                                                      
@@ -369,6 +407,7 @@ Then you can use the `$read()` method to read out the result (or error,
 if a failure happened):
 
 ``` r
+
 for (i in seq_along(pr)) {
   if (pr[[i]][["process"]] == "ready") {
     cat("Process ", i, " is ready:\n")
@@ -377,15 +416,16 @@ for (i in seq_along(pr)) {
 }
 ```
 
-    #> Process  2  is ready:                                                           
+
+    #> Process  3  is ready:                                                           
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-2438680488fa"                                         
+    #> [1] "done callr-rs-result-24897565cd20"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9315.                                                              
+    #> I am process 9400.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -404,6 +444,7 @@ similar to the one we used above to start them. You might find this
 helper function useful as a starting point:
 
 ``` r
+
 wait_for_sessions <- function(sess, timeout = 5000) {
   result <- vector("list", length(sess))
   is_busy <- function() {
@@ -424,15 +465,16 @@ wait_for_sessions <- function(sess, timeout = 5000) {
 wait_for_sessions(procs$session)
 ```
 
+
     #> [[1]]                                                                           
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-2438287aa496"                                         
+    #> [1] "done callr-rs-result-2489f402ce8"                                          
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9313.                                                              
+    #> I am process 9393.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -447,17 +489,14 @@ wait_for_sessions(procs$session)
     #> [1] "callr_session_result"                                                      
     #>                                                                                 
     #> [[2]]                                                                           
-    #> NULL                                                                            
-    #>                                                                                 
-    #> [[3]]                                                                           
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-243855959c62"                                         
+    #> [1] "done callr-rs-result-24897690f655"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9320.                                                              
+    #> I am process 9395.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -471,15 +510,18 @@ wait_for_sessions(procs$session)
     #> attr(,"class")                                                                  
     #> [1] "callr_session_result"                                                      
     #>                                                                                 
+    #> [[3]]                                                                           
+    #> NULL                                                                            
+    #>                                                                                 
     #> [[4]]                                                                           
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-24383e5ad9c1"                                         
+    #> [1] "done callr-rs-result-24891ecaaae1"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9325.                                                              
+    #> I am process 9405.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -497,9 +539,11 @@ wait_for_sessions(procs$session)
 Errors from a `$run()` are turned into errors in the main process:
 
 ``` r
+
 rs <- r_session$new()
 rs$run(function() library("not-a-package"))
 ```
+
 
     #> Error:                                                                          
     #> ! in callr subprocess.                                                          
@@ -511,8 +555,10 @@ callr also adds two stack traces to the output, one for the main process
 and one for the subprocess:
 
 ``` r
+
 .Last.error
 ```
+
 
     #> <callr_error/rlib_error_3_0/rlib_error/error>                                   
     #> Error:                                                                          
@@ -533,17 +579,19 @@ and one for the subprocess:
 Errors from a `$call()` are returned in the `error` entry of the result:
 
 ``` r
+
 rs$call(function() library("still-not"))
 rs$poll_process(2000)
 rs$read()
 ```
+
 
     #> [1] "ready"                                                                     
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-2438750c1e86"                                         
+    #> [1] "done callr-rs-result-248943cceb81"                                         
     #>                                                                                 
     #> $result                                                                         
     #> NULL                                                                            
@@ -593,9 +641,11 @@ the standard output + error if the system process exits with a
 non-successful status:
 
 ``` r
+
 rs <- r_session$new()
 rs$run(function() processx::run("ls", "/not-this"))
 ```
+
 
     #> Error:                                                                          
     #> ! in callr subprocess.                                                          
@@ -604,8 +654,10 @@ rs$run(function() processx::run("ls", "/not-this"))
     #> Type .Last.error to see the more details.                                       
 
 ``` r
+
 .Last.error
 ```
+
 
     #> <callr_error/rlib_error_3_0/rlib_error/error>                                   
     #> Error:                                                                          
@@ -625,8 +677,10 @@ rs$run(function() processx::run("ls", "/not-this"))
     #> 4. global (function (e) …                                                       
 
 ``` r
+
 .Last.error$parent
 ```
+
 
     #> <system_command_status_error/rlib_error_3_0/rlib_error/error>                   
     #> Error in `processx::run("ls", "/not-this")`:                                    
@@ -647,6 +701,7 @@ contains large objects, that take a lot of time to copy between
 processes.
 
 ``` r
+
 options(callr.traceback = TRUE)
 rs <- r_session$new()
 fun <- function() {
@@ -662,6 +717,7 @@ fun <- function() {
 rs$run(fun)
 ```
 
+
     #> Error:                                                                          
     #> ! in callr subprocess.                                                          
     #> Caused by error in `if (vec) "success"`:                                        
@@ -669,8 +725,10 @@ rs$run(fun)
     #> Type .Last.error to see the more details.                                       
 
 ``` r
+
 rs$traceback()
 ```
+
 
     #> 3: f3() at #4                                                                   
     #> 2: f2() at #3                                                                   
@@ -702,9 +760,11 @@ Press CTRL+C or ESC, or type `.q` and press ENTER to quit the REPL.
 Here is an example:
 
 ``` r
+
 rs <- r_session$new()
 rs$run(function() { .GlobalEnv$data <- mtcars; NULL })
 ```
+
 
     #> NULL                                                                            
 

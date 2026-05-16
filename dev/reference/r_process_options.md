@@ -38,8 +38,8 @@ r_process_options()
 #> list()
 #> 
 #> $libpath
-#> [1] "/home/runner/work/_temp/Library" "/opt/R/4.5.3/lib/R/site-library"
-#> [3] "/opt/R/4.5.3/lib/R/library"     
+#> [1] "/home/runner/work/_temp/Library" "/opt/R/4.6.0/lib/R/site-library"
+#> [3] "/opt/R/4.6.0/lib/R/library"     
 #> 
 #> $repos
 #>                                                          RSPM 
@@ -79,7 +79,7 @@ r_process_options()
 #>  [2] "    while (\"tools:callr\" %in% search()) {\n"                                        
 #>  [3] "        detach(\"tools:callr\")\n"                                                    
 #>  [4] "    }\n"                                                                              
-#>  [5] "    env <- readRDS(\"/tmp/RtmpGC1JR2/callr-env-1f014800a1e1\")\n"                     
+#>  [5] "    env <- readRDS(\"/tmp/RtmpgXxKJB/callr-env-1f523877a300\")\n"                     
 #>  [6] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
 #>  [7] "    data <- env$`__callr_data__`\n"                                                   
 #>  [8] "    data$pxlib <- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             

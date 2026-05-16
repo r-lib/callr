@@ -2,6 +2,13 @@
 
 ## callr (development version)
 
+- [`r()`](https://callr.r-lib.org/dev/reference/r.md),
+  [`rcmd()`](https://callr.r-lib.org/dev/reference/rcmd.md),
+  [`rscript()`](https://callr.r-lib.org/dev/reference/rscript.md) and
+  friends no longer hang on Windows when called with `stdout = "|"` (or
+  any value of `stdout`/`stderr` other than a file path or `NULL`)
+  ([\#313](https://github.com/r-lib/callr/issues/313)).
+
 ## callr 3.7.6
 
 CRAN release: 2024-03-25

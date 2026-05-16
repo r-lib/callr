@@ -47,12 +47,14 @@ exactly that.
 Install the stable version from CRAN:
 
 ``` r
+
 install.packages("callr")
 ```
 
 Install the development version from GitHub:
 
 ``` r
+
 pak::pak("r-lib/callr")
 ```
 
@@ -62,8 +64,10 @@ Use [`r()`](https://callr.r-lib.org/dev/reference/r.md) to run an R
 function in a new R process. The results are passed back seamlessly:
 
 ``` r
+
 callr::r(function() var(iris[, 1:4]))
 ```
+
 
     #>              Sepal.Length Sepal.Width Petal.Length Petal.Width
     #> Sepal.Length    0.6856935  -0.0424340    1.2743154   0.5162707
@@ -79,9 +83,11 @@ copied to the child process, whereas the evaluated function cannot refer
 to variables in the parent. For example, the following does not work:
 
 ``` r
+
 mycars <- cars
 callr::r(function() summary(mycars))
 ```
+
 
     #> Error:
     #> ! in callr subprocess.
@@ -92,9 +98,11 @@ callr::r(function() summary(mycars))
 But this does:
 
 ``` r
+
 mycars <- cars
 callr::r(function(x) summary(x), args = list(mycars))
 ```
+
 
     #>      speed           dist
     #>  Min.   : 4.0   Min.   :  2.00
@@ -116,18 +124,22 @@ creates an [igraph](https://github.com/igraph/rigraph) graph in the
 child, and calculates some metrics of it.
 
 ``` r
+
 callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g) })
 ```
 
-    #> [1] 11
+
+    #> [1] 10
 
 ### Error handling
 
 callr copies errors from the child process back to the main R session:
 
 ``` r
+
 callr::r(function() 1 + "A")
 ```
+
 
     #> Error:
     #> ! in callr subprocess.
@@ -140,8 +152,10 @@ inspect this for more details about the error, including stack traces
 both from the main R process and the subprocess.
 
 ``` r
+
 .Last.error
 ```
+
 
     #> Error:
     #> ! in callr subprocess.
@@ -175,6 +189,7 @@ can request callr to redirect them to files, and then inspect the files
 in the parent:
 
 ``` r
+
 x <- callr::r(function() { print("hello world!"); message("hello again!") },
   stdout = "/tmp/out", stderr = "/tmp/err"
 )
@@ -182,8 +197,10 @@ readLines("/tmp/out")
 ```
 
 ``` r
+
 readLines("/tmp/err")
 ```
+
 
     #> [1] "hello again!"
 
@@ -200,35 +217,40 @@ process in the background. It returns an `r_process` R6 object, that
 provides a rich API:
 
 ``` r
+
 rp <- callr::r_bg(function() Sys.sleep(.2))
 rp
 ```
 
-    #> PROCESS 'R', running, pid 8074.
+
+    #> PROCESS 'R', running, pid 8155.
 
 This is a list of all `r_process` methods:
 
 ``` r
+
 ls(rp)
 ```
 
+
     #>  [1] "as_ps_handle"          "clone"                 "format"
-    #>  [4] "get_cmdline"           "get_cpu_times"         "get_error_connection"
-    #>  [7] "get_error_file"        "get_exe"               "get_exit_status"
-    #> [10] "get_input_connection"  "get_input_file"        "get_memory_info"
-    #> [13] "get_name"              "get_output_connection" "get_output_file"
-    #> [16] "get_pid"               "get_poll_connection"   "get_result"
-    #> [19] "get_start_time"        "get_status"            "get_username"
-    #> [22] "get_wd"                "has_error_connection"  "has_input_connection"
-    #> [25] "has_output_connection" "has_poll_connection"   "initialize"
-    #> [28] "interrupt"             "is_alive"              "is_incomplete_error"
-    #> [31] "is_incomplete_output"  "is_supervised"         "kill"
-    #> [34] "kill_tree"             "poll_io"               "print"
-    #> [37] "read_all_error"        "read_all_error_lines"  "read_all_output"
-    #> [40] "read_all_output_lines" "read_error"            "read_error_lines"
-    #> [43] "read_output"           "read_output_lines"     "resume"
-    #> [46] "signal"                "supervise"             "suspend"
-    #> [49] "wait"                  "write_input"
+    #>  [4] "get_cmdline"           "get_cpu_times"         "get_end_time"
+    #>  [7] "get_error_connection"  "get_error_file"        "get_exe"
+    #> [10] "get_exit_status"       "get_input_connection"  "get_input_file"
+    #> [13] "get_memory_info"       "get_name"              "get_output_connection"
+    #> [16] "get_output_file"       "get_pid"               "get_poll_connection"
+    #> [19] "get_result"            "get_start_time"        "get_status"
+    #> [22] "get_username"          "get_wd"                "has_error_connection"
+    #> [25] "has_input_connection"  "has_output_connection" "has_poll_connection"
+    #> [28] "initialize"            "interrupt"             "is_alive"
+    #> [31] "is_incomplete_error"   "is_incomplete_output"  "is_supervised"
+    #> [34] "kill"                  "kill_tree"             "poll_io"
+    #> [37] "print"                 "read_all_error"        "read_all_error_lines"
+    #> [40] "read_all_output"       "read_all_output_lines" "read_error"
+    #> [43] "read_error_bytes"      "read_error_lines"      "read_output"
+    #> [46] "read_output_bytes"     "read_output_lines"     "resume"
+    #> [49] "signal"                "supervise"             "suspend"
+    #> [52] "wait"                  "write_input"
 
 These include all methods of the
 [`processx::process`](http://processx.r-lib.org/reference/process.md)
@@ -259,10 +281,12 @@ from multiple processes. It returns as soon as one process has generated
 an event, or if its timeout has expired. The timeout is in milliseconds.
 
 ``` r
+
 rp1 <- callr::r_bg(function() { Sys.sleep(1/2); "1 done" })
 rp2 <- callr::r_bg(function() { Sys.sleep(1/1000); "2 done" })
 processx::poll(list(rp1, rp2), 1000)
 ```
+
 
     #> [[1]]
     #>   output    error  process
@@ -274,14 +298,18 @@ processx::poll(list(rp1, rp2), 1000)
     #>
 
 ``` r
+
 rp2$get_result()
 ```
+
 
     #> [1] "2 done"
 
 ``` r
+
 processx::poll(list(rp1), 1000)
 ```
+
 
     #> [[1]]
     #>   output    error  process
@@ -289,8 +317,10 @@ processx::poll(list(rp1), 1000)
     #>
 
 ``` r
+
 rp1$get_result()
 ```
+
 
     #> [1] "1 done"
 
@@ -301,11 +331,13 @@ rp1$get_result()
 subclass that represents a persistent background R session:
 
 ``` r
+
 rs <- callr::r_session$new()
 rs
 ```
 
-    #> R SESSION, alive, idle, pid 8125.
+
+    #> R SESSION, alive, idle, pid 8206.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -322,39 +354,47 @@ Once an R session is done with an asynchronous computation, its
 method can read out the result.
 
 ``` r
+
 rs <- callr::r_session$new()
 rs$run(function() runif(10))
 ```
 
-    #>  [1] 0.8261906 0.4358247 0.4461754 0.7371257 0.1289951 0.9668497 0.2408722
-    #>  [8] 0.9467684 0.2218179 0.1507906
+
+    #>  [1] 0.09368498 0.88895409 0.27829868 0.96006126 0.90376565 0.50474792
+    #>  [7] 0.95332371 0.60080258 0.92353940 0.53507934
 
 ``` r
+
 rs$call(function() rnorm(10))
 rs
 ```
 
-    #> R SESSION, alive, busy, pid 8134.
+
+    #> R SESSION, alive, busy, pid 8215.
 
 ``` r
+
 rs$poll_process(2000)
 ```
+
 
     #> [1] "ready"
 
 ``` r
+
 rs$read()
 ```
+
 
     #> $code
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1f1a16d6b2f3"
+    #> [1] "done callr-rs-result-1f6b34c199aa"
     #>
     #> $result
-    #>  [1]  0.63955103  0.63959010 -0.62813517  0.39928549  0.65443546 -0.37384707
-    #>  [7] -1.19193555  1.05887077 -0.01497157 -0.21085892
+    #>  [1]  0.4416423  1.0715556 -1.1118536  1.8785067 -0.2445812  0.7888911
+    #>  [7] -0.2715156  0.8216429  0.4107151 -0.7309000
     #>
     #> $stdout
     #> [1] ""
@@ -375,8 +415,10 @@ calls an `R CMD` command. For example, you can call `R CMD INSTALL`,
 `R CMD check` or `R CMD config` this way:
 
 ``` r
+
 callr::rcmd("config", "CC")
 ```
+
 
     #> $status
     #> [1] 0
@@ -391,7 +433,7 @@ callr::rcmd("config", "CC")
     #> [1] FALSE
     #>
     #> $command
-    #> [1] "/opt/R/4.5.3/lib/R/bin/R" "CMD"
+    #> [1] "/opt/R/4.6.0/lib/R/bin/R" "CMD"
     #> [3] "config"                   "CC"
     #>
 

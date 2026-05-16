@@ -76,8 +76,8 @@ r_session_options()
 #> NULL
 #> 
 #> $libpath
-#> [1] "/home/runner/work/_temp/Library" "/opt/R/4.5.3/lib/R/site-library"
-#> [3] "/opt/R/4.5.3/lib/R/library"     
+#> [1] "/home/runner/work/_temp/Library" "/opt/R/4.6.0/lib/R/site-library"
+#> [3] "/opt/R/4.6.0/lib/R/library"     
 #> 
 #> $repos
 #>                                                          RSPM 
