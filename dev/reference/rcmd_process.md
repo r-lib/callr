@@ -14,17 +14,17 @@ class.
 
 ### Public methods
 
-- [`rcmd_process$new()`](#method-rcmd_process-new)
+- [`rcmd_process$new()`](#method-rcmd_process-initialize)
 
 - [`rcmd_process$clone()`](#method-rcmd_process-clone)
 
 Inherited methods
 
 - [`processx::process$as_ps_handle()`](http://processx.r-lib.org/reference/process.html#method-as_ps_handle)
-- [`processx::process$finalize()`](http://processx.r-lib.org/reference/process.html#method-finalize)
 - [`processx::process$format()`](http://processx.r-lib.org/reference/process.html#method-format)
 - [`processx::process$get_cmdline()`](http://processx.r-lib.org/reference/process.html#method-get_cmdline)
 - [`processx::process$get_cpu_times()`](http://processx.r-lib.org/reference/process.html#method-get_cpu_times)
+- [`processx::process$get_end_time()`](http://processx.r-lib.org/reference/process.html#method-get_end_time)
 - [`processx::process$get_error_connection()`](http://processx.r-lib.org/reference/process.html#method-get_error_connection)
 - [`processx::process$get_error_file()`](http://processx.r-lib.org/reference/process.html#method-get_error_file)
 - [`processx::process$get_exe()`](http://processx.r-lib.org/reference/process.html#method-get_exe)
@@ -60,8 +60,10 @@ Inherited methods
 - [`processx::process$read_all_output()`](http://processx.r-lib.org/reference/process.html#method-read_all_output)
 - [`processx::process$read_all_output_lines()`](http://processx.r-lib.org/reference/process.html#method-read_all_output_lines)
 - [`processx::process$read_error()`](http://processx.r-lib.org/reference/process.html#method-read_error)
+- [`processx::process$read_error_bytes()`](http://processx.r-lib.org/reference/process.html#method-read_error_bytes)
 - [`processx::process$read_error_lines()`](http://processx.r-lib.org/reference/process.html#method-read_error_lines)
 - [`processx::process$read_output()`](http://processx.r-lib.org/reference/process.html#method-read_output)
+- [`processx::process$read_output_bytes()`](http://processx.r-lib.org/reference/process.html#method-read_output_bytes)
 - [`processx::process$read_output_lines()`](http://processx.r-lib.org/reference/process.html#method-read_output_lines)
 - [`processx::process$resume()`](http://processx.r-lib.org/reference/process.html#method-resume)
 - [`processx::process$signal()`](http://processx.r-lib.org/reference/process.html#method-signal)
@@ -72,7 +74,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `rcmd_process$new()`
 
 Start an `R CMD` process.
 
@@ -93,7 +95,7 @@ A new `rcmd_process` object.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `rcmd_process$clone()`
 
 The objects of this class are cloneable with this method.
 

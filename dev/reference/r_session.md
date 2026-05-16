@@ -23,7 +23,7 @@ used to evaluate R function calls, one at a time.
 
 ### Public methods
 
-- [`r_session$new()`](#method-r_session-new)
+- [`r_session$new()`](#method-r_session-initialize)
 
 - [`r_session$run()`](#method-r_session-run)
 
@@ -54,10 +54,10 @@ used to evaluate R function calls, one at a time.
 Inherited methods
 
 - [`processx::process$as_ps_handle()`](http://processx.r-lib.org/reference/process.html#method-as_ps_handle)
-- [`processx::process$finalize()`](http://processx.r-lib.org/reference/process.html#method-finalize)
 - [`processx::process$format()`](http://processx.r-lib.org/reference/process.html#method-format)
 - [`processx::process$get_cmdline()`](http://processx.r-lib.org/reference/process.html#method-get_cmdline)
 - [`processx::process$get_cpu_times()`](http://processx.r-lib.org/reference/process.html#method-get_cpu_times)
+- [`processx::process$get_end_time()`](http://processx.r-lib.org/reference/process.html#method-get_end_time)
 - [`processx::process$get_error_connection()`](http://processx.r-lib.org/reference/process.html#method-get_error_connection)
 - [`processx::process$get_error_file()`](http://processx.r-lib.org/reference/process.html#method-get_error_file)
 - [`processx::process$get_exe()`](http://processx.r-lib.org/reference/process.html#method-get_exe)
@@ -92,8 +92,10 @@ Inherited methods
 - [`processx::process$read_all_output()`](http://processx.r-lib.org/reference/process.html#method-read_all_output)
 - [`processx::process$read_all_output_lines()`](http://processx.r-lib.org/reference/process.html#method-read_all_output_lines)
 - [`processx::process$read_error()`](http://processx.r-lib.org/reference/process.html#method-read_error)
+- [`processx::process$read_error_bytes()`](http://processx.r-lib.org/reference/process.html#method-read_error_bytes)
 - [`processx::process$read_error_lines()`](http://processx.r-lib.org/reference/process.html#method-read_error_lines)
 - [`processx::process$read_output()`](http://processx.r-lib.org/reference/process.html#method-read_output)
+- [`processx::process$read_output_bytes()`](http://processx.r-lib.org/reference/process.html#method-read_output_bytes)
 - [`processx::process$read_output_lines()`](http://processx.r-lib.org/reference/process.html#method-read_output_lines)
 - [`processx::process$resume()`](http://processx.r-lib.org/reference/process.html#method-resume)
 - [`processx::process$signal()`](http://processx.r-lib.org/reference/process.html#method-signal)
@@ -104,7 +106,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `r_session$new()`
 
 creates a new R background process. It can wait for the process to start
 up (`wait = TRUE`), or return immediately, i.e. before the process is
@@ -137,7 +139,7 @@ An `r_session` object.
 
 ------------------------------------------------------------------------
 
-### Method [`run()`](http://processx.r-lib.org/reference/run.md)
+### `r_session$run()`
 
 Similar to [`r()`](https://callr.r-lib.org/dev/reference/r.md), but runs
 the function in a permanent background R session. It throws an error if
@@ -176,7 +178,7 @@ The return value of the R expression.
 
 ------------------------------------------------------------------------
 
-### Method `run_with_output()`
+### `r_session$run_with_output()`
 
 Similar to `$run()`, but returns the standard output and error of the
 child process as well. It does not throw on errors, but returns a
@@ -228,7 +230,7 @@ A list with the following entries.
 
 ------------------------------------------------------------------------
 
-### Method [`call()`](https://rdrr.io/r/base/call.html)
+### `r_session$call()`
 
 Starts running a function in the background R session, and returns
 immediately. To check if the function is done, call the `poll_process()`
@@ -263,7 +265,7 @@ method.
 
 ------------------------------------------------------------------------
 
-### Method `poll_process()`
+### `r_session$poll_process()`
 
 Poll the R session with a timeout. If the session has finished the
 computation, it returns with `"ready"`. If the timeout is reached, it
@@ -285,7 +287,7 @@ Character string `"ready"` or `"timeout"`.
 
 ------------------------------------------------------------------------
 
-### Method `get_state()`
+### `r_session$get_state()`
 
 Return the state of the R session.
 
@@ -307,7 +309,7 @@ Possible values:
 
 ------------------------------------------------------------------------
 
-### Method `get_running_time()`
+### `r_session$get_running_time()`
 
 Returns the elapsed time since the R process has started, and the
 elapsed time since the current computation has started. The latter is
@@ -324,7 +326,7 @@ Named vector of `POSIXct` objects. The names are `"total"` and
 
 ------------------------------------------------------------------------
 
-### Method `read()`
+### `r_session$read()`
 
 Reads an event from the child process, if there is one available. Events
 might signal that the function call has finished, or they can be
@@ -368,7 +370,7 @@ which is the type of the event. See also
 
 ------------------------------------------------------------------------
 
-### Method [`close()`](https://rdrr.io/r/base/connections.html)
+### `r_session$close()`
 
 Terminate the current computation and the R process. The session object
 will be in `"finished"` state after this.
@@ -387,7 +389,7 @@ will be in `"finished"` state after this.
 
 ------------------------------------------------------------------------
 
-### Method [`traceback()`](https://rdrr.io/r/base/traceback.html)
+### `r_session$traceback()`
 
 The [`traceback()`](https://rdrr.io/r/base/traceback.html) method can be
 used after an error in the R subprocess. It is equivalent to the
@@ -410,7 +412,7 @@ The same output as from
 
 ------------------------------------------------------------------------
 
-### Method [`debug()`](https://rdrr.io/r/base/debug.html)
+### `r_session$debug()`
 
 Interactive debugger to inspect the dumped frames in the subprocess,
 after an error. See more at
@@ -427,7 +429,7 @@ large objects passed as arguments.
 
 ------------------------------------------------------------------------
 
-### Method [`attach()`](https://rdrr.io/r/base/attach.html)
+### `r_session$attach()`
 
 Experimental function that provides a REPL (Read-Eval-Print-Loop) to the
 subprocess.
@@ -438,7 +440,7 @@ subprocess.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `r_session$print()`
 
 Print method for an `r_session`.
 
@@ -454,7 +456,7 @@ Print method for an `r_session`.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `r_session$clone()`
 
 The objects of this class are cloneable with this method.
 

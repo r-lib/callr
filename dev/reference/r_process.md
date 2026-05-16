@@ -15,7 +15,7 @@ call, and then quits.
 
 ### Public methods
 
-- [`r_process$new()`](#method-r_process-new)
+- [`r_process$new()`](#method-r_process-initialize)
 
 - [`r_process$get_result()`](#method-r_process-get_result)
 
@@ -24,10 +24,10 @@ call, and then quits.
 Inherited methods
 
 - [`processx::process$as_ps_handle()`](http://processx.r-lib.org/reference/process.html#method-as_ps_handle)
-- [`processx::process$finalize()`](http://processx.r-lib.org/reference/process.html#method-finalize)
 - [`processx::process$format()`](http://processx.r-lib.org/reference/process.html#method-format)
 - [`processx::process$get_cmdline()`](http://processx.r-lib.org/reference/process.html#method-get_cmdline)
 - [`processx::process$get_cpu_times()`](http://processx.r-lib.org/reference/process.html#method-get_cpu_times)
+- [`processx::process$get_end_time()`](http://processx.r-lib.org/reference/process.html#method-get_end_time)
 - [`processx::process$get_error_connection()`](http://processx.r-lib.org/reference/process.html#method-get_error_connection)
 - [`processx::process$get_error_file()`](http://processx.r-lib.org/reference/process.html#method-get_error_file)
 - [`processx::process$get_exe()`](http://processx.r-lib.org/reference/process.html#method-get_exe)
@@ -62,8 +62,10 @@ Inherited methods
 - [`processx::process$read_all_output()`](http://processx.r-lib.org/reference/process.html#method-read_all_output)
 - [`processx::process$read_all_output_lines()`](http://processx.r-lib.org/reference/process.html#method-read_all_output_lines)
 - [`processx::process$read_error()`](http://processx.r-lib.org/reference/process.html#method-read_error)
+- [`processx::process$read_error_bytes()`](http://processx.r-lib.org/reference/process.html#method-read_error_bytes)
 - [`processx::process$read_error_lines()`](http://processx.r-lib.org/reference/process.html#method-read_error_lines)
 - [`processx::process$read_output()`](http://processx.r-lib.org/reference/process.html#method-read_output)
+- [`processx::process$read_output_bytes()`](http://processx.r-lib.org/reference/process.html#method-read_output_bytes)
 - [`processx::process$read_output_lines()`](http://processx.r-lib.org/reference/process.html#method-read_output_lines)
 - [`processx::process$resume()`](http://processx.r-lib.org/reference/process.html#method-resume)
 - [`processx::process$signal()`](http://processx.r-lib.org/reference/process.html#method-signal)
@@ -74,7 +76,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `r_process$new()`
 
 Start a new R process in the background.
 
@@ -95,7 +97,7 @@ A new `r_process` object.
 
 ------------------------------------------------------------------------
 
-### Method [`get_result()`](https://callr.r-lib.org/dev/reference/get_result.md)
+### `r_process$get_result()`
 
 Return the result, an R object, from a finished background R process. If
 the process has not finished yet, it throws an error. (You can use
@@ -116,7 +118,7 @@ The return value of the R expression evaluated in the R process.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `r_process$clone()`
 
 The objects of this class are cloneable with this method.
 

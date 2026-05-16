@@ -79,7 +79,7 @@ r_process_options()
 #>  [2] "    while (\"tools:callr\" %in% search()) {\n"                                        
 #>  [3] "        detach(\"tools:callr\")\n"                                                    
 #>  [4] "    }\n"                                                                              
-#>  [5] "    env <- readRDS(\"/tmp/RtmpgXxKJB/callr-env-1f523877a300\")\n"                     
+#>  [5] "    env <- readRDS(\"/tmp/Rtmp7ZgEqf/callr-env-1d11149b0d07\")\n"                     
 #>  [6] "    do.call(\"attach\", list(env, pos = length(search()), name = \"tools:callr\"))\n" 
 #>  [7] "    data <- env$`__callr_data__`\n"                                                   
 #>  [8] "    data$pxlib <- data$load_client_lib(data$sofile[[paste0(\"arch-\", \n"             
