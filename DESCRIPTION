@@ -31,9 +31,6 @@ Suggests:
     spelling,
     testthat (>= 3.2.0),
     withr (>= 2.3.0)
-Remotes:
-    r-lib/otel,
-    r-lib/otelsdk
 Config/Needs/website:
     r-lib/asciicast,
     glue,
