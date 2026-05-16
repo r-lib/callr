@@ -4,7 +4,7 @@
       x$get_result()
     Condition
       Error:
-      ! callr subprocess failed: could not start R, exited with non-zero status, has crashed or was killed
+      ! ! callr subprocess failed: could not start R, exited with non-zero status, has crashed or was killed
 
 # r_bg can get the error back
 
@@ -12,7 +12,7 @@
       x$get_result()
     Condition
       Error:
-      ! in callr subprocess.
-      Caused by error:
+      ! ! in callr subprocess.
+      Caused by error in `1 + "A"`:
       ! non-numeric argument to binary operator
 

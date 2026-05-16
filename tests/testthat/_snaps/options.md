@@ -4,7 +4,7 @@
       r_process_options(func = function() { }, foo = "bar")
     Condition
       Error:
-      ! Unknown optioncharacter(0):'foo'
+      ! ! Unknown optioncharacter(0):'foo'
 
 ---
 
@@ -12,5 +12,5 @@
       r_process_options(func = function() { }, foo = "bar", bar = "foo")
     Condition
       Error:
-      ! Unknown options:'foo' and 'bar'
+      ! ! Unknown options:'foo' and 'bar'
 
