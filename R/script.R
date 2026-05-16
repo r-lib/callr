@@ -88,7 +88,7 @@ make_vanilla_script_expr <- function(
         )
         data <- base::paste0(e$code, " ", base::nchar(msg), "\n", msg)
         if (callr_data$has_otel) {
-          callr$data$otel_span$add_event(
+          callr_data$otel_span$add_event(
             "callr message",
             attributes = list(status_code = e$code)
           )

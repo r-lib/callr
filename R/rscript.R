@@ -46,8 +46,8 @@ rscript <- function(
   ## This cleans up everything...
   on.exit(unlink(options$tmp_files, recursive = TRUE), add = TRUE)
 
-  if (otel::is_tracing()) {
-    otel::start_span(
+  if (otel::is_tracing_enabled()) {
+    otel::start_local_active_span(
       "callr::rscript",
       attributes = otel::as_attributes(options)
     )

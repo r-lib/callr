@@ -18,18 +18,14 @@ common_hook <- function() {
           baggage = Sys.getenv("BAGGAGE")
         ))
         prtctx <- otel::extract_http_context(hdrs)
-        reg.finalizer(
-          env$`__callr_data__`,
-          function(e) e$otel_span$end(),
-          onexit = TRUE
-        )
         assign(
           envir = env$`__callr_data__`,
           "otel_span",
-          otel::start_span(
+          otel::start_local_active_span(
             "callr subprocess",
             options = list(parent = prtctx),
-            scope = .GlobalEnv
+            activation_scope = .GlobalEnv,
+            end_on_exit = TRUE
           )
         )
       }
