@@ -42,6 +42,30 @@ test_that("stderr -> stdout", {
   gc()
 })
 
+test_that("stdout = '|' does not hang when child errors (#313)", {
+  skip_on_cran()
+  tmp <- test_temp_file(create = FALSE)
+  writeLines("stop('test error')", tmp)
+
+  setTimeLimit(elapsed = 30, transient = TRUE)
+  on.exit(setTimeLimit(), add = TRUE)
+
+  res <- rscript(
+    tmp,
+    show = FALSE,
+    fail_on_status = FALSE,
+    timeout = 5,
+    stdout = "|",
+    stderr = "2>&1"
+  )
+
+  expect_false(res$timeout)
+  expect_equal(res$status, 1L)
+  expect_match(res$stdout, "test error")
+  expect_null(res$stderr)
+  gc()
+})
+
 test_that("cleans up temporary files", {
   skip_on_cran()
 
