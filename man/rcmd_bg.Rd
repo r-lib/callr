@@ -88,8 +88,8 @@ in plain files.
 }
 
 \seealso{
-Other R CMD commands: 
-\code{\link{rcmd}()},
-\code{\link{rcmd_copycat}()}
+Other R CMD commands:
+\code{\link[=rcmd]{rcmd()}},
+\code{\link[=rcmd_copycat]{rcmd_copycat()}}
 }
 \concept{R CMD commands}

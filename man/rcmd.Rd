@@ -155,8 +155,8 @@ rcmd("config", "CC")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other R CMD commands: 
-\code{\link{rcmd_bg}()},
-\code{\link{rcmd_copycat}()}
+Other R CMD commands:
+\code{\link[=rcmd_bg]{rcmd_bg()}},
+\code{\link[=rcmd_copycat]{rcmd_copycat()}}
 }
 \concept{R CMD commands}

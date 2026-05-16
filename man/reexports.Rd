@@ -13,6 +13,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{processx}{\code{\link[processx]{poll}}, \code{\link[processx]{process}}, \code{\link[processx]{run}}}
+  \item{processx}{\code{\link[processx:poll]{poll()}}, \code{\link[processx:process]{process}}, \code{\link[processx:run]{run()}}}
 }}
 

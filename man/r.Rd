@@ -203,7 +203,7 @@ with a prefix and the same error message as in the subprocess.
 \item \code{stack} also throws an error in the main process, but the error
 is of a special kind, class \code{callr_error}, and it contains
 both the original error object, and the call stack of the child,
-as written out by \code{\link[utils:debugger]{utils::dump.frames()}}. This is now deprecated,
+as written out by \code{\link[utils:dump.frames]{utils::dump.frames()}}. This is now deprecated,
 because the error thrown for \code{"error"} has the same information.
 \item \code{debugger} is similar to \code{stack}, but in addition
 to returning the complete call stack, it also start up a debugger
@@ -255,8 +255,8 @@ r(function() .libPaths())
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other callr functions: 
-\code{\link{r_copycat}()},
-\code{\link{r_vanilla}()}
+Other callr functions:
+\code{\link[=r_copycat]{r_copycat()}},
+\code{\link[=r_vanilla]{r_vanilla()}}
 }
 \concept{callr functions}
