@@ -25,6 +25,8 @@ navbar:
      - text: Tutorials
      - text: Persistent R sessions
        href: articles/r-session.html
+     - text: OpenTelemetry
+       href: articles/opentelemetry.html
      - text: -------
      - text: Blog posts
      - text: "A multi process task queue in 100 lines of R code"
