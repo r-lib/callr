@@ -132,7 +132,7 @@ callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g)
 ```
 
 
-    #> [1] 11
+    #> [1] 10
 
 ### Error handling
 
@@ -226,7 +226,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 7695.
+    #> PROCESS 'R', running, pid 7613.
 
 This is a list of all `r_process` methods:
 
@@ -315,8 +315,8 @@ processx::poll(list(rp1), 1000)
 
 
     #> [[1]]
-    #>   output    error  process
-    #> "silent"  "ready"  "ready"
+    #>  output   error process
+    #> "ready" "ready" "ready"
     #>
 
 ``` r
@@ -340,7 +340,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 7746.
+    #> R SESSION, alive, idle, pid 7664.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -363,8 +363,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.01891361 0.20062561 0.06102044 0.90969124 0.19108311 0.96891656
-    #>  [7] 0.31641041 0.80895855 0.77577936 0.69839908
+    #>  [1] 0.9545593 0.4801246 0.3422873 0.6147927 0.9305809 0.2290274 0.9050773
+    #>  [8] 0.5175636 0.2181720 0.4221790
 
 ``` r
 
@@ -373,7 +373,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 7755.
+    #> R SESSION, alive, busy, pid 7673.
 
 ``` r
 
@@ -393,11 +393,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1d9f42f20271"
+    #> [1] "done callr-rs-result-1d4c57ab57b8"
     #>
     #> $result
-    #>  [1] -1.05291495  1.42259729 -0.25163931 -0.55852910  1.37681711 -0.06820701
-    #>  [7]  0.04373314  0.46064536  0.32010320 -0.27380050
+    #>  [1]  1.94270145 -1.36338889  0.86199139 -0.54626420  0.05901599  1.30898307
+    #>  [7]  1.55031088 -1.21409905 -1.10175196 -1.14469457
     #>
     #> $stdout
     #> [1] ""

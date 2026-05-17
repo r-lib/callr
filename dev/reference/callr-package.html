@@ -68,6 +68,7 @@ packages does exactly that.</p>
 <li><p>Can call <code>R CMD</code> commands, synchronously or asynchronously.</p></li>
 <li><p>Can call R scripts, synchronously or asynchronously.</p></li>
 <li><p>Provides extensible <code>r_process</code>, <code>rcmd_process</code> and <code>rscript_process</code> R6 classes, based on <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code>.</p></li>
+<li><p>Emits <a href="https://opentelemetry.io/" class="external-link">OpenTelemetry</a> traces for every R subprocess and propagates trace context across the process boundary.</p></li>
 </ul></div>
 
 <div class="section">
@@ -377,6 +378,16 @@ For example, you can call <code>R CMD INSTALL</code>, <code>R CMD check</code> o
 </pre></div></div>
 
 <p>This returns a list with three components: the standard output, the standard error, and the exit (status) code of the <code>R CMD</code> command.</p>
+</div>
+
+<div class="section">
+<h3 id="observability">Observability<a class="anchor" aria-label="anchor" href="#observability"></a></h3>
+
+
+<p>callr is instrumented with <a href="https://opentelemetry.io/" class="external-link">OpenTelemetry</a>.
+When an OpenTelemetry SDK (such as <a href="https://otelsdk.r-lib.org" class="external-link">otelsdk</a>) is loaded and configured, callr emits spans for every R subprocess it starts and propagates the W3C <code>traceparent</code> header into the subprocess, so spans created inside the child become children of the parent span.
+No code changes are needed in callr-using code — the existing entry points start emitting telemetry as soon as an SDK is configured.</p>
+<p>See <code><a href="../articles/opentelemetry.html">vignette("opentelemetry", package = "callr")</a></code> for what callr emits, how subprocess context propagation works, and how to test your own instrumentation on top of it.</p>
 </div>
 
 <div class="section">

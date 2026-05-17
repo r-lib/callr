@@ -79,7 +79,7 @@ r_process_options()
 #>  [2] "    while (\"tools:callr\" %in% search()) {\n"                                                                     
 #>  [3] "        detach(\"tools:callr\")\n"                                                                                 
 #>  [4] "    }\n"                                                                                                           
-#>  [5] "    env <- readRDS(\"/tmp/RtmpOXdbY7/callr-env-1d85172d706f\")\n"                                                  
+#>  [5] "    env <- readRDS(\"/tmp/RtmpLKcOLs/callr-env-1d333c882efa\")\n"                                                  
 #>  [6] "    has_otel <- nzchar(Sys.getenv(\"TRACEPARENT\")) && requireNamespace(\"otel\", \n"                              
 #>  [7] "        quietly = TRUE)\n"                                                                                         
 #>  [8] "    assign(envir = env$`__callr_data__`, \"has_otel\", has_otel)\n"                                                

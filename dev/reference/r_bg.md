@@ -162,6 +162,26 @@ An `r_process` object, which inherits from
 [`get_result()`](https://callr.r-lib.org/dev/reference/get_result.md)
 method to collect the result.
 
+## Draining standard output and error
+
+With the default `stdout = "|"` and `stderr = "|"`, the child process
+writes its output and error streams into OS pipes with a small fixed
+buffer (typically 64 KB or less). If nothing drains these pipes, a
+chatty child fills the buffer and then blocks on the next
+[`write()`](https://rdrr.io/r/base/write.html). The child will not
+terminate until the parent reads from the pipes, so `p$is_alive()` will
+keep returning `TRUE` even though the work appears to be done.
+
+To avoid this:
+
+- Pass a filename to `stdout` / `stderr` to redirect output to files, or
+
+- pass `NULL` to discard it, or
+
+- periodically call `p$read_output()` and `p$read_error()` (or
+  `p$read_all_output()` etc.) to drain the pipes while the process is
+  running.
+
 ## Security considerations
 
 `callr` makes a copy of the user's `.Renviron` file and potentially of

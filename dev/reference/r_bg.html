@@ -208,6 +208,21 @@ so all <code>process</code> methods can be called on it, and in addition it also
 has a <code><a href="get_result.html">get_result()</a></code> method to collect the result.</p>
     </div>
     <div class="section level2">
+    <h2 id="draining-standard-output-and-error">Draining standard output and error<a class="anchor" aria-label="anchor" href="#draining-standard-output-and-error"></a></h2>
+    <p>With the default <code>stdout = "|"</code> and <code>stderr = "|"</code>, the child process
+writes its output and error streams into OS pipes with a small fixed
+buffer (typically 64 KB or less). If nothing drains these pipes, a
+chatty child fills the buffer and then blocks on the next <code><a href="https://rdrr.io/r/base/write.html" class="external-link">write()</a></code>.
+The child will not
+terminate until the parent reads from the pipes, so <code>p$is_alive()</code> will
+keep returning <code>TRUE</code> even though the work appears to be done.</p>
+<p>To avoid this:</p><ul><li><p>Pass a filename to <code>stdout</code> / <code>stderr</code> to redirect output to files, or</p></li>
+<li><p>pass <code>NULL</code> to discard it, or</p></li>
+<li><p>periodically call <code>p$read_output()</code> and <code>p$read_error()</code> (or
+<code>p$read_all_output()</code> etc.) to drain the pipes while the process is
+running.</p></li>
+</ul></div>
+    <div class="section level2">
     <h2 id="security-considerations">Security considerations<a class="anchor" aria-label="anchor" href="#security-considerations"></a></h2>
 
 

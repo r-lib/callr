@@ -32,6 +32,9 @@ exactly that.
   R6 classes, based on
   [`processx::process`](http://processx.r-lib.org/reference/process.md).
 
+- Emits [OpenTelemetry](https://opentelemetry.io/) traces for every R
+  subprocess and propagates trace context across the process boundary.
+
 ### Installation
 
 Install the stable version from CRAN:
@@ -375,6 +378,21 @@ calls an `R CMD` command. For example, you can call `R CMD INSTALL`,
 
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
+
+### Observability
+
+callr is instrumented with [OpenTelemetry](https://opentelemetry.io/).
+When an OpenTelemetry SDK (such as [otelsdk](https://otelsdk.r-lib.org))
+is loaded and configured, callr emits spans for every R subprocess it
+starts and propagates the W3C `traceparent` header into the subprocess,
+so spans created inside the child become children of the parent span. No
+code changes are needed in callr-using code — the existing entry points
+start emitting telemetry as soon as an SDK is configured.
+
+See
+[`vignette("opentelemetry", package = "callr")`](https://callr.r-lib.org/dev/articles/opentelemetry.md)
+for what callr emits, how subprocess context propagation works, and how
+to test your own instrumentation on top of it.
 
 ### Configuration
 
