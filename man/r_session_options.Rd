@@ -16,7 +16,10 @@ The current options are:
 \itemize{
 \item \code{libpath}: Library path for the subprocess. By default the same as the
 \emph{current} library path. I.e. \emph{not} necessarily the library path of
-a fresh R session.)
+a fresh R session.) If \code{NULL}, then the library path is not modified
+at all in the subprocess, which is useful for subprocesses that should
+use the library path of a fresh R session, e.g. as set up by a project
+\code{.Rprofile}.
 \item \code{repos}: \code{repos} option for the subprocess. By default the current
 value of the main process.
 \item \code{stdout}: Standard output of the sub-process. This can be \code{NULL} or

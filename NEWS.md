@@ -1,5 +1,10 @@
 # callr (development version)
 
+* `r()`, `r_bg()`, `r_session$new()` and friends now accept `libpath = NULL`,
+  which leaves the subprocess library path alone, so the subprocess uses
+  the `.libPaths()` of a fresh R session (e.g. as set up by a project
+  `.Rprofile`) instead of inheriting the parent's library path (#255).
+
 * callr is now instrumented with [OpenTelemetry](https://opentelemetry.io/).
   When an OpenTelemetry SDK (such as otelsdk) is loaded and configured,
   callr emits spans for `r()`, `rcmd()`, `rscript()`, `r_process` and
