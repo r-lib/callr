@@ -2,6 +2,12 @@
 
 ## callr (development version)
 
+- [`r_bg()`](https://callr.r-lib.org/dev/reference/r_bg.md) (and
+  [`r()`](https://callr.r-lib.org/dev/reference/r.md)) subprocesses now
+  exit with a non-zero status when the evaluated expression throws an
+  error or is interrupted, instead of always exiting with status 0
+  ([\#291](https://github.com/r-lib/callr/issues/291)).
+
 - [`r()`](https://callr.r-lib.org/dev/reference/r.md),
   [`r_bg()`](https://callr.r-lib.org/dev/reference/r_bg.md),
   `r_session$new()` and friends now accept `libpath = NULL`, which
