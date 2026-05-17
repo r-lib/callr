@@ -41,6 +41,21 @@ remove_source <- function(x) {
 
 `%||%` <- function(l, r) if (is.null(l)) r else l
 
+callr_tempdir <- function() {
+  dir <- Sys.getenv("CALLR_TMPDIR", "")
+  if (!nzchar(dir)) {
+    return(tempdir())
+  }
+  if (!dir.exists(dir)) {
+    dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+  }
+  dir
+}
+
+callr_tempfile <- function(pattern = "file", fileext = "") {
+  tempfile(pattern, tmpdir = callr_tempdir(), fileext = fileext)
+}
+
 is.named <- function(x) {
   length(names(x)) == length(x) && all(names(x) != "")
 }
@@ -139,7 +154,7 @@ bold <- function(x) {
 }
 
 update_history <- function(cmd) {
-  tmp <- tempfile("callr-hst-")
+  tmp <- callr_tempfile("callr-hst-")
   on.exit(unlink(tmp, recursive = TRUE))
   utils::savehistory(tmp)
   cat(cmd, "\n", sep = "", file = tmp, append = TRUE)

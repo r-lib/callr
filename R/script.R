@@ -208,7 +208,7 @@ make_vanilla_script_file <- function(expr_file, res, error, print_error) {
   )
   script <- deparse(expr)
 
-  tmp <- tempfile("callr-scr-")
+  tmp <- callr_tempfile("callr-scr-")
   cat(script, file = tmp, sep = "\n")
   tmp
 }
