@@ -21,38 +21,41 @@ that.
 
 ---
 
--   [Features](#features)
--   [Installation](#installation)
--   [Synchronous, one-off R processes](#synchronous-one-off-r-processes)
-    -   [Passing arguments](#passing-arguments)
-    -   [Using packages](#using-packages)
-    -   [Error handling](#error-handling)
-    -   [Standard output and error](#standard-output-and-error)
--   [Background R processes](#background-r-processes)
--   [Multiple background R processes and
-    `poll()`](#multiple-background-r-processes-and-poll)
--   [Persistent R sessions](#persistent-r-sessions)
--   [Running `R CMD` commands](#running-r-cmd-commands)
--   [Configuration](#configuration)
-    -   [Environment variables](#environment-variables)
--   [Code of Conduct](#code-of-conduct)
+- [Features](#features)
+- [Installation](#installation)
+- [Synchronous, one-off R processes](#synchronous-one-off-r-processes)
+  - [Passing arguments](#passing-arguments)
+  - [Using packages](#using-packages)
+  - [Error handling](#error-handling)
+  - [Standard output and error](#standard-output-and-error)
+- [Background R processes](#background-r-processes)
+- [Multiple background R processes and
+  `poll()`](#multiple-background-r-processes-and-poll)
+- [Persistent R sessions](#persistent-r-sessions)
+- [Running `R CMD` commands](#running-r-cmd-commands)
+- [Observability](#observability)
+- [Configuration](#configuration)
+  - [Environment variables](#environment-variables)
+- [Code of Conduct](#code-of-conduct)
 
 ## Features
 
--   Calls an R function, with arguments, in a subprocess.
--   Copies function arguments to the subprocess and copies the return
-    value of the function back, seamlessly.
--   Copies error objects back from the subprocess, including a stack
-    trace.
--   Shows and/or collects the standard output and standard error of the
-    subprocess.
--   Supports both one-off and persistent R subprocesses.
--   Calls the function synchronously or asynchronously (in the
-    background).
--   Can call `R CMD` commands, synchronously or asynchronously.
--   Can call R scripts, synchronously or asynchronously.
--   Provides extensible `r_process`, `rcmd_process` and
-    `rscript_process` R6 classes, based on `processx::process`.
+- Calls an R function, with arguments, in a subprocess.
+- Copies function arguments to the subprocess and copies the return
+  value of the function back, seamlessly.
+- Copies error objects back from the subprocess, including a stack
+  trace.
+- Shows and/or collects the standard output and standard error of the
+  subprocess.
+- Supports both one-off and persistent R subprocesses.
+- Calls the function synchronously or asynchronously (in the
+  background).
+- Can call `R CMD` commands, synchronously or asynchronously.
+- Can call R scripts, synchronously or asynchronously.
+- Provides extensible `r_process`, `rcmd_process` and `rscript_process`
+  R6 classes, based on `processx::process`.
+- Emits [OpenTelemetry](https://opentelemetry.io/) traces for every R
+  subprocess and propagates trace context across the process boundary.
 
 ## Installation
 
@@ -219,18 +222,17 @@ These include all methods of the `processx::process` superclass and the
 new `get_result()` method, to retrieve the R object returned by the
 function call. Some of the handiest methods are:
 
--   `get_exit_status()` to query the exit status of a finished process.
--   `get_result()` to collect the return value of the R function call.
--   `interrupt()` to send an interrupt to the process. This is
-    equivalent to a `CTRL+C` key press, and the R process might ignore
-    it.
--   `is_alive()` to check if the process is alive.
--   `kill()` to terminate the process.
--   `poll_io()` to wait for any standard output, standard error, or the
-    completion of the process, with a timeout.
--   `read_*()` to read the standard output or error.
--   `suspend()` and `resume()` to stop and continue a process.
--   `wait()` to wait for the completion of the process, with a timeout.
+- `get_exit_status()` to query the exit status of a finished process.
+- `get_result()` to collect the return value of the R function call.
+- `interrupt()` to send an interrupt to the process. This is equivalent
+  to a `CTRL+C` key press, and the R process might ignore it.
+- `is_alive()` to check if the process is alive.
+- `kill()` to terminate the process.
+- `poll_io()` to wait for any standard output, standard error, or the
+  completion of the process, with a timeout.
+- `read_*()` to read the standard output or error.
+- `suspend()` and `resume()` to stop and continue a process.
+- `wait()` to wait for the completion of the process, with a timeout.
 
 ## Multiple background R processes and `poll()`
 
@@ -349,18 +351,32 @@ callr::rcmd("config", "CC")
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
 
+## Observability
+
+callr is instrumented with [OpenTelemetry](https://opentelemetry.io/).
+When an OpenTelemetry SDK (such as [otelsdk](https://otelsdk.r-lib.org))
+is loaded and configured, callr emits spans for every R subprocess it
+starts and propagates the W3C `traceparent` header into the subprocess,
+so spans created inside the child become children of the parent span. No
+code changes are needed in callr-using code — the existing entry points
+start emitting telemetry as soon as an SDK is configured.
+
+See `vignette("opentelemetry", package = "callr")` for what callr emits,
+how subprocess context propagation works, and how to test your own
+instrumentation on top of it.
+
 ## Configuration
 
 ### Environment variables
 
--   `CALLR_NO_TEMP_DLLS`: If `true`, then callr does not use a temporary
-    directory to copy the client DLL files from, in the subprocess. By
-    default callr copies the DLL file that drives the callr subprocess
-    into a temporary directory and loads it from there. This is mainly
-    to avoid locking a DLL file in the package library, on Windows. If
-    this default causes issues for you, set it to `true`, and then callr
-    will use the DLL file from the installed processx package. See also
-    <https://github.com/r-lib/callr/issues/273>.
+- `CALLR_NO_TEMP_DLLS`: If `true`, then callr does not use a temporary
+  directory to copy the client DLL files from, in the subprocess. By
+  default callr copies the DLL file that drives the callr subprocess
+  into a temporary directory and loads it from there. This is mainly to
+  avoid locking a DLL file in the package library, on Windows. If this
+  default causes issues for you, set it to `true`, and then callr will
+  use the DLL file from the installed processx package. See also
+  <https://github.com/r-lib/callr/issues/273>.
 
 ## Code of Conduct
 

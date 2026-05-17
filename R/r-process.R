@@ -55,6 +55,19 @@ rp_init <- function(self, private, super, options) {
   options <- setup_context(options)
   options <- setup_r_binary_and_args(options)
 
+  otel_span <- otel::start_span(
+    "callr::r_process",
+    attributes = otel::as_attributes(options)
+  )
+  otel::local_active_span(otel_span)
+  otel::log_debug("start r_process")
+  if (otel::is_tracing_enabled()) {
+    hdrs <- otel::pack_http_context()
+    names(hdrs) <- toupper(names(hdrs))
+    options$env[names(hdrs)] <- hdrs
+  }
+  options$otel_span <- otel_span
+
   private$options <- options
 
   with_envvar(
@@ -80,8 +93,13 @@ rp_init <- function(self, private, super, options) {
 
 rp_get_result <- function(self, private) {
   if (self$is_alive()) {
+    private$options$otel_span$add_event(
+      "get_result",
+      attributes = list(done = FALSE)
+    )
     throw(new_error("Still alive"))
   }
+  on.exit(private$options$otel_span$end(status_code = "auto"), add = TRUE)
 
   ## This is artificial...
   out <- list(
