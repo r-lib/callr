@@ -5,7 +5,8 @@ make_vanilla_script_expr <- function(
   pre_hook = NULL,
   post_hook = NULL,
   messages = FALSE,
-  print_error = TRUE
+  print_error = TRUE,
+  exit_on_error = TRUE
 ) {
   ## Code to handle errors in the child
   ## This will inserted into the main script
@@ -168,17 +169,18 @@ make_vanilla_script_expr <- function(
           `__post_hook__`
           if (`__print_error__`) {
             base::try(base::stop(e))
-          } else {
-            base::invisible()
           }
+          if (`__exit_on_error__`) {
+            base::q(save = "no", status = 1)
+          }
+          base::invisible()
         },
         interrupt = function(e) {
           `__post_hook__`
-          if (`__print_error__`) {
-            e
-          } else {
-            base::invisible()
+          if (`__exit_on_error__`) {
+            base::q(save = "no", status = 1)
           }
+          base::invisible()
         }
       ) # nocov end
     },
@@ -191,7 +193,8 @@ make_vanilla_script_expr <- function(
       `__post_hook__` = post_hook,
       `__message__` = message(),
       `__compress__` = getOption("callr.compress_transport", FALSE),
-      `__print_error__` = print_error
+      `__print_error__` = print_error,
+      `__exit_on_error__` = exit_on_error
     )
   )
 }
