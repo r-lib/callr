@@ -1,5 +1,8 @@
 # callr (development version)
 
+* The `CALLR_TMPDIR` environment variable can now be set to override the
+  directory callr uses for its auxiliary temporary files. When unset, callr keeps using `tempdir()` (#172).
+
 * `r_bg()` (and `r()`) subprocesses now exit with a non-zero status when
   the evaluated expression throws an error or is interrupted, instead of
   always exiting with status 0 (#291).

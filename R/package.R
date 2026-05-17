@@ -12,7 +12,7 @@ env_file <- NULL
   # Register methods on load as hacky work-around for pak double registration
   registerS3method("format", "callr_status_error", format.callr_status_error)
   registerS3method("print", "callr_status_error", print.callr_status_error)
-  env_file <<- tempfile("callr-env-")
+  env_file <<- callr_tempfile("callr-env-")
   clients <<- asNamespace("processx")$client
   sofiles <<- get_client_files()
   client_env$`__callr_data__`$sofile <- sofiles
@@ -44,7 +44,7 @@ get_client_files <- function() {
       # Filename must be `client.ext` so that `dyn.load()` can find
       # the init function
       file.path(
-        tempdir(),
+        callr_tempdir(),
         "callr",
         sub("arch-", "", aa), # Might be empty
         hash,

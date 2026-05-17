@@ -278,6 +278,15 @@ See `vignette("opentelemetry", package = "callr")` for what callr emits, how sub
   file from the installed processx package. See also
   https://github.com/r-lib/callr/issues/273.
 
+* `CALLR_TMPDIR`: If set to a non-empty path, callr writes its auxiliary
+  temporary files into this directory instead of the session's `tempdir()`.
+  The directory is created if it does not exist. The value is read on each
+  use, so it can be changed at run time via `Sys.setenv()`. Note that paths
+  cached at package load time (the package's own `callr-env-` file and the
+  client DLL location) only honor this setting if the variable was set
+  before `callr` was loaded, typically by exporting it in the shell or via
+  `.Renviron`. See also https://github.com/r-lib/callr/issues/172.
+
 ## Code of Conduct
 
 Please note that the callr project is released with a

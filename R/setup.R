@@ -1,7 +1,7 @@
 setup_script_files <- function(options) {
   within(options, {
     func_file <- save_function_to_temp(options)
-    result_file <- tempfile("callr-res-")
+    result_file <- callr_tempfile("callr-res-")
     script_file <- make_vanilla_script_file(
       func_file,
       result_file,
@@ -13,7 +13,7 @@ setup_script_files <- function(options) {
 }
 
 save_function_to_temp <- function(options) {
-  tmp <- tempfile("callr-fun-")
+  tmp <- callr_tempfile("callr-fun-")
   options$func <- transport_fun(options$func, options$package)
   # Once we start saving the function environments, we might get
   # "'package:x' may not be available when loading" warnings
@@ -121,8 +121,8 @@ setup_context <- function(options) {
 }
 
 make_profiles <- function(system, user, repos, libpath, load_hook, env) {
-  profile_system <- tempfile("callr-spr-")
-  profile_user <- tempfile("callr-upr-")
+  profile_system <- callr_tempfile("callr-spr-")
+  profile_user <- callr_tempfile("callr-upr-")
 
   ## Create file2
   cat("", file = profile_system)
@@ -225,8 +225,8 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
 }
 
 make_environ <- function(profiles, libpath, env) {
-  env_sys <- tempfile("callr-sev-")
-  env_user <- tempfile("callr-uev-")
+  env_sys <- callr_tempfile("callr-sev-")
+  env_user <- callr_tempfile("callr-uev-")
 
   for (ef in c(env_sys, env_user)) {
     cat(
