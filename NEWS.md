@@ -1,5 +1,9 @@
 # callr (development version)
 
+* callr now supports `carrier::crate()`. `package = NULL`, the new
+  default, handles functions created with `carrier::crate()` automatically
+  (#249).
+
 * The `CALLR_TMPDIR` environment variable can now be set to override the
   directory callr uses for its auxiliary temporary files. When unset, callr keeps using `tempdir()` (#172).
 

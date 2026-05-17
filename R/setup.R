@@ -30,6 +30,9 @@ transport_fun <- function(
   package,
   source_refs = getOption("callr.keep.source")
 ) {
+  if (is.null(package)) {
+    package <- inherits(fun, "crate")
+  }
   if (!isTRUE(source_refs)) {
     fun <- remove_source(fun)
   }

@@ -12,7 +12,10 @@
 #' @param args Arguments to pass to the function. Must be a list.
 #' @param package Whether to keep the environment of `func` when passing
 #'   it to the other package. Possible values are:
-#'   * `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+#'   * `NULL` (the default): equivalent to `TRUE` if `func` inherits from
+#'     `"crate"` (i.e. was created with `carrier::crate()`), and `FALSE`
+#'     otherwise.
+#'   * `FALSE`: reset the environment to `.GlobalEnv`.
 #'   * `TRUE`: keep the environment as is.
 #'   * `pkg`: set the environment to the `pkg` package namespace.
 #'
@@ -70,7 +73,7 @@ r_session <- R6::R6Class(
     #' R session. It throws an error if the function call generated an
     #' error in the child process.
     #' @return The return value of the R expression.
-    run = function(func, args = list(), package = FALSE) {
+    run = function(func, args = list(), package = NULL) {
       rs_run(self, private, func, args, package)
     },
 
@@ -89,7 +92,7 @@ r_session <- R6::R6Class(
     #'   error thrown in the subprocess. Otherwise it is `NULL`.
     #' * `code`, `message`: These fields are used by call internally and
     #'   you can ignore them.
-    run_with_output = function(func, args = list(), package = FALSE) {
+    run_with_output = function(func, args = list(), package = NULL) {
       rs_run_with_output(self, private, func, args, package)
     },
 
@@ -97,7 +100,7 @@ r_session <- R6::R6Class(
     #' Starts running a function in the background R session, and
     #' returns immediately. To check if the function is done, call the
     #' `poll_process()` method.
-    call = function(func, args = list(), package = FALSE) {
+    call = function(func, args = list(), package = NULL) {
       rs_call(self, private, func, args, package)
     },
 

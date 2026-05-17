@@ -18,7 +18,7 @@ r_bg(
   user_profile = "project",
   env = rcmd_safe_env(),
   supervise = FALSE,
-  package = FALSE,
+  package = NULL,
   arch = "same",
   ...
 )
@@ -109,7 +109,10 @@ exits.}
 \item{package}{Whether to keep the environment of \code{func} when passing
 it to the other package. Possible values are:
 \itemize{
-\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{NULL} (the default): equivalent to \code{TRUE} if \code{func} inherits from
+\code{"crate"} (i.e. was created with \code{carrier::crate()}), and \code{FALSE}
+otherwise.
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}.
 \item \code{TRUE}: keep the environment as is.
 \item \code{pkg}: set the environment to the \code{pkg} package namespace.
 }}

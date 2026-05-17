@@ -145,7 +145,7 @@ R session. It throws an error if the function call generated an
 error in the child process.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{r_session$run(func, args = list(), package = FALSE)}
+    \preformatted{r_session$run(func, args = list(), package = NULL)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -157,7 +157,10 @@ Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
       \item{\code{package}}{Whether to keep the environment of \code{func} when passing
 it to the other package. Possible values are:
 \itemize{
-\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{NULL} (the default): equivalent to \code{TRUE} if \code{func} inherits from
+\code{"crate"} (i.e. was created with \code{carrier::crate()}), and \code{FALSE}
+otherwise.
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}.
 \item \code{TRUE}: keep the environment as is.
 \item \code{pkg}: set the environment to the \code{pkg} package namespace.
 }}
@@ -178,7 +181,7 @@ the child process as well. It does not throw on errors, but
 returns a non-\code{NULL} \code{error} member in the result list.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{r_session$run_with_output(func, args = list(), package = FALSE)}
+    \preformatted{r_session$run_with_output(func, args = list(), package = NULL)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -190,7 +193,10 @@ Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
       \item{\code{package}}{Whether to keep the environment of \code{func} when passing
 it to the other package. Possible values are:
 \itemize{
-\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{NULL} (the default): equivalent to \code{TRUE} if \code{func} inherits from
+\code{"crate"} (i.e. was created with \code{carrier::crate()}), and \code{FALSE}
+otherwise.
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}.
 \item \code{TRUE}: keep the environment as is.
 \item \code{pkg}: set the environment to the \code{pkg} package namespace.
 }}
@@ -221,7 +227,7 @@ returns immediately. To check if the function is done, call the
 \code{poll_process()} method.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{r_session$call(func, args = list(), package = FALSE)}
+    \preformatted{r_session$call(func, args = list(), package = NULL)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -233,7 +239,10 @@ Please read the notes for the similar argument of \code{\link[=r]{r()}}.}
       \item{\code{package}}{Whether to keep the environment of \code{func} when passing
 it to the other package. Possible values are:
 \itemize{
-\item \code{FALSE}: reset the environment to \code{.GlobalEnv}. This is the default.
+\item \code{NULL} (the default): equivalent to \code{TRUE} if \code{func} inherits from
+\code{"crate"} (i.e. was created with \code{carrier::crate()}), and \code{FALSE}
+otherwise.
+\item \code{FALSE}: reset the environment to \code{.GlobalEnv}.
 \item \code{TRUE}: keep the environment as is.
 \item \code{pkg}: set the environment to the \code{pkg} package namespace.
 }}
