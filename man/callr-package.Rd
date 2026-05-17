@@ -420,7 +420,7 @@ https://github.com/r-lib/callr/issues/273.
 \item \code{CALLR_TMPDIR}: If set to a non-empty path, callr writes its auxiliary
 temporary files into this directory instead of the session's \code{tempdir()}.
 The directory is created if it does not exist. The value is read on each
-use, so it can be changed at runtime via \code{Sys.setenv()}. Note that paths
+use, so it can be changed at run time via \code{Sys.setenv()}. Note that paths
 cached at package load time (the package's own \verb{callr-env-} file and the
 client DLL location) only honor this setting if the variable was set
 before \code{callr} was loaded, typically by exporting it in the shell or via

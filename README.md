@@ -379,17 +379,13 @@ instrumentation on top of it.
   <https://github.com/r-lib/callr/issues/273>.
 
 - `CALLR_TMPDIR`: If set to a non-empty path, callr writes its auxiliary
-  temporary files (function, script, result, profile, environ,
-  stdout/stderr and the cached client DLL files) into this directory
-  instead of the session's `tempdir()`. The directory is created if it
-  does not exist. This is useful when the default `tempdir()` is on a
-  small partition (e.g. `/tmp`) and callr-driven workloads such as
-  `future.callr` would otherwise fill it up. The value is read on each
-  use, so it can be changed at runtime via `Sys.setenv()`. Note that
-  paths cached at package load time (the package's own `callr-env-`
-  file and the client DLL location) only honor this setting if the
-  variable was set before `callr` was loaded — typically by exporting
-  it in the shell or via `.Renviron`. See also
+  temporary files into this directory instead of the session’s
+  `tempdir()`. The directory is created if it does not exist. The value
+  is read on each use, so it can be changed at run time via
+  `Sys.setenv()`. Note that paths cached at package load time (the
+  package’s own `callr-env-` file and the client DLL location) only
+  honor this setting if the variable was set before `callr` was loaded,
+  typically by exporting it in the shell or via `.Renviron`. See also
   <https://github.com/r-lib/callr/issues/172>.
 
 ## Code of Conduct
