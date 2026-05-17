@@ -31,6 +31,16 @@ test_that("r_bg can get the error back", {
   gc()
 })
 
+test_that("r_bg exit status is non-zero on error (#291)", {
+  x <- r_bg(function() stop("boom"))
+  x$wait()
+  expect_equal(x$get_exit_status(), 1)
+
+  y <- r_bg(function() 1 + 1)
+  y$wait()
+  expect_equal(y$get_exit_status(), 0)
+})
+
 test_that("can read standard output", {
   x <- r_bg(function() cat("Hello world!\n"))
   x$wait()

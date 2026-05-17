@@ -531,7 +531,8 @@ rs_call <- function(self, private, func, args, package) {
     pre_hook = pre,
     post_hook = post,
     messages = TRUE,
-    print_error = FALSE
+    print_error = FALSE,
+    exit_on_error = FALSE
   )
   cmd <- paste0(deparse(expr), "\n")
 

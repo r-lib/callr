@@ -1,5 +1,9 @@
 # callr (development version)
 
+* `r_bg()` (and `r()`) subprocesses now exit with a non-zero status when
+  the evaluated expression throws an error or is interrupted, instead of
+  always exiting with status 0 (#291).
+
 * `r()`, `r_bg()`, `r_session$new()` and friends now accept `libpath = NULL`,
   which leaves the subprocess library path alone, so the subprocess uses
   the `.libPaths()` of a fresh R session (e.g. as set up by a project
