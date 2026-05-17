@@ -2,6 +2,18 @@
 
 ## callr (development version)
 
+- callr is now instrumented with
+  [OpenTelemetry](https://opentelemetry.io/). When an OpenTelemetry SDK
+  (such as otelsdk) is loaded and configured, callr emits spans for
+  [`r()`](https://callr.r-lib.org/dev/reference/r.md),
+  [`rcmd()`](https://callr.r-lib.org/dev/reference/rcmd.md),
+  [`rscript()`](https://callr.r-lib.org/dev/reference/rscript.md),
+  `r_process` and `r_session` (including per-call `$call`, `$read` and
+  `$close` spans), and propagates the W3C `traceparent` header into the
+  subprocess so spans created inside the child are parented to the
+  parent’s span. See the ‘OpenTelemetry’ article for details
+  ([\#302](https://github.com/r-lib/callr/issues/302)).
+
 - [`r()`](https://callr.r-lib.org/dev/reference/r.md),
   [`rcmd()`](https://callr.r-lib.org/dev/reference/rcmd.md),
   [`rscript()`](https://callr.r-lib.org/dev/reference/rscript.md) and

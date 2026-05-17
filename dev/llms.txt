@@ -20,6 +20,7 @@ exactly that.
   `poll()`](#multiple-background-r-processes-and-poll)
 - [Persistent R sessions](#persistent-r-sessions)
 - [Running `R CMD` commands](#running-r-cmd-commands)
+- [Observability](#observability)
 - [Configuration](#configuration)
   - [Environment variables](#environment-variables)
 - [Code of Conduct](#code-of-conduct)
@@ -41,6 +42,8 @@ exactly that.
 - Provides extensible `r_process`, `rcmd_process` and `rscript_process`
   R6 classes, based on
   [`processx::process`](http://processx.r-lib.org/reference/process.md).
+- Emits [OpenTelemetry](https://opentelemetry.io/) traces for every R
+  subprocess and propagates trace context across the process boundary.
 
 ## Installation
 
@@ -223,7 +226,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 7538.
+    #> PROCESS 'R', running, pid 7695.
 
 This is a list of all `r_process` methods:
 
@@ -312,8 +315,8 @@ processx::poll(list(rp1), 1000)
 
 
     #> [[1]]
-    #>  output   error process
-    #> "ready" "ready" "ready"
+    #>   output    error  process
+    #> "silent"  "ready"  "ready"
     #>
 
 ``` r
@@ -337,7 +340,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 7589.
+    #> R SESSION, alive, idle, pid 7746.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -360,8 +363,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.336944617 0.982568443 0.206720626 0.778538910 0.493639180 0.017519719
-    #>  [7] 0.495524852 0.888542010 0.009047962 0.143561671
+    #>  [1] 0.01891361 0.20062561 0.06102044 0.90969124 0.19108311 0.96891656
+    #>  [7] 0.31641041 0.80895855 0.77577936 0.69839908
 
 ``` r
 
@@ -370,7 +373,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 7598.
+    #> R SESSION, alive, busy, pid 7755.
 
 ``` r
 
@@ -390,11 +393,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1d01623e731a"
+    #> [1] "done callr-rs-result-1d9f42f20271"
     #>
     #> $result
-    #>  [1]  1.34545033 -1.12512082  1.00725417  0.23669287  1.39979193  2.92313745
-    #>  [7] -0.01852853 -0.31614057 -2.00241601 -0.50716063
+    #>  [1] -1.05291495  1.42259729 -0.25163931 -0.55852910  1.37681711 -0.06820701
+    #>  [7]  0.04373314  0.46064536  0.32010320 -0.27380050
     #>
     #> $stdout
     #> [1] ""
@@ -439,6 +442,21 @@ callr::rcmd("config", "CC")
 
 This returns a list with three components: the standard output, the
 standard error, and the exit (status) code of the `R CMD` command.
+
+## Observability
+
+callr is instrumented with [OpenTelemetry](https://opentelemetry.io/).
+When an OpenTelemetry SDK (such as [otelsdk](https://otelsdk.r-lib.org))
+is loaded and configured, callr emits spans for every R subprocess it
+starts and propagates the W3C `traceparent` header into the subprocess,
+so spans created inside the child become children of the parent span. No
+code changes are needed in callr-using code — the existing entry points
+start emitting telemetry as soon as an SDK is configured.
+
+See
+[`vignette("opentelemetry", package = "callr")`](https://callr.r-lib.org/dev/articles/opentelemetry.md)
+for what callr emits, how subprocess context propagation works, and how
+to test your own instrumentation on top of it.
 
 ## Configuration
 
@@ -571,5 +589,6 @@ contributing to this project, you agree to abide by its terms.
 
 ### All vignettes
 
+- [OpenTelemetry](https://callr.r-lib.org/dev/articles/opentelemetry.md):
 - [Persistent External R
   Sessions](https://callr.r-lib.org/dev/articles/r-session.md):
