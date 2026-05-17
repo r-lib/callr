@@ -41,6 +41,7 @@ asciicast::init_knitr_engine(
 -   Can call `R CMD` commands, synchronously or asynchronously.
 -   Can call R scripts, synchronously or asynchronously.
 -   Provides extensible `r_process`, `rcmd_process` and `rscript_process` R6 classes, based on `processx::process`.
+-   Emits [OpenTelemetry](https://opentelemetry.io/) traces for every R subprocess and propagates trace context across the process boundary.
 
 ## Installation
 
@@ -255,6 +256,14 @@ callr::rcmd("config", "CC")
 ```
 
 This returns a list with three components: the standard output, the standard error, and the exit (status) code of the `R CMD` command.
+
+## Observability
+
+callr is instrumented with [OpenTelemetry](https://opentelemetry.io/).
+When an OpenTelemetry SDK (such as [otelsdk](https://otelsdk.r-lib.org)) is loaded and configured, callr emits spans for every R subprocess it starts and propagates the W3C `traceparent` header into the subprocess, so spans created inside the child become children of the parent span.
+No code changes are needed in callr-using code — the existing entry points start emitting telemetry as soon as an SDK is configured.
+
+See `vignette("opentelemetry", package = "callr")` for what callr emits, how subprocess context propagation works, and how to test your own instrumentation on top of it.
 
 ## Configuration
 
