@@ -2,6 +2,15 @@
 
 ## callr (development version)
 
+- [`r()`](https://callr.r-lib.org/dev/reference/r.md),
+  [`r_bg()`](https://callr.r-lib.org/dev/reference/r_bg.md),
+  `r_session$new()` and friends now accept `libpath = NULL`, which
+  leaves the subprocess library path alone, so the subprocess uses the
+  [`.libPaths()`](https://rdrr.io/r/base/libPaths.html) of a fresh R
+  session (e.g. as set up by a project `.Rprofile`) instead of
+  inheriting the parent’s library path
+  ([\#255](https://github.com/r-lib/callr/issues/255)).
+
 - callr is now instrumented with
   [OpenTelemetry](https://opentelemetry.io/). When an OpenTelemetry SDK
   (such as otelsdk) is loaded and configured, callr emits spans for

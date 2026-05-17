@@ -23,7 +23,10 @@ The current options are:
 
 - `libpath`: Library path for the subprocess. By default the same as the
   *current* library path. I.e. *not* necessarily the library path of a
-  fresh R session.)
+  fresh R session.) If `NULL`, then the library path is not modified at
+  all in the subprocess, which is useful for subprocesses that should
+  use the library path of a fresh R session, e.g. as set up by a project
+  `.Rprofile`.
 
 - `repos`: `repos` option for the subprocess. By default the current
   value of the main process.

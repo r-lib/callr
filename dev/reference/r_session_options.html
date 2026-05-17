@@ -64,7 +64,10 @@
     <p>Named list of options.</p>
 <p>The current options are:</p><ul><li><p><code>libpath</code>: Library path for the subprocess. By default the same as the
 <em>current</em> library path. I.e. <em>not</em> necessarily the library path of
-a fresh R session.)</p></li>
+a fresh R session.) If <code>NULL</code>, then the library path is not modified
+at all in the subprocess, which is useful for subprocesses that should
+use the library path of a fresh R session, e.g. as set up by a project
+<code>.Rprofile</code>.</p></li>
 <li><p><code>repos</code>: <code>repos</code> option for the subprocess. By default the current
 value of the main process.</p></li>
 <li><p><code>stdout</code>: Standard output of the sub-process. This can be <code>NULL</code> or

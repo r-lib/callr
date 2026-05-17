@@ -67,7 +67,10 @@ rcmd_safe(
 
 - libpath:
 
-  The library path.
+  The library path. If `NULL`, then the library path is not modified at
+  all in the subprocess. This is useful for subprocesses that should use
+  the library path of a fresh R session, e.g. as set up by a project
+  `.Rprofile`.
 
 - repos:
 

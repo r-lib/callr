@@ -226,7 +226,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 7613.
+    #> PROCESS 'R', running, pid 7897.
 
 This is a list of all `r_process` methods:
 
@@ -340,7 +340,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 7664.
+    #> R SESSION, alive, idle, pid 7948.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -363,8 +363,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.9545593 0.4801246 0.3422873 0.6147927 0.9305809 0.2290274 0.9050773
-    #>  [8] 0.5175636 0.2181720 0.4221790
+    #>  [1] 0.4496499 0.4690626 0.5599020 0.6624511 0.5538106 0.1892576 0.1713920
+    #>  [8] 0.8547591 0.9108217 0.3935513
 
 ``` r
 
@@ -373,7 +373,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 7673.
+    #> R SESSION, alive, busy, pid 7957.
 
 ``` r
 
@@ -393,11 +393,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1d4c57ab57b8"
+    #> [1] "done callr-rs-result-1e69248aed39"
     #>
     #> $result
-    #>  [1]  1.94270145 -1.36338889  0.86199139 -0.54626420  0.05901599  1.30898307
-    #>  [7]  1.55031088 -1.21409905 -1.10175196 -1.14469457
+    #>  [1] -0.3540436 -0.5685143 -0.1510419  1.5989552 -0.7358489  1.1458047
+    #>  [7] -0.7914041  1.4841750 -0.6193161  0.3869943
     #>
     #> $stdout
     #> [1] ""
