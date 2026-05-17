@@ -147,7 +147,7 @@ the function call generated an error in the child process.
 
 #### Usage
 
-    r_session$run(func, args = list(), package = FALSE)
+    r_session$run(func, args = list(), package = NULL)
 
 #### Arguments
 
@@ -166,7 +166,12 @@ the function call generated an error in the child process.
   Whether to keep the environment of `func` when passing it to the other
   package. Possible values are:
 
-  - `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+  - `NULL` (the default): equivalent to `TRUE` if `func` inherits from
+    `"crate"` (i.e. was created with
+    [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html)),
+    and `FALSE` otherwise.
+
+  - `FALSE`: reset the environment to `.GlobalEnv`.
 
   - `TRUE`: keep the environment as is.
 
@@ -186,7 +191,7 @@ non-`NULL` `error` member in the result list.
 
 #### Usage
 
-    r_session$run_with_output(func, args = list(), package = FALSE)
+    r_session$run_with_output(func, args = list(), package = NULL)
 
 #### Arguments
 
@@ -205,7 +210,12 @@ non-`NULL` `error` member in the result list.
   Whether to keep the environment of `func` when passing it to the other
   package. Possible values are:
 
-  - `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+  - `NULL` (the default): equivalent to `TRUE` if `func` inherits from
+    `"crate"` (i.e. was created with
+    [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html)),
+    and `FALSE` otherwise.
+
+  - `FALSE`: reset the environment to `.GlobalEnv`.
 
   - `TRUE`: keep the environment as is.
 
@@ -238,7 +248,7 @@ method.
 
 #### Usage
 
-    r_session$call(func, args = list(), package = FALSE)
+    r_session$call(func, args = list(), package = NULL)
 
 #### Arguments
 
@@ -257,7 +267,12 @@ method.
   Whether to keep the environment of `func` when passing it to the other
   package. Possible values are:
 
-  - `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+  - `NULL` (the default): equivalent to `TRUE` if `func` inherits from
+    `"crate"` (i.e. was created with
+    [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html)),
+    and `FALSE` otherwise.
+
+  - `FALSE`: reset the environment to `.GlobalEnv`.
 
   - `TRUE`: keep the environment as is.
 

@@ -2,6 +2,12 @@
 
 ## callr (development version)
 
+- callr now supports
+  [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html).
+  `package = NULL`, the new default, handles functions created with
+  [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html)
+  automatically ([\#249](https://github.com/r-lib/callr/issues/249)).
+
 - The `CALLR_TMPDIR` environment variable can now be set to override the
   directory callr uses for its auxiliary temporary files. When unset,
   callr keeps using [`tempdir()`](https://rdrr.io/r/base/tempfile.html)

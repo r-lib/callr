@@ -36,7 +36,7 @@ r(
   user_profile = "project",
   env = rcmd_safe_env(),
   timeout = Inf,
-  package = FALSE,
+  package = NULL,
   arch = "same",
   ...
 )
@@ -59,7 +59,7 @@ r_safe(
   user_profile = "project",
   env = rcmd_safe_env(),
   timeout = Inf,
-  package = FALSE,
+  package = NULL,
   arch = "same",
   ...
 )
@@ -202,7 +202,12 @@ r_safe(
   Whether to keep the environment of `func` when passing it to the other
   package. Possible values are:
 
-  - `FALSE`: reset the environment to `.GlobalEnv`. This is the default.
+  - `NULL` (the default): equivalent to `TRUE` if `func` inherits from
+    `"crate"` (i.e. was created with
+    [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html)),
+    and `FALSE` otherwise.
+
+  - `FALSE`: reset the environment to `.GlobalEnv`.
 
   - `TRUE`: keep the environment as is.
 

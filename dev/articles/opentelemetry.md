@@ -165,12 +165,12 @@ data.frame(
 ```
 
     #>                          name           parent
-    #> 1              r_session$read fad0d0d49c9ec97a
-    #> 2 r_session$initialize() wait fad0d0d49c9ec97a
-    #> 3              r_session$call fad0d0d49c9ec97a
-    #> 4              r_session$read fad0d0d49c9ec97a
+    #> 1              r_session$read 8141518902967e92
+    #> 2 r_session$initialize() wait 8141518902967e92
+    #> 3              r_session$call 8141518902967e92
+    #> 4              r_session$read 8141518902967e92
     #> 5            callr::r_session 0000000000000000
-    #> 6             r_session$close fad0d0d49c9ec97a
+    #> 6             r_session$close 8141518902967e92
 
 A subprocess error is recorded as an `exception` event:
 
@@ -195,7 +195,7 @@ out <- otelsdk::with_otel_record({
 out$value
 ```
 
-    #> [1] "00-c7acf62c274daf46679c1bc6e77a48dd-0da9759e45cc39ca-01"
+    #> [1] "00-37df36fde60a8d2a9b76b3ccce2581e6-e047ba554ca1c5dd-01"
 
 ``` r
 
@@ -206,7 +206,7 @@ sprintf(
 )
 ```
 
-    #> [1] "00-c7acf62c274daf46679c1bc6e77a48dd-0da9759e45cc39ca-01"
+    #> [1] "00-37df36fde60a8d2a9b76b3ccce2581e6-e047ba554ca1c5dd-01"
 
 The two strings match: the `TRACEPARENT` the subprocess sees encodes the
 trace and span IDs of the parent’s
