@@ -1,5 +1,10 @@
 # callr (development version)
 
+* `r()`, `r_bg()`, `r_session$new()` and friends now accept `libpath = NULL`,
+  which leaves the subprocess library path alone, so the subprocess uses
+  the `.libPaths()` of a fresh R session (e.g. as set up by a project
+  `.Rprofile`) instead of inheriting the parent's library path (#255).
+
 * `r()`, `rcmd()`, `rscript()` and friends no longer hang on Windows when
   called with `stdout = "|"` (or any value of `stdout`/`stderr` other than
   a file path or `NULL`) (#313).

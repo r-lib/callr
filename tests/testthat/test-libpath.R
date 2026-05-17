@@ -228,6 +228,46 @@ test_that("libpath in system, if subprocess changes R_LIBS #2", {
   gc()
 })
 
+test_that("libpath = NULL keeps the subprocess library path of a fresh R session", {
+  # See https://github.com/r-lib/callr/issues/255
+  skip_in_covr()
+  skip_if_not_installed("withr")
+
+  dir.create(tmp_lib <- tempfile())
+  dir.create(tmp_wd <- tempfile())
+  on.exit(unlink(c(tmp_lib, tmp_wd), recursive = TRUE), add = TRUE)
+
+  cat(
+    sprintf(".libPaths(c(%s, .libPaths()))\n", deparse(tmp_lib)),
+    file = file.path(tmp_wd, ".Rprofile")
+  )
+
+  # With libpath = NULL the subprocess respects .libPaths() set from the
+  # project .Rprofile, instead of overwriting it with the parent's libpath.
+  lp_null <- withr::with_dir(
+    tmp_wd,
+    r(
+      function() .libPaths(),
+      libpath = NULL,
+      user_profile = "project"
+    )
+  )
+  expect_true(normalizePath(tmp_lib) %in% normalizePath(lp_null))
+
+  # Sanity check: with the default libpath, callr would overwrite the
+  # libpath set in the project .Rprofile.
+  lp_default <- withr::with_dir(
+    tmp_wd,
+    r(
+      function() .libPaths(),
+      user_profile = "project"
+    )
+  )
+  expect_false(normalizePath(tmp_lib) %in% normalizePath(lp_default))
+
+  gc()
+})
+
 test_that("setting profile/environ variables in 'env'", {
   # See https://github.com/r-lib/callr/issues/193
 

@@ -32,7 +32,10 @@ rscript(
 
 \item{cmdargs}{Command line arguments.}
 
-\item{libpath}{The library path.}
+\item{libpath}{The library path. If \code{NULL}, then the library path
+is not modified at all in the subprocess. This is useful for
+subprocesses that should use the library path of a fresh R session,
+e.g. as set up by a project \code{.Rprofile}.}
 
 \item{repos}{The \code{repos} option. If \code{NULL}, then no
 \code{repos} option is set. This options is only used if

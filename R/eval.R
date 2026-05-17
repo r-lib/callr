@@ -32,7 +32,10 @@
 #'   ```
 #'   works just fine.
 #' @param args Arguments to pass to the function. Must be a list.
-#' @param libpath The library path.
+#' @param libpath The library path. If `NULL`, then the library path
+#'   is not modified at all in the subprocess. This is useful for
+#'   subprocesses that should use the library path of a fresh R session,
+#'   e.g. as set up by a project `.Rprofile`.
 #' @param repos The `repos` option. If `NULL`, then no
 #'   `repos` option is set. This options is only used if
 #'   `user_profile` or `system_profile` is set `FALSE`,

@@ -102,14 +102,16 @@ setup_context <- function(options) {
       env["R_PROFILE_USER"] <- profiles[[2]]
     }
 
-    if (is.na(env["R_LIBS"])) {
-      env["R_LIBS"] <- make_path(libpath)
-    }
-    if (is.na(env["R_LIBS_USER"])) {
-      env["R_LIBS_USER"] <- make_path(libpath)
-    }
-    if (is.na(env["R_LIBS_SITE"])) {
-      env["R_LIBS_SITE"] <- make_path(.Library.site)
+    if (!is.null(libpath)) {
+      if (is.na(env["R_LIBS"])) {
+        env["R_LIBS"] <- make_path(libpath)
+      }
+      if (is.na(env["R_LIBS_USER"])) {
+        env["R_LIBS_USER"] <- make_path(libpath)
+      }
+      if (is.na(env["R_LIBS_SITE"])) {
+        env["R_LIBS_SITE"] <- make_path(.Library.site)
+      }
     }
 
     env["CALLR_IS_RUNNING"] <- "true"
@@ -189,25 +191,27 @@ make_profiles <- function(system, user, repos, libpath, load_hook, env) {
     )
   }
 
-  ## Set .Library.site
-  cat(
-    ".Library.site <- ",
-    deparse(.Library.site),
-    "\n.libPaths(.libPaths())\n",
-    file = profile_system,
-    append = TRUE
-  )
-
-  ## Set .libPaths()
-  for (p in c(profile_system, profile_user)) {
+  if (!is.null(libpath)) {
+    ## Set .Library.site
     cat(
-      ".libPaths(",
-      deparse(libpath),
-      ")\n",
-      sep = "",
-      file = p,
+      ".Library.site <- ",
+      deparse(.Library.site),
+      "\n.libPaths(.libPaths())\n",
+      file = profile_system,
       append = TRUE
     )
+
+    ## Set .libPaths()
+    for (p in c(profile_system, profile_user)) {
+      cat(
+        ".libPaths(",
+        deparse(libpath),
+        ")\n",
+        sep = "",
+        file = p,
+        append = TRUE
+      )
+    }
   }
 
   if (!is.null(load_hook)) {
@@ -280,30 +284,32 @@ make_environ <- function(profiles, libpath, env) {
       append = TRUE,
       sep = ""
     )
-    cat(
-      "R_LIBS_SITE=\"${CALLR_CHILD_R_LIBS_SITE:-",
-      paste(.Library.site, collapse = .Platform$path.sep),
-      "}\"\n",
-      file = ef,
-      append = TRUE,
-      sep = ""
-    )
-    cat(
-      "R_LIBS=\"${CALLR_CHILD_R_LIBS:-",
-      paste(libpath, collapse = .Platform$path.sep),
-      "}\"\n",
-      file = ef,
-      append = TRUE,
-      sep = ""
-    )
-    cat(
-      "R_LIBS_USER=\"${CALLR_CHILD_R_LIBS_USER:-",
-      paste(libpath, collapse = .Platform$path.sep),
-      "}\"\n",
-      file = ef,
-      append = TRUE,
-      sep = ""
-    )
+    if (!is.null(libpath)) {
+      cat(
+        "R_LIBS_SITE=\"${CALLR_CHILD_R_LIBS_SITE:-",
+        paste(.Library.site, collapse = .Platform$path.sep),
+        "}\"\n",
+        file = ef,
+        append = TRUE,
+        sep = ""
+      )
+      cat(
+        "R_LIBS=\"${CALLR_CHILD_R_LIBS:-",
+        paste(libpath, collapse = .Platform$path.sep),
+        "}\"\n",
+        file = ef,
+        append = TRUE,
+        sep = ""
+      )
+      cat(
+        "R_LIBS_USER=\"${CALLR_CHILD_R_LIBS_USER:-",
+        paste(libpath, collapse = .Platform$path.sep),
+        "}\"\n",
+        file = ef,
+        append = TRUE,
+        sep = ""
+      )
+    }
   }
 
   c(env_sys, env_user)

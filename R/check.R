@@ -21,7 +21,7 @@ convert_and_check_my_args <- function(options) {
 
   ## Conversions
   options <- within(options, {
-    if (has("libpath")) {
+    if (has("libpath") && !is.null(libpath)) {
       libpath <- as.character(libpath)
     }
     if (has("repos")) {
@@ -69,7 +69,7 @@ convert_and_check_my_args <- function(options) {
     stopifnot(
       no("func") || is.function(func),
       no("func") || is.list(args),
-      is.character(libpath),
+      is.null(libpath) || is.character(libpath),
       no("stdout") || is.null(stdout) || is_string(stdout),
       no("stderr") || is.null(stderr) || is_string(stderr),
       no("error") || is_string(error),

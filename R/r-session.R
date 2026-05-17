@@ -1002,7 +1002,10 @@ rs__handle_condition <- function(cond) {
 #' The current options are:
 #' * `libpath`: Library path for the subprocess. By default the same as the
 #'   _current_ library path. I.e. _not_ necessarily the library path of
-#'   a fresh R session.)
+#'   a fresh R session.) If `NULL`, then the library path is not modified
+#'   at all in the subprocess, which is useful for subprocesses that should
+#'   use the library path of a fresh R session, e.g. as set up by a project
+#'   `.Rprofile`.
 #' * `repos`: `repos` option for the subprocess. By default the current
 #'   value of the main process.
 #' * `stdout`: Standard output of the sub-process. This can be `NULL` or
