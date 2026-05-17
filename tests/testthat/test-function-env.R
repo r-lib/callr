@@ -66,3 +66,32 @@ test_that("r_session", {
   expect_true(is.function(out))
   expect_equal(environmentName(environment(out)), "callr")
 })
+
+test_that("r() preserves the environment of crated functions by default", {
+  skip_if_not_installed("carrier")
+  fn <- carrier::crate(function() payload, payload = 42)
+  expect_equal(r(fn), 42)
+
+  # explicit package = FALSE still wipes the environment
+  err <- tryCatch(r(fn, package = FALSE), error = function(e) e)
+  expect_match(conditionMessage(err), "payload")
+})
+
+test_that("r_bg() preserves the environment of crated functions by default", {
+  skip_if_not_installed("carrier")
+  testthat::skip_on_covr()
+  fn <- carrier::crate(function() payload, payload = 42)
+  p <- r_bg(fn)
+  on.exit(p$kill(), add = TRUE)
+  p$wait(3000)
+  p$kill()
+  expect_equal(p$get_result(), 42)
+})
+
+test_that("r_session$run() preserves the env of crated funcs by default", {
+  skip_if_not_installed("carrier")
+  fn <- carrier::crate(function() payload, payload = 42)
+  rs <- r_session$new()
+  on.exit(rs$kill(), add = TRUE)
+  expect_equal(rs$run(fn), 42)
+})

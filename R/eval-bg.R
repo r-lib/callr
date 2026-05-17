@@ -56,7 +56,7 @@ r_bg <- function(
   user_profile = "project",
   env = rcmd_safe_env(),
   supervise = FALSE,
-  package = FALSE,
+  package = NULL,
   arch = "same",
   ...
 ) {
