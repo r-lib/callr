@@ -131,6 +131,25 @@ returns immediately.
 Use \code{p$get_result()} to collect the result or to throw an error
 if the background computation failed.
 }
+\section{Draining standard output and error}{
+With the default \code{stdout = "|"} and \code{stderr = "|"}, the child process
+writes its output and error streams into OS pipes with a small fixed
+buffer (typically 64 KB or less). If nothing drains these pipes, a
+chatty child fills the buffer and then blocks on the next \code{write()}.
+The child will not
+terminate until the parent reads from the pipes, so \code{p$is_alive()} will
+keep returning \code{TRUE} even though the work appears to be done.
+
+To avoid this:
+\itemize{
+\item Pass a filename to \code{stdout} / \code{stderr} to redirect output to files, or
+\item pass \code{NULL} to discard it, or
+\item periodically call \code{p$read_output()} and \code{p$read_error()} (or
+\code{p$read_all_output()} etc.) to drain the pipes while the process is
+running.
+}
+}
+
 \section{Security considerations}{
 
 

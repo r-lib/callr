@@ -22,6 +22,7 @@ packages does exactly that.
 \item Can call \verb{R CMD} commands, synchronously or asynchronously.
 \item Can call R scripts, synchronously or asynchronously.
 \item Provides extensible \code{r_process}, \code{rcmd_process} and \code{rscript_process} R6 classes, based on \code{processx::process}.
+\item Emits \href{https://opentelemetry.io/}{OpenTelemetry} traces for every R subprocess and propagates trace context across the process boundary.
 }
 }
 
@@ -394,6 +395,15 @@ For example, you can call \verb{R CMD INSTALL}, \verb{R CMD check} or \verb{R CM
 
 
 This returns a list with three components: the standard output, the standard error, and the exit (status) code of the \verb{R CMD} command.
+}
+
+\subsection{Observability}{
+
+callr is instrumented with \href{https://opentelemetry.io/}{OpenTelemetry}.
+When an OpenTelemetry SDK (such as \href{https://otelsdk.r-lib.org}{otelsdk}) is loaded and configured, callr emits spans for every R subprocess it starts and propagates the W3C \code{traceparent} header into the subprocess, so spans created inside the child become children of the parent span.
+No code changes are needed in callr-using code — the existing entry points start emitting telemetry as soon as an SDK is configured.
+
+See \code{vignette("opentelemetry", package = "callr")} for what callr emits, how subprocess context propagation works, and how to test your own instrumentation on top of it.
 }
 
 \subsection{Configuration}{
