@@ -2,6 +2,11 @@
 
 ## callr (development version)
 
+- The `CALLR_TMPDIR` environment variable can now be set to override the
+  directory callr uses for its auxiliary temporary files. When unset,
+  callr keeps using [`tempdir()`](https://rdrr.io/r/base/tempfile.html)
+  ([\#172](https://github.com/r-lib/callr/issues/172)).
+
 - [`r_bg()`](https://callr.r-lib.org/dev/reference/r_bg.md) (and
   [`r()`](https://callr.r-lib.org/dev/reference/r.md)) subprocesses now
   exit with a non-zero status when the evaluated expression throws an

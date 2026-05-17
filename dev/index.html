@@ -178,7 +178,7 @@
 <code class="sourceCode R"><span><span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">4</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span>; <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/diameter.html" class="external-link">diameter</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; [1] 10
+#&gt; [1] 11
 </pre>
 </div>
 </div>
@@ -250,7 +250,7 @@
 <span><span class="va">rp</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; PROCESS 'R', running, pid 7616.
+#&gt; PROCESS 'R', running, pid 7623.
 </pre>
 </div>
 <p>This is a list of all <code>r_process</code> methods:</p>
@@ -355,7 +355,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 7667.
+#&gt; R SESSION, alive, idle, pid 7674.
 </pre>
 </div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
@@ -365,8 +365,8 @@
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt;  [1] 0.9480365 0.8344345 0.3861357 0.9215844 0.8750813 0.2650695 0.8954439
-#&gt;  [8] 0.9956320 0.8734258 0.6690425
+#&gt;  [1] 0.8131660 0.7273645 0.4098994 0.2514453 0.3050986 0.7209898 0.3683494
+#&gt;  [8] 0.2457792 0.1229740 0.8269375
 </pre>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -374,7 +374,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, busy, pid 7676.
+#&gt; R SESSION, alive, busy, pid 7683.
 </pre>
 </div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -392,11 +392,11 @@
 #&gt; [1] 200
 #&gt;
 #&gt; $message
-#&gt; [1] "done callr-rs-result-1d502b1a6695"
+#&gt; [1] "done callr-rs-result-1d577068b462"
 #&gt;
 #&gt; $result
-#&gt;  [1]  1.3504072  2.1529993 -0.1349725  0.8436846 -0.5040555  0.1051197
-#&gt;  [7] -0.5384105 -0.1511156  0.6751594  1.4917118
+#&gt;  [1]  0.7055361  1.6770053 -1.5754115  0.1012133  0.6570596  0.8192502
+#&gt;  [7]  1.7803296  0.9114163  1.0501763  0.5112015
 #&gt;
 #&gt; $stdout
 #&gt; [1] ""
@@ -453,8 +453,8 @@
 <h3 id="environment-variables">Environment variables<a class="anchor" aria-label="anchor" href="#environment-variables"></a>
 </h3>
 <ul>
-<li>
-<code>CALLR_NO_TEMP_DLLS</code>: If <code>true</code>, then callr does not use a temporary directory to copy the client DLL files from, in the subprocess. By default callr copies the DLL file that drives the callr subprocess into a temporary directory and loads it from there. This is mainly to avoid locking a DLL file in the package library, on Windows. If this default causes issues for you, set it to <code>true</code>, and then callr will use the DLL file from the installed processx package. See also <a href="https://github.com/r-lib/callr/issues/273" class="external-link uri">https://github.com/r-lib/callr/issues/273</a>.</li>
+<li><p><code>CALLR_NO_TEMP_DLLS</code>: If <code>true</code>, then callr does not use a temporary directory to copy the client DLL files from, in the subprocess. By default callr copies the DLL file that drives the callr subprocess into a temporary directory and loads it from there. This is mainly to avoid locking a DLL file in the package library, on Windows. If this default causes issues for you, set it to <code>true</code>, and then callr will use the DLL file from the installed processx package. See also <a href="https://github.com/r-lib/callr/issues/273" class="external-link uri">https://github.com/r-lib/callr/issues/273</a>.</p></li>
+<li><p><code>CALLR_TMPDIR</code>: If set to a non-empty path, callr writes its auxiliary temporary files into this directory instead of the session’s <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>. The directory is created if it does not exist. The value is read on each use, so it can be changed at run time via <code><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv()</a></code>. Note that paths cached at package load time (the package’s own <code>callr-env-</code> file and the client DLL location) only honor this setting if the variable was set before <code>callr</code> was loaded, typically by exporting it in the shell or via <code>.Renviron</code>. See also <a href="https://github.com/r-lib/callr/issues/172" class="external-link uri">https://github.com/r-lib/callr/issues/172</a>.</p></li>
 </ul>
 </div>
 </div>

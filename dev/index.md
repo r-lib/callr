@@ -132,7 +132,7 @@ callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g)
 ```
 
 
-    #> [1] 10
+    #> [1] 11
 
 ### Error handling
 
@@ -226,7 +226,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 7616.
+    #> PROCESS 'R', running, pid 7623.
 
 This is a list of all `r_process` methods:
 
@@ -340,7 +340,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 7667.
+    #> R SESSION, alive, idle, pid 7674.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -363,8 +363,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.9480365 0.8344345 0.3861357 0.9215844 0.8750813 0.2650695 0.8954439
-    #>  [8] 0.9956320 0.8734258 0.6690425
+    #>  [1] 0.8131660 0.7273645 0.4098994 0.2514453 0.3050986 0.7209898 0.3683494
+    #>  [8] 0.2457792 0.1229740 0.8269375
 
 ``` r
 
@@ -373,7 +373,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 7676.
+    #> R SESSION, alive, busy, pid 7683.
 
 ``` r
 
@@ -393,11 +393,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1d502b1a6695"
+    #> [1] "done callr-rs-result-1d577068b462"
     #>
     #> $result
-    #>  [1]  1.3504072  2.1529993 -0.1349725  0.8436846 -0.5040555  0.1051197
-    #>  [7] -0.5384105 -0.1511156  0.6751594  1.4917118
+    #>  [1]  0.7055361  1.6770053 -1.5754115  0.1012133  0.6570596  0.8192502
+    #>  [7]  1.7803296  0.9114163  1.0501763  0.5112015
     #>
     #> $stdout
     #> [1] ""
@@ -470,6 +470,18 @@ to test your own instrumentation on top of it.
   default causes issues for you, set it to `true`, and then callr will
   use the DLL file from the installed processx package. See also
   <https://github.com/r-lib/callr/issues/273>.
+
+- `CALLR_TMPDIR`: If set to a non-empty path, callr writes its auxiliary
+  temporary files into this directory instead of the session’s
+  [`tempdir()`](https://rdrr.io/r/base/tempfile.html). The directory is
+  created if it does not exist. The value is read on each use, so it can
+  be changed at run time via
+  [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html). Note that
+  paths cached at package load time (the package’s own `callr-env-` file
+  and the client DLL location) only honor this setting if the variable
+  was set before `callr` was loaded, typically by exporting it in the
+  shell or via `.Renviron`. See also
+  <https://github.com/r-lib/callr/issues/172>.
 
 ## Code of Conduct
 
