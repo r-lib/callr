@@ -85,6 +85,7 @@ test_that("pty = TRUE merges stderr into stdout and sets a tty", {
   ## ConPTY on Windows interleaves CSI mode-change escapes with output;
   ## strip them before matching.
   out <- cli::ansi_strip(res$stdout)
+  out <- sub("\033.*\a", "", out)
   expect_match(out, "isatty: TRUE")
   expect_match(out, "err line")
   expect_match(out, "out line")
@@ -118,6 +119,7 @@ test_that("rscript_process supports pty = TRUE", {
 
   expect_false(px$has_error_connection())
   out <- cli::ansi_strip(px$read_all_output())
+  out <-  sub("\033.*\a", "", out)
   expect_match(out, "on stderr")
   expect_match(out, "on stdout")
 })
