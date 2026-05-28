@@ -1,5 +1,8 @@
 # callr (development version)
 
+* `r()`, `rcmd()`, `rscript()` and `rscript_process` now accept
+  `pty = TRUE` to run the child R process in a pseudo-terminal.
+
 * callr now supports `carrier::crate()`. `package = NULL`, the new
   default, handles functions created with `carrier::crate()` automatically
   (#249).

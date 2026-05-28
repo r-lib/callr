@@ -123,6 +123,8 @@ rscript_init <- function(self, private, super, options) {
   setwd(options$wd)
   on.exit(setwd(oldwd), add = TRUE)
 
+  pty <- isTRUE(options$extra$pty)
+
   with_envvar(
     options$env,
     do.call(
@@ -131,8 +133,8 @@ rscript_init <- function(self, private, super, options) {
         list(
           options$bin,
           options$real_cmdargs,
-          stdout = options$stdout,
-          stderr = options$stderr,
+          stdout = if (pty) NULL else options$stdout,
+          stderr = if (pty) NULL else options$stderr,
           poll_connection = options$poll_connection
         ),
         options$extra
