@@ -1,0 +1,8 @@
+
+all: callrem.exe
+
+callrem.exe: callrem.o
+	$(CC) -O3 -o $@ callrem.o -L"$(R_HOME)/bin$(R_ARCH)" -lR -lRgraphapp $(LIBS)
+
+clean:
+	@rm -f callrem.exe callrem.o

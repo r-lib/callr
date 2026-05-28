@@ -1,0 +1,8 @@
+
+all: @LAUNCHER@
+
+callrem: callrem.o
+	$(MAIN_LINK) -o $@ callrem.o $(LIBR) $(LIBS)
+
+clean:
+	@rm -f Makevars callrem callrem.o

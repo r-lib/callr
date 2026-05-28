@@ -12,6 +12,11 @@
 /src/tools/px.exe
 /src/tools/px.dSYM
 /src/callr.so
+/src/Makevars
+/src/callrem
+/src/callrem.exe
+/src/callrem.dSYM
+/inst/bin
 /README.html
 Meta
 /r-packages

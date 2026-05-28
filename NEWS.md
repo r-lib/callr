@@ -1,5 +1,10 @@
 # callr (development version)
 
+* callr now ships a bundled launcher binary that embeds R, used by
+  `r()`, `r_bg()`, and `r_session$new()` (#312). If the launcher cannot
+  be built (e.g. R installed without a shared `libR`), callr falls back
+  to the system R executable.
+
 * callr now supports `carrier::crate()`. `package = NULL`, the new
   default, handles functions created with `carrier::crate()` automatically
   (#249).

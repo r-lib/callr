@@ -1,0 +1,29 @@
+#! /bin/sh
+
+# Check that this is not just ./configure. We need to run this
+# from R CMD INSTALL, to have the R env vars set.
+
+if [ -z "$R_HOME" ]; then
+    echo >&2 R_HOME is not set, are you running R CMD INSTALL?
+    exit 1
+fi
+
+# Find the R binary we need to use. R_ARCH_BIN is set on Windows.
+RBIN="${R_HOME}/bin${R_ARCH_BIN}/R"
+
+# If we can link against libR, we build the embedded-R launcher.
+# Otherwise the launcher binary is simply absent and the R glue
+# falls back to launching the system R executable.
+CHKLIBR=`${RBIN} CMD config --ldflags 2>/dev/null`
+have_libR=no
+if test -n "$CHKLIBR"; then
+   have_libR=yes
+fi
+
+if test "${have_libR}" = yes; then
+   LAUNCHER="callrem"
+else
+   LAUNCHER=""
+fi
+
+sed "s/@LAUNCHER@/${LAUNCHER}/" src/Makevars.in > src/Makevars

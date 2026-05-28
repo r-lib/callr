@@ -6,6 +6,11 @@
 ^README.markdown$
 ^src/callr\.so$
 ^src/.*\.o$
+^src/Makevars$
+^src/callrem$
+^src/callrem\.exe$
+^src/callrem\.dSYM$
+^inst/bin$
 ^src/tools/px$
 ^src/tools/px.exe$
 ^docs$

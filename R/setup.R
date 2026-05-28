@@ -367,6 +367,21 @@ setup_callbacks <- function(options) {
   options
 }
 
+bundled_launcher_path <- function() {
+  exe <- if (os_platform() == "windows") {
+    "callrem.exe"
+  } else {
+    "callrem"
+  }
+  p <- system.file(
+    paste0("bin", .Platform$r_arch),
+    exe,
+    package = "callr",
+    mustWork = FALSE
+  )
+  if (nzchar(p) && file.exists(p)) p else NA_character_
+}
+
 setup_r_binary_and_args <- function(options, script_file = TRUE) {
   options$arch <- options$arch %||% "same"
   if (grepl("[/\\\\]", options$arch)) {
@@ -390,7 +405,23 @@ setup_r_binary_and_args <- function(options, script_file = TRUE) {
     stop("Cannot find R executable at `", path, "`")
   }
 
-  options$bin <- path
+  launcher <- if (identical(options$arch, "same")) {
+    bundled_launcher_path()
+  } else {
+    NA_character_
+  }
+
+  if (!is.na(launcher)) {
+    options$bin <- launcher
+    options$env["R_HOME"] <- R.home()
+    if (os_platform() == "windows") {
+      cur_path <- options$env["PATH"]
+      if (is.na(cur_path)) cur_path <- Sys.getenv("PATH")
+      options$env["PATH"] <- paste(R.home("bin"), cur_path, sep = ";")
+    }
+  } else {
+    options$bin <- path
+  }
   options$real_cmdargs <-
     c(options$cmdargs, if (script_file) c("-f", options$script_file))
   options
