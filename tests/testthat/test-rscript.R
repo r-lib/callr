@@ -119,7 +119,7 @@ test_that("rscript_process supports pty = TRUE", {
 
   expect_false(px$has_error_connection())
   out <- cli::ansi_strip(px$read_all_output())
-  out <-  sub("\033.*\a", "", out)
+  out <- sub("\033.*\a", "", out)
   expect_match(out, "on stderr")
   expect_match(out, "on stdout")
 })
