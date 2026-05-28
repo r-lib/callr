@@ -66,6 +66,59 @@ test_that("stdout = '|' does not hang when child errors (#313)", {
   gc()
 })
 
+test_that("pty = TRUE merges stderr into stdout and sets a tty", {
+  skip_on_cran()
+
+  tmp <- test_temp_file(create = FALSE)
+  writeLines(
+    c(
+      "cat('isatty:', isatty(stdout()), '\\n')",
+      "message('err line')",
+      "cat('out line\\n')"
+    ),
+    tmp
+  )
+
+  res <- rscript(tmp, pty = TRUE, show = FALSE)
+  expect_equal(res$status, 0L)
+  expect_null(res$stderr)
+  expect_match(res$stdout, "isatty: TRUE")
+  expect_match(res$stdout, "err line")
+  expect_match(res$stdout, "out line")
+})
+
+test_that("pty = TRUE rejects a non-null stderr", {
+  skip_on_cran()
+
+  tmp <- test_temp_file(create = FALSE)
+  writeLines("cat('hi\\n')", tmp)
+
+  expect_error(
+    rscript(tmp, pty = TRUE, stderr = "err.txt", show = FALSE),
+    "`stderr` cannot be set when `pty = TRUE`"
+  )
+})
+
+test_that("rscript_process supports pty = TRUE", {
+  skip_on_cran()
+
+  tmp <- test_temp_file(create = FALSE)
+  writeLines(
+    c("message('on stderr')", "cat('on stdout\\n')"),
+    tmp
+  )
+
+  opts <- rscript_process_options(script = tmp, extra = list(pty = TRUE))
+  px <- rscript_process$new(opts)
+  on.exit(try(px$kill(), silent = TRUE), add = TRUE)
+  px$wait(5000)
+
+  expect_false(px$has_error_connection())
+  out <- px$read_all_output()
+  expect_match(out, "on stderr")
+  expect_match(out, "on stdout")
+})
+
 test_that("cleans up temporary files", {
   skip_on_cran()
 

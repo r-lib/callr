@@ -3,6 +3,15 @@ run_r <- function(options) {
   setwd(options$wd)
   on.exit(setwd(oldwd), add = TRUE)
 
+  pty <- isTRUE(options$extra$pty)
+
+  if (pty && !is.null(options$stderr)) {
+    stop(
+      "`stderr` cannot be set when `pty = TRUE`; ",
+      "stdout and stderr are merged into the pty stream"
+    )
+  }
+
   ## We redirect stderr to stdout if either of these are true:
   ## - stderr is the string "2>&1"
   ## - both stdout and stderr are non-null, and they are the same
@@ -25,15 +34,17 @@ run_r <- function(options) {
             bin,
             args = real_cmdargs,
             stdout_line_callback = real_callback(stdout),
-            stderr_line_callback = real_callback(stderr),
             stdout_callback = real_block_callback,
-            stderr_callback = real_block_callback,
-            stderr_to_stdout = stderr_to_stdout,
             echo_cmd = echo,
             echo = show,
             spinner = spinner,
             error_on_status = fail_on_status,
             timeout = timeout
+          ),
+          if (!pty) list(
+            stderr_line_callback = real_callback(stderr),
+            stderr_callback = real_block_callback,
+            stderr_to_stdout = stderr_to_stdout
           ),
           extra
         )
