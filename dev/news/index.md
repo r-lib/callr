@@ -2,6 +2,12 @@
 
 ## callr (development version)
 
+- [`r()`](https://callr.r-lib.org/dev/reference/r.md),
+  [`rcmd()`](https://callr.r-lib.org/dev/reference/rcmd.md),
+  [`rscript()`](https://callr.r-lib.org/dev/reference/rscript.md) and
+  `rscript_process` now accept `pty = TRUE` to run the child R process
+  in a pseudo-terminal.
+
 - callr now supports
   [`carrier::crate()`](https://rdrr.io/pkg/carrier/man/crate.html).
   `package = NULL`, the new default, handles functions created with
