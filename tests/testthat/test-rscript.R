@@ -82,9 +82,12 @@ test_that("pty = TRUE merges stderr into stdout and sets a tty", {
   res <- rscript(tmp, pty = TRUE, show = FALSE)
   expect_equal(res$status, 0L)
   expect_null(res$stderr)
-  expect_match(res$stdout, "isatty: TRUE")
-  expect_match(res$stdout, "err line")
-  expect_match(res$stdout, "out line")
+  ## ConPTY on Windows interleaves CSI mode-change escapes with output;
+  ## strip them before matching.
+  out <- cli::ansi_strip(res$stdout)
+  expect_match(out, "isatty: TRUE")
+  expect_match(out, "err line")
+  expect_match(out, "out line")
 })
 
 test_that("pty = TRUE rejects a non-null stderr", {
@@ -114,7 +117,7 @@ test_that("rscript_process supports pty = TRUE", {
   px$wait(5000)
 
   expect_false(px$has_error_connection())
-  out <- px$read_all_output()
+  out <- cli::ansi_strip(px$read_all_output())
   expect_match(out, "on stderr")
   expect_match(out, "on stdout")
 })
