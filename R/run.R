@@ -41,11 +41,13 @@ run_r <- function(options) {
             error_on_status = fail_on_status,
             timeout = timeout
           ),
-          if (!pty) list(
-            stderr_line_callback = real_callback(stderr),
-            stderr_callback = real_block_callback,
-            stderr_to_stdout = stderr_to_stdout
-          ),
+          if (!pty) {
+            list(
+              stderr_line_callback = real_callback(stderr),
+              stderr_callback = real_block_callback,
+              stderr_to_stdout = stderr_to_stdout
+            )
+          },
           extra
         )
       )
