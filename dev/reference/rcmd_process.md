@@ -16,6 +16,10 @@ class.
 
 - [`rcmd_process$new()`](#method-rcmd_process-initialize)
 
+- [`rcmd_process$cleanup()`](#method-rcmd_process-cleanup)
+
+- [`rcmd_process$finalize()`](#method-rcmd_process-finalize)
+
 - [`rcmd_process$clone()`](#method-rcmd_process-clone)
 
 Inherited methods
@@ -92,6 +96,29 @@ Start an `R CMD` process.
 #### Returns
 
 A new `rcmd_process` object.
+
+------------------------------------------------------------------------
+
+### `rcmd_process$cleanup()`
+
+Delete the temporary files created for this `R CMD` process. Only call
+this if you are sure that the process is done. If you don't call this
+method explicitly, the temporary files will be deleted when the process
+object is garbage collected.
+
+#### Usage
+
+    rcmd_process$cleanup()
+
+------------------------------------------------------------------------
+
+### `rcmd_process$finalize()`
+
+Clean up the temporary files created for an `R CMD` process.
+
+#### Usage
+
+    rcmd_process$finalize()
 
 ------------------------------------------------------------------------
 

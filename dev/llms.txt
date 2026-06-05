@@ -132,7 +132,7 @@ callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g)
 ```
 
 
-    #> [1] 11
+    #> [1] 10
 
 ### Error handling
 
@@ -226,7 +226,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 8173.
+    #> PROCESS 'R', running, pid 7812.
 
 This is a list of all `r_process` methods:
 
@@ -236,24 +236,25 @@ ls(rp)
 ```
 
 
-    #>  [1] "as_ps_handle"          "clone"                 "finalize"
-    #>  [4] "format"                "get_cmdline"           "get_cpu_times"
-    #>  [7] "get_end_time"          "get_error_connection"  "get_error_file"
-    #> [10] "get_exe"               "get_exit_status"       "get_input_connection"
-    #> [13] "get_input_file"        "get_memory_info"       "get_name"
-    #> [16] "get_output_connection" "get_output_file"       "get_pid"
-    #> [19] "get_poll_connection"   "get_result"            "get_start_time"
-    #> [22] "get_status"            "get_username"          "get_wd"
-    #> [25] "has_error_connection"  "has_input_connection"  "has_output_connection"
-    #> [28] "has_poll_connection"   "initialize"            "interrupt"
-    #> [31] "is_alive"              "is_incomplete_error"   "is_incomplete_output"
-    #> [34] "is_supervised"         "kill"                  "kill_tree"
-    #> [37] "poll_io"               "print"                 "read_all_error"
-    #> [40] "read_all_error_lines"  "read_all_output"       "read_all_output_lines"
-    #> [43] "read_error"            "read_error_bytes"      "read_error_lines"
-    #> [46] "read_output"           "read_output_bytes"     "read_output_lines"
-    #> [49] "resume"                "signal"                "supervise"
-    #> [52] "suspend"               "wait"                  "write_input"
+    #>  [1] "as_ps_handle"          "cleanup"               "clone"
+    #>  [4] "finalize"              "format"                "get_cmdline"
+    #>  [7] "get_cpu_times"         "get_end_time"          "get_error_connection"
+    #> [10] "get_error_file"        "get_exe"               "get_exit_status"
+    #> [13] "get_input_connection"  "get_input_file"        "get_memory_info"
+    #> [16] "get_name"              "get_output_connection" "get_output_file"
+    #> [19] "get_pid"               "get_poll_connection"   "get_result"
+    #> [22] "get_start_time"        "get_status"            "get_username"
+    #> [25] "get_wd"                "has_error_connection"  "has_input_connection"
+    #> [28] "has_output_connection" "has_poll_connection"   "initialize"
+    #> [31] "interrupt"             "is_alive"              "is_incomplete_error"
+    #> [34] "is_incomplete_output"  "is_supervised"         "kill"
+    #> [37] "kill_tree"             "poll_io"               "print"
+    #> [40] "read_all_error"        "read_all_error_lines"  "read_all_output"
+    #> [43] "read_all_output_lines" "read_error"            "read_error_bytes"
+    #> [46] "read_error_lines"      "read_output"           "read_output_bytes"
+    #> [49] "read_output_lines"     "resume"                "signal"
+    #> [52] "supervise"             "suspend"               "wait"
+    #> [55] "write_input"
 
 These include all methods of the
 [`processx::process`](http://processx.r-lib.org/reference/process.md)
@@ -340,7 +341,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 8224.
+    #> R SESSION, alive, idle, pid 7863.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -363,8 +364,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.78525586 0.26512054 0.55214041 0.31650450 0.28793489 0.91700612
-    #>  [7] 0.82873718 0.45052274 0.13576810 0.05376732
+    #>  [1] 0.33921553 0.48232696 0.51706980 0.12660570 0.47711720 0.52950230
+    #>  [7] 0.05913174 0.47360898 0.38591931 0.10173950
 
 ``` r
 
@@ -373,7 +374,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 8233.
+    #> R SESSION, alive, busy, pid 7872.
 
 ``` r
 
@@ -393,11 +394,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1f7d4980e343"
+    #> [1] "done callr-rs-result-1e1427f17d32"
     #>
     #> $result
-    #>  [1]  0.560608495 -0.001229514  0.310909547 -0.732569768  0.119154749
-    #>  [6]  0.009568923  0.858924430 -0.382183944  1.192152459  0.989530725
+    #>  [1] -0.19580627  0.58465729 -0.27989509  1.98794402 -1.28466018  0.06255532
+    #>  [7]  0.23083209  0.08995415  0.06627040  0.08352745
     #>
     #> $stdout
     #> [1] ""

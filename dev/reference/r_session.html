@@ -86,6 +86,8 @@ be used to evaluate R function calls, one at a time.</p>
 <li><p><a href="#method-r_session-debug"><code>r_session$debug()</code></a></p></li>
 <li><p><a href="#method-r_session-attach"><code>r_session$attach()</code></a></p></li>
 <li><p><a href="#method-r_session-print"><code>r_session$print()</code></a></p></li>
+<li><p><a href="#method-r_session-cleanup"><code>r_session$cleanup()</code></a></p></li>
+<li><p><a href="#method-r_session-finalize"><code>r_session$finalize()</code></a></p></li>
 <li><p><a href="#method-r_session-clone"><code>r_session$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="as_ps_handle"><a href="http://processx.r-lib.org/reference/process.html#method-as_ps_handle"><code>processx::process$as_ps_handle()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="processx" data-topic="process" data-id="format"><a href="http://processx.r-lib.org/reference/process.html#method-format"><code>processx::process$format()</code></a></span></li>
@@ -441,10 +443,33 @@ the frames can be costly for large objects passed as arguments.</p><div class="s
 
 </div>
 
+<p></p><hr><a id="method-r_session-cleanup"></a><div class="section">
+<h3 id="r-session-cleanup-"><code>r_session$cleanup()</code><a class="anchor" aria-label="anchor" href="#r-session-cleanup-"></a></h3>
+<p>Delete the temporary files created for this R session. Only call
+this if you are sure that the process is done and you don't need to
+read from it anymore. If you don't call this method explicitly, the
+temporary files will be deleted when the process object is garbage
+collected.</p><div class="section">
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">cleanup</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-r_session-finalize"></a><div class="section">
+<h3 id="r-session-finalize-"><code>r_session$finalize()</code><a class="anchor" aria-label="anchor" href="#r-session-finalize-"></a></h3>
+<p>Finalizer that is called when garbage collecting an <code>r_session</code>
+object, to clean up temporary files.</p><div class="section">
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">finalize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-r_session-clone"></a><div class="section">
 <h3 id="r-session-clone-"><code>r_session$clone()</code><a class="anchor" aria-label="anchor" href="#r-session-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">r_session</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>

@@ -16,6 +16,10 @@ class.
 
 - [`rscript_process$new()`](#method-rscript_process-initialize)
 
+- [`rscript_process$cleanup()`](#method-rscript_process-cleanup)
+
+- [`rscript_process$finalize()`](#method-rscript_process-finalize)
+
 - [`rscript_process$clone()`](#method-rscript_process-clone)
 
 Inherited methods
@@ -88,6 +92,29 @@ Create a new `Rscript` process.
 
   A list of options created via
   [`rscript_process_options()`](https://callr.r-lib.org/dev/reference/rscript_process_options.md).
+
+------------------------------------------------------------------------
+
+### `rscript_process$cleanup()`
+
+Delete the temporary files created for this `Rscript` process. Only call
+this method if you are sure that the process is done. If you don't call
+this method explicitly, the temporary files will be deleted when the
+process object is garbage collected.
+
+#### Usage
+
+    rscript_process$cleanup()
+
+------------------------------------------------------------------------
+
+### `rscript_process$finalize()`
+
+Clean up after an `Rscript` process, remove temporary files.
+
+#### Usage
+
+    rscript_process$finalize()
 
 ------------------------------------------------------------------------
 

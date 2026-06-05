@@ -19,6 +19,10 @@ call, and then quits.
 
 - [`r_process$get_result()`](#method-r_process-get_result)
 
+- [`r_process$cleanup()`](#method-r_process-cleanup)
+
+- [`r_process$finalize()`](#method-r_process-finalize)
+
 - [`r_process$clone()`](#method-r_process-clone)
 
 Inherited methods
@@ -115,6 +119,30 @@ events.
 #### Returns
 
 The return value of the R expression evaluated in the R process.
+
+------------------------------------------------------------------------
+
+### `r_process$cleanup()`
+
+Delete the temporary files created for this R process. Only call this if
+you are sure that the process is done and you don't need the result
+anymore. If you don't call this method explicitly, the temporary files
+will be deleted when the process object is garbage collected.
+
+#### Usage
+
+    r_process$cleanup()
+
+------------------------------------------------------------------------
+
+### `r_process$finalize()`
+
+Clean up temporary files once an R process has finished and its handle
+is garbage collected.
+
+#### Usage
+
+    r_process$finalize()
 
 ------------------------------------------------------------------------
 

@@ -49,6 +49,10 @@ used to evaluate R function calls, one at a time.
 
 - [`r_session$print()`](#method-r_session-print)
 
+- [`r_session$cleanup()`](#method-r_session-cleanup)
+
+- [`r_session$finalize()`](#method-r_session-finalize)
+
 - [`r_session$clone()`](#method-r_session-clone)
 
 Inherited methods
@@ -468,6 +472,30 @@ Print method for an `r_session`.
 - `...`:
 
   Arguments are not used currently.
+
+------------------------------------------------------------------------
+
+### `r_session$cleanup()`
+
+Delete the temporary files created for this R session. Only call this if
+you are sure that the process is done and you don't need to read from it
+anymore. If you don't call this method explicitly, the temporary files
+will be deleted when the process object is garbage collected.
+
+#### Usage
+
+    r_session$cleanup()
+
+------------------------------------------------------------------------
+
+### `r_session$finalize()`
+
+Finalizer that is called when garbage collecting an `r_session` object,
+to clean up temporary files.
+
+#### Usage
+
+    r_session$finalize()
 
 ------------------------------------------------------------------------
 
