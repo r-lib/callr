@@ -16,7 +16,7 @@
 #' rp$get_result()
 #' @export
 
-r_process <- R6::R6Class(
+r_process <- suppressMessages(R6::R6Class(
   "r_process",
   inherit = processx::process,
   public = list(
@@ -36,16 +36,20 @@ r_process <- R6::R6Class(
     #'
     #' @return The return value of the R expression evaluated in the R
     #' process.
-    get_result = function() rp_get_result(self, private)
-  ),
-  private = list(
-    options = NULL,
+    get_result = function() rp_get_result(self, private),
+
+    #' @description
+    #' Clean up temporary files once an R process has finished and its
+    #' handle is garbage collected.
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     }
+  ),
+  private = list(
+    options = NULL
   )
-)
+))
 
 rp_init <- function(self, private, super, options) {
   ## This contains the context that we set up in steps

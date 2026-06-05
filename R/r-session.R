@@ -32,7 +32,7 @@
 #' rs$read()
 #' @export
 
-r_session <- R6::R6Class(
+r_session <- suppressMessages(R6::R6Class(
   "r_session",
   inherit = processx::process,
   public = list(
@@ -213,10 +213,11 @@ r_session <- R6::R6Class(
         ".\n"
       )
       invisible(self)
-    }
-  ),
+    },
 
-  private = list(
+    #' @description
+    #' Finalizer that is called when garbage collecting an `r_session`
+    #' object, to clean up temporary files.
     finalize = function() {
       private$options$otel_span$add_event("finalizer")
       private$options$otel_span$end()
@@ -224,8 +225,10 @@ r_session <- R6::R6Class(
       unlink(private$tmp_error_file)
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
-    },
+    }
+  ),
 
+  private = list(
     options = NULL,
     state = NULL,
     started_at = NULL,
@@ -252,7 +255,7 @@ r_session <- R6::R6Class(
     parse_msg = function(msg) rs__parse_msg(self, private, msg),
     attach_wait = function() rs__attach_wait(self, private)
   )
-)
+))
 
 rs_init <- function(self, private, super, options, wait, wait_timeout) {
   options$func <- options$func %||%

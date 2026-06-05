@@ -93,23 +93,25 @@ rscript_load_hook_color <- function(color) {
 #' rp$read_output_lines()
 #' @export
 
-rscript_process <- R6::R6Class(
+rscript_process <- suppressMessages(R6::R6Class(
   "rscript_process",
   inherit = processx::process,
   public = list(
     #' @description Create a new `Rscript` process.
     #' @param options A list of options created via
     #'   [rscript_process_options()].
-    initialize = function(options) rscript_init(self, private, super, options)
-  ),
-  private = list(
-    options = NULL,
+    initialize = function(options) rscript_init(self, private, super, options),
+
+    #' @description Clean up after an `Rscript` process, remove temporary files.
     finalize = function() {
       unlink(private$options$tmp_files, recursive = TRUE)
       if ("finalize" %in% ls(super)) super$finalize()
     }
+  ),
+  private = list(
+    options = NULL
   )
-)
+))
 
 rscript_init <- function(self, private, super, options) {
   options$load_hook <- rscript_load_hook_color(options$color)
