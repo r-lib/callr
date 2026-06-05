@@ -1,4 +1,4 @@
-# callr (development version)
+# callr 3.8.0
 
 * `r()`, `rcmd()`, `rscript()` and `rscript_process` now accept
   `pty = TRUE` to run the child R process in a pseudo-terminal.
