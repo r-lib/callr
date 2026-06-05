@@ -50,6 +50,8 @@ rs$read()
     \item \href{#method-r_session-debug}{\code{r_session$debug()}}
     \item \href{#method-r_session-attach}{\code{r_session$attach()}}
     \item \href{#method-r_session-print}{\code{r_session$print()}}
+    \item \href{#method-r_session-cleanup}{\code{r_session$cleanup()}}
+    \item \href{#method-r_session-finalize}{\code{r_session$finalize()}}
     \item \href{#method-r_session-clone}{\code{r_session$clone()}}
   }
 }
@@ -445,6 +447,35 @@ the frames can be costly for large objects passed as arguments.
     \describe{
       \item{\code{...}}{Arguments are not used currently.}
     }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-r_session-cleanup"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-cleanup}{}}}
+\subsection{\code{r_session$cleanup()}}{
+  Delete the temporary files created for this R session. Only call
+this if you are sure that the process is done and you don't need to
+read from it anymore. If you don't call this method explicitly, the
+temporary files will be deleted when the process object is garbage
+collected.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{r_session$cleanup()}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-r_session-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-r_session-finalize}{}}}
+\subsection{\code{r_session$finalize()}}{
+  Finalizer that is called when garbage collecting an \code{r_session}
+object, to clean up temporary files.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{r_session$finalize()}
     \if{html}{\out{</div>}}
   }
 }

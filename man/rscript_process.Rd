@@ -22,6 +22,8 @@ rp$read_output_lines()
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-rscript_process-initialize}{\code{rscript_process$new()}}
+    \item \href{#method-rscript_process-cleanup}{\code{rscript_process$cleanup()}}
+    \item \href{#method-rscript_process-finalize}{\code{rscript_process$finalize()}}
     \item \href{#method-rscript_process-clone}{\code{rscript_process$clone()}}
   }
 }
@@ -96,6 +98,33 @@ rp$read_output_lines()
       \item{\code{options}}{A list of options created via
 \code{\link[=rscript_process_options]{rscript_process_options()}}.}
     }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-rscript_process-cleanup"></a>}}
+\if{latex}{\out{\hypertarget{method-rscript_process-cleanup}{}}}
+\subsection{\code{rscript_process$cleanup()}}{
+  Delete the temporary files created for this \code{Rscript}
+process. Only call this method if you are sure that the process is
+done. If you don't call this method explicitly, the temporary files
+will be deleted when the process object is garbage collected.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{rscript_process$cleanup()}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-rscript_process-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-rscript_process-finalize}{}}}
+\subsection{\code{rscript_process$finalize()}}{
+  Clean up after an \code{Rscript} process, remove temporary files.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{rscript_process$finalize()}
     \if{html}{\out{</div>}}
   }
 }

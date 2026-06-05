@@ -102,9 +102,17 @@ rscript_process <- suppressMessages(R6::R6Class(
     #'   [rscript_process_options()].
     initialize = function(options) rscript_init(self, private, super, options),
 
+    #' @description Delete the temporary files created for this `Rscript`
+    #' process. Only call this method if you are sure that the process is
+    #' done. If you don't call this method explicitly, the temporary files
+    #' will be deleted when the process object is garbage collected.
+    cleanup = function() {
+      unlink(private$options$tmp_files, recursive = TRUE)
+    },
+
     #' @description Clean up after an `Rscript` process, remove temporary files.
     finalize = function() {
-      unlink(private$options$tmp_files, recursive = TRUE)
+      self$cleanup()
       if ("finalize" %in% ls(super)) super$finalize()
     }
   ),

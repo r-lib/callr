@@ -28,6 +28,8 @@ rp$get_result()
   \itemize{
     \item \href{#method-r_process-initialize}{\code{r_process$new()}}
     \item \href{#method-r_process-get_result}{\code{r_process$get_result()}}
+    \item \href{#method-r_process-cleanup}{\code{r_process$cleanup()}}
+    \item \href{#method-r_process-finalize}{\code{r_process$finalize()}}
     \item \href{#method-r_process-clone}{\code{r_process$clone()}}
   }
 }
@@ -125,6 +127,35 @@ together with other processes or events.
   \subsection{Returns}{
     The return value of the R expression evaluated in the R
 process.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-r_process-cleanup"></a>}}
+\if{latex}{\out{\hypertarget{method-r_process-cleanup}{}}}
+\subsection{\code{r_process$cleanup()}}{
+  Delete the temporary files created for this R process.
+Only call this if you are sure that the process is done and you
+don't need the result anymore. If you don't call this method
+explicitly, the temporary files will be deleted when the process
+object is garbage collected.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{r_process$cleanup()}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-r_process-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-r_process-finalize}{}}}
+\subsection{\code{r_process$finalize()}}{
+  Clean up temporary files once an R process has finished and its
+handle is garbage collected.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{r_process$finalize()}
+    \if{html}{\out{</div>}}
   }
 }
 

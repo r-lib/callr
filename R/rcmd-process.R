@@ -22,9 +22,17 @@ rcmd_process <- suppressMessages(R6::R6Class(
     #' @return A new `rcmd_process` object.
     initialize = function(options) rcmdp_init(self, private, super, options),
 
+    #' @description Delete the temporary files created for this `R CMD`
+    #' process. Only call this if you are sure that the process is done.
+    #' If you don't call this method explicitly, the temporary files will
+    #' be deleted when the process object is garbage collected.
+    cleanup = function() {
+      unlink(private$options$tmp_files, recursive = TRUE)
+    },
+
     #' @description Clean up the temporary files created for an `R CMD` process.
     finalize = function() {
-      unlink(private$options$tmp_files, recursive = TRUE)
+      self$cleanup()
       if ("finalize" %in% ls(super)) super$finalize()
     }
   ),

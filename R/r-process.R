@@ -39,10 +39,20 @@ r_process <- suppressMessages(R6::R6Class(
     get_result = function() rp_get_result(self, private),
 
     #' @description
+    #' Delete the temporary files created for this R process.
+    #' Only call this if you are sure that the process is done and you
+    #' don't need the result anymore. If you don't call this method
+    #' explicitly, the temporary files will be deleted when the process
+    #' object is garbage collected.
+    cleanup = function() {
+      unlink(private$options$tmp_files, recursive = TRUE)
+    },
+
+    #' @description
     #' Clean up temporary files once an R process has finished and its
     #' handle is garbage collected.
     finalize = function() {
-      unlink(private$options$tmp_files, recursive = TRUE)
+      self$cleanup()
       if ("finalize" %in% ls(super)) super$finalize()
     }
   ),

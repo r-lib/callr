@@ -216,14 +216,24 @@ r_session <- suppressMessages(R6::R6Class(
     },
 
     #' @description
+    #' Delete the temporary files created for this R session. Only call
+    #' this if you are sure that the process is done and you don't need to
+    #' read from it anymore. If you don't call this method explicitly, the
+    #' temporary files will be deleted when the process object is garbage
+    #' collected.
+    cleanup = function() {
+      unlink(private$tmp_output_file)
+      unlink(private$tmp_error_file)
+      unlink(private$options$tmp_files, recursive = TRUE)
+    },
+
+    #' @description
     #' Finalizer that is called when garbage collecting an `r_session`
     #' object, to clean up temporary files.
     finalize = function() {
       private$options$otel_span$add_event("finalizer")
       private$options$otel_span$end()
-      unlink(private$tmp_output_file)
-      unlink(private$tmp_error_file)
-      unlink(private$options$tmp_files, recursive = TRUE)
+      self$cleanup()
       if ("finalize" %in% ls(super)) super$finalize()
     }
   ),

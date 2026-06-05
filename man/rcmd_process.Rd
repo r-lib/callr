@@ -22,6 +22,8 @@ rp$read_output_lines()
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-rcmd_process-initialize}{\code{rcmd_process$new()}}
+    \item \href{#method-rcmd_process-cleanup}{\code{rcmd_process$cleanup()}}
+    \item \href{#method-rcmd_process-finalize}{\code{rcmd_process$finalize()}}
     \item \href{#method-rcmd_process-clone}{\code{rcmd_process$clone()}}
   }
 }
@@ -100,6 +102,33 @@ rp$read_output_lines()
   }
   \subsection{Returns}{
     A new \code{rcmd_process} object.
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-rcmd_process-cleanup"></a>}}
+\if{latex}{\out{\hypertarget{method-rcmd_process-cleanup}{}}}
+\subsection{\code{rcmd_process$cleanup()}}{
+  Delete the temporary files created for this \verb{R CMD}
+process. Only call this if you are sure that the process is done.
+If you don't call this method explicitly, the temporary files will
+be deleted when the process object is garbage collected.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{rcmd_process$cleanup()}
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-rcmd_process-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-rcmd_process-finalize}{}}}
+\subsection{\code{rcmd_process$finalize()}}{
+  Clean up the temporary files created for an \verb{R CMD} process.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{rcmd_process$finalize()}
+    \if{html}{\out{</div>}}
   }
 }
 
