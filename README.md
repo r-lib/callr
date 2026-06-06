@@ -25,6 +25,8 @@ that.
 - [Installation](#installation)
 - [Synchronous, one-off R processes](#synchronous-one-off-r-processes)
   - [Passing arguments](#passing-arguments)
+  - [Passing large arguments with shared
+    memory](#passing-large-arguments-with-shared-memory)
   - [Using packages](#using-packages)
   - [Error handling](#error-handling)
   - [Standard output and error](#standard-output-and-error)
@@ -114,6 +116,38 @@ callr::r(function(x) summary(x), args = list(mycars))
 Note that the arguments will be serialized and saved to a file, so if
 they are large R objects, it might take a long time for the child
 process to start up.
+
+### Passing large arguments with shared memory
+
+For very large R objects, the serialization cost can dominate startup
+time. The [mori](https://shikokuchuo.net/mori/) package provides a way
+around this: `mori::share()` places an object in OS shared memory and
+returns a lightweight handle. When callr serializes that handle, only a
+few bytes are transferred — the child process maps the same shared
+memory region directly, with no copy.
+
+``` r
+big_data <- rnorm(1e8)
+shared_data <- mori::share(big_data)
+system.time(print(mean(big_data)))
+system.time(
+   print(callr::r(function(x) mean(x), args = list(big_data)))
+)
+system.time(
+   print(callr::r(function(x) mean(x), args = list(shared_data)))
+)
+```
+
+With `r_session`, the same shared object can be passed to multiple calls
+without re-serializing the data each time:
+
+``` r
+rs <- callr::r_session$new()
+system.time(mean(big_data))
+system.time(sd(big_data))
+system.time(print(rs$run(function(x) mean(x), args = list(shared_data))))
+system.time(print(rs$run(function(x) sd(x), args = list(shared_data))))
+```
 
 ### Using packages
 

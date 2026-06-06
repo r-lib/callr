@@ -39,6 +39,7 @@ interruptible
 keyring
 lifecycle
 macOS
+mori
 namespace
 observability
 otel
