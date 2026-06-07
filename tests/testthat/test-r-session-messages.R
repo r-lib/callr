@@ -16,7 +16,10 @@ test_that("callr_message, then error", {
   tryCatch(
     withCallingHandlers(
       rs$run(do),
-      callr_message = function(m) msg <<- c(msg, list(m))
+      callr_message = function(m) {
+        msg <<- c(msg, list(m))
+        invokeRestart("callr_r_session_muffle")
+      }
     ),
     error = function(e) err <<- e
   )
@@ -37,7 +40,6 @@ test_that("callr_message, then error", {
 })
 
 test_that("message handlers", {
-  skip_if_not_installed("withr")
   rs <- r_session$new()
   on.exit(rs$kill(), add = TRUE)
 
@@ -50,11 +52,12 @@ test_that("message handlers", {
   }
 
   cond <- NULL
-  withr::with_options(
-    list(callr.condition_handler_myclass = function(x) {
+  withCallingHandlers(
+    rs$run(do),
+    myclass = function(x) {
       cond <<- x
-    }),
-    rs$run(do)
+      invokeRestart("callr_r_session_muffle")
+    }
   )
 
   expect_s3_class(cond, "myclass")
@@ -64,7 +67,6 @@ test_that("message handlers", {
 })
 
 test_that("large messages", {
-  skip_if_not_installed("withr")
   rs <- r_session$new()
   on.exit(rs$close(), add = TRUE)
 
@@ -84,11 +86,12 @@ test_that("large messages", {
   }
 
   cond <- list()
-  withr::with_options(
-    list(callr.condition_handler_myclass = function(x) {
+  withCallingHandlers(
+    rs$run(do),
+    myclass = function(x) {
       cond <<- c(cond, list(x))
-    }),
-    rs$run(do)
+      invokeRestart("callr_r_session_muffle")
+    }
   )
 
   expect_equal(length(cond), 6)

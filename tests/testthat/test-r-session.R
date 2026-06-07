@@ -169,7 +169,10 @@ test_that("messages", {
 
   withCallingHandlers(
     expect_silent(res <- rs$run_with_output(f)),
-    callr_message = function(e) msg <<- e
+    callr_message = function(e) {
+      msg <<- e
+      invokeRestart("callr_r_session_muffle")
+    }
   )
   expect_equal(res$result, 22)
   expect_equal(
@@ -201,7 +204,10 @@ test_that("messages with R objects", {
 
   withCallingHandlers(
     expect_silent(res <- rs$run_with_output(f, args = list(obj))),
-    foobar_class = function(e) msg <<- e
+    foobar_class = function(e) {
+      msg <<- e
+      invokeRestart("callr_r_session_muffle")
+    }
   )
   expect_equal(res$result, 22)
   exp <- exp2 <- structure(
