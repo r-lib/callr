@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">callr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.7.6.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.8.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="callr-development-version">callr (development version)<a class="anchor" aria-label="anchor" href="#callr-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.8.0" id="callr-380">callr 3.8.0<a class="anchor" aria-label="anchor" href="#callr-380"></a></h2><p class="text-muted">CRAN release: 2026-06-05</p>
 <ul><li><p><code><a href="../reference/r.html">r()</a></code>, <code><a href="../reference/rcmd.html">rcmd()</a></code>, <code><a href="../reference/rscript.html">rscript()</a></code> and <code>rscript_process</code> now accept <code>pty = TRUE</code> to run the child R process in a pseudo-terminal.</p></li>
 <li><p>callr now supports <code><a href="https://rdrr.io/pkg/carrier/man/crate.html" class="external-link">carrier::crate()</a></code>. <code>package = NULL</code>, the new default, handles functions created with <code><a href="https://rdrr.io/pkg/carrier/man/crate.html" class="external-link">carrier::crate()</a></code> automatically (<a href="https://github.com/r-lib/callr/issues/249" class="external-link">#249</a>).</p></li>
 <li><p>The <code>CALLR_TMPDIR</code> environment variable can now be set to override the directory callr uses for its auxiliary temporary files. When unset, callr keeps using <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> (<a href="https://github.com/r-lib/callr/issues/172" class="external-link">#172</a>).</p></li>

@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">callr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.7.6.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.8.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,14 +100,14 @@ about 100-300 milliseconds.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.019   0.002   0.182                                                         
+#&gt;   0.016   0.005   0.179                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 9187.                                               
+#&gt; R SESSION, alive, idle, pid 9592.                                               
 </pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -123,7 +123,7 @@ about 100-300 milliseconds.</p>
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, finished, pid 9187.                                                  
+#&gt; R SESSION, finished, pid 9592.                                                  
 </pre>
 </div>
 <p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects,
@@ -143,14 +143,14 @@ asynchronously.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.003   0.001   0.005                                                         
+#&gt;   0.003   0.002   0.005                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs2</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, starting, pid 9198.                                           
+#&gt; R SESSION, alive, starting, pid 9603.                                           
 </pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -294,7 +294,7 @@ all processes until they are all ready.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; Time differences in secs                                                        
-#&gt; [1] 0.2603376 0.2603376 0.2603376 0.2603376                                     
+#&gt; [1] 0.2190897 0.2190897 0.2190897 0.2190897                                     
 </pre>
 </div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -365,7 +365,7 @@ and error.</li>
 <code class="sourceCode R"><span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"I am process {Sys.getpid()}."</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; I am process 9218.                                                              
+#&gt; I am process 9623.                                                              
 </pre>
 </div>
 <p><code>$run_with_output()</code> has the output as well:</p>
@@ -380,7 +380,7 @@ and error.</li>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-23da7c5c5485"                                         
+#&gt; [1] "done callr-rs-result-256f88e5cfe"                                          
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt;                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -395,7 +395,7 @@ and error.</li>
 #&gt; [1] ""                                                                          
 #&gt;                                                                                 
 #&gt; $stderr                                                                         
-#&gt; [1] "I am process 9218.\n"                                                      
+#&gt; [1] "I am process 9623.\n"                                                      
 #&gt;                                                                                 
 #&gt; $error                                                                          
 #&gt; NULL                                                                            
@@ -417,16 +417,16 @@ for the result:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
-#&gt; R SESSION, alive, busy, pid 9218.                                               
+#&gt; R SESSION, alive, busy, pid 9623.                                               
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
-#&gt; R SESSION, alive, busy, pid 9220.                                               
+#&gt; R SESSION, alive, busy, pid 9625.                                               
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
-#&gt; R SESSION, alive, busy, pid 9225.                                               
+#&gt; R SESSION, alive, busy, pid 9630.                                               
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; R SESSION, alive, busy, pid 9230.                                               
+#&gt; R SESSION, alive, busy, pid 9638.                                               
 #&gt;                                                                                 
 </pre>
 </div>
@@ -471,10 +471,10 @@ result (or error, if a failure happened):</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-23da5712d136"                                         
+#&gt; [1] "done callr-rs-result-256f530e82f1"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 9218.                                                              
+#&gt; I am process 9623.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -521,10 +521,10 @@ helper function useful as a starting point:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-23da43d3f16b"                                         
+#&gt; [1] "done callr-rs-result-256f5a364ce6"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 9220.                                                              
+#&gt; I am process 9625.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -543,10 +543,10 @@ helper function useful as a starting point:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-23da2f1592d5"                                         
+#&gt; [1] "done callr-rs-result-256f7a45f6ba"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 9225.                                                              
+#&gt; I am process 9630.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -565,10 +565,10 @@ helper function useful as a starting point:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-23da32ad6663"                                         
+#&gt; [1] "done callr-rs-result-256f2eaa63ef"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 9230.                                                              
+#&gt; I am process 9638.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -634,7 +634,7 @@ process and one for the subprocess:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-23da57bf51e7"                                         
+#&gt; [1] "done callr-rs-result-256f68d728be"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt; NULL                                                                            

@@ -12,6 +12,8 @@ exactly that.
 - [Installation](#installation)
 - [Synchronous, one-off R processes](#synchronous-one-off-r-processes)
   - [Passing arguments](#passing-arguments)
+  - [Passing large arguments with shared
+    memory](#passing-large-arguments-with-shared-memory)
   - [Using packages](#using-packages)
   - [Error handling](#error-handling)
   - [Standard output and error](#standard-output-and-error)
@@ -118,6 +120,40 @@ callr::r(function(x) summary(x), args = list(mycars))
 Note that the arguments will be serialized and saved to a file, so if
 they are large R objects, it might take a long time for the child
 process to start up.
+
+### Passing large arguments with shared memory
+
+For very large R objects, the serialization cost can dominate startup
+time. The [mori](https://shikokuchuo.net/mori/) package provides a way
+around this: `mori::share()` places an object in OS shared memory and
+returns a lightweight handle. When callr serializes that handle, only a
+few bytes are transferred — the child process maps the same shared
+memory region directly, with no copy.
+
+``` r
+
+big_data <- rnorm(1e8)
+shared_data <- mori::share(big_data)
+system.time(print(mean(big_data)))
+system.time(
+   print(callr::r(function(x) mean(x), args = list(big_data)))
+)
+system.time(
+   print(callr::r(function(x) mean(x), args = list(shared_data)))
+)
+```
+
+With `r_session`, the same shared object can be passed to multiple calls
+without re-serializing the data each time:
+
+``` r
+
+rs <- callr::r_session$new()
+system.time(mean(big_data))
+system.time(sd(big_data))
+system.time(print(rs$run(function(x) mean(x), args = list(shared_data))))
+system.time(print(rs$run(function(x) sd(x), args = list(shared_data))))
+```
 
 ### Using packages
 
@@ -226,7 +262,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 7812.
+    #> PROCESS 'R', running, pid 8213.
 
 This is a list of all `r_process` methods:
 
@@ -341,7 +377,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 7863.
+    #> R SESSION, alive, idle, pid 8264.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -364,8 +400,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.33921553 0.48232696 0.51706980 0.12660570 0.47711720 0.52950230
-    #>  [7] 0.05913174 0.47360898 0.38591931 0.10173950
+    #>  [1] 0.978960627 0.594630353 0.743043558 0.138442517 0.677889124 0.425681284
+    #>  [7] 0.002108984 0.036309198 0.234958532 0.856138843
 
 ``` r
 
@@ -374,7 +410,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 7872.
+    #> R SESSION, alive, busy, pid 8273.
 
 ``` r
 
@@ -394,11 +430,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1e1427f17d32"
+    #> [1] "done callr-rs-result-1fa44a12e6d"
     #>
     #> $result
-    #>  [1] -0.19580627  0.58465729 -0.27989509  1.98794402 -1.28466018  0.06255532
-    #>  [7]  0.23083209  0.08995415  0.06627040  0.08352745
+    #>  [1]  0.85031106 -0.70418879 -1.15373070  2.04456569 -2.46145986 -1.18108079
+    #>  [7]  1.41142800  1.05486414 -1.22130273  0.01428429
     #>
     #> $stdout
     #> [1] ""

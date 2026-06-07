@@ -20,12 +20,12 @@ Source:
 [`DESCRIPTION`](https://github.com/r-lib/callr/blob/main/DESCRIPTION)
 
 Csárdi G, Chang W (2026). *callr: Call R from R*. R package version
-3.7.6.9000, <https://callr.r-lib.org>.
+3.8.0.9000, <https://callr.r-lib.org>.
 
     @Manual{,
       title = {callr: Call R from R},
       author = {Gábor Csárdi and Winston Chang},
       year = {2026},
-      note = {R package version 3.7.6.9000},
+      note = {R package version 3.8.0.9000},
       url = {https://callr.r-lib.org},
     }

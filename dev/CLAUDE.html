@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">callr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.7.6.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">3.8.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,16 +48,16 @@
 <h2 id="commands">Commands<a class="anchor" aria-label="anchor" href="#commands"></a></h2>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu">reload</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uncovr/man/reload.html" class="external-link">reload</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Run the test suite:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uncovr/man/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Run a single test file:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"r-session"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uncovr/man/test.html" class="external-link">test</a></span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"r-session"</span><span class="op">)</span></span></code></pre></div>
 <p>Regenerate documentation (man/ files):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">uncovr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uncovr/man/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Run full package check:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html" class="external-link">with_envvar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>NOT_CRAN <span class="op">=</span> <span class="st">"true"</span>, DISPLAY <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>, <span class="fu">rcmdcheck</span><span class="fu">::</span><span class="fu"><a href="http://r-lib.github.io/rcmdcheck/reference/rcmdcheck.html" class="external-link">rcmdcheck</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>

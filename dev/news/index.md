@@ -2,6 +2,10 @@
 
 ## callr (development version)
 
+## callr 3.8.0
+
+CRAN release: 2026-06-05
+
 - [`r()`](https://callr.r-lib.org/dev/reference/r.md),
   [`rcmd()`](https://callr.r-lib.org/dev/reference/rcmd.md),
   [`rscript()`](https://callr.r-lib.org/dev/reference/rscript.md) and
