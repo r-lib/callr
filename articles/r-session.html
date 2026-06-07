@@ -5,70 +5,56 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="callr">
 <title>Persistent External R Sessions • callr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Persistent External R Sessions">
-<meta property="og:description" content="callr">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><script defer data-domain="callr.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Persistent External R Sessions">
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="callr.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-none"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-none" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">callr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.7.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.8.0</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <h6 class="dropdown-header" data-toc-skip>Tutorials</h6>
-    <a class="dropdown-item" href="../articles/r-session.html">Persistent R sessions</a>
-    <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header" data-toc-skip>Blog posts</h6>
-    <a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2019/09/callr-task-q">A multi process task queue in 100 lines of R code</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/r-session.html">Persistent R sessions</a></li>
+    <li><a class="dropdown-item" href="../articles/opentelemetry.html">OpenTelemetry</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Blog posts</h6></li>
+    <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2019/09/callr-task-q">A multi process task queue in 100 lines of R code</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/r-lib/callr/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/callr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article" id="container">
 
@@ -77,10 +63,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Persistent External R Sessions</h1>
+
+      <h1>Persistent External R Sessions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/callr/blob/HEAD/vignettes/r-session.Rmd" class="external-link"><code>vignettes/r-session.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/callr/blob/main/vignettes/r-session.Rmd" class="external-link"><code>vignettes/r-session.Rmd</code></a></small>
       <div class="d-none name"><code>r-session.Rmd</code></div>
     </div>
 
@@ -112,14 +99,14 @@ about 100-300 milliseconds.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.018   0.002   0.202                                                         
+#&gt;   0.019   0.004   0.199                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 7909.                                               
+#&gt; R SESSION, alive, idle, pid 9334.                                               
 </pre>
 </div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -135,7 +122,7 @@ about 100-300 milliseconds.</p>
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, finished, pid 7909.                                                  
+#&gt; R SESSION, finished, pid 9334.                                                  
 </pre>
 </div>
 <p>Just like <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects,
@@ -155,14 +142,14 @@ asynchronously.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt;    user  system elapsed                                                         
-#&gt;   0.005   0.000   0.006                                                         
+#&gt;   0.002   0.003   0.007                                                         
 </pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rs2</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, starting, pid 7920.                                           
+#&gt; R SESSION, alive, starting, pid 9345.                                           
 </pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -306,7 +293,7 @@ all processes until they are all ready.</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; Time differences in secs                                                        
-#&gt; [1] 0.3205562 0.3205562 0.3205562 0.3205562                                     
+#&gt; [1] 0.2590313 0.2590313 0.2590313 0.2590313                                     
 </pre>
 </div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -377,7 +364,7 @@ and error.</li>
 <code class="sourceCode R"><span><span class="va">procs</span><span class="op">$</span><span class="va">session</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"I am process {Sys.getpid()}."</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; I am process 7940.                                                              
+#&gt; I am process 9365.                                                              
 </pre>
 </div>
 <p><code>$run_with_output()</code> has the output as well:</p>
@@ -392,7 +379,7 @@ and error.</li>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1edc67fb1fc6"                                         
+#&gt; [1] "done callr-rs-result-246d727e5ba0"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt;                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -407,7 +394,7 @@ and error.</li>
 #&gt; [1] ""                                                                          
 #&gt;                                                                                 
 #&gt; $stderr                                                                         
-#&gt; [1] "I am process 7940.\n"                                                      
+#&gt; [1] "I am process 9365.\n"                                                      
 #&gt;                                                                                 
 #&gt; $error                                                                          
 #&gt; NULL                                                                            
@@ -429,16 +416,16 @@ for the result:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
-#&gt; R SESSION, alive, busy, pid 7940.                                               
+#&gt; R SESSION, alive, busy, pid 9365.                                               
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
-#&gt; R SESSION, alive, busy, pid 7942.                                               
+#&gt; R SESSION, alive, busy, pid 9367.                                               
 #&gt;                                                                                 
 #&gt; [[3]]                                                                           
-#&gt; R SESSION, alive, busy, pid 7947.                                               
+#&gt; R SESSION, alive, busy, pid 9372.                                               
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; R SESSION, alive, busy, pid 7951.                                               
+#&gt; R SESSION, alive, busy, pid 9377.                                               
 #&gt;                                                                                 
 </pre>
 </div>
@@ -451,7 +438,7 @@ finish their job:</p>
 <pre>
 #&gt; [[1]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent"  "ready"                                                      
+#&gt; "silent" "silent" "silent"                                                      
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
 #&gt;   output    error  process                                                      
@@ -463,7 +450,7 @@ finish their job:</p>
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
 #&gt;   output    error  process                                                      
-#&gt; "silent" "silent" "silent"                                                      
+#&gt; "silent" "silent"  "ready"                                                      
 #&gt;                                                                                 
 </pre>
 </div>
@@ -478,15 +465,15 @@ result (or error, if a failure happened):</p>
 <span><span class="op">}</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; Process  1  is ready:                                                           
+#&gt; Process  4  is ready:                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1edc5b526c5e"                                         
+#&gt; [1] "done callr-rs-result-246d20c27bd8"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 7940.                                                              
+#&gt; I am process 9377.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -526,17 +513,36 @@ helper function useful as a starting point:</p>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
 #&gt; [[1]]                                                                           
+#&gt; $code                                                                           
+#&gt; [1] 200                                                                         
+#&gt;                                                                                 
+#&gt; $message                                                                        
+#&gt; [1] "done callr-rs-result-246d6d0b621a"                                         
+#&gt;                                                                                 
+#&gt; $result                                                                         
+#&gt; I am process 9365.                                                              
+#&gt;                                                                                 
+#&gt; $stdout                                                                         
+#&gt; [1] ""                                                                          
+#&gt;                                                                                 
+#&gt; $stderr                                                                         
+#&gt; [1] ""                                                                          
+#&gt;                                                                                 
+#&gt; $error                                                                          
 #&gt; NULL                                                                            
+#&gt;                                                                                 
+#&gt; attr(,"class")                                                                  
+#&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[2]]                                                                           
 #&gt; $code                                                                           
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1edc76457cb"                                          
+#&gt; [1] "done callr-rs-result-246d357a88c"                                          
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 7942.                                                              
+#&gt; I am process 9367.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -555,10 +561,10 @@ helper function useful as a starting point:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1edc41a17e87"                                         
+#&gt; [1] "done callr-rs-result-246d412b794a"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
-#&gt; I am process 7947.                                                              
+#&gt; I am process 9372.                                                              
 #&gt;                                                                                 
 #&gt; $stdout                                                                         
 #&gt; [1] ""                                                                          
@@ -573,26 +579,7 @@ helper function useful as a starting point:</p>
 #&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 #&gt; [[4]]                                                                           
-#&gt; $code                                                                           
-#&gt; [1] 200                                                                         
-#&gt;                                                                                 
-#&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1edc1df1b7ae"                                         
-#&gt;                                                                                 
-#&gt; $result                                                                         
-#&gt; I am process 7951.                                                              
-#&gt;                                                                                 
-#&gt; $stdout                                                                         
-#&gt; [1] ""                                                                          
-#&gt;                                                                                 
-#&gt; $stderr                                                                         
-#&gt; [1] ""                                                                          
-#&gt;                                                                                 
-#&gt; $error                                                                          
 #&gt; NULL                                                                            
-#&gt;                                                                                 
-#&gt; attr(,"class")                                                                  
-#&gt; [1] "callr_session_result"                                                      
 #&gt;                                                                                 
 </pre>
 </div>
@@ -623,13 +610,13 @@ process and one for the subprocess:</p>
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘not-a-package’                                    
 #&gt; ---                                                                             
 #&gt; Backtrace:                                                                      
-#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #859900;">$</span><span style="color: #2AA198;">run</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> <span style="color: #2AA198;">library</span><span style="color: #268BD2;">(</span><span style="color: #B58900;">"not-a-package"</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                                  
-#&gt; <span style="color: #525252;">2. </span>callr:::<span style="color: #2AA198;">rs_run</span><span style="color: #B58900;">(</span>self, private, func, args, package<span style="color: #B58900;">)</span>                           
-#&gt; <span style="color: #525252;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span>res<span style="color: #859900;">$</span>error<span style="color: #B58900;">)</span>                                                     
+#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #cc9900;">$</span><span style="font-weight: bold;">run</span><span style="color: #cc9900;">(</span><span style="color: #999900;">function</span><span style="color: #B58900;">()</span> <span style="font-weight: bold;">library</span><span style="color: #B58900;">(</span><span style="color: #009999;">"not-a-package"</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>                                  
+#&gt; <span style="color: #525252;">2. </span>callr:::<span style="font-weight: bold;">rs_run</span><span style="color: #cc9900;">(</span>self, private, func, args, package<span style="color: #cc9900;">)</span>                           
+#&gt; <span style="color: #525252;">3. </span>callr:::<span style="font-weight: bold;">throw</span><span style="color: #cc9900;">(</span>res<span style="color: #cc9900;">$</span>error<span style="color: #cc9900;">)</span>                                                     
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #525252;">1. </span>base::<span style="color: #2AA198;">library</span><span style="color: #B58900;">("not-a-package")</span>                                               
-#&gt; <span style="color: #525252;">2. </span>base::<span style="color: #2AA198;">stop</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">packageNotFoundError</span><span style="color: #268BD2;">(</span>package, lib.loc, <span style="color: #2AA198;">sys.call()</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>               
+#&gt; <span style="color: #525252;">1. </span>base::<span style="font-weight: bold;">library</span><span style="color: #cc9900;">(</span><span style="color: #009999;">"not-a-package"</span><span style="color: #cc9900;">)</span>                                               
+#&gt; <span style="color: #525252;">2. </span>base::<span style="font-weight: bold;">stop</span><span style="color: #cc9900;">(</span><span style="font-weight: bold;">packageNotFoundError</span><span style="color: #B58900;">(</span>package, lib.loc, <span style="font-weight: bold;">sys.call</span><span style="color: #268BD2;">()</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>               
 #&gt; <span style="color: #525252;">3. </span>global (function (e) …                                                       
 </pre>
 </div>
@@ -646,7 +633,7 @@ process and one for the subprocess:</p>
 #&gt; [1] 200                                                                         
 #&gt;                                                                                 
 #&gt; $message                                                                        
-#&gt; [1] "done callr-rs-result-1edc16f58982"                                         
+#&gt; [1] "done callr-rs-result-246d27e09eef"                                         
 #&gt;                                                                                 
 #&gt; $result                                                                         
 #&gt; NULL                                                                            
@@ -665,8 +652,8 @@ process and one for the subprocess:</p>
 #&gt; <span style="color: #B58900;">!</span> there is no package called ‘still-not’                                        
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #525252;">1. </span>base::<span style="color: #2AA198;">library</span><span style="color: #B58900;">("still-not")</span>                                                   
-#&gt; <span style="color: #525252;">2. </span>base::<span style="color: #2AA198;">stop</span><span style="color: #B58900;">(</span><span style="color: #2AA198;">packageNotFoundError</span><span style="color: #268BD2;">(</span>package, lib.loc, <span style="color: #2AA198;">sys.call()</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>               
+#&gt; <span style="color: #525252;">1. </span>base::<span style="font-weight: bold;">library</span><span style="color: #cc9900;">(</span><span style="color: #009999;">"still-not"</span><span style="color: #cc9900;">)</span>                                                   
+#&gt; <span style="color: #525252;">2. </span>base::<span style="font-weight: bold;">stop</span><span style="color: #cc9900;">(</span><span style="font-weight: bold;">packageNotFoundError</span><span style="color: #B58900;">(</span>package, lib.loc, <span style="font-weight: bold;">sys.call</span><span style="color: #268BD2;">()</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>               
 #&gt; <span style="color: #525252;">3. </span>global (function (e) …                                                       
 #&gt;                                                                                 
 #&gt; attr(,"class")                                                                  
@@ -721,12 +708,12 @@ error if the system process exits with a non-successful status:</p>
 #&gt; <span style="color: #B58900;">!</span> System command 'ls' failed                                                    
 #&gt; ---                                                                             
 #&gt; Backtrace:                                                                      
-#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #859900;">$</span><span style="color: #2AA198;">run</span><span style="color: #B58900;">(</span><span style="color: #DC322F;">function</span><span style="color: #268BD2;">()</span> processx::<span style="color: #2AA198;">run</span><span style="color: #268BD2;">(</span><span style="color: #B58900;">"ls"</span>, <span style="color: #B58900;">"/not-this"</span><span style="color: #268BD2;">)</span><span style="color: #B58900;">)</span>                          
-#&gt; <span style="color: #525252;">2. </span>callr:::<span style="color: #2AA198;">rs_run</span><span style="color: #B58900;">(</span>self, private, func, args, package<span style="color: #B58900;">)</span>                           
-#&gt; <span style="color: #525252;">3. </span>callr:::<span style="color: #2AA198;">throw</span><span style="color: #B58900;">(</span>res<span style="color: #859900;">$</span>error<span style="color: #B58900;">)</span>                                                     
+#&gt; <span style="color: #525252;">1. </span>rs<span style="color: #cc9900;">$</span><span style="font-weight: bold;">run</span><span style="color: #cc9900;">(</span><span style="color: #999900;">function</span><span style="color: #B58900;">()</span> processx::<span style="font-weight: bold;">run</span><span style="color: #B58900;">(</span><span style="color: #009999;">"ls"</span>, <span style="color: #009999;">"/not-this"</span><span style="color: #B58900;">)</span><span style="color: #cc9900;">)</span>                          
+#&gt; <span style="color: #525252;">2. </span>callr:::<span style="font-weight: bold;">rs_run</span><span style="color: #cc9900;">(</span>self, private, func, args, package<span style="color: #cc9900;">)</span>                           
+#&gt; <span style="color: #525252;">3. </span>callr:::<span style="font-weight: bold;">throw</span><span style="color: #cc9900;">(</span>res<span style="color: #cc9900;">$</span>error<span style="color: #cc9900;">)</span>                                                     
 #&gt; ---                                                                             
 #&gt; Subprocess backtrace:                                                           
-#&gt; <span style="color: #525252;">1. </span>processx::<span style="color: #2AA198;">run</span><span style="color: #B58900;">("ls"</span>, <span style="color: #B58900;">"/not-this")</span>                                             
+#&gt; <span style="color: #525252;">1. </span>processx::<span style="font-weight: bold;">run</span><span style="color: #cc9900;">(</span><span style="color: #009999;">"ls"</span>, <span style="color: #009999;">"/not-this"</span><span style="color: #cc9900;">)</span>                                             
 #&gt; <span style="color: #525252;">2. </span>base::throw(new_process_error(res, call = sys.call(), echo = echo, …         
 #&gt; <span style="color: #525252;">3. | base::signalCondition(cond)</span>                                                
 #&gt; <span style="color: #525252;">4. </span>global (function (e) …                                                       
@@ -795,7 +782,7 @@ processes.</p>
 callr saves the full trace, including the frames. You can then inspect
 these frames with the <code>$debug()</code> method. We can use it here
 to debug the previous error:</p>
-<p><img src="r-session_files/figure-html/debug.svg" width="100%"></p>
+<p><img src="r-session_files/figure-html/debug.svg" class="r-plt" alt="Screen recording showing `rs$debug()`. First there is a help message with the various commands you can use: `.where`, `.inspect &lt;n&gt;`, `.help`, `.q`, or an R expression to run. Then there is a list of frames. Next there is an `inspect 3` call to get into `frame 3`, and next an `ls()` expression evaluated in that frame. It lists `vec` as the only object in that frame, and then `vec` will show what `vec` is, the `1:2` integer vector. At the end `.q` exits the debugger." width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="interactive-debugging">Interactive debugging<a class="anchor" aria-label="anchor" href="#interactive-debugging"></a>
@@ -815,7 +802,7 @@ the REPL.</p>
 #&gt; NULL                                                                            
 </pre>
 </div>
-<p><img src="r-session_files/figure-html/attach-1.svg" width="100%"></p>
+<p><img src="r-session_files/figure-html/attach-1.svg" class="r-plt" alt="Screen recording for an `rs$attach()` example. It shows an `RS &lt;pid&gt;` prompt. Then we type in `ls()`, which is evaluated in the subprocess, and shows `data`. `head(data)` shows the first rows of `data`, which is the `mtcars` data set. Finally `.q` quits the debugger." width="100%"></p>
 <p>This is an experimental feature and it does not always print the
 output properly, e.g. sometimes you need to press ENTER twice, but
 nevertheless it can be useful at times.</p>
@@ -853,7 +840,7 @@ that callr uses for communication. This might also happen because it was
 killed or crashed.</li>
 </ul>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -862,13 +849,11 @@ killed or crashed.</li>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://github.com/wch" class="external-link">Winston Chang</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>, Ascent Digital Services.</p>
+  <p>Developed by <a href="https://github.com/gaborcsardi" class="external-link">Gábor Csárdi</a>, <a href="https://github.com/wch" class="external-link">Winston Chang</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" width="62" style="margin-bottom: 3px;"></a>, Ascent Digital Services.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>
