@@ -89,3 +89,10 @@ reference:
   - process
   - run
   - poll
+
+news:
+  releases:
+  - text: "callr 3.8.0"
+    href: https://gaborcsardi.org/2026/callr-3-8-0-with-OpenTelemetry-support/
+  - text: "callr 3.3.0"
+    href: https://tidyverse.org/blog/2019/07/callr-3.3.0/
