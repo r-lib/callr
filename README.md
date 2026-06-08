@@ -130,13 +130,34 @@ memory region directly, with no copy.
 big_data <- rnorm(1e8)
 shared_data <- mori::share(big_data)
 system.time(print(mean(big_data)))
+```
+
+    #> [1] -6.899973e-05
+
+    #>    user  system elapsed 
+    #>   0.097   0.001   0.098
+
+``` r
 system.time(
    print(callr::r(function(x) mean(x), args = list(big_data)))
 )
+```
+
+    #> [1] -6.899973e-05
+
+    #>    user  system elapsed 
+    #>   0.852   0.294   1.396
+
+``` r
 system.time(
    print(callr::r(function(x) mean(x), args = list(shared_data)))
 )
 ```
+
+    #> [1] -6.899973e-05
+
+    #>    user  system elapsed 
+    #>   0.166   0.064   0.334
 
 With `r_session`, the same shared object can be passed to multiple calls
 without re-serializing the data each time:
@@ -144,10 +165,35 @@ without re-serializing the data each time:
 ``` r
 rs <- callr::r_session$new()
 system.time(mean(big_data))
+```
+
+    #>    user  system elapsed 
+    #>   0.103   0.012   0.115
+
+``` r
 system.time(sd(big_data))
+```
+
+    #>    user  system elapsed 
+    #>   0.174   0.000   0.175
+
+``` r
 system.time(print(rs$run(function(x) mean(x), args = list(shared_data))))
+```
+
+    #> [1] -6.899973e-05
+
+    #>    user  system elapsed 
+    #>   0.001   0.000   0.156
+
+``` r
 system.time(print(rs$run(function(x) sd(x), args = list(shared_data))))
 ```
+
+    #> [1] 1.000076
+
+    #>    user  system elapsed 
+    #>   0.001   0.000   0.284
 
 ### Using packages
 
