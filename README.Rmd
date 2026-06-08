@@ -108,7 +108,6 @@ region directly, with no copy.
 
 ```{r}
 #| label: mori
-#| eval: false
 big_data <- rnorm(1e8)
 shared_data <- mori::share(big_data)
 system.time(print(mean(big_data)))
@@ -125,7 +124,6 @@ without re-serializing the data each time:
 
 ```{r}
 #| label: mori-session
-#| eval: false
 rs <- callr::r_session$new()
 system.time(mean(big_data))
 system.time(sd(big_data))

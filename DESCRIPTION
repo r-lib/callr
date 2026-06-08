@@ -37,6 +37,7 @@ Config/Needs/website:
     glue,
     htmlwidgets,
     igraph,
+    mori,
     tibble,
     tidyverse/tidytemplate
 Config/testthat/edition: 3
