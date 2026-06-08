@@ -12,6 +12,8 @@ exactly that.
 - [Installation](#installation)
 - [Synchronous, one-off R processes](#synchronous-one-off-r-processes)
   - [Passing arguments](#passing-arguments)
+  - [Passing large arguments with shared
+    memory](#passing-large-arguments-with-shared-memory)
   - [Using packages](#using-packages)
   - [Error handling](#error-handling)
   - [Standard output and error](#standard-output-and-error)
@@ -119,6 +121,107 @@ Note that the arguments will be serialized and saved to a file, so if
 they are large R objects, it might take a long time for the child
 process to start up.
 
+### Passing large arguments with shared memory
+
+For very large R objects, the serialization cost can dominate startup
+time. The [mori](https://shikokuchuo.net/mori/) package provides a way
+around this:
+[`mori::share()`](https://shikokuchuo.net/mori/reference/share.html)
+places an object in OS shared memory and returns a lightweight handle.
+When callr serializes that handle, only a few bytes are transferred —
+the child process maps the same shared memory region directly, with no
+copy.
+
+``` r
+
+big_data <- rnorm(1e8)
+shared_data <- mori::share(big_data)
+system.time(print(mean(big_data)))
+```
+
+``` R
+#> [1] -0.0001343218
+
+#>    user  system elapsed 
+#>   0.492   0.001   0.493
+```
+
+``` r
+
+system.time(
+   print(callr::r(function(x) mean(x), args = list(big_data)))
+)
+```
+
+``` R
+#> [1] -0.0001343218
+
+#>    user  system elapsed 
+#>   2.098   0.819   2.601
+```
+
+``` r
+
+system.time(
+   print(callr::r(function(x) mean(x), args = list(shared_data)))
+)
+```
+
+``` R
+#> [1] -0.0001343218
+
+#>    user  system elapsed 
+#>   0.686   0.371   0.743
+```
+
+With `r_session`, the same shared object can be passed to multiple calls
+without re-serializing the data each time:
+
+``` r
+
+rs <- callr::r_session$new()
+system.time(mean(big_data))
+```
+
+``` R
+#>    user  system elapsed 
+#>   0.493   0.000   0.493
+```
+
+``` r
+
+system.time(sd(big_data))
+```
+
+``` R
+#>    user  system elapsed 
+#>   0.763   0.000   0.763
+```
+
+``` r
+
+system.time(print(rs$run(function(x) mean(x), args = list(shared_data))))
+```
+
+``` R
+#> [1] -0.0001343218
+
+#>    user  system elapsed 
+#>   0.004   0.000   0.551
+```
+
+``` r
+
+system.time(print(rs$run(function(x) sd(x), args = list(shared_data))))
+```
+
+``` R
+#> [1] 0.9999031
+
+#>    user  system elapsed 
+#>   0.002   0.001   0.919
+```
+
 ### Using packages
 
 You can use any R package in the child process, just make sure to refer
@@ -132,7 +235,7 @@ callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g)
 ```
 
 
-    #> [1] 12
+    #> [1] 10
 
 ### Error handling
 
@@ -226,7 +329,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 7887.
+    #> PROCESS 'R', running, pid 7897.
 
 This is a list of all `r_process` methods:
 
@@ -341,7 +444,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 7938.
+    #> R SESSION, alive, idle, pid 7948.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/reference/r.md), but uses the persistent
@@ -364,8 +467,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.95953374 0.23717942 0.22870048 0.13408790 0.49840793 0.71261718
-    #>  [7] 0.09349817 0.40414732 0.20643859 0.34323007
+    #>  [1] 0.9192300 0.5582434 0.6119445 0.5589570 0.7143346 0.6170600 0.1706850
+    #>  [8] 0.8547807 0.2258252 0.0556730
 
 ``` r
 
@@ -374,7 +477,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 7947.
+    #> R SESSION, alive, busy, pid 7957.
 
 ``` r
 
@@ -394,11 +497,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1e5f7527a4f9"
+    #> [1] "done callr-rs-result-1e3b60a8b567"
     #>
     #> $result
-    #>  [1] -1.2602019 -0.5383348 -0.3093750 -1.0916968  0.8001463  0.2637838
-    #>  [7]  1.1350271 -1.2464502  0.1397786 -0.8008323
+    #>  [1] -0.95943577  0.07595167  0.87498381  1.16226111  0.24285904 -0.78426823
+    #>  [7]  1.44413806  0.84342995 -1.77001167  2.04951812
     #>
     #> $stdout
     #> [1] ""

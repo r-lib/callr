@@ -265,12 +265,12 @@ all parented to the top-level <code><a href="../reference/r_session.html">callr:
 <span>  parent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">traces</span>, <span class="st">"[["</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="st">"parent"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;                          name           parent</span></span>
-<span><span class="co">#&gt; 1              r_session$read acd0db31129f7266</span></span>
-<span><span class="co">#&gt; 2 r_session$initialize() wait acd0db31129f7266</span></span>
-<span><span class="co">#&gt; 3              r_session$call acd0db31129f7266</span></span>
-<span><span class="co">#&gt; 4              r_session$read acd0db31129f7266</span></span>
+<span><span class="co">#&gt; 1              r_session$read dcb5a16026d0849d</span></span>
+<span><span class="co">#&gt; 2 r_session$initialize() wait dcb5a16026d0849d</span></span>
+<span><span class="co">#&gt; 3              r_session$call dcb5a16026d0849d</span></span>
+<span><span class="co">#&gt; 4              r_session$read dcb5a16026d0849d</span></span>
 <span><span class="co">#&gt; 5            callr::r_session 0000000000000000</span></span>
-<span><span class="co">#&gt; 6             r_session$close acd0db31129f7266</span></span></code></pre>
+<span><span class="co">#&gt; 6             r_session$close dcb5a16026d0849d</span></span></code></pre>
 <p>A subprocess error is recorded as an <code>exception</code>
 event:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -286,14 +286,14 @@ event:</p>
 <span>  <span class="fu">callr</span><span class="fu">::</span><span class="fu"><a href="../reference/r.html">r</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"TRACEPARENT"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">out</span><span class="op">$</span><span class="va">value</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "00-58ebe5f6b0f7aecee2501b61b4b93af3-fa7ed46897993daf-01"</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; [1] "00-859fbed2c593c0eb119cf2513c5ba70f-ccc3673b5a76fcb4-01"</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
 <span>  <span class="st">"00-%s-%s-01"</span>,</span>
 <span>  <span class="va">out</span><span class="op">$</span><span class="va">traces</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">trace_id</span>,</span>
 <span>  <span class="va">out</span><span class="op">$</span><span class="va">traces</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">span_id</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; [1] "00-58ebe5f6b0f7aecee2501b61b4b93af3-fa7ed46897993daf-01"</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; [1] "00-859fbed2c593c0eb119cf2513c5ba70f-ccc3673b5a76fcb4-01"</span></span></code></pre>
 <p>The two strings match: the <code>TRACEPARENT</code> the subprocess
 sees encodes the trace and span IDs of the parent’s
 <code><a href="../reference/r.html">callr::r</a></code> span.</p>
