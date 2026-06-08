@@ -27,7 +27,7 @@ system.time(rs <- r_session$new())
 
 
     #>    user  system elapsed                                                         
-    #>   0.019   0.004   0.199                                                         
+    #>   0.016   0.007   0.198                                                         
 
 ``` r
 
@@ -35,7 +35,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 9334.                                               
+    #> R SESSION, alive, idle, pid 9287.                                               
 
 ``` r
 
@@ -54,7 +54,7 @@ rs
 ```
 
 
-    #> R SESSION, finished, pid 9334.                                                  
+    #> R SESSION, finished, pid 9287.                                                  
 
 Just like
 [`processx::process`](http://processx.r-lib.org/reference/process.md)
@@ -75,7 +75,7 @@ system.time(rs2 <- r_session$new(wait = FALSE))
 
 
     #>    user  system elapsed                                                         
-    #>   0.002   0.003   0.007                                                         
+    #>   0.002   0.004   0.006                                                         
 
 ``` r
 
@@ -83,7 +83,7 @@ rs2
 ```
 
 
-    #> R SESSION, alive, starting, pid 9345.                                           
+    #> R SESSION, alive, starting, pid 9298.                                           
 
 ``` r
 
@@ -241,7 +241,7 @@ Sys.time() - procs$started_at
 
 
     #> Time differences in secs                                                        
-    #> [1] 0.2590313 0.2590313 0.2590313 0.2590313                                     
+    #> [1] 0.2472856 0.2472856 0.2472856 0.2472856                                     
 
 ``` r
 
@@ -309,7 +309,7 @@ procs$session[[1]]$run(function() glue::glue("I am process {Sys.getpid()}."))
 ```
 
 
-    #> I am process 9365.                                                              
+    #> I am process 9318.                                                              
 
 `$run_with_output()` has the output as well:
 
@@ -326,7 +326,7 @@ procs$session[[1]]$run_with_output(function() {
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-246d727e5ba0"                                         
+    #> [1] "done callr-rs-result-243e6323b313"                                         
     #>                                                                                 
     #> $result                                                                         
     #>                    mpg cyl disp  hp drat    wt  qsec vs am gear carb            
@@ -341,7 +341,7 @@ procs$session[[1]]$run_with_output(function() {
     #> [1] ""                                                                          
     #>                                                                                 
     #> $stderr                                                                         
-    #> [1] "I am process 9365.\n"                                                      
+    #> [1] "I am process 9318.\n"                                                      
     #>                                                                                 
     #> $error                                                                          
     #> NULL                                                                            
@@ -364,16 +364,16 @@ procs$session
 
 
     #> [[1]]                                                                           
-    #> R SESSION, alive, busy, pid 9365.                                               
+    #> R SESSION, alive, busy, pid 9318.                                               
     #>                                                                                 
     #> [[2]]                                                                           
-    #> R SESSION, alive, busy, pid 9367.                                               
+    #> R SESSION, alive, busy, pid 9320.                                               
     #>                                                                                 
     #> [[3]]                                                                           
-    #> R SESSION, alive, busy, pid 9372.                                               
+    #> R SESSION, alive, busy, pid 9325.                                               
     #>                                                                                 
     #> [[4]]                                                                           
-    #> R SESSION, alive, busy, pid 9377.                                               
+    #> R SESSION, alive, busy, pid 9330.                                               
     #>                                                                                 
 
 Use [`processx::poll()`](http://processx.r-lib.org/reference/poll.md) to
@@ -396,11 +396,11 @@ pr
     #>                                                                                 
     #> [[3]]                                                                           
     #>   output    error  process                                                      
-    #> "silent" "silent" "silent"                                                      
+    #> "silent" "silent"  "ready"                                                      
     #>                                                                                 
     #> [[4]]                                                                           
     #>   output    error  process                                                      
-    #> "silent" "silent"  "ready"                                                      
+    #> "silent" "silent" "silent"                                                      
     #>                                                                                 
 
 Then you can use the `$read()` method to read out the result (or error,
@@ -417,15 +417,15 @@ for (i in seq_along(pr)) {
 ```
 
 
-    #> Process  4  is ready:                                                           
+    #> Process  3  is ready:                                                           
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-246d20c27bd8"                                         
+    #> [1] "done callr-rs-result-243e32614f09"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9377.                                                              
+    #> I am process 9325.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -471,10 +471,10 @@ wait_for_sessions(procs$session)
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-246d6d0b621a"                                         
+    #> [1] "done callr-rs-result-243e733b1a3b"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9365.                                                              
+    #> I am process 9318.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -493,10 +493,10 @@ wait_for_sessions(procs$session)
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-246d357a88c"                                          
+    #> [1] "done callr-rs-result-243e5dd78d07"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9367.                                                              
+    #> I am process 9320.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -511,14 +511,17 @@ wait_for_sessions(procs$session)
     #> [1] "callr_session_result"                                                      
     #>                                                                                 
     #> [[3]]                                                                           
+    #> NULL                                                                            
+    #>                                                                                 
+    #> [[4]]                                                                           
     #> $code                                                                           
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-246d412b794a"                                         
+    #> [1] "done callr-rs-result-243e4db2e55f"                                         
     #>                                                                                 
     #> $result                                                                         
-    #> I am process 9372.                                                              
+    #> I am process 9330.                                                              
     #>                                                                                 
     #> $stdout                                                                         
     #> [1] ""                                                                          
@@ -531,9 +534,6 @@ wait_for_sessions(procs$session)
     #>                                                                                 
     #> attr(,"class")                                                                  
     #> [1] "callr_session_result"                                                      
-    #>                                                                                 
-    #> [[4]]                                                                           
-    #> NULL                                                                            
     #>                                                                                 
 
 Errors from a `$run()` are turned into errors in the main process:
@@ -591,7 +591,7 @@ rs$read()
     #> [1] 200                                                                         
     #>                                                                                 
     #> $message                                                                        
-    #> [1] "done callr-rs-result-246d27e09eef"                                         
+    #> [1] "done callr-rs-result-243e5430107d"                                         
     #>                                                                                 
     #> $result                                                                         
     #> NULL                                                                            

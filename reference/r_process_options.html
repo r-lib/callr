@@ -25,7 +25,14 @@
     <li><h6 class="dropdown-header" data-toc-skip>Blog posts</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2019/09/callr-task-q">A multi process task queue in 100 lines of R code</a></li>
   </ul></li>
-<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
+    <li><a class="external-link dropdown-item" href="https://gaborcsardi.org/2026/callr-3-8-0-with-OpenTelemetry-support/">callr 3.8.0</a></li>
+    <li><a class="external-link dropdown-item" href="https://tidyverse.org/blog/2019/07/callr-3.3.0/">callr 3.3.0</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/callr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -38,7 +45,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Create options for an <a href="r_process.html">r_process</a> object</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/callr/blob/main/R/options.R" class="external-link"><code>R/options.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/callr/blob/cran-3-8-0/R/options.R" class="external-link"><code>R/options.R</code></a></small>
       <div class="d-none name"><code>r_process_options.Rd</code></div>
     </div>
 
@@ -121,7 +128,7 @@ specified, this is the R function to run in the background.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "    while (\"tools:callr\" %in% search()) {\n"                                                                     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "        detach(\"tools:callr\")\n"                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "    }\n"                                                                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "    env &lt;- readRDS(\"/tmp/RtmpmqwV7B/callr-env-1e744ea6d963\")\n"                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "    env &lt;- readRDS(\"/tmp/RtmpwCOwOw/callr-env-1e467ba396c0\")\n"                                                  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "    has_otel &lt;- nzchar(Sys.getenv(\"TRACEPARENT\")) &amp;&amp; requireNamespace(\"otel\", \n"                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "        quietly = TRUE)\n"                                                                                         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "    assign(envir = env$`__callr_data__`, \"has_otel\", has_otel)\n"                                                </span>

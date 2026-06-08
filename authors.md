@@ -17,7 +17,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-lib/callr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/r-lib/callr/blob/cran-3-8-0/DESCRIPTION)
 
 Csárdi G, Chang W (2026). *callr: Call R from R*. R package version
 3.8.0, <https://callr.r-lib.org>.
