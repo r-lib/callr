@@ -47,7 +47,16 @@
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2019/09/callr-task-q">A multi process task queue in 100 lines of R code</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news">
+<li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
+    <li><a class="external-link dropdown-item" href="https://gaborcsardi.org/2026/callr-3-8-0-with-OpenTelemetry-support/">callr 3.8.0</a></li>
+    <li><a class="external-link dropdown-item" href="https://tidyverse.org/blog/2019/07/callr-3.3.0/">callr 3.3.0</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="news/index.html">Changelog</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -273,7 +282,7 @@
 <span><span class="va">rp</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; PROCESS 'R', running, pid 7875.
+#&gt; PROCESS 'R', running, pid 8234.
 </pre>
 </div>
 <p>This is a list of all <code>r_process</code> methods:</p>
@@ -340,8 +349,8 @@
 #&gt; "silent" "silent" "silent"
 #&gt;
 #&gt; [[2]]
-#&gt;   output    error  process
-#&gt; "silent"  "ready"  "ready"
+#&gt;  output   error process
+#&gt; "ready" "ready" "ready"
 #&gt;
 </pre>
 </div>
@@ -379,7 +388,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, idle, pid 7926.
+#&gt; R SESSION, alive, idle, pid 8286.
 </pre>
 </div>
 <p><code>r_session$run()</code> is a synchronous call, that works similarly to <code><a href="reference/r.html">r()</a></code>, but uses the persistent session. <code>r_session$call()</code> starts the function call and returns immediately. The <code>r_session$poll_process()</code> method or <code><a href="http://processx.r-lib.org/reference/poll.html" class="external-link">processx::poll()</a></code> can then be used to wait for the completion or other events from one or more R sessions, R processes or other <code><a href="http://processx.r-lib.org/reference/process.html" class="external-link">processx::process</a></code> objects.</p>
@@ -389,8 +398,8 @@
 <span><span class="va">rs</span><span class="op">$</span><span class="fu">run</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt;  [1] 0.85732177 0.63206132 0.63021303 0.07672404 0.81507327 0.45440480
-#&gt;  [7] 0.73446016 0.07967351 0.89288382 0.51003025
+#&gt;  [1] 0.1370374 0.4180452 0.7200562 0.3891246 0.2430931 0.5951371 0.1180691
+#&gt;  [8] 0.6539942 0.7024945 0.5481112
 </pre>
 </div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -398,7 +407,7 @@
 <span><span class="va">rs</span></span></code></pre></div>
 <div class="asciicast" style="color: #172431;font-family: 'Fira Code',Monaco,Consolas,Menlo,'Bitstream Vera Sans Mono','Powerline Symbols',monospace;line-height: 1.300000">
 <pre>
-#&gt; R SESSION, alive, busy, pid 7935.
+#&gt; R SESSION, alive, busy, pid 8295.
 </pre>
 </div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
@@ -416,11 +425,11 @@
 #&gt; [1] 200
 #&gt;
 #&gt; $message
-#&gt; [1] "done callr-rs-result-1e536c66d135"
+#&gt; [1] "done callr-rs-result-1fba4494598c"
 #&gt;
 #&gt; $result
-#&gt;  [1]  0.0120124  0.0696867  0.2417548 -1.8530379 -0.5586861  1.8985540
-#&gt;  [7] -1.0880070 -0.2259551 -0.7504217  0.2087255
+#&gt;  [1] -2.02343249 -1.78501178 -1.68857366  0.08416230  2.19768104 -0.42919725
+#&gt;  [7] -0.30996316 -0.84093972  0.05452635 -0.63255990
 #&gt;
 #&gt; $stdout
 #&gt; [1] ""
