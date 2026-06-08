@@ -125,22 +125,53 @@ process to start up.
 
 For very large R objects, the serialization cost can dominate startup
 time. The [mori](https://shikokuchuo.net/mori/) package provides a way
-around this: `mori::share()` places an object in OS shared memory and
-returns a lightweight handle. When callr serializes that handle, only a
-few bytes are transferred — the child process maps the same shared
-memory region directly, with no copy.
+around this:
+[`mori::share()`](https://shikokuchuo.net/mori/reference/share.html)
+places an object in OS shared memory and returns a lightweight handle.
+When callr serializes that handle, only a few bytes are transferred —
+the child process maps the same shared memory region directly, with no
+copy.
 
 ``` r
 
 big_data <- rnorm(1e8)
 shared_data <- mori::share(big_data)
 system.time(print(mean(big_data)))
+```
+
+``` R
+#> [1] -6.06817e-05
+
+#>    user  system elapsed 
+#>   0.487   0.000   0.488
+```
+
+``` r
+
 system.time(
    print(callr::r(function(x) mean(x), args = list(big_data)))
 )
+```
+
+``` R
+#> [1] -6.06817e-05
+
+#>    user  system elapsed 
+#>   2.061   0.813   2.559
+```
+
+``` r
+
 system.time(
    print(callr::r(function(x) mean(x), args = list(shared_data)))
 )
+```
+
+``` R
+#> [1] -6.06817e-05
+
+#>    user  system elapsed 
+#>   0.686   0.365   0.738
 ```
 
 With `r_session`, the same shared object can be passed to multiple calls
@@ -150,9 +181,45 @@ without re-serializing the data each time:
 
 rs <- callr::r_session$new()
 system.time(mean(big_data))
+```
+
+``` R
+#>    user  system elapsed 
+#>   0.491   0.000   0.492
+```
+
+``` r
+
 system.time(sd(big_data))
+```
+
+``` R
+#>    user  system elapsed 
+#>   0.760   0.000   0.759
+```
+
+``` r
+
 system.time(print(rs$run(function(x) mean(x), args = list(shared_data))))
+```
+
+``` R
+#> [1] -6.06817e-05
+
+#>    user  system elapsed 
+#>   0.003   0.000   0.549
+```
+
+``` r
+
 system.time(print(rs$run(function(x) sd(x), args = list(shared_data))))
+```
+
+``` R
+#> [1] 1.000061
+
+#>    user  system elapsed 
+#>   0.003   0.000   0.909
 ```
 
 ### Using packages
@@ -168,7 +235,7 @@ callr::r(function() { g <- igraph::sample_gnp(1000, 4/1000); igraph::diameter(g)
 ```
 
 
-    #> [1] 11
+    #> [1] 10
 
 ### Error handling
 
@@ -262,7 +329,7 @@ rp
 ```
 
 
-    #> PROCESS 'R', running, pid 8234.
+    #> PROCESS 'R', running, pid 8017.
 
 This is a list of all `r_process` methods:
 
@@ -377,7 +444,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, idle, pid 8286.
+    #> R SESSION, alive, idle, pid 8068.
 
 `r_session$run()` is a synchronous call, that works similarly to
 [`r()`](https://callr.r-lib.org/dev/reference/r.md), but uses the
@@ -400,8 +467,8 @@ rs$run(function() runif(10))
 ```
 
 
-    #>  [1] 0.1370374 0.4180452 0.7200562 0.3891246 0.2430931 0.5951371 0.1180691
-    #>  [8] 0.6539942 0.7024945 0.5481112
+    #>  [1] 0.521222272 0.497949264 0.881381511 0.406096637 0.473393445 0.002834655
+    #>  [7] 0.165666695 0.859435131 0.232781258 0.521573181
 
 ``` r
 
@@ -410,7 +477,7 @@ rs
 ```
 
 
-    #> R SESSION, alive, busy, pid 8295.
+    #> R SESSION, alive, busy, pid 8077.
 
 ``` r
 
@@ -430,11 +497,11 @@ rs$read()
     #> [1] 200
     #>
     #> $message
-    #> [1] "done callr-rs-result-1fba4494598c"
+    #> [1] "done callr-rs-result-1eb2244166f6"
     #>
     #> $result
-    #>  [1] -2.02343249 -1.78501178 -1.68857366  0.08416230  2.19768104 -0.42919725
-    #>  [7] -0.30996316 -0.84093972  0.05452635 -0.63255990
+    #>  [1] -1.6616408 -0.3691263 -0.9826560 -0.2851546  0.9515181  0.3223542
+    #>  [7] -0.1430205 -0.8214411  1.6635980  0.7589855
     #>
     #> $stdout
     #> [1] ""
